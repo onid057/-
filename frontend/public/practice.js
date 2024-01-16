@@ -19,7 +19,7 @@ const reducer = (state, action) => {
 };
 
 export function page() {
-	const [state, dispatch] = useReducer(reducer, { value: 42 }.init);
+	const [state, dispatch] = useReducer(reducer, { value: 42 }, init);
 
 	return (
 		<>
