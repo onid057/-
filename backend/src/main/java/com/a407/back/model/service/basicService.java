@@ -13,7 +13,7 @@ import java.util.Optional;
 public class basicService {
     private final basicRepository basicRepository;
     @Transactional
-    public Long save(User user) {
+    public int save(User user) {
         return basicRepository.save(user).getId();
     }
 }
