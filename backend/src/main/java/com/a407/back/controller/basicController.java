@@ -14,8 +14,8 @@ public class basicController {
     private final basicService basicService;
 
     @PostMapping("/post")
-    public ResponseEntity<Integer> postMethod(@RequestBody UserRequest user) {
-        int id = basicService.save(user.toEntity());
+    public ResponseEntity<Long> postMethod(@RequestBody UserRequest user) {
+        long id = basicService.save(user.toEntity());
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 }
