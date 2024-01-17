@@ -8,10 +8,12 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class basicRepositoryImpl implements basicRepository{
+public class basicRepositoryImpl implements basicRepository {
+
     private final JPAQueryFactory query;
 
     private final EntityManager em;
+
     @Override
     public User save(User user) {
         em.persist(user);
