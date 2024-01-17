@@ -28,6 +28,9 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "is_blocked")
+    private boolean is_blocked;
+
     @Builder
     public User(Long id, String password, String email) {
         this.id = id;
