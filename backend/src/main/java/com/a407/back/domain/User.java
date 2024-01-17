@@ -1,6 +1,11 @@
 package com.a407.back.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,10 +16,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
-    private int id;
+    private Long id;
 
     @Column(name = "password")
     private String password;
@@ -23,7 +29,7 @@ public class User {
     private String email;
 
     @Builder
-    public User(int id, String password, String email) {
+    public User(Long id, String password, String email) {
         this.id = id;
         this.password = password;
         this.email = email;

@@ -15,15 +15,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Room {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
+    @Column(name = "name", nullable = false)
+    private String name;
+
     @Builder
-    public Room(Long id) {
+    public Tag(Long id, String name) {
         this.id = id;
+        this.name = name;
     }
 }
