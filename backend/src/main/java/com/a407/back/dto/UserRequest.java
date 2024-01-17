@@ -10,7 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 public class UserRequest {
-    private int id;
+
+    private Long id;
     private String password;
     private String email;
 

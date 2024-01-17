@@ -11,11 +11,12 @@ import com.a407.back.model.service.basicService;
 @RequiredArgsConstructor
 @RestController
 public class basicController {
+
     private final basicService basicService;
 
     @PostMapping("/post")
-    public ResponseEntity<Integer> postMethod(@RequestBody UserRequest user) {
-        int id = basicService.save(user.toEntity());
+    public ResponseEntity<Long> postMethod(@RequestBody UserRequest user) {
+        Long id = basicService.save(user.toEntity());
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 }

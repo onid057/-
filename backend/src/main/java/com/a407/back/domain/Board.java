@@ -21,29 +21,29 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 public class Board {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "board_id", updatable = false)
-  private int boardId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "board_id", updatable = false)
+    private Long boardId;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
-  private User userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
 
-  @Column(name = "title", nullable = false, length = 50)
-  private String title;
+    @Column(name = "title", nullable = false, length = 50)
+    private String title;
 
-  @Column(name = "content", nullable = false, length = 300)
-  private String content;
+    @Column(name = "content", nullable = false, length = 300)
+    private String content;
 
-  @UpdateTimestamp
-  @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
-  private Timestamp updatedAt;
+    @UpdateTimestamp
+    @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
+    private Timestamp updatedAt;
 
-  @Builder
-  public Board(User userId, String title, String content) {
-    this.userId = userId;
-    this.title = title;
-    this.content = content;
-  }
+    @Builder
+    public Board(User userId, String title, String content) {
+        this.userId = userId;
+        this.title = title;
+        this.content = content;
+    }
 }

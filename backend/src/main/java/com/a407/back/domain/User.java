@@ -11,10 +11,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
-    private int id;
+    private Long id;
 
     @Column(name = "password")
     private String password;
@@ -23,7 +24,7 @@ public class User {
     private String email;
 
     @Builder
-    public User(int id, String password, String email) {
+    public User(Long id, String password, String email) {
         this.id = id;
         this.password = password;
         this.email = email;
