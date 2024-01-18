@@ -6,12 +6,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class basicService {
+
     private final basicRepository basicRepository;
+
     @Transactional
     public Long save(User user) {
         return basicRepository.save(user).getId();

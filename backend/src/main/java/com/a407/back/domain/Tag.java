@@ -11,30 +11,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "USER")
+@Table(name = "ROOM")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class User {
+public class Tag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "is_blocked")
-    private boolean is_blocked;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Builder
-    public User(Long id, String password, String email) {
+    public Tag(Long id, String name) {
         this.id = id;
-        this.password = password;
-        this.email = email;
+        this.name = name;
     }
 }
