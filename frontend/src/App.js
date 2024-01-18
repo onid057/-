@@ -95,6 +95,7 @@ const GlobalStyle = createGlobalStyle`
 		border: 0;
 		font-size: 100%;
 		font: inherit;
+		font-family: 'NotoSansKR', sans-serif;
 		vertical-align: baseline;
 	}
 	article,
@@ -135,21 +136,21 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Theme = {
-	colors: {
-		primary: '#f5f5f5',
-		secondary: '#ffffff',
-	},
+  colors: {
+    primary: '#f5f5f5',
+    secondary: '#ffffff',
+  },
 };
 
 function App() {
-	return (
-		<ThemeProvider theme={Theme}>
-			<GlobalStyle />
-			<Routes>
-				<Route index element={<Home />}></Route>
-			</Routes>
-		</ThemeProvider>
-	);
+  return (
+    <ThemeProvider theme={Theme}>
+      <GlobalStyle />
+      <Routes>
+        <Route index element={<Home />}></Route>
+      </Routes>
+    </ThemeProvider>
+  );
 }
 
 export default App;
