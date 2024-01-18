@@ -32,20 +32,23 @@ public class Report {
     private Room roomId;
 
     @Lob
-    @Column(name = "processing_image")
-    private byte[] processingImage;
+    @Column(name = "process_image", nullable = false, columnDefinition = "MEDIUMBLOB")
+    private byte[] processImage;
 
-    @Column(name = "processing_content", length = 50)
-    private String processingContent;
+    @Column(name = "process_content", nullable = false, length = 50)
+    private String processContent;
 
     @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Timestamp createdAt;
 
     @Builder
-    public Report(Room roomId, byte[] processingImage, String processingContent) {
+    public Report(Long reportId, Room roomId, byte[] processImage, String processContent,
+        Timestamp createdAt) {
+        this.reportId = reportId;
         this.roomId = roomId;
-        this.processingImage = processingImage;
-        this.processingContent = processingContent;
+        this.processImage = processImage;
+        this.processContent = processContent;
+        this.createdAt = createdAt;
     }
 }
