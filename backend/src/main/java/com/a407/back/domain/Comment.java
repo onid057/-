@@ -13,37 +13,39 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UpdateTimestamp;
 
-@Table(name = "BOARD")
+@Table(name = "COMMENT")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Board {
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "board_id", updatable = false)
-    private Long boardId;
+    @Column(name = "comment_id", updatable = false)
+    private Long commentId;
+
+    @ManyToOne
+    @JoinColumn(name = "board_id", nullable = false)
+    private Board boardId;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User userId;
 
-    @Column(name = "title", nullable = false, length = 50)
-    private String title;
-
-    @Column(name = "content", nullable = false, length = 300)
+    @Column(name = "content", nullable = false, length = 100)
     private String content;
 
-    @UpdateTimestamp
     @Column(name = "updated_at", columnDefinition = "TIMESTAMP")
     private Timestamp updatedAt;
 
     @Builder
-    public Board(User userId, String title, String content) {
+    public Comment(Long commentId, Board boardId, User userId, String content,
+        Timestamp updatedAt) {
+        this.commentId = commentId;
+        this.boardId = boardId;
         this.userId = userId;
-        this.title = title;
         this.content = content;
+        this.updatedAt = updatedAt;
     }
 }
