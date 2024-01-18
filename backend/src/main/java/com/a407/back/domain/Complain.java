@@ -6,49 +6,41 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.sql.Timestamp;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.CreationTimestamp;
 
-@Table(name = "NOTIFICATION")
+@Table(name = "COMPLAIN")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Notification {
+public class Complain {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notification_id", updatable = false)
-    private Long notificationId;
+    @Column(name = "complain_id", updatable = false)
+    private long complainId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "room_id", nullable = false)
     private Room roomId;
 
-    @Column(name = "content", nullable = false, length = 200)
+    @Column(name = "content", nullable = false, length = 50)
     private String content;
 
     @ColumnDefault("false")
-    @Column(name = "is_read", nullable = false)
-    private boolean isRead;
-
-    @CreationTimestamp
-    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
-    private Timestamp createdAt;
+    @Column(name = "is_processed", nullable = false)
+    private boolean isProcessed;
 
     @Builder
-    public Notification(Long notificationId, Room roomId, String content, boolean isRead,
-        Timestamp createdAt) {
-        this.notificationId = notificationId;
+    public Complain(long complainId, Room roomId, String content, boolean isProcessed) {
+        this.complainId = complainId;
         this.roomId = roomId;
         this.content = content;
-        this.isRead = isRead;
-        this.createdAt = createdAt;
+        this.isProcessed = isProcessed;
     }
 }

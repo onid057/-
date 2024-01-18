@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
@@ -13,42 +14,41 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
-@Table(name = "NOTIFICATION")
+@Table(name = "REPORT")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Notification {
+public class Report {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "notification_id", updatable = false)
-    private Long notificationId;
+    @Column(name = "report_id", updatable = false)
+    private Long reportId;
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
     private Room roomId;
 
-    @Column(name = "content", nullable = false, length = 200)
-    private String content;
+    @Lob
+    @Column(name = "process_image", nullable = false, columnDefinition = "MEDIUMBLOB")
+    private byte[] processImage;
 
-    @ColumnDefault("false")
-    @Column(name = "is_read", nullable = false)
-    private boolean isRead;
+    @Column(name = "process_content", nullable = false, length = 50)
+    private String processContent;
 
     @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Timestamp createdAt;
 
     @Builder
-    public Notification(Long notificationId, Room roomId, String content, boolean isRead,
+    public Report(Long reportId, Room roomId, byte[] processImage, String processContent,
         Timestamp createdAt) {
-        this.notificationId = notificationId;
+        this.reportId = reportId;
         this.roomId = roomId;
-        this.content = content;
-        this.isRead = isRead;
+        this.processImage = processImage;
+        this.processContent = processContent;
         this.createdAt = createdAt;
     }
 }

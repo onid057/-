@@ -11,23 +11,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "TAG")
+@Table(name = "MAJOR_CATEGORY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Tag {
+public class MajorCategory {
 
     @Id
-    @Column(name = "tag_id", updatable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long tagId;
+    @Column(name = "major_category_id", updatable = false)
+    private Long majorCategoryId;
 
     @Column(name = "name", nullable = false, length = 20)
     private String name;
 
     @Builder
-    public Tag(Long tagId, String name) {
-        this.tagId = tagId;
+    public MajorCategory(Long majorCategoryId, String name) {
+        this.majorCategoryId = majorCategoryId;
         this.name = name;
     }
 }
