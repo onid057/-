@@ -1,31 +1,32 @@
-// 20240115 프론트엔드 개발 환경 구성 완료
+// console.log('first-practice')
 
-// prettier 설정 확인
-import { useReducer } from 'react';
+// console.log('single-quote-test');
+// console.log('semi-colon-test');
+// function test() {
+// 	console.log('function-test');
+// }
 
-const init = () => {
-	return { value: 43 };
-};
+import React, { useState } from 'react';
 
-const reducer = (state, action) => {
-	switch (action.type) {
-		case 'INCREMENT':
-			return { value: state.value + 1 };
-		case 'DECREMENT':
-			return { value: state.value - 1 };
-		default:
-			return state;
-	}
-};
+function practice() {
+	const [count, setCount] = useState(0);
 
-export function page() {
-	const [state, dispatch] = useReducer(reducer, { value: 42 }, init);
+	const onIncrease = () => {
+		setCount(count => count + 1);
+	};
+
+	const onDecrease = () => {
+		setCount(count => count - 1);
+	};
 
 	return (
 		<>
-			<div>{state.value}</div>
-			<button onClick={dispatch('INCREMENT')}>+</button>
-			<button onClick={dispatch('DECREMENT')}>-</button>
+			<h1>practice</h1>
+			<h2>{count}</h2>
+			<button onClick={onIncrease}>+1</button>
+			<button onClick={onDecrease}>-1</button>
 		</>
 	);
 }
+
+export default practice;
