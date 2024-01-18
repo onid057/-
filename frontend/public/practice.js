@@ -22,6 +22,7 @@ function practice() {
   return (
     <>
       <h1>practice</h1>
+      <h2>ddd</h2>
       <h2>{count}</h2>
       <button onClick={onIncrease}>+1</button>
       <button onClick={onDecrease}>-1</button>
