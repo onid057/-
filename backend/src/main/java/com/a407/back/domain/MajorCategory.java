@@ -11,27 +11,23 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "users")
+@Table(name = "MAJOR_CATEGORY")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-public class Specification {
+public class MajorCategory {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
-    private Long id;
+    @Column(name = "major_category_id", updatable = false)
+    private Long majorCategoryId;
 
-    @Column(name = "password")
-    private String password;
-
-    @Column(name = "email")
-    private String email;
+    @Column(name = "name", nullable = false, length = 20)
+    private String name;
 
     @Builder
-    public Specification(Long id, String password, String email) {
-        this.id = id;
-        this.password = password;
-        this.email = email;
+    public MajorCategory(Long majorCategoryId, String name) {
+        this.majorCategoryId = majorCategoryId;
+        this.name = name;
     }
 }
-
