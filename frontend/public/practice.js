@@ -5,7 +5,7 @@
 // function test() {
 // 	console.log('function-test');
 // }
-// 코멘트 수정
+// 코멘트 수정 하이하이
 import React, { useState } from 'react';
 
 function practice() {
