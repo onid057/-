@@ -5,15 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
-@Table(name = "review")
+@Table(name = "REVIEW")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -22,32 +23,41 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "review_id", updatable = false)
-    private int reviewId;
+    private Long reviewId;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
 
-    @Column(name = "helper_id")
-    private Long helperId;
+    @ManyToOne
+    @JoinColumn(name = "zipsa_id", nullable = false)
+    private Zipsa zipsaId;
 
-    @Column(name = "rating")
-    private Double rating;
-
-    @Column(name = "content")
+    @Column(name = "content", nullable = false, length = 30)
     private String content;
 
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
+    @Column(name = "kindness_score", nullable = false)
+    private int kindnessScore;
+
+    @Column(name = "skill_score", nullable = false)
+    private int skillScore;
+
+    @Column(name = "rewind_score", nullable = false)
+    private int rewindScore;
+
+    @Column(name = "created_at", columnDefinition = "TIMESTAMP")
+    private Timestamp createdAt;
 
     @Builder
-    public Review(int reviewId, long userId, long helperId, double rating, String content,
-        LocalDateTime createdAt) {
+    public Review(Long reviewId, User userId, Zipsa zipsaId, String content, int kindnessScore,
+        int skillScore, int rewindScore, Timestamp createdAt) {
         this.reviewId = reviewId;
         this.userId = userId;
-        this.helperId = helperId;
-        this.rating = rating;
+        this.zipsaId = zipsaId;
         this.content = content;
+        this.kindnessScore = kindnessScore;
+        this.skillScore = skillScore;
+        this.rewindScore = rewindScore;
         this.createdAt = createdAt;
     }
 }
