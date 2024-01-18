@@ -12,6 +12,7 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,8 +57,10 @@ public class User {
     @Column(name = "profile_image", columnDefinition = "MEDIUMBLOB")
     private byte[] profileImage;
 
-    @Column(name = "is_certificated")
+    @ColumnDefault("false")
+    @Column(name = "is_certificated", nullable = false)
     private boolean isCertificated;
+
 
     @Column(name = "latitude", nullable = false)
     private Double latitude;
@@ -80,6 +83,7 @@ public class User {
     @Column(name = "is_affiliated", nullable = false)
     private boolean isAffiliated;
 
+    @ColumnDefault("0")
     @Column(name = "service_count")
     private int serviceCount;
 
@@ -106,6 +110,33 @@ public class User {
         this.isAdmin = isAdmin;
         this.isAffiliated = isAffiliated;
         this.serviceCount = serviceCount;
+    }
+
+    public enum Gender {
+        man, woman
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+            "userId=" + userId +
+            ", associationId=" + associationId +
+            ", email='" + email + '\'' +
+            ", password='" + password + '\'' +
+            ", name='" + name + '\'' +
+            ", birth=" + birth +
+            ", gender=" + gender +
+            ", address='" + address + '\'' +
+            ", profileImage=" + Arrays.toString(profileImage) +
+            ", isCertificated=" + isCertificated +
+            ", latitude=" + latitude +
+            ", longitude=" + longitude +
+            ", account='" + account + '\'' +
+            ", isBlocked=" + isBlocked +
+            ", isAdmin=" + isAdmin +
+            ", isAffiliated=" + isAffiliated +
+            ", serviceCount=" + serviceCount +
+            '}';
     }
 
     public enum Gender {

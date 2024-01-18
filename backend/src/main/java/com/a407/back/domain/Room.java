@@ -51,7 +51,7 @@ public class Room implements Serializable {
     @CreationTimestamp
     @Column(name = "room_created_at", columnDefinition = "TIMESTAMP")
     private Timestamp roomCreatedAt;
-
+    
     @Column(name = "match_created_at", columnDefinition = "TIMESTAMP")
     private Timestamp matchCreatedAt;
 

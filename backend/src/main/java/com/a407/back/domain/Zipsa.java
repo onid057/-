@@ -41,9 +41,11 @@ public class Zipsa {
     @Column(name = "prefer_tag", nullable = false, length = 100)
     private String preferTag;
 
+    @ColumnDefault("0")
     @Column(name = "service_count")
     private int serviceCount;
 
+    @ColumnDefault("0")
     @Column(name = "reply_average")
     private Double replyAverage;
 
