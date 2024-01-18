@@ -1,11 +1,13 @@
 package com.a407.back.controller;
 
 import com.a407.back.dto.UserRequest;
+import com.a407.back.model.service.basicService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.a407.back.model.service.basicService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RequiredArgsConstructor
