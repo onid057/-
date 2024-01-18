@@ -1,5 +1,6 @@
 package com.a407.back.domain;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +12,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Table(name = "grade")
+@Table(name = "GRADE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
@@ -20,19 +21,19 @@ public class Grade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "grade_id", updatable = false)
-    private int gradeId;
+    private Long gradeId;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 10)
     private String name;
 
-    @Column(name = "salary")
+    @Column(name = "salary", nullable = false)
     private int salary;
 
+
     @Builder
-    public Grade(int gradeId, String name, int salary) {
+    public Grade(Long gradeId, String name, int salary) {
         this.gradeId = gradeId;
         this.name = name;
         this.salary = salary;
     }
 }
-
