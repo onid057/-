@@ -138,4 +138,9 @@ public class User {
             ", serviceCount=" + serviceCount +
             '}';
     }
+
+    public enum Gender {
+        man, woman
+    }
+
 }
