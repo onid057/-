@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 const Text = styled.span`
@@ -8,8 +9,14 @@ const Text = styled.span`
   text-underline-offset: 5px;
 `;
 
-function NavigateText({ children }) {
-  return <Text>{children}</Text>;
+function NavigateText({ nextPage, children }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(nextPage);
+  };
+
+  return <Text onClick={handleClick}>{children}</Text>;
 }
 
-export default Text;
+export default NavigateText;
