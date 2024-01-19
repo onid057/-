@@ -32,8 +32,7 @@ public class SubCategory {
     private String name;
 
     @Builder
-    public SubCategory(Long subCategoryId, MajorCategory majorCategoryId, String name) {
-        this.subCategoryId = subCategoryId;
+    public SubCategory(MajorCategory majorCategoryId, String name) {
         this.majorCategoryId = majorCategoryId;
         this.name = name;
     }

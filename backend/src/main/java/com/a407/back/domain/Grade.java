@@ -31,8 +31,7 @@ public class Grade {
 
 
     @Builder
-    public Grade(Long gradeId, String name, int salary) {
-        this.gradeId = gradeId;
+    public Grade(String name, int salary) {
         this.name = name;
         this.salary = salary;
     }

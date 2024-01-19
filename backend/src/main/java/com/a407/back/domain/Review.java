@@ -49,9 +49,8 @@ public class Review {
     private Timestamp createdAt;
 
     @Builder
-    public Review(Long reviewId, User userId, Zipsa zipsaId, String content, int kindnessScore,
+    public Review(User userId, Zipsa zipsaId, String content, int kindnessScore,
         int skillScore, int rewindScore, Timestamp createdAt) {
-        this.reviewId = reviewId;
         this.userId = userId;
         this.zipsaId = zipsaId;
         this.content = content;

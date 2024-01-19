@@ -61,7 +61,6 @@ public class User {
     @Column(name = "is_certificated", nullable = false)
     private boolean isCertificated;
 
-
     @Column(name = "latitude", nullable = false)
     private Double latitude;
 
@@ -89,11 +88,10 @@ public class User {
 
 
     @Builder
-    public User(Long userId, Association associationId, String email, String password, String name,
+    public User(Association associationId, String email, String password, String name,
         Timestamp birth, Gender gender, String address, byte[] profileImage, boolean isCertificated,
         Double latitude, Double longitude, String account, boolean isBlocked, boolean isAdmin,
         boolean isAffiliated, int serviceCount) {
-        this.userId = userId;
         this.associationId = associationId;
         this.email = email;
         this.password = password;

@@ -40,9 +40,8 @@ public class Comment {
     private Timestamp updatedAt;
 
     @Builder
-    public Comment(Long commentId, Board boardId, User userId, String content,
+    public Comment(Board boardId, User userId, String content,
         Timestamp updatedAt) {
-        this.commentId = commentId;
         this.boardId = boardId;
         this.userId = userId;
         this.content = content;

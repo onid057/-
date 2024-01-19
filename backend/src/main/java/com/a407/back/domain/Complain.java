@@ -37,8 +37,7 @@ public class Complain {
     private boolean isProcessed;
 
     @Builder
-    public Complain(long complainId, Room roomId, String content, boolean isProcessed) {
-        this.complainId = complainId;
+    public Complain(Room roomId, String content, boolean isProcessed) {
         this.roomId = roomId;
         this.content = content;
         this.isProcessed = isProcessed;

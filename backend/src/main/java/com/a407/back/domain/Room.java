@@ -94,14 +94,13 @@ public class Room implements Serializable {
     private Status status;
 
     @Builder
-    public Room(Long roomId, User userId, Zipsa zipsaId, SubCategory subCategoryId, String content,
+    public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String content,
         int estimateDuration, Timestamp roomCreatedAt, Timestamp matchCreatedAt,
         boolean isReported,
         int reportCycle, boolean isPublic, int notificationCount, Timestamp startedAt,
         Timestamp endedAt, int expectationPay, int totalPay, boolean isComplained,
         boolean isReviewed,
         Status status) {
-        this.roomId = roomId;
         this.userId = userId;
         this.zipsaId = zipsaId;
         this.subCategoryId = subCategoryId;

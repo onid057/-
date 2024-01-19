@@ -41,8 +41,7 @@ public class Board {
     private Timestamp updatedAt;
 
     @Builder
-    public Board(Long boardId, User userId, String title, String content, Timestamp updatedAt) {
-        this.boardId = boardId;
+    public Board(User userId, String title, String content, Timestamp updatedAt) {
         this.userId = userId;
         this.title = title;
         this.content = content;
