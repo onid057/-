@@ -31,12 +31,14 @@ public class Notification {
     private Long notificationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User userId;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
     private Room roomId;
+
+    @Column(name = "send_id", nullable = false)
+    private Long sendId;
+
+    @Column(name = "receive_id", nullable = false)
+    private Long receiveId;
 
     @ColumnDefault("false")
     @Column(name = "is_read", nullable = false)
@@ -55,10 +57,11 @@ public class Notification {
     private boolean isAccepted;
 
     @Builder
-    public Notification(User userId, Room roomId, boolean isRead,
+    public Notification(Room roomId, Long sendId, Long receiveId, boolean isRead,
         Timestamp createdAt, Type type, boolean isAccepted) {
-        this.userId = userId;
         this.roomId = roomId;
+        this.sendId = sendId;
+        this.receiveId = receiveId;
         this.isRead = isRead;
         this.createdAt = createdAt;
         this.type = type;
@@ -69,7 +72,8 @@ public class Notification {
     public String toString() {
         return "Notification{" +
             "notificationId=" + notificationId +
-            ", userId=" + userId +
+            ", sendId=" + sendId +
+            ", receiveId=" + receiveId +
             ", roomId=" + roomId +
             ", isRead=" + isRead +
             ", createdAt=" + createdAt +

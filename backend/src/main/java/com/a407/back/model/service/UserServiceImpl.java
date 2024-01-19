@@ -4,7 +4,7 @@ import com.a407.back.config.ErrorCode;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.NotificationResponse;
+import com.a407.back.dto.NotificationListResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.UserRepository;
@@ -35,17 +35,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<NotificationResponse> findNotificationsByUserId(Long userId) {
-        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+    public List<NotificationListResponse> findNotificationsByUserId(Long userId) {
+        boolean workedDistinction = isWorkedDistinction(userId);
         List<Notification> notificationList = null;
-        List<NotificationResponse> notificationResponseList = new ArrayList<>();
-        if (zipsa != null && zipsa.isWorked()) {
+        List<NotificationListResponse> notificationResponseList = new ArrayList<>();
+        if (workedDistinction) {
             notificationList = userRepository.findNotificationByUserId(userId, "zipsa");
         } else {
             notificationList = userRepository.findNotificationByUserId(userId, "user");
         }
         for (Notification n : notificationList) {
-            notificationResponseList.add(new NotificationResponse(
+            notificationResponseList.add(new NotificationListResponse(
                 userRepository.findByUserId(userId).getName(),
                 n.getType(),
                 n.isAccepted(),
@@ -56,5 +56,11 @@ public class UserServiceImpl implements UserService {
             ));
         }
         return notificationResponseList;
+    }
+
+    @Override
+    public boolean isWorkedDistinction(Long userId) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+        return zipsa != null && zipsa.isWorked();
     }
 }

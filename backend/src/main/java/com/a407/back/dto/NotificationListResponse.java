@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class NotificationResponse {
+public class NotificationListResponse {
 
     private String name;
     private Type type;

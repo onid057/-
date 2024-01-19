@@ -5,7 +5,6 @@ import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.QNotification;
 import com.a407.back.domain.QUser;
 import com.a407.back.domain.User;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -37,9 +36,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<Notification> findNotificationByUserId(Long userId, String type) {
         QNotification qNotification = QNotification.notification;
-        QUser qUser = QUser.user;
         return query.selectFrom(qNotification).where(
-            qNotification.userId.eq(JPAExpressions.selectFrom(qUser).where(qUser.userId.eq(userId)))
+            qNotification.receiveId.eq(userId)
                 .and(qNotification.type.eq(
                     Type.valueOf(type)))).fetch();
     }
