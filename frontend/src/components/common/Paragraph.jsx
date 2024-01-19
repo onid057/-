@@ -1,15 +1,17 @@
 import { styled } from 'styled-components';
 
-const ParagraphWrapper = styled.p`
-  font-size: ${props => props.$fontSize};
-  line-height: 1.3;
+const ParagraphWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: ${props => props.$gap};
+  font-size: ${props => (props.$fontSize ? props.$fontSize : 'inherit')};
 `;
 
-function Paragraph({ fontSize, sentences }) {
+function Paragraph({ gap, fontSize, sentences }) {
   return (
-    <ParagraphWrapper $fontSize={fontSize}>
+    <ParagraphWrapper $gap={gap} $fontSize={fontSize}>
       {sentences.map((sentence, index) => {
-        return index !== sentences.length - 1 ? sentence + '\n' : sentence;
+        return <div key={index}>{sentence}</div>;
       })}
     </ParagraphWrapper>
   );
