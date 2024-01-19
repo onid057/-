@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class UserRequest {
+
     private long userId;
     private Association associationId;
     private String email;

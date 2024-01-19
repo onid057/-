@@ -1,6 +1,7 @@
 package com.a407.back.domain;
 
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
@@ -17,11 +18,11 @@ import lombok.Setter;
 @Setter
 public class ZipsaCategoryId {
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "zipsa_id")
     private Zipsa zipsaId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "major_category_id")
     private MajorCategory majorCategoryId;
 
