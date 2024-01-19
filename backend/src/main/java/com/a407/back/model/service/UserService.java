@@ -1,23 +1,14 @@
 package com.a407.back.model.service;
 
 import com.a407.back.domain.User;
-import com.a407.back.exception.CustomException;
-import com.a407.back.config.ErrorCode;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import com.a407.back.model.repo.UserRepository;
+import com.a407.back.dto.NotificationListResponse;
+import java.util.List;
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
+public interface UserService {
 
-    private final UserRepository basicRepository;
+    Long save(User user);
 
-    @Transactional
-    public Long save(User user) {
-        // 에러 처리
-        if(basicRepository.findByUserEmail(user.getEmail()) != null) throw new CustomException(ErrorCode.INVALID_PARAMETER);
-        return basicRepository.save(user).getUserId();
-    }
+    List<NotificationListResponse> findNotificationsByUserId(Long userId);
+
+    boolean isWorkedDistinction(Long userId);
 }

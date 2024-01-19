@@ -8,6 +8,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import com.a407.back.domain.Zipsa;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -40,5 +41,8 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         return query.selectFrom(qReport).where(qReport.roomId.roomId.eq(roomId)).fetch();
     }
 
-
+    @Override
+    public Zipsa findByZipsaId(Long zipsaId) {
+        return em.find(Zipsa.class, zipsaId);
+    }
 }

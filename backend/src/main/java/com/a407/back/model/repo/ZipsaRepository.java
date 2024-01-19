@@ -1,6 +1,6 @@
 package com.a407.back.model.repo;
-
 import com.a407.back.domain.Report;
+import com.a407.back.domain.Zipsa;
 import com.a407.back.domain.Room;
 import java.util.List;
 
@@ -12,5 +12,6 @@ public interface ZipsaRepository {
 
     List<Report> reportFindByRoomId(Long roomId);
 
+    Zipsa findByZipsaId(Long zipsaId);
 
 }

@@ -76,6 +76,12 @@ public class Room implements Serializable {
     @Column(name = "ended_at", columnDefinition = "TIMESTAMP")
     private Timestamp endedAt;
 
+    @Column(name = "expectation_started_at", columnDefinition = "TIMESTAMP")
+    private Timestamp expectationStartedAt;
+
+    @Column(name = "expectation_ended_at", columnDefinition = "TIMESTAMP")
+    private Timestamp expectationEndedAt;
+
     @Column(name = "expectation_pay", nullable = false)
     private int expectationPay;
 
@@ -99,7 +105,8 @@ public class Room implements Serializable {
         int estimateDuration, Timestamp roomCreatedAt, Timestamp matchCreatedAt,
         boolean isReported,
         int reportCycle, boolean isPublic, int notificationCount, Timestamp startedAt,
-        Timestamp endedAt, int expectationPay, int totalPay, boolean isComplained,
+        Timestamp endedAt, Timestamp expectationStartedAt,
+        Timestamp expectationEndedAt, int expectationPay, int totalPay, boolean isComplained,
         boolean isReviewed,
         Status status) {
         this.userId = userId;
@@ -115,6 +122,8 @@ public class Room implements Serializable {
         this.notificationCount = notificationCount;
         this.startedAt = startedAt;
         this.endedAt = endedAt;
+        this.expectationStartedAt = expectationStartedAt;
+        this.expectationEndedAt = expectationEndedAt;
         this.expectationPay = expectationPay;
         this.totalPay = totalPay;
         this.isComplained = isComplained;
