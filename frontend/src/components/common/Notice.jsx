@@ -1,12 +1,17 @@
 // 공통 알림 컴포넌트
 
+import { Fragment } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 const NoticeWrapper = styled.div`
-  width: ${props => props.$width};
-  margin: ${props => (props.$margin ? props.$margin : 0)};
-  padding: ${props => props.$padding};
-  background-color: yellow;
+  cursor: pointer;
+  width: 294px;
+  padding: 20px 12px 30px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  background-color: ${({ theme }) => theme.colors.secondary};
   border-radius: 25px;
 `;
 
@@ -15,8 +20,9 @@ const FlexWrapper = styled.div`
   width: 250px;
   margin: 0 auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start
   align-items: center;
+  gap: 11px;
 `;
 
 const TextWrapper = styled.div`
@@ -27,17 +33,31 @@ const TextWrapper = styled.div`
 
 // upper에 컴포넌트 목록을 배열로 전달
 // lower에 텍스트 전달
-export function Notice({ width, padding, margin, upper, lower }) {
+function Notice({ upper, lower, nextPage }) {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(nextPage);
+  };
+
   return (
-    <NoticeWrapper $width={width} $margin={margin} $padding={padding}>
+    <NoticeWrapper onClick={handleClick}>
       {upper && (
         <FlexWrapper>
-          {upper.map(component => (
-            <div>{component}</div>
+          {upper.map((component, index) => (
+            <Fragment key={index}>{component}</Fragment>
           ))}
         </FlexWrapper>
       )}
-      {lower && <TextWrapper>{lower}</TextWrapper>}
+      {lower && (
+        <TextWrapper>
+          {lower.map((component, index) => (
+            <Fragment key={index}>{component}</Fragment>
+          ))}
+        </TextWrapper>
+      )}
     </NoticeWrapper>
   );
 }
+
+export default Notice;
