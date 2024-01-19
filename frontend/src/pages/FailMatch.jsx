@@ -16,7 +16,6 @@ const Wrapper = styled.div`
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
-  line-height: 1.3;
 `;
 
 const Title = styled.div`
@@ -39,18 +38,25 @@ function FailMatch() {
     <Wrapper>
       <Title>
         <Paragraph
+          gap="5px"
           fontSize="35px"
           sentences={['매칭을', '실패했어요']}
         ></Paragraph>
-        <Image src="/images/stop.svg"></Image>
+        <Image
+          src={process.env.PUBLIC_URL + '/images/stop.svg'}
+          width="100px"
+          height="100px"
+        ></Image>
       </Title>
 
       <Content>
         <Paragraph
+          gap="5px"
           fontSize="18px"
           sentences={['아쉽지만 이번', '매칭은 성사되지 않았어요.']}
         ></Paragraph>
         <Paragraph
+          gap="5px"
           fontSize="18px"
           sentences={['하지만 다른', '집사님이 기다리고 있어요!']}
         ></Paragraph>
