@@ -1,9 +1,14 @@
 package com.a407.back.model.repo;
 
+import com.a407.back.domain.Notification;
+import com.a407.back.domain.Notification.Type;
+import com.a407.back.domain.QNotification;
 import com.a407.back.domain.QUser;
 import com.a407.back.domain.User;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -27,5 +32,20 @@ public class UserRepositoryImpl implements UserRepository {
     public User save(User user) {
         em.persist(user);
         return user;
+    }
+
+    @Override
+    public List<Notification> findNotificationByUserId(Long userId, String type) {
+        QNotification qNotification = QNotification.notification;
+        QUser qUser = QUser.user;
+        return query.selectFrom(qNotification).where(
+            qNotification.userId.eq(JPAExpressions.selectFrom(qUser).where(qUser.userId.eq(userId)))
+                .and(qNotification.type.eq(
+                    Type.valueOf(type)))).fetch();
+    }
+
+    @Override
+    public User findByUserId(Long userId) {
+        return em.find(User.class, userId);
     }
 }

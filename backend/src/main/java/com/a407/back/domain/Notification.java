@@ -2,6 +2,8 @@ package com.a407.back.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,11 +31,12 @@ public class Notification {
     private Long notificationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User userId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id", nullable = false)
     private Room roomId;
-
-    @Column(name = "content", nullable = false, length = 200)
-    private String content;
 
     @ColumnDefault("false")
     @Column(name = "is_read", nullable = false)
@@ -43,12 +46,39 @@ public class Notification {
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Timestamp createdAt;
 
+    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @ColumnDefault("false")
+    @Column(name = "is_accepted", nullable = false)
+    private boolean isAccepted;
+
     @Builder
-    public Notification(Room roomId, String content, boolean isRead,
-        Timestamp createdAt) {
+    public Notification(User userId, Room roomId, boolean isRead,
+        Timestamp createdAt, Type type, boolean isAccepted) {
+        this.userId = userId;
         this.roomId = roomId;
-        this.content = content;
         this.isRead = isRead;
         this.createdAt = createdAt;
+        this.type = type;
+        this.isAccepted = isAccepted;
+    }
+
+    @Override
+    public String toString() {
+        return "Notification{" +
+            "notificationId=" + notificationId +
+            ", userId=" + userId +
+            ", roomId=" + roomId +
+            ", isRead=" + isRead +
+            ", createdAt=" + createdAt +
+            ", type=" + type +
+            ", isAccepted=" + isAccepted +
+            '}';
+    }
+
+    public enum Type {
+        user, zipsa
     }
 }
