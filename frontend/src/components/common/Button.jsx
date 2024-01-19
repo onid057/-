@@ -26,14 +26,18 @@ const ButtonWrapper = styled.button`
       font-size: 16px;
       color: black;
       border: 1px solid #629af9;
+      height: 45px;
     `};
   ${props =>
     props.mode === 'NORMAL_GRAY' &&
     css`
-      width: 294px;
-      height: 57px;
       font-size: 17px;
       color: black;
+    `};
+  ${props =>
+    props.mode === 'NORMAL_BLUE' &&
+    css`
+      font-size: 17px;
     `};
 
   ${props => {
@@ -44,25 +48,41 @@ const ButtonWrapper = styled.button`
   }}
 `;
 
+const ContentWrapper = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+
 function Button({ msg, color, mode, ...rest }) {
   if (mode === 'IMAGE_UPLOAD') {
     return (
       <ButtonWrapper color={color} mode={mode} {...rest}>
-        <img src={`${process.env.PUBLIC_URL}/images/camera.svg`} alt="camera" />
-        {msg}
+        <ContentWrapper>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/camera.svg`}
+            alt="camera"
+          />
+          {msg}
+        </ContentWrapper>
       </ButtonWrapper>
     );
   } else if (mode === 'IMAGE_EDIT') {
     return (
       <ButtonWrapper color={color} mode={mode} {...rest}>
-        <img src={`${process.env.PUBLIC_URL}/images/edit.svg`} alt="edit" />
-        {msg}
+        <ContentWrapper>
+          <img src={`${process.env.PUBLIC_URL}/images/edit.svg`} alt="edit" />
+          {msg}
+        </ContentWrapper>
       </ButtonWrapper>
     );
   } else {
-    <ButtonWrapper color={color} mode={mode} {...rest}>
-      {msg}
-    </ButtonWrapper>;
+    return (
+      <ButtonWrapper color={color} mode={mode} {...rest}>
+        {msg}
+      </ButtonWrapper>
+    );
   }
 }
 
