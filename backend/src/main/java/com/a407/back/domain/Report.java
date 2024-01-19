@@ -44,9 +44,8 @@ public class Report {
     private Timestamp createdAt;
 
     @Builder
-    public Report(Long reportId, Room roomId, byte[] processImage, String processContent,
+    public Report(Room roomId, byte[] processImage, String processContent,
         Timestamp createdAt) {
-        this.reportId = reportId;
         this.roomId = roomId;
         this.processImage = processImage;
         this.processContent = processContent;

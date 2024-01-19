@@ -44,9 +44,8 @@ public class Notification {
     private Timestamp createdAt;
 
     @Builder
-    public Notification(Long notificationId, Room roomId, String content, boolean isRead,
+    public Notification(Room roomId, String content, boolean isRead,
         Timestamp createdAt) {
-        this.notificationId = notificationId;
         this.roomId = roomId;
         this.content = content;
         this.isRead = isRead;

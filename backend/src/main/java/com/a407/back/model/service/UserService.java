@@ -6,13 +6,13 @@ import com.a407.back.config.ErrorCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.a407.back.model.repo.basicRepository;
+import com.a407.back.model.repo.UserRepository;
 
 @Service
 @RequiredArgsConstructor
-public class basicService {
+public class UserService {
 
-    private final basicRepository basicRepository;
+    private final UserRepository basicRepository;
 
     @Transactional
     public Long save(User user) {

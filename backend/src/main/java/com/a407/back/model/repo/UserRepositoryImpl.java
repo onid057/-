@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class basicRepositoryImpl implements basicRepository {
+public class UserRepositoryImpl implements UserRepository {
 
     private final JPAQueryFactory query;
 

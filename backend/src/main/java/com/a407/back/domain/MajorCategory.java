@@ -26,8 +26,7 @@ public class MajorCategory {
     private String name;
 
     @Builder
-    public MajorCategory(Long majorCategoryId, String name) {
-        this.majorCategoryId = majorCategoryId;
+    public MajorCategory(String name) {
         this.name = name;
     }
 }

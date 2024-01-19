@@ -41,3 +41,9 @@ out/
 
 ### logback-dev.xml ###
 **/src/main/resources/*.xml
+
+### generated ###
+**/src/main/generated
+
+### application.log ###
+**/*.gz

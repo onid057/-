@@ -33,8 +33,7 @@ public class Association {
     private Timestamp createdAt;
 
     @Builder
-    public Association(Long associationId, Long userId, Timestamp createdAt) {
-        this.associationId = associationId;
+    public Association(Long userId, Timestamp createdAt) {
         this.userId = userId;
         this.createdAt = createdAt;
     }
