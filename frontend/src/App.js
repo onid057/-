@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
+import TestLee from './pages/TestLee';
 
 import Home from './pages/Home';
 
@@ -148,6 +149,7 @@ function App() {
       <GlobalStyle />
       <Routes>
         <Route index element={<Home />}></Route>
+        <Route path="/test/sumin" element={<TestLee />}></Route>
       </Routes>
     </ThemeProvider>
   );
