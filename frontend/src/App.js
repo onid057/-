@@ -10,6 +10,10 @@ const GlobalStyle = createGlobalStyle`
 	*::after {
 		box-sizing: border-box;
 	}
+	*::placeholder {
+    font-family: 'NotoSansKR', sans-serif;
+    font-weight: 200;
+ 	}
 	html,
 	body,
 	div,
@@ -109,6 +113,8 @@ const GlobalStyle = createGlobalStyle`
 	hgroup,
 	menu,
 	nav,
+	button,
+	textarea,
 	section {
 		display: block;
 	}

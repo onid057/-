@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const DateTimeWrapper = styled.div`
   box-sizing: border-box;
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

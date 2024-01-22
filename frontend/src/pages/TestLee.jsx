@@ -1,11 +1,14 @@
 import { styled } from 'styled-components';
-import { Input } from '../components/common/Input';
-import { Notice } from '../components/common/Notice';
+import Input from '../components/common/Input';
 import ProgressBar from '../components/common/ProgressBar';
 import DateTimeInputInput from '../components/common/DateTimeInputInput';
 import DateTimeInputSelect from '../components/common/DateTimeInputSelect';
 import AddressInput from '../components/common/AddressInput';
 import LongInputBox from '../components/common/LongInputBox';
+import FilterMainCategory from './filterFunnel/FilterMainCategory';
+import FilterSubCategory from './filterFunnel/FilterSubCategory';
+import FilterDateTime from './filterFunnel/FilterDateTime';
+import FilterLocate from './filterFunnel/FilterLocation';
 
 const TestLeeWrapper = styled.div`
   width: 320px;
@@ -43,10 +46,6 @@ function TestLee() {
       ></Input>
       <hr style={{ marginBottom: '30px' }}></hr>
 
-      <H2title>수민이가 만든 Notice 컴포넌트</H2title>
-      <Notice></Notice>
-      <hr style={{ marginBottom: '30px' }}></hr>
-
       <H2title>프로그래스 바 만들기</H2title>
       <ProgressBar></ProgressBar>
       <hr style={{ marginBottom: '30px' }}></hr>
@@ -60,6 +59,18 @@ function TestLee() {
 
       <H2title>LongInputBox 만들기</H2title>
       <LongInputBox></LongInputBox>
+
+      <H2title>MainCategory 만들기</H2title>
+      <FilterMainCategory></FilterMainCategory>
+
+      <H2title>SubCategory 만들기</H2title>
+      <FilterSubCategory></FilterSubCategory>
+
+      <H2title>DateTime 만들기</H2title>
+      <FilterDateTime></FilterDateTime>
+
+      <H2title>Locate 만들기</H2title>
+      <FilterLocate></FilterLocate>
     </TestLeeWrapper>
   );
 }

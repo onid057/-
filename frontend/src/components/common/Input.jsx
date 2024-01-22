@@ -13,8 +13,7 @@ const Wrapper = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: 14px;
-  font-weight: 200;
+  font-size: 20px;
 `;
 
 const InputWrapper = styled.input`
@@ -29,6 +28,7 @@ const InputWrapper = styled.input`
   font-size: 18px;
   border: none;
   border-bottom: 2px solid rgb(0, 0, 0, 0.3);
+  background-color: ${({ theme }) => theme.colors.primary};
 `;
 
 const Span = styled.span`
@@ -37,7 +37,8 @@ const Span = styled.span`
   color: red;
 `;
 
-export function Input({
+function Input({
+  type,
   width,
   margin,
   padding,
@@ -49,7 +50,7 @@ export function Input({
     <Wrapper $width={width} $margin={margin} $padding={padding}>
       <Label>{labelText}</Label>
       <InputWrapper
-        type="text"
+        type={type}
         placeholder={placeholder}
         required
       ></InputWrapper>
@@ -57,3 +58,5 @@ export function Input({
     </Wrapper>
   );
 }
+
+export default Input;

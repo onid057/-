@@ -3,11 +3,11 @@ import { styled, css } from 'styled-components';
 
 const ButtonWrapper = styled.button`
   // 공통 스타일
+  cursor: pointer;
   outline: none;
   border: none;
   border-radius: 25px;
   color: white;
-  cursor: pointer;
   padding: auto;
   width: 294px;
   height: 57px;
@@ -19,6 +19,15 @@ const ButtonWrapper = styled.button`
         font-size: 20px;
         font-weight: bold;
       `};
+  ${props =>
+    props.mode === 'SMALL_WHITE' &&
+    css`
+      width: 138px;
+      font-size: 18px;
+      font-weight: lighter;
+      color: black;
+      background-color: white;
+    `};
   ${props =>
     (props.mode === 'IMAGE_UPLOAD') | (props.mode === 'IMAGE_EDIT') &&
     css`
@@ -38,6 +47,16 @@ const ButtonWrapper = styled.button`
     props.mode === 'NORMAL_BLUE' &&
     css`
       font-size: 17px;
+    `};
+  ${props =>
+    props.mode === 'THIN_WHITE' &&
+    css`
+      width: 100%;
+      height: 38px;
+      font-weight: lighter;
+      color: black;
+      font-size: 17px;
+      background-color: white;
     `};
 
   ${props => {
