@@ -52,7 +52,7 @@ public class Room implements Serializable {
     @CreationTimestamp
     @Column(name = "room_created_at", columnDefinition = "TIMESTAMP")
     private Timestamp roomCreatedAt;
-    
+
     @Column(name = "match_created_at", columnDefinition = "TIMESTAMP")
     private Timestamp matchCreatedAt;
 
@@ -96,9 +96,11 @@ public class Room implements Serializable {
     @Column(name = "is_reviewed", nullable = false)
     private boolean isReviewed;
 
+    @ColumnDefault("create")
+    @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    @Column(name = "status")
-    private Status status;
+    private Process status;
+
 
     @Builder
     public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String content,
@@ -108,7 +110,7 @@ public class Room implements Serializable {
         Timestamp endedAt, Timestamp expectationStartedAt,
         Timestamp expectationEndedAt, int expectationPay, int totalPay, boolean isComplained,
         boolean isReviewed,
-        Status status) {
+        Process status) {
         this.userId = userId;
         this.zipsaId = zipsaId;
         this.subCategoryId = subCategoryId;
@@ -131,8 +133,8 @@ public class Room implements Serializable {
         this.status = status;
     }
 
-    public enum Status {
-        before, ongoing, end
+    public enum Process {
+        create, before, ongoing, end, broken
     }
 
 

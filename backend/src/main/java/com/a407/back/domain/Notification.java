@@ -52,20 +52,21 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @ColumnDefault("false")
-    @Column(name = "is_accepted", nullable = false)
-    private boolean isAccepted;
+    @ColumnDefault("standby")
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @Builder
     public Notification(Room roomId, Long sendId, Long receiveId, boolean isRead,
-        Timestamp createdAt, Type type, boolean isAccepted) {
+        Timestamp createdAt, Type type, Status status) {
         this.roomId = roomId;
         this.sendId = sendId;
         this.receiveId = receiveId;
         this.isRead = isRead;
         this.createdAt = createdAt;
         this.type = type;
-        this.isAccepted = isAccepted;
+        this.status = status;
     }
 
     @Override
@@ -78,11 +79,15 @@ public class Notification {
             ", isRead=" + isRead +
             ", createdAt=" + createdAt +
             ", type=" + type +
-            ", isAccepted=" + isAccepted +
+            ", status=" + status +
             '}';
     }
 
     public enum Type {
         user, zipsa
+    }
+
+    public enum Status {
+        standby, accept, reject, close
     }
 }
