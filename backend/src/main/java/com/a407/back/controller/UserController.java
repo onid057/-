@@ -2,6 +2,7 @@ package com.a407.back.controller;
 
 import com.a407.back.dto.NotificationListResponse;
 import com.a407.back.dto.UserCreateRequest;
+import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.model.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -34,5 +35,12 @@ public class UserController {
         List<NotificationListResponse> notificationResponseList = userService.findNotificationsByUserId(
             userId);
         return ResponseEntity.status(HttpStatus.OK).body(notificationResponseList);
+    }
+
+    @PostMapping("/helpers-map/{userId}")
+    public ResponseEntity<UserNearZipsaResponse> getNearUserList(
+        @PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(userService.findNearZipsaList(userId));
     }
 }
