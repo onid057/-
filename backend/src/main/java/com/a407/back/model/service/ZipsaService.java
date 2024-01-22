@@ -8,5 +8,5 @@ public interface ZipsaService {
 
     Long saveReport(ReportCreateRequest reportCreateRequest) throws IOException;
 
-    ReportSearchResponse reportFindByRoomId(Long roomId);
+    ReportSearchResponse reportFindByRoomId(Long roomId) throws IOException;
 }
