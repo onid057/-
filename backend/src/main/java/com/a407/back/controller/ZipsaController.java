@@ -3,6 +3,7 @@ package com.a407.back.controller;
 import com.a407.back.config.ErrorCode;
 import com.a407.back.dto.ReportCreateRequest;
 import com.a407.back.dto.ReportSearchResponse;
+import com.a407.back.dto.ZipsaDetailInfoResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.ZipsaServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,6 +44,12 @@ public class ZipsaController {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
         return ResponseEntity.status(HttpStatus.OK).body(reportSearchResponse);
+    }
+
+    @GetMapping("/{helperId}")
+    public ResponseEntity<ZipsaDetailInfoResponse> zipsaDetailInfo(@PathVariable Long helperId) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(zipsaService.zipsaAndReviewFindByZipsaId(helperId));
     }
 
 
