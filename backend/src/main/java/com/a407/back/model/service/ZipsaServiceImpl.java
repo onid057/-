@@ -33,7 +33,7 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) {
+    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) throws IOException {
         return zipsaRepository.zipsaAndReviewFindByZipsaId(zipsaId);
     }
 

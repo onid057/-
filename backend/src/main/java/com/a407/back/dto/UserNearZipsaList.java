@@ -1,7 +1,10 @@
 package com.a407.back.dto;
 
+import com.a407.back.config.ImageConfig;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
+import java.io.IOException;
+import java.net.URL;
 import java.sql.Timestamp;
 import lombok.Getter;
 
@@ -16,7 +19,7 @@ public class UserNearZipsaList {
 
     private final String address;
 
-    private final byte[] profileImage;
+    private final URL profileImage;
 
     private final Double latitude;
 
@@ -45,12 +48,16 @@ public class UserNearZipsaList {
     private final Double rewindAverage;
 
 
-    public UserNearZipsaList(Zipsa zipsa) {
+    public UserNearZipsaList(Zipsa zipsa) throws IOException {
         this.name = zipsa.getZipsaId().getName();
         this.birth = zipsa.getZipsaId().getBirth();
         this.gender = zipsa.getZipsaId().getGender();
         this.address = zipsa.getZipsaId().getAddress();
-        this.profileImage = zipsa.getZipsaId().getProfileImage();
+        if (zipsa.getZipsaId().getProfileImage() != null) {
+            this.profileImage = ImageConfig.toUrl(zipsa.getZipsaId().getProfileImage());
+        } else {
+            this.profileImage = null;
+        }
         this.latitude = zipsa.getZipsaId().getLatitude();
         this.longitude = zipsa.getZipsaId().getLongitude();
         this.gradeId = zipsa.getGradeId().getGradeId();

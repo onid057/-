@@ -11,6 +11,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -54,7 +55,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public UserNearZipsaResponse findNearZipsaList(Long userId) {
+    public UserNearZipsaResponse findNearZipsaList(Long userId) throws IOException {
         QZipsa qZipsa = QZipsa.zipsa;
         User user = em.find(User.class, userId);
         return new UserNearZipsaResponse((query.selectFrom(qZipsa).where(qZipsa.isWorked.and(

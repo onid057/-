@@ -11,5 +11,5 @@ public interface ZipsaService {
 
     ReportSearchResponse reportFindByRoomId(Long roomId);
 
-    ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId);
+    ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) throws IOException;
 }
