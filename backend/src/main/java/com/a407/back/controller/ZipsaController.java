@@ -3,7 +3,6 @@ package com.a407.back.controller;
 import com.a407.back.dto.ReportCreateRequest;
 import com.a407.back.dto.ReportSearchResponse;
 import com.a407.back.model.service.ZipsaServiceImpl;
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,16 +22,14 @@ public class ZipsaController {
 
 
     @PostMapping("/reports")
-    public ResponseEntity<Long> reportAdd(@ModelAttribute ReportCreateRequest reportCreateRequest)
-        throws IOException {
+    public ResponseEntity<Long> reportAdd(@ModelAttribute ReportCreateRequest reportCreateRequest) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(zipsaService.saveReport(reportCreateRequest));
     }
 
     @GetMapping("/reports/{roomId}")
-    public ResponseEntity<ReportSearchResponse> reportSearch(@PathVariable Long roomId)
-        throws IOException {
+    public ResponseEntity<ReportSearchResponse> reportSearch(@PathVariable Long roomId) {
         return ResponseEntity.status(HttpStatus.OK).body(zipsaService.reportFindByRoomId(roomId));
     }
 

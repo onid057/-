@@ -6,7 +6,6 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.ReportSearchResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +26,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public ReportSearchResponse reportFindByRoomId(Long roomId) throws IOException {
+    public ReportSearchResponse reportFindByRoomId(Long roomId) {
         return new ReportSearchResponse(
             query.selectFrom(qReport).where(qReport.roomId.roomId.eq(roomId)).fetch());
     }

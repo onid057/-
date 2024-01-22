@@ -7,7 +7,6 @@ import com.a407.back.dto.ReportSearchResponse;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,14 +19,14 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     @Override
     @Transactional
-    public Long saveReport(ReportCreateRequest reportCreateRequest) throws IOException {
+    public Long saveReport(ReportCreateRequest reportCreateRequest) {
         Room room = roomRepository.findByRoomId(reportCreateRequest.getRoomId());
         Report report = reportCreateRequest.toEntity(room);
         return zipsaRepository.saveReport(report);
     }
 
     @Override
-    public ReportSearchResponse reportFindByRoomId(Long roomId) throws IOException {
+    public ReportSearchResponse reportFindByRoomId(Long roomId) {
         return zipsaRepository.reportFindByRoomId(roomId);
     }
 

@@ -1,7 +1,6 @@
 package com.a407.back.dto;
 
 import com.a407.back.domain.Report;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -19,7 +18,7 @@ public class ReportSearchResponse {
             '}';
     }
 
-    public ReportSearchResponse(List<Report> reports) throws IOException {
+    public ReportSearchResponse(List<Report> reports) {
         this.list = new ArrayList<>();
         for (Report report : reports) {
             this.list.add(new ReportSearchResult(report));

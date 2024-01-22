@@ -1,9 +1,7 @@
 package com.a407.back.dto;
 
-import com.a407.back.config.ImageConfig;
 import com.a407.back.domain.Report;
 import com.a407.back.domain.Room;
-import java.io.IOException;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +16,7 @@ public class ReportCreateRequest {
 
 
     public Report toEntity(Room room) {
-        return Report.builder().roomId(room).processImage(ImageConfig.toByte(processImage))
+        return Report.builder().roomId(room).processImage(processImage.getBytes())
             .processContent(processContent).build();
     }
 
