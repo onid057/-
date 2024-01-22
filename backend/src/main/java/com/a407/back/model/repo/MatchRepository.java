@@ -10,8 +10,8 @@ public interface MatchRepository {
 
     List<Zipsa> findByConditions(MatchSearchRequest condition);
 
-
-
     Zipsa save(Zipsa zipsa);
+
+    List<String> findCategoryNamesByZipsaId(Long zipsaId);
 
 }
