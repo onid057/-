@@ -12,3 +12,4 @@ public interface UserService {
 
     boolean isWorkedDistinction(Long userId);
 }
+
