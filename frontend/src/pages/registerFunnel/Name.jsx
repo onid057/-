@@ -1,10 +1,17 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
+
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
+import BoldText from '../../components/common/BoldText';
+import Paragraph from '../../components/common/Paragraph';
+import Input from '../../components/common/Input';
 
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 30px 16px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -14,11 +21,43 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-function Name({ onNext }) {
+function Name({ onPrevious, onNext }) {
+  const [, setName] = useState('');
+
   return (
     <Wrapper>
-      이름
-      <button onClick={onNext}>성별 입력으로 이동</button>
+      <NavigationBar
+        leftContent={
+          <Image
+            width="40px"
+            height="40px"
+            margin="0 0 0 -12px"
+            src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
+          ></Image>
+        }
+        rightContent="다음"
+        onPrevious={onPrevious}
+        onNext={onNext}
+      ></NavigationBar>
+
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={[
+          <BoldText boldContent="이름" normalContent="을"></BoldText>,
+          '입력해주세요',
+        ]}
+      ></Paragraph>
+
+      <Input
+        width="288px"
+        margin="50px 0"
+        commentText="이름은 4자 이상 입력할 수 없어요."
+        placeholder="홍길동"
+        eventHandler={event => {
+          setName(event.target.value);
+        }}
+      ></Input>
     </Wrapper>
   );
 }
