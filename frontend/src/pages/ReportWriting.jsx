@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import Button from '../components/common/Button';
 import styled from 'styled-components';
 import NavigationBar from '../components/common/NavigationBar';
+import ImageUploader from '../components/common/ImageUploader';
 
 const ReportWritingWrapper = styled.div`
   width: 320px;
@@ -30,6 +31,14 @@ const MainContent = styled.div`
 `;
 
 function ReportWriting() {
+  const fileInputRef = useRef(null);
+
+  const handleButtonClick = () => {
+    // input 태그 클릭
+    fileInputRef.current.click();
+  };
+  const [showImages, setShowImages] = useState([]);
+
   return (
     <ReportWritingWrapper>
       <NavigationBar
@@ -40,14 +49,31 @@ function ReportWriting() {
           />
         }
         centerContent={'정기 보고서'}
-        rightContent={'완료'}
+        rightContent={' '}
       ></NavigationBar>
       <ContentWrapper>
-        <Button
-          color="#FFFFFF"
-          mode="IMAGE_UPLOAD"
-          msg="매칭 요청 보내기"
-        ></Button>
+        <ImageUploader
+          showImages={showImages}
+          setShowImages={setShowImages}
+          fileInputRef={fileInputRef}
+          Children={
+            showImages.length ? (
+              <Button
+                color="#FFFFFF"
+                mode="IMAGE_EDIT"
+                msg="수정하기"
+                onClick={handleButtonClick}
+              ></Button>
+            ) : (
+              <Button
+                color="#FFFFFF"
+                mode="IMAGE_UPLOAD"
+                msg="사진 첨부하기"
+                onClick={handleButtonClick}
+              ></Button>
+            )
+          }
+        ></ImageUploader>
         <MainContent></MainContent>
         <Button color="#629AF9" mode="NORMAL_BLUE" msg="작성완료"></Button>
       </ContentWrapper>
