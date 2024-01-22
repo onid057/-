@@ -6,7 +6,6 @@ import com.a407.back.dto.ReportSearchResponse;
 import com.a407.back.dto.ZipsaDetailInfoResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.ZipsaServiceImpl;
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,8 +47,7 @@ public class ZipsaController {
     }
 
     @GetMapping("/{helperId}")
-    public ResponseEntity<ZipsaDetailInfoResponse> zipsaDetailInfo(@PathVariable Long helperId)
-        throws IOException {
+    public ResponseEntity<ZipsaDetailInfoResponse> zipsaDetailInfo(@PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(zipsaService.zipsaAndReviewFindByZipsaId(helperId));
     }

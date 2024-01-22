@@ -4,7 +4,6 @@ import com.a407.back.dto.NotificationListResponse;
 import com.a407.back.dto.UserCreateRequest;
 import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.model.service.UserService;
-import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,7 +39,7 @@ public class UserController {
 
     @PostMapping("/helpers-map/{userId}")
     public ResponseEntity<UserNearZipsaResponse> getNearUserList(
-        @PathVariable Long userId) throws IOException {
+        @PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(userService.findNearZipsaList(userId));
     }

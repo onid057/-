@@ -1,9 +1,6 @@
 package com.a407.back.dto;
 
-import com.a407.back.config.ImageConfig;
 import com.a407.back.domain.Review;
-import java.io.IOException;
-import java.net.URL;
 import java.sql.Timestamp;
 import lombok.Getter;
 
@@ -11,19 +8,19 @@ import lombok.Getter;
 public class ZipsaReview {
 
     private final String userName;
-    private final URL profileImage;
+    private final String profileImage;
     private final String content;
     private final int kindnessScore;
     private final int skillScore;
     private final int rewindScore;
     private final Timestamp createdAt;
 
-    public ZipsaReview(Review review) throws IOException {
+    public ZipsaReview(Review review) {
         this.userName = review.getUserId().getName();
-        if (review.getUserId().getProfileImage() != null) {
-            this.profileImage = ImageConfig.toUrl(review.getUserId().getProfileImage());
-        } else {
+        if (review.getUserId().getProfileImage() == null) {
             this.profileImage = null;
+        } else {
+            this.profileImage = new String(review.getUserId().getProfileImage());
         }
         this.content = review.getContent();
         this.kindnessScore = review.getKindnessScore();

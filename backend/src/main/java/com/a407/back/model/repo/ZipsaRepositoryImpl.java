@@ -11,7 +11,6 @@ import com.a407.back.dto.ZipsaDetailInfoResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
-import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -51,7 +50,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) throws IOException {
+    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) {
         QReview qReview = QReview.review;
         Zipsa zipsa = em.find(Zipsa.class, zipsaId);
         List<Review> reviews = query.selectFrom(qReview)

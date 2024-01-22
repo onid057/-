@@ -11,7 +11,6 @@ import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserNearZipsaResponse findNearZipsaList(Long userId) throws IOException {
+    public UserNearZipsaResponse findNearZipsaList(Long userId) {
         return userRepository.findNearZipsaList(userId);
     }
 

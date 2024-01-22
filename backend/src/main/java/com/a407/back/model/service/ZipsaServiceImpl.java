@@ -6,7 +6,6 @@ import com.a407.back.dto.ReportCreateRequest;
 import com.a407.back.dto.ReportSearchResponse;
 import com.a407.back.dto.ZipsaDetailInfoResponse;
 import com.a407.back.model.repo.ZipsaRepository;
-import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class ZipsaServiceImpl implements ZipsaService {
 
 
     @Override
-    public Long saveReport(ReportCreateRequest reportCreateRequest) throws IOException {
+    public Long saveReport(ReportCreateRequest reportCreateRequest) {
 
         Room room = zipsaRepository.roomFindById(reportCreateRequest.getRoomId());
         Report report = reportCreateRequest.toEntity(room);
@@ -33,7 +32,7 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) throws IOException {
+    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) {
         return zipsaRepository.zipsaAndReviewFindByZipsaId(zipsaId);
     }
 
