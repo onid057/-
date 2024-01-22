@@ -11,5 +11,7 @@ public interface UserService {
     List<NotificationListResponse> findNotificationsByUserId(Long userId);
 
     boolean isWorkedDistinction(Long userId);
+
+    User findByUserId(Long userId);
 }
 

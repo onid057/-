@@ -2,6 +2,7 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.Report;
 import com.a407.back.domain.Room;
+import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.ReportCreateRequest;
 import com.a407.back.dto.ReportSearchResponse;
 import com.a407.back.model.repo.ZipsaRepository;
@@ -29,6 +30,11 @@ public class ZipsaServiceImpl implements ZipsaService {
     public ReportSearchResponse reportFindByRoomId(Long roomId) {
         List<Report> reportList = zipsaRepository.reportFindByRoomId(roomId);
         return new ReportSearchResponse(reportList.stream().map(Report::toResponse).toList());
+    }
+
+    @Override
+    public Zipsa findByZipsaId(Long zipsaId) {
+        return zipsaRepository.findByZipsaId(zipsaId);
     }
 
 }
