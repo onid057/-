@@ -45,16 +45,18 @@ function Input({
   labelText,
   commentText,
   placeholder,
-  eventHandler,
+  onInput,
+  data,
 }) {
   return (
     <Wrapper $width={width} $margin={margin} $padding={padding}>
       <Label>{labelText}</Label>
       <InputWrapper
         type={type}
-        onInput={eventHandler}
+        onInput={onInput}
         placeholder={placeholder}
         required
+        defaultValue={data}
       ></InputWrapper>
       <Span>{commentText}</Span>
     </Wrapper>

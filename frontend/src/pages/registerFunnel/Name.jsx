@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 
 import NavigationBar from '../../components/common/NavigationBar';
@@ -21,8 +21,12 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-function Name({ onPrevious, onNext }) {
-  const [, setName] = useState('');
+function Name({ onPrevious, onNext, userName }) {
+  const [name, setName] = useState('');
+
+  useEffect(() => {
+    if (userName) setName(userName);
+  }, [userName]);
 
   return (
     <Wrapper>
@@ -37,7 +41,7 @@ function Name({ onPrevious, onNext }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={onNext}
+        onNext={() => onNext(name)}
       ></NavigationBar>
 
       <Paragraph
@@ -54,9 +58,10 @@ function Name({ onPrevious, onNext }) {
         margin="50px 0"
         commentText="이름은 4자 이상 입력할 수 없어요."
         placeholder="홍길동"
-        eventHandler={event => {
+        onInput={event => {
           setName(event.target.value);
         }}
+        data={userName}
       ></Input>
     </Wrapper>
   );
