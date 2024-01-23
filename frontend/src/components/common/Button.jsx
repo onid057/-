@@ -20,9 +20,52 @@ const ButtonWrapper = styled.button`
         font-weight: bold;
       `};
   ${props =>
+    props.mode === 'NORMAL_GRAY' &&
+    css`
+      font-size: 17px;
+      color: black;
+    `};
+  ${props =>
+    props.mode === 'NORMAL_BLUE' &&
+    css`
+      font-size: 17px;
+    `};
+  ${props =>
     props.mode === 'SMALL_WHITE' &&
     css`
       width: 138px;
+      font-size: 18px;
+      font-weight: lighter;
+      color: black;
+      background-color: white;
+    `};
+  ${props =>
+    props.mode === 'THIN_WHITE' &&
+    css`
+      width: 100%;
+      height: 38px;
+      font-weight: lighter;
+      color: black;
+      font-size: 17px;
+      background-color: white;
+    `};
+  ${props =>
+    props.mode === 'FULL_PERCENT_WHITE' &&
+    css`
+      width: 100%;
+      height: 38px;
+      flex: 1;
+      font-size: 18px;
+      font-weight: lighter;
+      color: black;
+      background-color: white;
+    `};
+  ${props =>
+    props.mode === 'INSIDE_IMAGE' &&
+    css`
+      width: 100%;
+      height: 38px;
+      flex: 1;
       font-size: 18px;
       font-weight: lighter;
       color: black;
@@ -36,27 +79,6 @@ const ButtonWrapper = styled.button`
       color: black;
       border: 1px solid #629af9;
       height: 45px;
-    `};
-  ${props =>
-    props.mode === 'NORMAL_GRAY' &&
-    css`
-      font-size: 17px;
-      color: black;
-    `};
-  ${props =>
-    props.mode === 'NORMAL_BLUE' &&
-    css`
-      font-size: 17px;
-    `};
-  ${props =>
-    props.mode === 'THIN_WHITE' &&
-    css`
-      width: 100%;
-      height: 38px;
-      font-weight: lighter;
-      color: black;
-      font-size: 17px;
-      background-color: white;
     `};
 
   ${props => {
@@ -72,6 +94,17 @@ const ContentWrapper = styled.span`
   justify-content: center;
   align-items: center;
   gap: 10px;
+`;
+
+const ImgContentWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  > img {
+    width: 25px;
+    height: 25px;
+  }
 `;
 
 function Button({ msg, color, mode, ...rest }) {
@@ -94,6 +127,18 @@ function Button({ msg, color, mode, ...rest }) {
           <img src={`${process.env.PUBLIC_URL}/images/edit.svg`} alt="edit" />
           {msg}
         </ContentWrapper>
+      </ButtonWrapper>
+    );
+  } else if (mode === 'INSIDE_IMAGE') {
+    return (
+      <ButtonWrapper color={color} mode={mode} {...rest}>
+        <ImgContentWrapper>
+          <img
+            src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
+            alt="dia"
+          />
+          {msg}
+        </ImgContentWrapper>
       </ButtonWrapper>
     );
   } else {
