@@ -17,6 +17,4 @@ public class MatchSearchResponse {
     private int serviceCount;
     private String filteringCategoryId;
 
-    // 생성자, getter 및 setter 생략
-
 }

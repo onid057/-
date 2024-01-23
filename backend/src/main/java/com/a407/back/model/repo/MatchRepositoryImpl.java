@@ -4,6 +4,7 @@ import com.a407.back.domain.QMajorCategory;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.QZipsaCategory;
 import com.a407.back.domain.QZipsaCategoryId;
+import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.domain.QUser;
@@ -15,12 +16,14 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
 public class MatchRepositoryImpl implements MatchRepository {
-
+    private final Logger logger= LoggerFactory.getLogger(this.getClass());
     private final JPAQueryFactory query;
 
     private final EntityManager em;
@@ -29,6 +32,7 @@ public class MatchRepositoryImpl implements MatchRepository {
     public List<Zipsa> findByConditions(MatchSearchRequest condition) {
         QZipsa qZipsa = QZipsa.zipsa;
         QUser qUser = QUser.user;
+        QZipsaCategory qZipsaCategory = QZipsaCategory.zipsaCategory;
         QZipsaCategoryId qZipsaCategoryId = QZipsaCategoryId.zipsaCategoryId;
         return query.selectFrom(qZipsa)
             .leftJoin(qZipsa.zipsaId, qUser)
@@ -42,7 +46,8 @@ public class MatchRepositoryImpl implements MatchRepository {
 
     private BooleanExpression majorCategoryIdEq(Long categoryId) {
         if (categoryId != null) {
-            return QZipsaCategoryId.zipsaCategoryId.majorCategoryId.majorCategoryId.eq(categoryId);
+            logger.info("{}",categoryId);
+            return QZipsaCategory.zipsaCategory.majorCategoryId.majorCategoryId.eq(categoryId);
         }
         return null;
     }
@@ -128,5 +133,12 @@ public class MatchRepositoryImpl implements MatchRepository {
             .join(qZipsaCategoryId.majorCategoryId,qMajorCategory)
             .where(qZipsaCategoryId.zipsaId.eq(qZipsaCategoryId.zipsaId))
             .fetch();
+    }
+
+    @Override
+    public  List<Zipsa> findByIsWorked(boolean isWorked){
+        QZipsa qZipsa = QZipsa.zipsa;
+        return query.selectFrom(qZipsa)
+            .where(qZipsa.isWorked.eq(isWorked)).fetch();
     }
 }
