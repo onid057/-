@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum SuccessCode {
-    // 조회 성공 !
+    // 조회 성공
     SELECT_SUCCESS(200, "SELECT SUCCESS"),
     // 삭제 성공
     DELETE_SUCCESS(200, "DELETE SUCCESS"),
