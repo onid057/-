@@ -4,7 +4,11 @@ import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.QNotification;
 import com.a407.back.domain.QUser;
+import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.User;
+import com.a407.back.dto.UserNearZipsaResponse;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -18,6 +22,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final JPAQueryFactory query;
 
     private final EntityManager em;
+
 
     @Override
     public User findByUserEmail(String email) {
@@ -46,4 +51,23 @@ public class UserRepositoryImpl implements UserRepository {
     public User findByUserId(Long userId) {
         return em.find(User.class, userId);
     }
+
+
+    @Override
+    public UserNearZipsaResponse findNearZipsaList(Long userId) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        User user = em.find(User.class, userId);
+        return new UserNearZipsaResponse((query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
+            createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
+                user.getLatitude(), user.getLongitude(), 0.009)))).fetch());
+    }
+
+
+    public static BooleanExpression createLatitudeLongitudeBetween(NumberPath<Double> latitudePath,
+        NumberPath<Double> longitudePath,
+        double latitude, double longitude, double range) {
+        return latitudePath.between(latitude - range, latitude + range)
+            .and(longitudePath.between(longitude - range, longitude + range));
+    }
+
 }

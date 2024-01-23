@@ -4,9 +4,11 @@ import com.a407.back.domain.Report;
 import com.a407.back.domain.Room;
 import com.a407.back.dto.ReportCreateRequest;
 import com.a407.back.dto.ReportSearchResponse;
-import com.a407.back.model.repo.RoomRepository;
-import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
+import com.a407.back.model.repo.RoomRepository;
+import com.a407.back.dto.ZipsaDetailInfoResponse;
+import com.a407.back.model.repo.ZipsaRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,4 +32,8 @@ public class ZipsaServiceImpl implements ZipsaService {
         return zipsaRepository.reportFindByRoomId(roomId);
     }
 
+    @Override
+    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) {
+        return zipsaRepository.zipsaAndReviewFindByZipsaId(zipsaId);
+    }
 }

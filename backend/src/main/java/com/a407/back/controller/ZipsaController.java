@@ -2,6 +2,8 @@ package com.a407.back.controller;
 
 import com.a407.back.dto.ReportCreateRequest;
 import com.a407.back.dto.ReportSearchResponse;
+import com.a407.back.dto.ZipsaDetailInfoResponse;
+import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.ZipsaServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -31,6 +33,12 @@ public class ZipsaController {
     @GetMapping("/reports/{roomId}")
     public ResponseEntity<ReportSearchResponse> reportSearch(@PathVariable Long roomId) {
         return ResponseEntity.status(HttpStatus.OK).body(zipsaService.reportFindByRoomId(roomId));
+    }
+
+    @GetMapping("/{helperId}")
+    public ResponseEntity<ZipsaDetailInfoResponse> zipsaDetailInfo(@PathVariable Long helperId) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(zipsaService.zipsaAndReviewFindByZipsaId(helperId));
     }
 
 
