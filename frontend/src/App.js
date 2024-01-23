@@ -116,6 +116,8 @@ const GlobalStyle = createGlobalStyle`
 	hgroup,
 	menu,
 	nav,
+	button,
+	textarea,
 	section {
 		display: block;
 	}

@@ -20,7 +20,7 @@ const FlexWrapper = styled.div`
   width: 250px;
   margin: 0 auto;
   display: flex;
-  justify-content: flex-start
+  justify-content: flex-start;
   align-items: center;
   gap: 11px;
 `;

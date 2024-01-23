@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const LongInputBoxWrapper = styled.div`
   box-sizing: border-box;
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,32 +43,42 @@ const ContentBox = styled.div`
   border-radius: 25px;
 `;
 
-const ContentBoxInput = styled.input`
+const TextAreaInput = styled.textarea`
   width: 100%;
-  height: auto;
+  height: 160px;
+  padding: 3px;
+  // 전역에 해 놨는데 왜 placeholder에는 적용되고 input에는 적용이 안 되지?
+  font-family: NotoSansKR;
+  font-size: 18px;
+  font-weight: light;
   background-color: transparent;
   border: none;
-  &::placeholder {
-    opacity: 30%;
-    font-weight: light;
-    font-size: 16px;
-  }
 `;
 
-function LongInputBox({}) {
+function LongInputBox({ title, placeholder }) {
+  // title: ${props => (props.$fontSize ? props.$fontSize : 'inherit')};
+
   return (
     <LongInputBoxWrapper>
       <InsideWrapper>
-        <TitleBox>title</TitleBox>
+        {/* 여기에 상세 input의 제목을 입력합니다 */}
+        <TitleBox>{title}</TitleBox>
         <ContentBox>
-          <ContentBoxInput
+          <TextAreaInput
+            // 여기에 placeholder를 입력합니다(개행문자 &#10; 사용하기)
+            // "ex)&#10;아파트 정문에 있는 공원 정문에서 만나요. 저는 벤치에 앉아있을 테니 먼저 말을 걸어주세요."
+            placeholder={placeholder}
             type="text"
-            placeholder="아파트 정문앞에서"
-          ></ContentBoxInput>
+          ></TextAreaInput>
         </ContentBox>
       </InsideWrapper>
     </LongInputBoxWrapper>
   );
 }
+
+LongInputBox.defaultProps = {
+  title: '제목 prop으로 변경하기',
+  placeholder: '미리보기 prop으로 변경하기',
+};
 
 export default LongInputBox;
