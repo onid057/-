@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public List<NotificationListResponse> findNotificationsByUserId(Long userId) {
         boolean workedDistinction = isWorkedDistinction(userId);
         List<Notification> notificationList = null;
