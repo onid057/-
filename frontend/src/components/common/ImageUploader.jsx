@@ -3,8 +3,11 @@ import styled from 'styled-components';
 import SimpleSlider from './SimpleSlider';
 
 const ImageUploaderWrapper = styled.div`
-  width: 290px;
-  height: 200px;
+  width: 294px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 `;
 
 const SliderWrapper = styled.div`
