@@ -3,6 +3,7 @@ import { useFunnel } from '../../hooks/useFunnel';
 
 import Name from './Name';
 import Gender from './Gender';
+import Email from './Email';
 
 function RegisterFunnel() {
   const [registerData, setRegisterData] = useState({});
@@ -31,10 +32,24 @@ function RegisterFunnel() {
             setStep('NAME');
           }}
           onNext={data => {
-            setStep('NAME');
+            setStep('EMAIL');
             setRegisterData({ ...registerData, userGender: data });
           }}
+          userGender={registerData.userGender}
         ></Gender>
+      </Funnel.Step>
+
+      <Funnel.Step name="EMAIL">
+        <Email
+          onPrevious={() => {
+            setStep('GENDER');
+          }}
+          onNext={data => {
+            setStep('NAME');
+            setRegisterData({ ...registerData, userEmail: data });
+          }}
+          userEmail={registerData.userEmail}
+        ></Email>
       </Funnel.Step>
     </Funnel>
   );
