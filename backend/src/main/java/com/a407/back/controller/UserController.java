@@ -40,9 +40,14 @@ public class UserController {
     }
 
     @PostMapping("/helpers-map/{userId}")
-    public ResponseEntity<UserNearZipsaResponse> getNearUserList(
-        @PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(userService.findNearZipsaList(userId));
+    public ResponseEntity<UserNearZipsaResponse> getNearUserList(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findNearZipsaList(userId));
     }
+
+    @GetMapping("/{userId}/records")
+    public ResponseEntity<?> getUserRecords(@PathVariable Long userId) {
+
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findRecordsByUserId(userId));
+    }
+
 }
