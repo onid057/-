@@ -6,7 +6,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ErrorCode {
-    // 400
+    // 400 !
     INVALID_PARAMETER(400, "파라미터 값을 확인해주세요."),
     REQUEST_BODY_MISSING_ERROR(400, "Body에 객체 데이터가 없습니다."),
     MISSING_REQUEST_PARAMETER_ERROR(400, "파라미터에 값이 전달되지 않았습니다."),
