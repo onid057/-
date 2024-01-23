@@ -48,7 +48,7 @@ function TestLee() {
       ></Input>
       <hr style={{ marginBottom: '30px' }}></hr>
 
-      <H2title>프로그래스 바 만들기</H2title>
+      <H2title>프로그ddd래스 바 만들기</H2title>
       <ProgressBar></ProgressBar>
       <hr style={{ marginBottom: '30px' }}></hr>
 
