@@ -25,7 +25,7 @@ const TitleBox = styled.div`
 `;
 
 // 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function FilterLocate() {
+function Location() {
   return (
     <Wrapper>
       <TitleBox>
@@ -33,8 +33,8 @@ function FilterLocate() {
           sentences={[
             <BoldText
               fontSize="35px"
-              BoldContent="약속 장소"
-              NormalContent="를"
+              boldContent="약속 장소"
+              normalContent="를"
             ></BoldText>,
             '정해주세요',
           ]}
@@ -54,4 +54,4 @@ function FilterLocate() {
   );
 }
 
-export default FilterLocate;
+export default Location;

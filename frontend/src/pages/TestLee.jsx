@@ -5,10 +5,12 @@ import DateTimeInputInput from '../components/common/DateTimeInputInput';
 import DateTimeInputSelect from '../components/common/DateTimeInputSelect';
 import AddressInput from '../components/common/AddressInput';
 import LongInputBox from '../components/common/LongInputBox';
-import FilterMainCategory from './filterFunnel/FilterMainCategory';
-import FilterSubCategory from './filterFunnel/FilterSubCategory';
-import FilterDateTime from './filterFunnel/FilterDateTime';
-import FilterLocate from './filterFunnel/FilterLocation';
+import MainCategory from './filterFunnel/MainCategory';
+import SubCategory from './filterFunnel/SubCategory';
+import DateTime from './filterFunnel/DateTime';
+import Location from './filterFunnel/Location';
+import Description from './filterFunnel/Description';
+import Condition from './filterFunnel/Condition';
 
 const TestLeeWrapper = styled.div`
   width: 320px;
@@ -61,16 +63,22 @@ function TestLee() {
       <LongInputBox></LongInputBox>
 
       <H2title>MainCategory 만들기</H2title>
-      <FilterMainCategory></FilterMainCategory>
+      <MainCategory></MainCategory>
 
       <H2title>SubCategory 만들기</H2title>
-      <FilterSubCategory></FilterSubCategory>
+      <SubCategory></SubCategory>
 
       <H2title>DateTime 만들기</H2title>
-      <FilterDateTime></FilterDateTime>
+      <DateTime></DateTime>
 
-      <H2title>Locate 만들기</H2title>
-      <FilterLocate></FilterLocate>
+      <H2title>Location 만들기</H2title>
+      <Location></Location>
+
+      <H2title>Description 만들기</H2title>
+      <Description></Description>
+
+      <H2title>Condition 만들기</H2title>
+      <Condition></Condition>
     </TestLeeWrapper>
   );
 }

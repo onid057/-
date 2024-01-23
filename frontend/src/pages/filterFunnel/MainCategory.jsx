@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
-import DateTimeInputSelect from '../../components/common/DateTimeInputSelect';
 import Button from '../../components/common/Button';
 
 const Wrapper = styled.div`
@@ -26,10 +25,10 @@ const TitleBox = styled.div`
 
 const ContentBox = styled.div`
   width: 100%;
+  min-height: 300px;
   display: flex;
   flex-direction: column;
-  /* justify-content: space-between; */
-  justify-content: flex-start;
+  justify-content: space-around;
   align-items: center;
   gap: 15px;
 `;
@@ -40,8 +39,7 @@ const InnerContentBox = styled.div`
   justify-content: space-between;
 `;
 
-// 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function FilterDateTime() {
+function MainCategory() {
   return (
     <Wrapper>
       <TitleBox>
@@ -49,20 +47,37 @@ function FilterDateTime() {
           sentences={[
             <BoldText
               fontSize="35px"
-              BoldContent="약속 날짜와 시간"
-              NormalContent="을"
+              boldContent="어떤 일"
+              normalContent="을"
             ></BoldText>,
-            '정해주세요',
+            '맡기고 싶으신가요?',
           ]}
         ></Paragraph>
       </TitleBox>
 
       {/* ProgressBar 진척도 변경 부분 */}
-      <ProgressBar value={51}></ProgressBar>
+      <ProgressBar value={17}></ProgressBar>
 
-      <DateTimeInputSelect></DateTimeInputSelect>
+      <ContentBox>
+        <InnerContentBox>
+          <Button mode={'SMALL_WHITE'} msg={'동네 동행'}></Button>
+          <Button mode={'SMALL_WHITE'} msg={'멀리 동행'}></Button>
+        </InnerContentBox>
+        <InnerContentBox>
+          <Button mode={'SMALL_WHITE'} msg={'가사'}></Button>
+          <Button mode={'SMALL_WHITE'} msg={'배달'}></Button>
+        </InnerContentBox>
+        <InnerContentBox>
+          <Button mode={'SMALL_WHITE'} msg={'목욕'}></Button>
+          <Button mode={'SMALL_WHITE'} msg={'펫 케어'}></Button>
+        </InnerContentBox>
+        <InnerContentBox>
+          <Button mode={'SMALL_WHITE'} msg={'대행'}></Button>
+          <Button mode={'SMALL_WHITE'} msg={'간단 심부름'}></Button>
+        </InnerContentBox>
+      </ContentBox>
     </Wrapper>
   );
 }
 
-export default FilterDateTime;
+export default MainCategory;
