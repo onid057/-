@@ -1,14 +1,27 @@
 package com.a407.back.dto;
 
+import com.a407.back.domain.Report;
+import java.util.ArrayList;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
 public class ReportSearchResponse {
 
-    List<ReportSearchResult> list;
+    private final List<ReportSearchResult> list;
 
 
+    @Override
+    public String toString() {
+        return "ReportSearchResponse{" +
+            "list=" + list +
+            '}';
+    }
+
+    public ReportSearchResponse(List<Report> reports) {
+        this.list = new ArrayList<>();
+        for (Report report : reports) {
+            this.list.add(new ReportSearchResult(report));
+        }
+    }
 }

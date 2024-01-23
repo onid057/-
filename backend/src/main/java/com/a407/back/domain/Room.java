@@ -52,7 +52,7 @@ public class Room implements Serializable {
     @CreationTimestamp
     @Column(name = "room_created_at", columnDefinition = "TIMESTAMP")
     private Timestamp roomCreatedAt;
-    
+
     @Column(name = "match_created_at", columnDefinition = "TIMESTAMP")
     private Timestamp matchCreatedAt;
 
@@ -135,5 +135,30 @@ public class Room implements Serializable {
         before, ongoing, end
     }
 
-
+    @Override
+    public String toString() {
+        return "Room{" +
+            "roomId=" + roomId +
+            ", userId=" + userId +
+            ", zipsaId=" + zipsaId +
+            ", subCategoryId=" + subCategoryId +
+            ", content='" + content + '\'' +
+            ", estimateDuration=" + estimateDuration +
+            ", roomCreatedAt=" + roomCreatedAt +
+            ", matchCreatedAt=" + matchCreatedAt +
+            ", isReported=" + isReported +
+            ", reportCycle=" + reportCycle +
+            ", isPublic=" + isPublic +
+            ", notificationCount=" + notificationCount +
+            ", startedAt=" + startedAt +
+            ", endedAt=" + endedAt +
+            ", expectationStartedAt=" + expectationStartedAt +
+            ", expectationEndedAt=" + expectationEndedAt +
+            ", expectationPay=" + expectationPay +
+            ", totalPay=" + totalPay +
+            ", isComplained=" + isComplained +
+            ", isReviewed=" + isReviewed +
+            ", status=" + status +
+            '}';
+    }
 }
