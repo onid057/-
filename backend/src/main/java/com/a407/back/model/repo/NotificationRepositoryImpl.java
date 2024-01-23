@@ -7,8 +7,6 @@ import com.a407.back.domain.Room;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,7 +16,6 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     private final JPAQueryFactory query;
 
     private final EntityManager em;
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public Notification findByNotificationId(Long notificationId) {

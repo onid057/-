@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.dto.ZipsaDetailInfoResponse;
 import com.a407.back.model.repo.ZipsaRepository;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
