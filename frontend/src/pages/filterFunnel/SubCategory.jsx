@@ -40,7 +40,7 @@ const InnerContentBox = styled.div`
 `;
 
 // 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function FilterSubCategory() {
+function SubCategory() {
   const subCategoryList = [
     '산책하기',
     '함께 장보기',
@@ -59,8 +59,8 @@ function FilterSubCategory() {
           sentences={[
             <BoldText
               fontSize="35px"
-              BoldContent="구체적으로 할 일"
-              NormalContent="을"
+              boldContent="구체적으로 할 일"
+              normalContent="을"
             ></BoldText>,
             '골라주세요',
           ]}
@@ -81,4 +81,4 @@ function FilterSubCategory() {
   );
 }
 
-export default FilterSubCategory;
+export default SubCategory;

@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
-import AddressInput from '../../components/common/AddressInput';
 import LongInputBox from '../../components/common/LongInputBox';
 
 const Wrapper = styled.div`
@@ -25,7 +24,7 @@ const TitleBox = styled.div`
 `;
 
 // 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function FilterLocate() {
+function Description() {
   return (
     <Wrapper>
       <TitleBox>
@@ -33,25 +32,25 @@ function FilterLocate() {
           sentences={[
             <BoldText
               fontSize="35px"
-              BoldContent="약속 장소"
-              NormalContent="를"
+              boldContent="상세 내용"
+              normalContent="을"
             ></BoldText>,
-            '정해주세요',
+            '말씀해 주세요',
           ]}
         ></Paragraph>
       </TitleBox>
 
       {/* ProgressBar 진척도 변경 부분 */}
-      <ProgressBar value={68}></ProgressBar>
-
-      <AddressInput></AddressInput>
+      <ProgressBar value={85}></ProgressBar>
 
       <LongInputBox
-        title="세부 장소와 방법"
-        placeholder="ex)&#10;아파트 정문에 있는 공원 정문에서 만나요. 저는 벤치에 앉아있을 테니 먼저 말을 걸어주세요."
+        title={'상세 내용'}
+        placeholder={
+          'OOO 미용실에 갈 거예요. 함께 갔다가 다시 정문까지 돌아와 주세요. 이야기도 나눠요.'
+        }
       ></LongInputBox>
     </Wrapper>
   );
 }
 
-export default FilterLocate;
+export default Description;
