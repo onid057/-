@@ -11,11 +11,11 @@ const BoldTextWrapper = styled.div`
   font-weight: 600;
 `;
 
-function BoldText({ fontSize, BoldContent, NormalContent }) {
+function BoldText({ fontSize, boldContent, normalContent }) {
   return (
     <Wrapper $fontSize={fontSize}>
-      <BoldTextWrapper>{BoldContent}</BoldTextWrapper>
-      <>{NormalContent}</>
+      <BoldTextWrapper>{boldContent}</BoldTextWrapper>
+      <>{normalContent}</>
     </Wrapper>
   );
 }

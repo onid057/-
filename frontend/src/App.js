@@ -1,8 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
-import TestLee from './pages/TestLee';
 
 import Home from './pages/Home';
+import Login from './pages/Login';
+import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -10,6 +11,10 @@ const GlobalStyle = createGlobalStyle`
 	*::after {
 		box-sizing: border-box;
 	}
+	*::placeholder {
+    font-family: 'NotoSansKR', sans-serif;
+    font-weight: 200;
+  }
 	html,
 	body,
 	div,
@@ -90,7 +95,9 @@ const GlobalStyle = createGlobalStyle`
 	time,
 	mark,
 	audio,
-	video {
+	video,
+	button,
+	input {
 		margin: 0;
 		padding: 0;
 		border: 0;
@@ -149,7 +156,8 @@ function App() {
       <GlobalStyle />
       <Routes>
         <Route index element={<Home />}></Route>
-        <Route path="/test/sumin" element={<TestLee />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<RegisterFunnel />}></Route>
       </Routes>
     </ThemeProvider>
   );
