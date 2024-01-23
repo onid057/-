@@ -1,9 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
-import Image from './Image';
+import SimpleSlider from './SimpleSlider';
+
+const ImageUploaderWrapper = styled.div`
+  width: 290px;
+  height: 200px;
+`;
 
 const ImageWrapper = styled.div`
-  display: flex;
+  width: 290px;
+  height: 200px;
 `;
 
 function ImageUploader({ showImages, setShowImages, fileInputRef, Children }) {
@@ -34,7 +40,7 @@ function ImageUploader({ showImages, setShowImages, fileInputRef, Children }) {
   };
 
   return (
-    <div>
+    <ImageUploaderWrapper>
       {Children}
       <input
         type="file"
@@ -46,14 +52,15 @@ function ImageUploader({ showImages, setShowImages, fileInputRef, Children }) {
       />
       {/* 저장해둔 이미지들을 순회하면서 화면에 이미지 출력 */}
       <ImageWrapper>
-        {showImages.map((image, id) => (
+        {/* {showImages.map((image, id) => (
           <div key={id}>
             <Image src={image} width={'30px'} height={'30px'}></Image>
-            <button onClick={() => handleDeleteImage(id)}>제거하기</button>
+            <button onClick={() => handleDeleteImage(id)}>x</button>
           </div>
-        ))}
+        ))} */}
+        <SimpleSlider showImages={showImages}></SimpleSlider>
       </ImageWrapper>
-    </div>
+    </ImageUploaderWrapper>
   );
 }
 
