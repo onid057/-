@@ -6,16 +6,22 @@ import ImageUploader from '../components/common/ImageUploader';
 
 const ReportWritingWrapper = styled.div`
   width: 320px;
-  height: 568px;
+  min-height: 568px;
   margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   background-color: ${({ theme }) => theme.colors.primary};
-  line-height: 1.3;
+  font-size: 18px;
+  font-weight: 300;
+  white-space: pre-wrap;
 `;
 
 const ContentWrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: 430px;
+  height: 518px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
