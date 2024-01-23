@@ -2,6 +2,7 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.Report;
 import com.a407.back.domain.Room;
+import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.ReportCreateRequest;
 import com.a407.back.dto.ReportSearchResponse;
 import jakarta.transaction.Transactional;
@@ -36,4 +37,10 @@ public class ZipsaServiceImpl implements ZipsaService {
     public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) {
         return zipsaRepository.zipsaAndReviewFindByZipsaId(zipsaId);
     }
+
+    @Override
+    public Zipsa findByZipsaId(Long zipsaId) {
+        return zipsaRepository.findByZipsaId(zipsaId);
+    }
+
 }

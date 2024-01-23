@@ -14,5 +14,7 @@ public interface UserService {
     boolean isWorkedDistinction(Long userId);
 
     UserNearZipsaResponse findNearZipsaList(Long userId);
+    
+    User findByUserId(Long userId);
 }
 

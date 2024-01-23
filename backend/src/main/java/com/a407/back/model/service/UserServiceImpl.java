@@ -26,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final CategoryRepository categoryRepository;
 
+    @Override
     @Transactional
     public Long save(User user) {
         // 에러 처리
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService {
             notificationResponseList.add(new NotificationListResponse(
                 userRepository.findByUserId(userId).getName(),
                 n.getType(),
-                n.isAccepted(),
+                n.getStatus(),
                 categoryRepository.findMajorCategoryName(
                     n.getRoomId().getSubCategoryId().getMajorCategoryId().getMajorCategoryId()),
                 n.getRoomId().getRoomId(),
@@ -71,4 +72,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findNearZipsaList(userId);
     }
 
+    @Override
+    public User findByUserId(Long userId) {
+        return userRepository.findByUserId(userId);
+    }
 }

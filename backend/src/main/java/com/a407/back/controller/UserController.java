@@ -29,6 +29,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
+    // 알림 목록
+    // 고객과 집사의 경우를 나눔
     @GetMapping("/{userId}/notifications")
     public ResponseEntity<List<NotificationListResponse>> getNotifications(
         @PathVariable("userId") Long userId) {
