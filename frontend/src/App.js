@@ -2,6 +2,8 @@ import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import Home from './pages/Home';
+import Login from './pages/Login';
+import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -9,6 +11,10 @@ const GlobalStyle = createGlobalStyle`
 	*::after {
 		box-sizing: border-box;
 	}
+	*::placeholder {
+    font-family: 'NotoSansKR', sans-serif;
+    font-weight: 200;
+  }
 	html,
 	body,
 	div,
@@ -89,12 +95,15 @@ const GlobalStyle = createGlobalStyle`
 	time,
 	mark,
 	audio,
-	video {
+	video,
+	button,
+	input {
 		margin: 0;
 		padding: 0;
 		border: 0;
 		font-size: 100%;
 		font: inherit;
+		font-family: 'NotoSansKR', sans-serif;
 		vertical-align: baseline;
 	}
 	article,
@@ -107,6 +116,8 @@ const GlobalStyle = createGlobalStyle`
 	hgroup,
 	menu,
 	nav,
+	button,
+	textarea,
 	section {
 		display: block;
 	}
@@ -135,21 +146,23 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const Theme = {
-	colors: {
-		primary: '#f5f5f5',
-		secondary: '#ffffff',
-	},
+  colors: {
+    primary: '#f5f5f5',
+    secondary: '#ffffff',
+  },
 };
 
 function App() {
-	return (
-		<ThemeProvider theme={Theme}>
-			<GlobalStyle />
-			<Routes>
-				<Route index element={<Home />}></Route>
-			</Routes>
-		</ThemeProvider>
-	);
+  return (
+    <ThemeProvider theme={Theme}>
+      <GlobalStyle />
+      <Routes>
+        <Route index element={<Home />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<RegisterFunnel />}></Route>
+      </Routes>
+    </ThemeProvider>
+  );
 }
 
 export default App;
