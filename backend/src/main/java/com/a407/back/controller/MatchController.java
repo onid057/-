@@ -1,9 +1,11 @@
 package com.a407.back.controller;
 
 import com.a407.back.config.ErrorCode;
+import com.a407.back.config.SuccessCode;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.ApiResponse;
 import com.a407.back.dto.MatchCreateRequest;
 import com.a407.back.dto.MatchSearchRequest;
 import com.a407.back.dto.MatchSearchResponse;
@@ -74,7 +76,7 @@ public class MatchController {
 
 
     @PostMapping("/")
-    public ResponseEntity<Long> makeMatch(@RequestBody MatchCreateRequest matchCreateRequest) {
+    public ResponseEntity<ApiResponse<Long>> makeMatch(@RequestBody MatchCreateRequest matchCreateRequest) {
         // 수락한 알림은 accept
         notificationService.changeNotificationStatusAcceptOrReject(
             matchCreateRequest.getNotificationId(), "accept");
@@ -95,6 +97,7 @@ public class MatchController {
             zipsa = zipsaService.findByZipsaId(notification.getSendId());
         }
         roomService.changeRoomZipsa(zipsa, matchCreateRequest.getRoomId());
-        return ResponseEntity.status(HttpStatus.OK).body(matchCreateRequest.getRoomId());
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.INSERT_SUCCESS, matchCreateRequest.getRoomId()));
     }
 }
