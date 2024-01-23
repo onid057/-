@@ -9,7 +9,7 @@ const ButtonWrapper = styled.button`
   border-radius: 25px;
   color: white;
   padding: auto;
-  width: 294px;
+  width: 288px;
   height: 57px;
   font-size: 20px /* 크기 설정*/
     ${props =>
