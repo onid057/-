@@ -13,30 +13,21 @@ const ReportWritingWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 30px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
 
-// const ContentWrapper = styled.div`
-//   box-sizing: border-box;
-//   width: 100%;
-//   height: 518px;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: space-between;
-//   align-items: center;
-// `;
-
-// const MainContent = styled.div`
-//   box-sizing: border-box;
-//   width: 294px;
-//   height: 264px;
-//   background-color: #ffffff;
-//   border-radius: 25px;
-// `;
+const ContentWrapper = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+`;
 
 function ReportWriting() {
   const fileInputRef = useRef(null);
@@ -46,7 +37,8 @@ function ReportWriting() {
     fileInputRef.current.click();
   };
   const [showImages, setShowImages] = useState([]);
-
+  const PlaceholderContent =
+    '서비스의 현재 진행 상황을\n상세하게 알려주세요.\n특이사항이 있다면 알려주세요.';
   return (
     <ReportWritingWrapper>
       <NavigationBar
@@ -59,30 +51,35 @@ function ReportWriting() {
         centerContent={'정기 보고서'}
         rightContent={' '}
       ></NavigationBar>
-      <ImageUploader
-        showImages={showImages}
-        setShowImages={setShowImages}
-        fileInputRef={fileInputRef}
-        Children={
-          showImages.length ? (
-            <Button
-              color="#FFFFFF"
-              mode="IMAGE_EDIT"
-              msg="수정하기"
-              onClick={handleButtonClick}
-            ></Button>
-          ) : (
-            <Button
-              color="#FFFFFF"
-              mode="IMAGE_UPLOAD"
-              msg="사진 첨부하기"
-              onClick={handleButtonClick}
-            ></Button>
-          )
-        }
-      ></ImageUploader>
-      <LongInputBox title={''} placeholder={'hi'}></LongInputBox>
-      <Button color="#629AF9" mode="NORMAL_BLUE" msg="작성완료"></Button>
+      <ContentWrapper>
+        <ImageUploader
+          showImages={showImages}
+          setShowImages={setShowImages}
+          fileInputRef={fileInputRef}
+          Children={
+            showImages.length ? (
+              <Button
+                color="#FFFFFF"
+                mode="IMAGE_EDIT"
+                msg="수정하기"
+                onClick={handleButtonClick}
+              ></Button>
+            ) : (
+              <Button
+                color="#FFFFFF"
+                mode="IMAGE_UPLOAD"
+                msg="사진 첨부하기"
+                onClick={handleButtonClick}
+              ></Button>
+            )
+          }
+        ></ImageUploader>
+        <LongInputBox
+          title={'내용'}
+          placeholder={PlaceholderContent}
+        ></LongInputBox>
+        <Button color="#629AF9" mode="NORMAL_BLUE" msg="작성완료"></Button>
+      </ContentWrapper>
     </ReportWritingWrapper>
   );
 }
