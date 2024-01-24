@@ -1,4 +1,9 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
+import Calendar from 'react-calendar';
+import '../../assets/styles/Calendar.css';
+
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
@@ -9,19 +14,14 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 60px 16px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
-`;
-
-const TitleBox = styled.div`
-  width: 100%;
-  font-size: 35px;
 `;
 
 const ContentBox = styled.div`
@@ -34,33 +34,46 @@ const ContentBox = styled.div`
   gap: 15px;
 `;
 
-const InnerContentBox = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
 // 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function DateTime() {
+function DateTime({ onPrevious, onNext }) {
   return (
     <Wrapper>
-      <TitleBox>
-        <Paragraph
-          sentences={[
-            <BoldText
-              fontSize="35px"
-              boldContent="약속 날짜와 시간"
-              normalContent="을"
-            ></BoldText>,
-            '정해주세요',
-          ]}
-        ></Paragraph>
-      </TitleBox>
+      <NavigationBar
+        leftContent={
+          <Image
+            width="40px"
+            height="40px"
+            margin="0 0 0 -12px"
+            src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
+          ></Image>
+        }
+        rightContent="다음"
+        onPrevious={onPrevious}
+        onNext={onNext}
+      ></NavigationBar>
+
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={[
+          <BoldText boldContent="날짜와 시간" normalContent="을"></BoldText>,
+          '정해주세요',
+        ]}
+      ></Paragraph>
 
       {/* ProgressBar 진척도 변경 부분 */}
       <ProgressBar value={51}></ProgressBar>
 
-      <DateTimeInputSelect></DateTimeInputSelect>
+      {/* <DateTimeInputSelect></DateTimeInputSelect> */}
+      <Calendar
+        view={'month'}
+        minDate={new Date()}
+        next2Label={null}
+        prev2Label={null}
+        formatDay={(locale, date) =>
+          date.toLocaleString('en', { day: 'numeric' })
+        }
+      ></Calendar>
     </Wrapper>
   );
 }
