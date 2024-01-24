@@ -6,6 +6,7 @@ import com.a407.back.domain.QNotification;
 import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QUser;
 import com.a407.back.domain.QZipsa;
+import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.dto.UserRecordsResponse;
@@ -71,7 +72,8 @@ public class UserRepositoryImpl implements UserRepository {
     public UserRecordsResponse findRecordsByUserId(Long userId) {
         QRoom qRoom = QRoom.room;
         return new UserRecordsResponse(
-            query.selectFrom(qRoom).where(qRoom.userId.userId.eq(userId)).fetch());
+            query.selectFrom(qRoom).where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(
+                Process.end))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
     }
 
 

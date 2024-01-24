@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 public class UserRecordsList {
 
-    private final Long roomId;
     private final Long zipsaId;
     private final String name;
     private final String profile;
@@ -30,7 +29,6 @@ public class UserRecordsList {
     private final boolean isReviewed;
 
     public UserRecordsList(Room room) {
-        this.roomId = room.getRoomId();
         this.zipsaId = room.getZipsaId().getZipsaId().getUserId();
         this.name = room.getZipsaId().getZipsaId().getName();
         if (room.getZipsaId().getZipsaId().getProfileImage() == null) {
