@@ -24,7 +24,7 @@ function ImageUploader({
 }) {
   const handleImageChange = event => {
     const imageLists = event.target.files;
-    let imageUrlLists = [...showImages];
+    let imageUrlLists = [];
 
     if (imageLists) {
       // 여기에서 파일을 업로드하거나 다른 작업을 수행할 수 있다.
@@ -35,6 +35,8 @@ function ImageUploader({
 
       // 최대 길이 3
       if (imageUrlLists.length > 3) {
+        console.log(imageUrlLists);
+        alert('사진은 최대 3개까지 첨부 가능합니다.');
         imageUrlLists = imageUrlLists.slice(0, 3);
       }
 
