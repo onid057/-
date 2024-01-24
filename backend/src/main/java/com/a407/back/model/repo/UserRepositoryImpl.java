@@ -75,7 +75,8 @@ public class UserRepositoryImpl implements UserRepository {
         return new UserRecordsResponse(
             query.selectFrom(qRoom).where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(
                 Process.end))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
-    
+    }
+
     @Override
     public UserReservationResponse findReservationByUserId(Long userId) {
         QRoom qRoom = QRoom.room;

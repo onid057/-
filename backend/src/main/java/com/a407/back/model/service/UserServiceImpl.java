@@ -83,6 +83,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserRecordsResponse findRecordsByUserId(Long userId) {
         return userRepository.findRecordsByUserId(userId);
+    }
     
     @Override
     public UserReservationResponse findReservationByUserId(Long userId) {
