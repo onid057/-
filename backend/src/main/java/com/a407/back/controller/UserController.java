@@ -42,10 +42,8 @@ public class UserController {
     }
 
     @PostMapping("/helpers-map/{userId}")
-    public ResponseEntity<UserNearZipsaResponse> getNearUserList(
-        @PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(userService.findNearZipsaList(userId));
+    public ResponseEntity<UserNearZipsaResponse> getNearUserList(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findNearZipsaList(userId));
     }
 
     @GetMapping("/{userId}/records")
@@ -59,4 +57,5 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(userService.findReservationByUserId(userId));
     }
+
 }

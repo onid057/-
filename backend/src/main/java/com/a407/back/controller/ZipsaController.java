@@ -3,6 +3,7 @@ package com.a407.back.controller;
 import com.a407.back.dto.ReportCreateRequest;
 import com.a407.back.dto.ReportSearchResponse;
 import com.a407.back.dto.ZipsaDetailInfoResponse;
+import com.a407.back.dto.ZipsaReservationResponse;
 import com.a407.back.model.service.ZipsaServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,5 +47,11 @@ public class ZipsaController {
             .body(zipsaService.findRecordsByZipsaId(helperId));
     }
 
+    @GetMapping("/{helperId}/reservations")
+    public ResponseEntity<ZipsaReservationResponse> getZipsaReservations(
+        @PathVariable Long helperId) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(zipsaService.findReservationByZipsaId(helperId));
+    }
 
 }
