@@ -3,10 +3,13 @@ package com.a407.back.model.repo;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.QNotification;
+import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QUser;
 import com.a407.back.domain.QZipsa;
+import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.dto.UserNearZipsaResponse;
+import com.a407.back.dto.UserRecordsResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -41,7 +44,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<Notification> findNotificationByUserId(Long userId, String type) {
         QNotification qNotification = QNotification.notification;
-        query.update(qNotification).set(qNotification.isRead, true).where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false))).execute();
+        query.update(qNotification).set(qNotification.isRead, true)
+            .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
+            .execute();
         return query.selectFrom(qNotification).where(
             qNotification.receiveId.eq(userId)
                 .and(qNotification.type.eq(
@@ -61,6 +66,14 @@ public class UserRepositoryImpl implements UserRepository {
         return new UserNearZipsaResponse((query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
                 user.getLatitude(), user.getLongitude(), 0.009)))).fetch());
+    }
+
+    @Override
+    public UserRecordsResponse findRecordsByUserId(Long userId) {
+        QRoom qRoom = QRoom.room;
+        return new UserRecordsResponse(
+            query.selectFrom(qRoom).where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(
+                Process.end))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
     }
 
 

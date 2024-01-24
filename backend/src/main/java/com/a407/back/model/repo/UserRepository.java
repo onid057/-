@@ -3,6 +3,7 @@ package com.a407.back.model.repo;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.User;
 import com.a407.back.dto.UserNearZipsaResponse;
+import com.a407.back.dto.UserRecordsResponse;
 import java.util.List;
 
 public interface UserRepository {
@@ -16,4 +17,6 @@ public interface UserRepository {
     User findByUserId(Long userId);
 
     UserNearZipsaResponse findNearZipsaList(Long userId);
+
+    UserRecordsResponse findRecordsByUserId(Long userId);
 }
