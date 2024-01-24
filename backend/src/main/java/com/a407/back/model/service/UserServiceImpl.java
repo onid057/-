@@ -7,6 +7,7 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.NotificationListResponse;
 import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.dto.UserRecordsResponse;
+import com.a407.back.dto.UserReservationResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.UserRepository;
@@ -82,5 +83,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserRecordsResponse findRecordsByUserId(Long userId) {
         return userRepository.findRecordsByUserId(userId);
+    
+    @Override
+    public UserReservationResponse findReservationByUserId(Long userId) {
+        return userRepository.findReservationByUserId(userId);
     }
 }

@@ -10,6 +10,7 @@ import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.dto.UserRecordsResponse;
+import com.a407.back.dto.UserReservationResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -48,9 +49,8 @@ public class UserRepositoryImpl implements UserRepository {
             .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
             .execute();
         return query.selectFrom(qNotification).where(
-            qNotification.receiveId.eq(userId)
-                .and(qNotification.type.eq(
-                    Type.valueOf(type)))).fetch();
+                qNotification.receiveId.eq(userId).and(qNotification.type.eq(Type.valueOf(type))))
+            .fetch();
     }
 
     @Override
@@ -74,12 +74,18 @@ public class UserRepositoryImpl implements UserRepository {
         return new UserRecordsResponse(
             query.selectFrom(qRoom).where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(
                 Process.end))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
+    
+    @Override
+    public UserReservationResponse findReservationByUserId(Long userId) {
+        QRoom qRoom = QRoom.room;
+        return new UserReservationResponse(query.selectFrom(qRoom).where(
+                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.before, Process.ongoing)))
+            .orderBy(qRoom.expectationStartedAt.asc()).fetch());
     }
 
 
     public static BooleanExpression createLatitudeLongitudeBetween(NumberPath<Double> latitudePath,
-        NumberPath<Double> longitudePath,
-        double latitude, double longitude, double range) {
+        NumberPath<Double> longitudePath, double latitude, double longitude, double range) {
         return latitudePath.between(latitude - range, latitude + range)
             .and(longitudePath.between(longitude - range, longitude + range));
     }

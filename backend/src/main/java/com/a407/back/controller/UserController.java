@@ -4,6 +4,7 @@ import com.a407.back.dto.NotificationListResponse;
 import com.a407.back.dto.UserCreateRequest;
 import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.dto.UserRecordsResponse;
+import com.a407.back.dto.UserReservationResponse;
 import com.a407.back.model.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -53,4 +54,9 @@ public class UserController {
     }
 
 
+    @GetMapping("/{userId}/reservations")
+    public ResponseEntity<UserReservationResponse> getUserReservations(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(userService.findReservationByUserId(userId));
+    }
 }

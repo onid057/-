@@ -4,6 +4,7 @@ import com.a407.back.domain.Notification;
 import com.a407.back.domain.User;
 import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.dto.UserRecordsResponse;
+import com.a407.back.dto.UserReservationResponse;
 import java.util.List;
 
 public interface UserRepository {
@@ -19,4 +20,6 @@ public interface UserRepository {
     UserNearZipsaResponse findNearZipsaList(Long userId);
 
     UserRecordsResponse findRecordsByUserId(Long userId);
+    
+    UserReservationResponse findReservationByUserId(Long userId);
 }
