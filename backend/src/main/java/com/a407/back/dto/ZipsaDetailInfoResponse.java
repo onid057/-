@@ -49,8 +49,10 @@ public class ZipsaDetailInfoResponse {
 
     private final List<ZipsaReview> reviews;
 
+    private final List<String> subCategory;
 
-    public ZipsaDetailInfoResponse(Zipsa zipsa, List<Review> reviewList) {
+
+    public ZipsaDetailInfoResponse(Zipsa zipsa, List<Review> reviewList, List<String> subCategory) {
         this.name = zipsa.getZipsaId().getName();
         this.birth = zipsa.getZipsaId().getBirth();
         this.gender = zipsa.getZipsaId().getGender();
@@ -77,6 +79,7 @@ public class ZipsaDetailInfoResponse {
         for (Review review : reviewList) {
             this.reviews.add(new ZipsaReview(review));
         }
+        this.subCategory = subCategory;
 
     }
 
