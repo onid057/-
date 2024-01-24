@@ -5,6 +5,7 @@ import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.ReportCreateRequest;
 import com.a407.back.dto.ReportSearchResponse;
+import com.a407.back.dto.ZipsaReservationResponse;
 import jakarta.transaction.Transactional;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.dto.ZipsaDetailInfoResponse;
@@ -40,6 +41,11 @@ public class ZipsaServiceImpl implements ZipsaService {
     @Override
     public Zipsa findByZipsaId(Long zipsaId) {
         return zipsaRepository.findByZipsaId(zipsaId);
+    }
+
+    @Override
+    public ZipsaReservationResponse findReservationByZipsaId(Long zipsaId) {
+        return zipsaRepository.findReservationByZipsaId(zipsaId);
     }
 
 }
