@@ -57,7 +57,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         QRoom qRoom = QRoom.room;
         return new ZipsaRecordsResponse(query.selectFrom(qRoom)
             .where(qRoom.zipsaId.zipsaId.userId.eq(helperId).and(qRoom.status.eq(
-                Process.end))).fetch());
+                Process.end))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
     }
 
 

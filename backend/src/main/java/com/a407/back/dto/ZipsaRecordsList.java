@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 public class ZipsaRecordsList {
 
-    private final Long roomId;
     private final String name;
     private final String profile;
     private final String subCategoryName;
@@ -28,7 +27,6 @@ public class ZipsaRecordsList {
 
 
     public ZipsaRecordsList(Room room) {
-        this.roomId = room.getRoomId();
         this.name = room.getUserId().getName();
         if (room.getUserId().getProfileImage() == null) {
             this.profile = null;
