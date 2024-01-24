@@ -41,11 +41,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<Notification> findNotificationByUserId(Long userId, String type) {
         QNotification qNotification = QNotification.notification;
-        query.update(qNotification).set(qNotification.isRead, true).where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false))).execute();
+        query.update(qNotification).set(qNotification.isRead, true)
+            .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
+            .execute();
         return query.selectFrom(qNotification).where(
-            qNotification.receiveId.eq(userId)
-                .and(qNotification.type.eq(
-                    Type.valueOf(type)))).fetch();
+                qNotification.receiveId.eq(userId).and(qNotification.type.eq(Type.valueOf(type))))
+            .fetch();
     }
 
     @Override
@@ -60,13 +61,13 @@ public class UserRepositoryImpl implements UserRepository {
         User user = em.find(User.class, userId);
         return new UserNearZipsaResponse((query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
-                user.getLatitude(), user.getLongitude(), 0.009)))).fetch());
+                user.getLatitude(), user.getLongitude(), 0.009)))).orderBy(
+            qZipsa.serviceCount.desc()).fetch());
     }
 
 
     public static BooleanExpression createLatitudeLongitudeBetween(NumberPath<Double> latitudePath,
-        NumberPath<Double> longitudePath,
-        double latitude, double longitude, double range) {
+        NumberPath<Double> longitudePath, double latitude, double longitude, double range) {
         return latitudePath.between(latitude - range, latitude + range)
             .and(longitudePath.between(longitude - range, longitude + range));
     }
