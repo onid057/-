@@ -40,5 +40,11 @@ public class ZipsaController {
             .body(zipsaService.zipsaAndReviewFindByZipsaId(helperId));
     }
 
+    @GetMapping("/{helperId}/records")
+    public ResponseEntity<?> getUserRecords(@PathVariable Long helperId) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(zipsaService.findRecordsByZipsaId(helperId));
+    }
+
 
 }
