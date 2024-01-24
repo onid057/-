@@ -59,7 +59,8 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         return new ZipsaReservationResponse(
             query.selectFrom(qRoom)
                 .where(qRoom.zipsaId.zipsaId.userId.eq(zipsaId).and(qRoom.status.in(
-                    Process.before, Process.ongoing))).fetch());
+                    Process.before, Process.ongoing))).orderBy(qRoom.expectationStartedAt.asc())
+                .fetch());
     }
 
 

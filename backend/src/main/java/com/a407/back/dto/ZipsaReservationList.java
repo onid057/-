@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 public class ZipsaReservationList {
 
-    private final Long roomId;
     private final String name;
     private final String profile;
     private final String subCategoryName;
@@ -24,10 +23,8 @@ public class ZipsaReservationList {
     private final Timestamp expectationStartedAt;
     private final Timestamp expectationEndedAt;
     private final int expectationPay;
-    private final int totalPay;
 
     public ZipsaReservationList(Room room) {
-        this.roomId = room.getRoomId();
         this.name = room.getUserId().getName();
         if (room.getUserId().getProfileImage() == null) {
             this.profile = null;
@@ -48,7 +45,6 @@ public class ZipsaReservationList {
         this.expectationStartedAt = room.getExpectationStartedAt();
         this.expectationEndedAt = room.getExpectationEndedAt();
         this.expectationPay = room.getExpectationPay();
-        this.totalPay = room.getTotalPay();
     }
 
 }
