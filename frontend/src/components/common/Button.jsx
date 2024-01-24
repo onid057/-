@@ -11,14 +11,14 @@ const ButtonWrapper = styled.button`
   padding: auto;
   width: 288px;
   height: 57px;
-  font-size: 20px /* 크기 설정*/
-    ${props =>
-      props.mode === 'SMALL' &&
-      css`
-        width: 138px;
-        font-size: 20px;
-        font-weight: bold;
-      `};
+  font-size: 20px;
+  ${props =>
+    props.mode === 'SMALL' &&
+    css`
+      width: 138px;
+      font-size: 20px;
+      font-weight: bold;
+    `};
   ${props =>
     props.mode === 'NORMAL_GRAY' &&
     css`
@@ -35,7 +35,6 @@ const ButtonWrapper = styled.button`
     css`
       width: 138px;
       font-size: 18px;
-      font-weight: lighter;
       color: black;
       background-color: white;
     `};
@@ -44,7 +43,6 @@ const ButtonWrapper = styled.button`
     css`
       width: 100%;
       height: 38px;
-      font-weight: lighter;
       color: black;
       font-size: 17px;
       background-color: white;
@@ -56,7 +54,6 @@ const ButtonWrapper = styled.button`
       height: 38px;
       flex: 1;
       font-size: 18px;
-      font-weight: lighter;
       color: black;
       background-color: white;
     `};
@@ -67,7 +64,6 @@ const ButtonWrapper = styled.button`
       height: 38px;
       flex: 1;
       font-size: 18px;
-      font-weight: lighter;
       color: black;
       background-color: white;
     `};
@@ -107,10 +103,10 @@ const ImgContentWrapper = styled.div`
   }
 `;
 
-function Button({ msg, color, mode, ...rest }) {
+function Button({ msg, color, mode, onClick, ...rest }) {
   if (mode === 'IMAGE_UPLOAD') {
     return (
-      <ButtonWrapper color={color} mode={mode} {...rest}>
+      <ButtonWrapper color={color} mode={mode} onClick={onClick} {...rest}>
         <ContentWrapper>
           <img
             src={`${process.env.PUBLIC_URL}/images/camera.svg`}
@@ -122,7 +118,7 @@ function Button({ msg, color, mode, ...rest }) {
     );
   } else if (mode === 'IMAGE_EDIT') {
     return (
-      <ButtonWrapper color={color} mode={mode} {...rest}>
+      <ButtonWrapper color={color} mode={mode} onClick={onClick} {...rest}>
         <ContentWrapper>
           <img src={`${process.env.PUBLIC_URL}/images/edit.svg`} alt="edit" />
           {msg}
@@ -131,7 +127,7 @@ function Button({ msg, color, mode, ...rest }) {
     );
   } else if (mode === 'INSIDE_IMAGE') {
     return (
-      <ButtonWrapper color={color} mode={mode} {...rest}>
+      <ButtonWrapper color={color} mode={mode} onClick={onClick} {...rest}>
         <ImgContentWrapper>
           <img
             src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
@@ -143,7 +139,7 @@ function Button({ msg, color, mode, ...rest }) {
     );
   } else {
     return (
-      <ButtonWrapper color={color} mode={mode} {...rest}>
+      <ButtonWrapper color={color} mode={mode} onClick={onClick} {...rest}>
         {msg}
       </ButtonWrapper>
     );

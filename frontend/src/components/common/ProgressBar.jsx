@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 const ProgressBarWrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
-  margin: 20px 0 13px;
+  margin: 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,7 +29,6 @@ const BarGage = styled.progress`
 function ProgressBar({ value }) {
   return (
     <ProgressBarWrapper>
-      {/* 아래 value 값에 따라 진척률이 변경됩니다. */}
       <BarGage value={value} max={100}></BarGage>
     </ProgressBarWrapper>
   );
