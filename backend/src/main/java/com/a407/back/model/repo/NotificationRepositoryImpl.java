@@ -35,4 +35,9 @@ public class NotificationRepositoryImpl implements NotificationRepository {
         query.update(qNotification).set(qNotification.status, Status.close)
             .where(qNotification.roomId.roomId.eq(room.getRoomId()).and(qNotification.status.eq(Status.standby))).execute();
     }
+
+    @Override
+    public void makeNotification(Notification notification) {
+        em.persist(notification);
+    }
 }

@@ -9,6 +9,7 @@ import com.a407.back.dto.ApiResponse;
 import com.a407.back.dto.MatchCreateRequest;
 import com.a407.back.dto.MatchSearchRequest;
 import com.a407.back.dto.MatchSearchResponse;
+import com.a407.back.dto.RoomCreateRequest;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.MatchService;
 import com.a407.back.model.service.NotificationService;
@@ -98,6 +99,12 @@ public class MatchController {
         }
         roomService.changeRoomZipsa(zipsa, matchCreateRequest.getRoomId());
         return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.INSERT_SUCCESS, matchCreateRequest.getRoomId()));
+            new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, matchCreateRequest.getRoomId()));
+    }
+
+    @PostMapping("/choice-helper")
+    public ResponseEntity<ApiResponse<Long>> makeRoomWithHelper(@RequestBody RoomCreateRequest roomCreateRequest) {
+        Long roomId = matchService.makeRoom(roomCreateRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, roomId));
     }
 }

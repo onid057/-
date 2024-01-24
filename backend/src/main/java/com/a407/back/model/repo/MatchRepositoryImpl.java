@@ -1,7 +1,11 @@
 package com.a407.back.model.repo;
 
+import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.QZipsaCategory;
+import com.a407.back.domain.Room;
+import com.a407.back.domain.SubCategory;
+import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.MatchSearchRequest;
@@ -106,13 +110,6 @@ public class MatchRepositoryImpl implements MatchRepository {
         }
     }
 
-
-    @Override
-    public Zipsa save(Zipsa zipsa) {
-        em.persist(zipsa);
-        return zipsa;
-    }
-
     @Override
     public List<String> findCategoryNamesByZipsaId(Long zipsaId) {
 
@@ -125,8 +122,8 @@ public class MatchRepositoryImpl implements MatchRepository {
     }
 
     @Override
-    public List<Zipsa> findByIsWorked(boolean isWorked) {
-        QZipsa qZipsa = QZipsa.zipsa;
-        return query.selectFrom(qZipsa).where(qZipsa.isWorked.eq(isWorked)).fetch();
+    public Room makeRoom (Room room) {
+        em.persist(room);
+        return room;
     }
 }
