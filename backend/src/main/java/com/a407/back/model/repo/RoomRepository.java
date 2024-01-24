@@ -13,4 +13,6 @@ public interface RoomRepository {
     int reduceNotificationCount(int count, Long roomId);
 
     void changeRoomZipsa(Zipsa zipsa, Long roomId);
+
+    void changeRoomReview(Long roomId);
 }
