@@ -3,10 +3,13 @@ package com.a407.back.model.repo;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.QNotification;
+import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QUser;
 import com.a407.back.domain.QZipsa;
+import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.dto.UserNearZipsaResponse;
+import com.a407.back.dto.UserReservationResponse;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -41,11 +44,12 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<Notification> findNotificationByUserId(Long userId, String type) {
         QNotification qNotification = QNotification.notification;
-        query.update(qNotification).set(qNotification.isRead, true).where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false))).execute();
+        query.update(qNotification).set(qNotification.isRead, true)
+            .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
+            .execute();
         return query.selectFrom(qNotification).where(
-            qNotification.receiveId.eq(userId)
-                .and(qNotification.type.eq(
-                    Type.valueOf(type)))).fetch();
+                qNotification.receiveId.eq(userId).and(qNotification.type.eq(Type.valueOf(type))))
+            .fetch();
     }
 
     @Override
@@ -63,10 +67,17 @@ public class UserRepositoryImpl implements UserRepository {
                 user.getLatitude(), user.getLongitude(), 0.009)))).fetch());
     }
 
+    @Override
+    public UserReservationResponse findReservationByUserId(Long userId) {
+        QRoom qRoom = QRoom.room;
+        return new UserReservationResponse(query.selectFrom(qRoom).where(
+                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.before, Process.ongoing)))
+            .orderBy(qRoom.expectationStartedAt.asc()).fetch());
+    }
+
 
     public static BooleanExpression createLatitudeLongitudeBetween(NumberPath<Double> latitudePath,
-        NumberPath<Double> longitudePath,
-        double latitude, double longitude, double range) {
+        NumberPath<Double> longitudePath, double latitude, double longitude, double range) {
         return latitudePath.between(latitude - range, latitude + range)
             .and(longitudePath.between(longitude - range, longitude + range));
     }
