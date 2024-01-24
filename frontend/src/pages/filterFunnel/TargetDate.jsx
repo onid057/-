@@ -7,8 +7,6 @@ import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
-import DateTimeInputSelect from '../../components/common/DateTimeInputSelect';
-import Button from '../../components/common/Button';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -24,18 +22,7 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-const ContentBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  /* justify-content: space-between; */
-  justify-content: flex-start;
-  align-items: center;
-  gap: 15px;
-`;
-
-// 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function DateTime({ onPrevious, onNext }) {
+function TargetDate({ onPrevious, onNext, matchDate }) {
   return (
     <Wrapper>
       <NavigationBar
@@ -56,26 +43,23 @@ function DateTime({ onPrevious, onNext }) {
         gap="5px"
         fontSize="35px"
         sentences={[
-          <BoldText boldContent="날짜와 시간" normalContent="을"></BoldText>,
+          <BoldText boldContent="날짜" normalContent="를"></BoldText>,
           '정해주세요',
         ]}
       ></Paragraph>
 
-      {/* ProgressBar 진척도 변경 부분 */}
       <ProgressBar value={51}></ProgressBar>
 
-      {/* <DateTimeInputSelect></DateTimeInputSelect> */}
       <Calendar
         view={'month'}
         minDate={new Date()}
+        maxDate={new Date('2024-12-31')}
         next2Label={null}
         prev2Label={null}
-        formatDay={(locale, date) =>
-          date.toLocaleString('en', { day: 'numeric' })
-        }
+        formatDay={(_, date) => date.toLocaleString('en', { day: 'numeric' })}
       ></Calendar>
     </Wrapper>
   );
 }
 
-export default DateTime;
+export default TargetDate;

@@ -12,17 +12,17 @@ const ProgressBarWrapper = styled.div`
 
 const BarGage = styled.progress`
   width: 100%;
-  height: 16px;
+  height: 14px;
   appearance: none;
   &::-webkit-progress-bar {
     background: #dcf0f5;
     border-radius: 12px;
-    border: 1px solid #eeeeee;
+    border: none;
     overflow: hidden;
   }
   &::-webkit-progress-value {
     background: #629af9;
-    border-radius: 0px;
+    border-radius: 12px;
   }
 `;
 

@@ -3,8 +3,9 @@ import { useFunnel } from '../../hooks/useFunnel';
 
 import MainCategory from './MainCategory';
 import SubCategory from './SubCategory';
+import TargetDate from './TargetDate';
+import TargetTime from './TargetTime';
 import Condition from './Condition';
-import DateTime from './DateTime';
 
 function FilterFunnel() {
   const [filterData, setFilterData] = useState({});
@@ -35,24 +36,37 @@ function FilterFunnel() {
             setStep('MAIN_CATEGORY');
           }}
           onNext={data => {
-            setStep('DATETIME');
+            setStep('DATE');
             setFilterData({ ...filterData, matchSubCategory: data });
           }}
           matchSubCategory={filterData.matchSubCategory}
         ></SubCategory>
       </Funnel.Step>
 
-      <Funnel.Step name="DATETIME">
-        <DateTime
+      <Funnel.Step name="DATE">
+        <TargetDate
           onPrevious={() => {
             setStep('SUB_CATEGORY');
           }}
           onNext={data => {
-            setStep('MAIN_CATEGORY');
-            setFilterData({ ...filterData, matchDateTime: data });
+            setStep('TIME');
+            setFilterData({ ...filterData, matchDate: data });
           }}
-          matchDateTime={filterData.matchDateTime}
-        ></DateTime>
+          matchDate={filterData.matchDate}
+        ></TargetDate>
+      </Funnel.Step>
+
+      <Funnel.Step name="TIME">
+        <TargetTime
+          onPrevious={() => {
+            setStep('DATE');
+          }}
+          onNext={data => {
+            setStep('MAIN_CATEGORY');
+            setFilterData({ ...filterData, matchTime: data });
+          }}
+          matchTime={filterData.matchTime}
+        ></TargetTime>
       </Funnel.Step>
     </Funnel>
   );
