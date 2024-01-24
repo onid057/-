@@ -6,6 +6,7 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
+import FilterFunnel from './pages/filterFunnel/FilterFunnel';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -162,6 +163,7 @@ function App() {
         <Route index element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/register" element={<RegisterFunnel />}></Route>
+        <Route path="/filter" element={<FilterFunnel />}></Route>
       </Routes>
     </ThemeProvider>
   );
