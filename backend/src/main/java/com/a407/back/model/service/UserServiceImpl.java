@@ -5,6 +5,8 @@ import com.a407.back.domain.Notification;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.NotificationListResponse;
+import com.a407.back.dto.UserAccountRequest;
+import com.a407.back.dto.UserAccountResponse;
 import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.dto.UserRecordsResponse;
 import com.a407.back.dto.UserReservationResponse;
@@ -88,5 +90,39 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserReservationResponse findReservationByUserId(Long userId) {
         return userRepository.findReservationByUserId(userId);
+    @Transactional
+    public UserAccountResponse accountAdd(UserAccountRequest userAccountRequest) {
+        User user = userRepository.findByUserId(userAccountRequest.getUserId());
+        if (user == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+        if (user.getAccount() != null && user.getAccount()
+            .equals(userAccountRequest.getAccount())) {
+            return new UserAccountResponse("이미 등록된 카드입니다");
+        }
+
+        userRepository.saveAccount(user.getUserId(), userAccountRequest.getAccount());
+
+        return new UserAccountResponse("카드 등록 성공");
+    }
+
+    @Override
+    public String getMaskedCardNumber(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user == null || user.getAccount() == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+        String cardNumber = user.getAccount();
+        return "****-****-****-" + cardNumber.substring(cardNumber.length() - 4);
+    }
+
+    @Override
+    @Transactional
+    public void accountDelete(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+        userRepository.deleteAccount(user, user.getAccount());
     }
 }

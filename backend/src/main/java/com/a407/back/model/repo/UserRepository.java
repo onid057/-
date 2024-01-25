@@ -22,4 +22,7 @@ public interface UserRepository {
     UserRecordsResponse findRecordsByUserId(Long userId);
     
     UserReservationResponse findReservationByUserId(Long userId);
+    void saveAccount(Long userId, String account);
+
+    void deleteAccount(User Id, String account);
 }

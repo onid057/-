@@ -92,4 +92,16 @@ public class UserRepositoryImpl implements UserRepository {
             .and(longitudePath.between(longitude - range, longitude + range));
     }
 
+    @Override
+    public void saveAccount(Long userId, String account) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.account, account).where(qUser.userId.eq(userId)).execute();
+    }
+
+    @Override
+    public void deleteAccount(User Id, String account) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.account, "").where(qUser.userId.eq(Id.getUserId())).execute();
+    }
+
 }

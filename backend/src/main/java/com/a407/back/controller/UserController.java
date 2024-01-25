@@ -1,6 +1,8 @@
 package com.a407.back.controller;
 
 import com.a407.back.dto.NotificationListResponse;
+import com.a407.back.dto.UserAccountRequest;
+import com.a407.back.dto.UserAccountResponse;
 import com.a407.back.dto.UserCreateRequest;
 import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.dto.UserRecordsResponse;
@@ -10,6 +12,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +58,24 @@ public class UserController {
     public ResponseEntity<UserReservationResponse> getUserReservations(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(userService.findReservationByUserId(userId));
+    @PostMapping("/payments")
+    public ResponseEntity<UserAccountResponse> accountAdd(
+        @RequestBody UserAccountRequest request
+    ) {
+        UserAccountResponse response = userService.accountAdd(request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/{userId}/payments/detail")
+    public ResponseEntity<String> getAccountDetails(@PathVariable Long userId) {
+        String maskedCardNumber = userService.getMaskedCardNumber(userId);
+        return ResponseEntity.ok(maskedCardNumber);
+    }
+
+    @DeleteMapping("/{userId}/payments")
+    public ResponseEntity<Void> accountDelete(@PathVariable Long userId) {
+        userService.accountDelete(userId);
+        return ResponseEntity.ok().body(null);
     }
 
 }

@@ -2,6 +2,8 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.User;
 import com.a407.back.dto.NotificationListResponse;
+import com.a407.back.dto.UserAccountRequest;
+import com.a407.back.dto.UserAccountResponse;
 import com.a407.back.dto.UserNearZipsaResponse;
 import com.a407.back.dto.UserRecordsResponse;
 import com.a407.back.dto.UserReservationResponse;
@@ -24,3 +26,11 @@ public interface UserService {
     UserReservationResponse findReservationByUserId(Long userId);
 }
 
+    User findByUserId(Long userId);
+
+    UserAccountResponse accountAdd(UserAccountRequest userAccountRequest);
+
+    String getMaskedCardNumber(Long userId);
+
+    void accountDelete(Long userId);
+}
