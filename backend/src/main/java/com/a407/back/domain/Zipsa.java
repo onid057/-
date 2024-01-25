@@ -36,7 +36,7 @@ public class Zipsa {
 
     @ColumnDefault("false")
     @Column(name = "is_worked", nullable = false)
-    private boolean isWorked;
+    private Boolean isWorked;
 
     @Column(name = "prefer_tag", nullable = false, length = 100)
     private String preferTag;
@@ -66,7 +66,7 @@ public class Zipsa {
     private Double rewindAverage;
 
     @Builder
-    public Zipsa(User zipsaId, Grade gradeId, String description, String account, boolean isWorked,
+    public Zipsa(User zipsaId, Grade gradeId, String description, String account, Boolean isWorked,
         String preferTag, int serviceCount, Double replyAverage, int replyCount,
         Double kindnessAverage, Double skillAverage, Double rewindAverage) {
         this.zipsaId = zipsaId;

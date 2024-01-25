@@ -56,11 +56,11 @@ public class User {
 
     @Lob
     @Column(name = "profile_image", columnDefinition = "MEDIUMBLOB")
-    private byte[] profileImage;
+    private Byte[] profileImage;
 
     @ColumnDefault("false")
     @Column(name = "is_certificated", nullable = false)
-    private boolean isCertificated;
+    private Boolean isCertificated;
 
     @Column(name = "latitude", nullable = false)
     private Double latitude;
@@ -73,15 +73,15 @@ public class User {
 
     @ColumnDefault("false")
     @Column(name = "is_blocked", nullable = false)
-    private boolean isBlocked;
+    private Boolean isBlocked;
 
     @ColumnDefault("false")
     @Column(name = "is_admin", nullable = false)
-    private boolean isAdmin;
+    private Boolean isAdmin;
 
     @ColumnDefault("false")
     @Column(name = "is_affiliated", nullable = false)
-    private boolean isAffiliated;
+    private Boolean isAffiliated;
 
     @ColumnDefault("0")
     @Column(name = "service_count")
@@ -90,9 +90,9 @@ public class User {
 
     @Builder(toBuilder = true)
     public User(Association associationId, String email, String password, String name,
-        Timestamp birth, Gender gender, String address, byte[] profileImage, boolean isCertificated,
-        Double latitude, Double longitude, String account, boolean isBlocked, boolean isAdmin,
-        boolean isAffiliated, int serviceCount) {
+        Timestamp birth, Gender gender, String address, Byte[] profileImage, Boolean isCertificated,
+        Double latitude, Double longitude, String account, Boolean isBlocked, Boolean isAdmin,
+        Boolean isAffiliated, int serviceCount) {
         this.associationId = associationId;
         this.email = email;
         this.password = password;

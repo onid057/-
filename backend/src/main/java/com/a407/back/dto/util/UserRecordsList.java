@@ -2,6 +2,7 @@ package com.a407.back.dto.util;
 
 import com.a407.back.domain.Room;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
@@ -17,17 +18,17 @@ public class UserRecordsList {
     private final int estimateDuration;
     private final Timestamp roomCreatedAt;
     private final Timestamp matchCreatedAt;
-    private final boolean isReported;
+    private final Boolean isReported;
     private final int reportCycle;
-    private final boolean isPublic;
+    private final Boolean isPublic;
     private final Timestamp startedAt;
     private final Timestamp endedAt;
     private final Timestamp expectationStartedAt;
     private final Timestamp expectationEndedAt;
     private final int expectationPay;
     private final int totalPay;
-    private final boolean isComplained;
-    private final boolean isReviewed;
+    private final Boolean isComplained;
+    private final Boolean isReviewed;
 
     public UserRecordsList(Room room) {
         this.roomId = room.getRoomId();
@@ -36,7 +37,7 @@ public class UserRecordsList {
         if (room.getZipsaId().getZipsaId().getProfileImage() == null) {
             this.profile = null;
         } else {
-            this.profile = new String(room.getZipsaId().getZipsaId().getProfileImage());
+            this.profile = Arrays.toString(room.getZipsaId().getZipsaId().getProfileImage());
         }
         this.subCategoryName = room.getSubCategoryId().getName();
         this.majorCategoryName = room.getSubCategoryId().getMajorCategoryId().getName();
@@ -44,16 +45,16 @@ public class UserRecordsList {
         this.estimateDuration = room.getEstimateDuration();
         this.roomCreatedAt = room.getRoomCreatedAt();
         this.matchCreatedAt = room.getMatchCreatedAt();
-        this.isReported = room.isReported();
+        this.isReported = room.getIsReported();
         this.reportCycle = room.getReportCycle();
-        this.isPublic = room.isPublic();
+        this.isPublic = room.getIsPublic();
         this.startedAt = room.getStartedAt();
         this.endedAt = room.getEndedAt();
         this.expectationStartedAt = room.getExpectationStartedAt();
         this.expectationEndedAt = room.getExpectationEndedAt();
         this.expectationPay = room.getExpectationPay();
         this.totalPay = room.getTotalPay();
-        this.isComplained = room.isComplained();
-        this.isReviewed = room.isReviewed();
+        this.isComplained = room.getIsComplained();
+        this.isReviewed = room.getIsReviewed();
     }
 }

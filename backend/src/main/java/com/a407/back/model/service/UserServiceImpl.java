@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isWorkedDistinction(Long userId) {
         Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
-        return zipsa != null && zipsa.isWorked();
+        return zipsa != null && zipsa.getIsWorked();
     }
 
 
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
     public UserRecordsResponse findRecordsByUserId(Long userId) {
         return userRepository.findRecordsByUserId(userId);
     }
-    
+
     @Override
     public UserReservationResponse findReservationByUserId(Long userId) {
         return userRepository.findReservationByUserId(userId);

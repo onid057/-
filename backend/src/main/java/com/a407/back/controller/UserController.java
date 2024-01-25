@@ -30,7 +30,7 @@ public class UserController {
 
     @PostMapping("/")
     public ResponseEntity<Long> userSignUp(@RequestBody UserCreateRequest user) {
-        Long id = userService.save(user.toEntity());
+        long id = userService.save(user.toEntity());
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 

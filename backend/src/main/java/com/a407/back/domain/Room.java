@@ -58,14 +58,14 @@ public class Room implements Serializable {
 
     @ColumnDefault("false")
     @Column(name = "is_reported", nullable = false)
-    private boolean isReported;
+    private Boolean isReported;
 
     @Column(name = "report_cycle")
     private int reportCycle;
 
     @ColumnDefault("false")
     @Column(name = "is_public", nullable = false)
-    private boolean isPublic;
+    private Boolean isPublic;
 
     @Column(name = "notification_count", nullable = false)
     private int notificationCount;
@@ -90,11 +90,11 @@ public class Room implements Serializable {
 
     @ColumnDefault("false")
     @Column(name = "is_complained", nullable = false)
-    private boolean isComplained;
+    private Boolean isComplained;
 
     @ColumnDefault("false")
     @Column(name = "is_reviewed", nullable = false)
-    private boolean isReviewed;
+    private Boolean isReviewed;
 
     @ColumnDefault("create")
     @Column(name = "status", nullable = false)
@@ -105,11 +105,11 @@ public class Room implements Serializable {
     @Builder
     public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String content,
         int estimateDuration, Timestamp roomCreatedAt, Timestamp matchCreatedAt,
-        boolean isReported,
-        int reportCycle, boolean isPublic, int notificationCount, Timestamp startedAt,
+        Boolean isReported,
+        int reportCycle, Boolean isPublic, int notificationCount, Timestamp startedAt,
         Timestamp endedAt, Timestamp expectationStartedAt,
-        Timestamp expectationEndedAt, int expectationPay, int totalPay, boolean isComplained,
-        boolean isReviewed,
+        Timestamp expectationEndedAt, int expectationPay, int totalPay, Boolean isComplained,
+        Boolean isReviewed,
         Process status) {
         this.userId = userId;
         this.zipsaId = zipsaId;

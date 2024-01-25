@@ -42,7 +42,7 @@ public class Notification {
 
     @ColumnDefault("false")
     @Column(name = "is_read", nullable = false)
-    private boolean isRead;
+    private Boolean isRead;
 
     @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
@@ -58,7 +58,7 @@ public class Notification {
     private Status status;
 
     @Builder
-    public Notification(Room roomId, Long sendId, Long receiveId, boolean isRead,
+    public Notification(Room roomId, Long sendId, Long receiveId, Boolean isRead,
         Timestamp createdAt, Type type, Status status) {
         this.roomId = roomId;
         this.sendId = sendId;
