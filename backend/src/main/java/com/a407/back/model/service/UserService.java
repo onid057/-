@@ -22,11 +22,9 @@ public interface UserService {
     User findByUserId(Long userId);
 
     UserRecordsResponse findRecordsByUserId(Long userId);
-    
-    UserReservationResponse findReservationByUserId(Long userId);
-}
 
-    User findByUserId(Long userId);
+    UserReservationResponse findReservationByUserId(Long userId);
+
 
     UserAccountResponse accountAdd(UserAccountRequest userAccountRequest);
 

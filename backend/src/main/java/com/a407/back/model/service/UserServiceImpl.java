@@ -90,6 +90,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserReservationResponse findReservationByUserId(Long userId) {
         return userRepository.findReservationByUserId(userId);
+    }
+
     @Transactional
     public UserAccountResponse accountAdd(UserAccountRequest userAccountRequest) {
         User user = userRepository.findByUserId(userAccountRequest.getUserId());

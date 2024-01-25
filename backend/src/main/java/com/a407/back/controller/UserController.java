@@ -58,6 +58,8 @@ public class UserController {
     public ResponseEntity<UserReservationResponse> getUserReservations(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(userService.findReservationByUserId(userId));
+    }
+
     @PostMapping("/payments")
     public ResponseEntity<UserAccountResponse> accountAdd(
         @RequestBody UserAccountRequest request
