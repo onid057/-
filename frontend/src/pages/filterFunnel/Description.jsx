@@ -1,4 +1,7 @@
-import styled from 'styled-components';
+import { styled } from 'styled-components';
+
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
@@ -8,45 +11,47 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 60px 16px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
 
-const TitleBox = styled.div`
-  width: 100%;
-  font-size: 35px;
-`;
-
-// 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function Description() {
+function Description({ onPrevious, onNext }) {
   return (
     <Wrapper>
-      <TitleBox>
-        <Paragraph
-          sentences={[
-            <BoldText
-              fontSize="35px"
-              boldContent="상세 내용"
-              normalContent="을"
-            ></BoldText>,
-            '말씀해 주세요',
-          ]}
-        ></Paragraph>
-      </TitleBox>
+      <NavigationBar
+        leftContent={
+          <Image
+            width="40px"
+            height="40px"
+            margin="0 0 0 -12px"
+            src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
+          ></Image>
+        }
+        rightContent="다음"
+        onPrevious={onPrevious}
+        onNext={onNext}
+      ></NavigationBar>
 
-      {/* ProgressBar 진척도 변경 부분 */}
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={[
+          <BoldText boldContent="상세 내용" normalContent="을"></BoldText>,
+          '적어주세요',
+        ]}
+      ></Paragraph>
+
       <ProgressBar value={85}></ProgressBar>
 
       <LongInputBox
-        title={'상세 내용'}
         placeholder={
-          'OOO 미용실에 갈 거예요. 함께 갔다가 다시 정문까지 돌아와 주세요. 이야기도 나눠요.'
+          '미용실에 갈 건데 함께 갔다가 다시 정문까지 돌아와 주세요. 이야기도 나눠요!'
         }
       ></LongInputBox>
     </Wrapper>
