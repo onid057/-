@@ -88,7 +88,7 @@ public class User {
     private int serviceCount;
 
 
-    @Builder
+    @Builder(toBuilder = true)
     public User(Association associationId, String email, String password, String name,
         Timestamp birth, Gender gender, String address, byte[] profileImage, boolean isCertificated,
         Double latitude, Double longitude, String account, boolean isBlocked, boolean isAdmin,
