@@ -6,6 +6,8 @@ import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.Zipsa;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -26,6 +28,8 @@ public class RoomRepositoryImpl implements RoomRepository {
     public void chageRoomStatus(Long roomId, String status) {
         QRoom qRoom = QRoom.room;
         query.update(qRoom).set(qRoom.status, Process.valueOf(status))
+            .set(qRoom.matchCreatedAt, Timestamp.valueOf(
+                LocalDateTime.now()))
             .where(qRoom.roomId.eq(roomId)).execute();
     }
 

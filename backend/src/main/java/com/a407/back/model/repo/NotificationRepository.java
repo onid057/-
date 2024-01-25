@@ -10,4 +10,6 @@ public interface NotificationRepository {
     void changeNotificationStatusAcceptOrReject(Long notificationId, String status);
 
     void changeNotificationStatusClose(Room room);
+
+    void makeNotification(Notification notification);
 }

@@ -22,10 +22,8 @@ public class ZipsaController {
 
     private final ZipsaServiceImpl zipsaService;
 
-
     @PostMapping("/reports")
     public ResponseEntity<Long> reportAdd(@ModelAttribute ReportCreateRequest reportCreateRequest) {
-
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(zipsaService.saveReport(reportCreateRequest));
     }
