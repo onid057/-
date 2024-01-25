@@ -1,11 +1,11 @@
 import { styled } from 'styled-components';
-import { Swiper, SwiperSlide } from 'swiper/react';
 
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
+import Input from '../../components/common/Input';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -21,10 +21,11 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-const TIME_HOURS = Array.from(Array(24).keys());
-const TIME_MINUTES = Array(12)
-  .fill(0)
-  .map((num, i) => i * 5);
+const TimeWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 function TargetTime({ onPrevious, onNext, matchTime }) {
   return (
@@ -42,7 +43,6 @@ function TargetTime({ onPrevious, onNext, matchTime }) {
         onPrevious={onPrevious}
         onNext={onNext}
       ></NavigationBar>
-
       <Paragraph
         gap="5px"
         fontSize="35px"
@@ -51,8 +51,14 @@ function TargetTime({ onPrevious, onNext, matchTime }) {
           '정해주세요',
         ]}
       ></Paragraph>
-
       <ProgressBar value={68}></ProgressBar>
+
+      <TimeWrapper>
+        <Input type="number" width="80px" step="1" defaultValue={9}></Input>
+        시부터
+        <Input type="number" width="80px" step="1" defaultValue={12}></Input>
+        시까지
+      </TimeWrapper>
     </Wrapper>
   );
 }
