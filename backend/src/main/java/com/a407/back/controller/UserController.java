@@ -1,12 +1,12 @@
 package com.a407.back.controller;
 
-import com.a407.back.dto.NotificationListResponse;
-import com.a407.back.dto.UserAccountRequest;
-import com.a407.back.dto.UserAccountResponse;
-import com.a407.back.dto.UserCreateRequest;
-import com.a407.back.dto.UserNearZipsaResponse;
-import com.a407.back.dto.UserRecordsResponse;
-import com.a407.back.dto.UserReservationResponse;
+import com.a407.back.dto.Notification.NotificationListResponse;
+import com.a407.back.dto.User.UserAccountRequest;
+import com.a407.back.dto.User.UserAccountResponse;
+import com.a407.back.dto.User.UserCreateRequest;
+import com.a407.back.dto.User.UserNearZipsaResponse;
+import com.a407.back.dto.User.UserRecordsResponse;
+import com.a407.back.dto.User.UserReservationResponse;
 import com.a407.back.model.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

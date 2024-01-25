@@ -1,14 +1,11 @@
 package com.a407.back.model.repo;
 
-import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.QZipsaCategory;
 import com.a407.back.domain.Room;
-import com.a407.back.domain.SubCategory;
-import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.MatchSearchRequest;
+import com.a407.back.dto.Match.MatchSearchRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

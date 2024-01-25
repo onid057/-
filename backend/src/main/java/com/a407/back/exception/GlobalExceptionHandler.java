@@ -1,7 +1,7 @@
 package com.a407.back.exception;
 
 import com.a407.back.config.ErrorCode;
-import com.a407.back.dto.ErrorResponse;
+import com.a407.back.dto.util.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

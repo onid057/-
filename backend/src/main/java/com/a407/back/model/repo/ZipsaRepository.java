@@ -2,10 +2,10 @@ package com.a407.back.model.repo;
 
 import com.a407.back.domain.Report;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.ReportSearchResponse;
-import com.a407.back.dto.ZipsaDetailInfoResponse;
-import com.a407.back.dto.ZipsaRecordsResponse;
-import com.a407.back.dto.ZipsaReservationResponse;
+import com.a407.back.dto.Zipsa.ReportSearchResponse;
+import com.a407.back.dto.Zipsa.ZipsaDetailInfoResponse;
+import com.a407.back.dto.Zipsa.ZipsaRecordsResponse;
+import com.a407.back.dto.Zipsa.ZipsaReservationResponse;
 
 public interface ZipsaRepository {
 

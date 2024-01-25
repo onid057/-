@@ -3,7 +3,7 @@ package com.a407.back.model.service;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.MatchCreateRequest;
+import com.a407.back.dto.Match.MatchCreateRequest;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.ZipsaRepository;

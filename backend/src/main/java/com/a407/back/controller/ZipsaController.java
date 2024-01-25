@@ -1,9 +1,9 @@
 package com.a407.back.controller;
 
-import com.a407.back.dto.ReportCreateRequest;
-import com.a407.back.dto.ReportSearchResponse;
-import com.a407.back.dto.ZipsaDetailInfoResponse;
-import com.a407.back.dto.ZipsaReservationResponse;
+import com.a407.back.dto.Zipsa.ReportCreateRequest;
+import com.a407.back.dto.Zipsa.ReportSearchResponse;
+import com.a407.back.dto.Zipsa.ZipsaDetailInfoResponse;
+import com.a407.back.dto.Zipsa.ZipsaReservationResponse;
 import com.a407.back.model.service.ZipsaServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.a407.back.controller;
 
-import com.a407.back.dto.ReviewCreateRequest;
+import com.a407.back.dto.Review.ReviewCreateRequest;
 import com.a407.back.model.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

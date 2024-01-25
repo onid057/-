@@ -2,7 +2,7 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.MatchCreateRequest;
+import com.a407.back.dto.Match.MatchCreateRequest;
 
 public interface RoomService {
 
