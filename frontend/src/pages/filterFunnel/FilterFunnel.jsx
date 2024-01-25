@@ -5,6 +5,7 @@ import MainCategory from './MainCategory';
 import SubCategory from './SubCategory';
 import TargetDate from './TargetDate';
 import TargetTime from './TargetTime';
+import Description from './Description';
 import Condition from './Condition';
 
 function FilterFunnel() {
@@ -62,11 +63,35 @@ function FilterFunnel() {
             setStep('DATE');
           }}
           onNext={data => {
-            setStep('MAIN_CATEGORY');
+            setStep('DESCRIPTION');
             setFilterData({ ...filterData, matchTime: data });
           }}
           matchTime={filterData.matchTime}
         ></TargetTime>
+      </Funnel.Step>
+
+      <Funnel.Step name="DESCRIPTION">
+        <Description
+          onPrevious={() => {
+            setStep('TIME');
+          }}
+          onNext={data => {
+            setStep('CONDITION');
+            setFilterData({ ...filterData, matchDescription: data });
+          }}
+        ></Description>
+      </Funnel.Step>
+
+      <Funnel.Step name="CONDITION">
+        <Condition
+          onPrevious={() => {
+            setStep('DESCRIPTION');
+          }}
+          onNext={data => {
+            setStep('MAIN_CATEGORY');
+            setFilterData({ ...filterData, matchCondition: data });
+          }}
+        ></Condition>
       </Funnel.Step>
     </Funnel>
   );
