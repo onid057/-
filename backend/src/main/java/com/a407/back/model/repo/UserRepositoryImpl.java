@@ -41,7 +41,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<Notification> findNotificationByUserId(Long userId, String type) {
         QNotification qNotification = QNotification.notification;
-        query.update(qNotification).set(qNotification.isRead, true).where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false))).execute();
+        query.update(qNotification).set(qNotification.isRead, true)
+            .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
+            .execute();
         return query.selectFrom(qNotification).where(
             qNotification.receiveId.eq(userId)
                 .and(qNotification.type.eq(
@@ -69,6 +71,18 @@ public class UserRepositoryImpl implements UserRepository {
         double latitude, double longitude, double range) {
         return latitudePath.between(latitude - range, latitude + range)
             .and(longitudePath.between(longitude - range, longitude + range));
+    }
+
+    @Override
+    public void saveAccount(Long userId, String account) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.account, account).where(qUser.userId.eq(userId)).execute();
+    }
+
+    @Override
+    public void deleteAccount(User Id, String account) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.account, "").where(qUser.userId.eq(Id.getUserId())).execute();
     }
 
 }

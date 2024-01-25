@@ -16,4 +16,8 @@ public interface UserRepository {
     User findByUserId(Long userId);
 
     UserNearZipsaResponse findNearZipsaList(Long userId);
+
+    void saveAccount(Long userId, String account);
+
+    void deleteAccount(User Id, String account);
 }

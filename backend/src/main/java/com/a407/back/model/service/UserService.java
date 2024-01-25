@@ -19,7 +19,7 @@ public interface UserService {
 
     User findByUserId(Long userId);
 
-    UserAccountResponse accountAdd(Long userId, UserAccountRequest userAccountRequest);
+    UserAccountResponse accountAdd(UserAccountRequest userAccountRequest);
 
     String getMaskedCardNumber(Long userId);
 

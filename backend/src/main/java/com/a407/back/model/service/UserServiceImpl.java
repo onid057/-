@@ -82,8 +82,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserAccountResponse accountAdd(Long userId, UserAccountRequest userAccountRequest) {
-        User user = userRepository.findByUserId(userId);
+    public UserAccountResponse accountAdd(UserAccountRequest userAccountRequest) {
+        User user = userRepository.findByUserId(userAccountRequest.getUserId());
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
@@ -92,8 +92,7 @@ public class UserServiceImpl implements UserService {
             return new UserAccountResponse("이미 등록된 카드입니다");
         }
 
-        User updatedUser = userAccountRequest.toEntity();
-        userRepository.save(updatedUser);
+        userRepository.saveAccount(user.getUserId(), userAccountRequest.getAccount());
 
         return new UserAccountResponse("카드 등록 성공");
     }
@@ -109,14 +108,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void accountDelete(Long userId) {
         User user = userRepository.findByUserId(userId);
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
-        User updatedUser = User.builder()
-            .account(null)
-            .build();
-        userRepository.save(updatedUser);
+        userRepository.deleteAccount(user, user.getAccount());
     }
 }

@@ -47,12 +47,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.findNearZipsaList(userId));
     }
 
-    @PostMapping("/{userId}/payments")
+    @PostMapping("/payments")
     public ResponseEntity<UserAccountResponse> accountAdd(
-        @PathVariable Long userId,
         @RequestBody UserAccountRequest request
     ) {
-        UserAccountResponse response = userService.accountAdd(userId, request);
+        UserAccountResponse response = userService.accountAdd(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -65,7 +64,7 @@ public class UserController {
     @DeleteMapping("/{userId}/payments")
     public ResponseEntity<Void> accountDelete(@PathVariable Long userId) {
         userService.accountDelete(userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(null);
     }
 
 }
