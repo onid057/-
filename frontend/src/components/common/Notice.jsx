@@ -7,7 +7,9 @@ import { styled } from 'styled-components';
 const NoticeWrapper = styled.div`
   cursor: pointer;
   width: 294px;
-  padding: 20px 12px 30px 12px;
+  /* padding 기본값: 20px 12px 30px 12px; */
+  padding: ${props =>
+    props.$padding ? props.$padding : '20px 12px 30px 12px'};
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -33,7 +35,7 @@ const TextWrapper = styled.div`
 
 // upper에 컴포넌트 목록을 배열로 전달
 // lower에 텍스트 전달
-function Notice({ upper, lower, nextPage }) {
+function Notice({ upper, lower, nextPage, padding }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -41,7 +43,7 @@ function Notice({ upper, lower, nextPage }) {
   };
 
   return (
-    <NoticeWrapper onClick={handleClick}>
+    <NoticeWrapper onClick={handleClick} $padding={padding}>
       {upper && (
         <FlexWrapper>
           {upper.map((component, index) => (
