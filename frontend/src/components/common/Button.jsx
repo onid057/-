@@ -52,8 +52,7 @@ const ButtonWrapper = styled.button`
     css`
       width: 100%;
       height: 38px;
-      flex: 1;
-      font-size: 18px;
+      font-size: 14px;
       color: black;
       background-color: white;
     `};
@@ -63,7 +62,7 @@ const ButtonWrapper = styled.button`
       width: 100%;
       height: 38px;
       flex: 1;
-      font-size: 18px;
+      font-size: 14px;
       color: black;
       background-color: white;
     `};
@@ -96,7 +95,7 @@ const ImgContentWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 3px;
+  gap: 15px;
   > img {
     width: 25px;
     height: 25px;

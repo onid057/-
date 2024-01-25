@@ -31,7 +31,7 @@ const ContentBox = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: auto;
-  padding: 13px 15px 12px;
+  padding: 15px 12px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -44,14 +44,13 @@ const ContentBox = styled.div`
 `;
 
 const TextAreaInput = styled.textarea`
-  width: 100%;
-  height: 160px;
+  min-width: 100%;
+  min-height: 160px;
   padding: 3px;
-  // 전역에 해 놨는데 왜 placeholder에는 적용되고 input에는 적용이 안 되지?
-  font-family: NotoSansKR;
   font-size: 18px;
   font-weight: light;
   background-color: transparent;
+  outline: none;
   border: none;
 `;
 
@@ -62,7 +61,7 @@ function LongInputBox({ title, placeholder }) {
     <LongInputBoxWrapper>
       <InsideWrapper>
         {/* 여기에 상세 input의 제목을 입력합니다 */}
-        <TitleBox>{title}</TitleBox>
+        {title && <TitleBox>{title}</TitleBox>}
         <ContentBox>
           <TextAreaInput
             // 여기에 placeholder를 입력합니다(개행문자 &#10; 사용하기)
@@ -76,9 +75,9 @@ function LongInputBox({ title, placeholder }) {
   );
 }
 
-LongInputBox.defaultProps = {
-  title: '제목 prop으로 변경하기',
-  placeholder: '미리보기 prop으로 변경하기',
-};
+// LongInputBox.defaultProps = {
+//   title: '제목 prop으로 변경하기',
+//   placeholder: '미리보기 prop으로 변경하기',
+// };
 
 export default LongInputBox;

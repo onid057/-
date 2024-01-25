@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 const InputWrapper = styled.input`
@@ -47,6 +47,7 @@ function Input({
   placeholder,
   onInput,
   data,
+  ...rest
 }) {
   return (
     <Wrapper $width={width} $margin={margin} $padding={padding}>
@@ -57,6 +58,7 @@ function Input({
         placeholder={placeholder}
         required
         defaultValue={data}
+        {...rest}
       ></InputWrapper>
       <Span>{commentText}</Span>
     </Wrapper>

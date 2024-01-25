@@ -100,7 +100,8 @@ const GlobalStyle = createGlobalStyle`
 	audio,
 	video,
 	button,
-	input {
+	input,
+	textarea {
 		margin: 0;
 		padding: 0;
 		border: 0;
