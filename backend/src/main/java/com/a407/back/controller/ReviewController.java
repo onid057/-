@@ -1,5 +1,6 @@
 package com.a407.back.controller;
 
+import com.a407.back.config.SuccessCode;
 import com.a407.back.dto.Review.ReviewCreateRequest;
 import com.a407.back.dto.Review.ReviewListResponse;
 import com.a407.back.dto.util.ApiResponse;
@@ -8,6 +9,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +32,14 @@ public class ReviewController {
     }
 
     @GetMapping("/{userId}")
-    public ApiResponse<List<ReviewListResponse>> getReviewsByUserId(@PathVariable Long userId){
+    public ApiResponse<List<ReviewListResponse>> getReviewsByUserId(@PathVariable Long userId) {
         return reviewService.getReviewsByUserId(userId);
+    }
+
+    @DeleteMapping("/{reviewId}")
+    public ApiResponse<?> removeReviewByReviewId(@PathVariable Long reviewId) {
+        reviewService.removeReviewByReviewId(reviewId);
+        return new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "");
     }
 
 

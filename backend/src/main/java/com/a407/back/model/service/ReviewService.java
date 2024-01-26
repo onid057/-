@@ -10,4 +10,6 @@ public interface ReviewService {
     void createReview(ReviewCreateRequest reviewCreateRequest);
 
     ApiResponse<List<ReviewListResponse>> getReviewsByUserId(Long userId);
+
+    void removeReviewByReviewId(Long reviewId);
 }
