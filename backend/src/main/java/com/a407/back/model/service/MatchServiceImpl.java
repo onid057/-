@@ -9,6 +9,7 @@ import com.a407.back.domain.SubCategory;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.Match.MatchSearchRequest;
+import com.a407.back.dto.Match.MatchSearchResponse;
 import com.a407.back.dto.Match.RoomCreateRequest;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.MatchRepository;
@@ -16,6 +17,7 @@ import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,8 +34,25 @@ public class MatchServiceImpl implements MatchService {
     private final NotificationRepository notificationRepository;
 
     @Override
-    public List<Zipsa> getMatchesByConditions(MatchSearchRequest condition) {
-        return matchRepository.findByConditions(condition);
+    @Transactional
+    public List<MatchSearchResponse> getMatchSearchResponses(MatchSearchRequest request) {
+        List<Zipsa> zipsas = matchRepository.findByConditions(request);
+
+        return zipsas.stream().map(zipsa -> {
+            List<String> categories = getCategoryNamesForZipsa(zipsa);
+            String gradeName = zipsa.getGradeId().getName();
+            int gradeSalary = zipsa.getGradeId().getSalary();
+
+            return new MatchSearchResponse(
+                zipsa.getZipsaId().getName(),
+                zipsa.getZipsaId().getProfileImage(),
+                gradeName,
+                gradeSalary,
+                zipsa.getServiceCount(),
+                String.valueOf(request.getMajorCategory()),
+                categories
+            );
+        }).collect(Collectors.toList());
     }
 
     @Override
