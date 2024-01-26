@@ -1,4 +1,5 @@
 package com.a407.back.dto.Match;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -6,12 +7,15 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MatchSearchRequest {
 
-    // 사용자가 설정한 조건에 해당하는 필드
-    private Long majorCategoryId;
+    private long majorCategoryId;
     private String genderStr;
     private String age;
     private String grade;
     private String scoreAverage;
+
+    public String getMajorCategory() {
+        return String.valueOf(majorCategoryId);
+    }
 
     @Override
     public String toString() {

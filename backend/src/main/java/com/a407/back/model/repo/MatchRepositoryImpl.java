@@ -47,13 +47,13 @@ public class MatchRepositoryImpl implements MatchRepository {
     private BooleanExpression userGenderEq(String genderStr) {
         QZipsa qZipsa = QZipsa.zipsa;
         if (genderStr == null || genderStr.equalsIgnoreCase("ALL")) {
-            return null; // 'ALL' 또는 null이 선택된 경우 성별 필터링을 적용하지 않음
+            return null;
         }
         try {
             Gender gender = Gender.valueOf(genderStr.toLowerCase());
             return qZipsa.zipsaId.gender.eq(gender);
         } catch (IllegalArgumentException e) {
-            return null; // 잘못된 성별 입력 처리
+            return null;
         }
     }
 
@@ -119,7 +119,7 @@ public class MatchRepositoryImpl implements MatchRepository {
     }
 
     @Override
-    public Room makeRoom (Room room) {
+    public Room makeRoom(Room room) {
         em.persist(room);
         return room;
     }
