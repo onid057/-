@@ -49,7 +49,8 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         QReview qReview = QReview.review;
         Zipsa zipsa = em.find(Zipsa.class, zipsaId);
         List<Review> reviews = query.selectFrom(qReview)
-            .where(qReview.zipsaId.zipsaId.userId.eq(zipsaId)).fetch();
+            .where(qReview.zipsaId.zipsaId.userId.eq(zipsaId)).orderBy(qReview.createdAt.desc())
+            .fetch();
 
         QRoom qRoom = QRoom.room;
         List<String> subCategory = query.select(qRoom.subCategoryId.name).from(qRoom)
