@@ -1,14 +1,18 @@
 package com.a407.back.model.service;
 
 import com.a407.back.config.ErrorCode;
+import com.a407.back.config.SuccessCode;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.Review.ReviewCreateRequest;
+import com.a407.back.dto.Review.ReviewListResponse;
+import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.ReviewRepository;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.ZipsaRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +60,12 @@ public class ReviewServiceImpl implements ReviewService {
 
         zipsaRepository.updateZipsaAverage(zipsa.getZipsaId().getUserId(), kindnessAverage,
             skillAverage, rewindAverage);
+    }
+
+    @Override
+    public ApiResponse<List<ReviewListResponse>> getReviewsByUserId(Long userId) {
+        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+            reviewRepository.getReviewsByUserId(userId));
     }
 
     private static double getAverage(int score, Double average, Long countReview) {
