@@ -36,7 +36,6 @@ public class MatchController {
         @RequestParam(name = "grade", required = false) String grade,
         @RequestParam(name = "score", required = false) String score) {
 
-        // Parameter validation...
         MatchSearchRequest condition = new MatchSearchRequest(Long.parseLong(majorCategory), gender,
             age, grade, score);
         List<MatchSearchResponse> matchSearchResponses = matchService.getMatchSearchResponses(
