@@ -2,6 +2,7 @@ package com.a407.back.dto.util;
 
 import com.a407.back.domain.Review;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import lombok.Getter;
 
 @Getter
@@ -20,7 +21,7 @@ public class ZipsaReview {
         if (review.getUserId().getProfileImage() == null) {
             this.profileImage = null;
         } else {
-            this.profileImage = new String(review.getUserId().getProfileImage());
+            this.profileImage = Arrays.toString(review.getUserId().getProfileImage());
         }
         this.content = review.getContent();
         this.kindnessScore = review.getKindnessScore();

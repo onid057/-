@@ -35,7 +35,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = notificationRepository.findByNotificationId(notificationId);
 
         Zipsa zipsa = zipsaRepository.findByZipsaId(notification.getReceiveId());
-        if (zipsa != null && zipsa.isWorked()) {
+        if (zipsa != null && zipsa.getIsWorked()) {
             String userName = userRepository.findByUserId(notification.getSendId()).getName();
             Room room = notification.getRoomId();
             String majorCategoryName = categoryRepository.findMajorCategoryName(

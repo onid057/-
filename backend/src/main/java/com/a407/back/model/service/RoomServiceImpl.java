@@ -60,7 +60,7 @@ public class RoomServiceImpl implements RoomService {
         Notification notification = notificationRepository.findByNotificationId(
             matchCreateRequest.getNotificationId());
         Zipsa zipsa = zipsaRepository.findByZipsaId(notification.getReceiveId());
-        if (zipsa != null && zipsa.isWorked()) {
+        if (zipsa != null && zipsa.getIsWorked()) {
             zipsa = zipsaRepository.findByZipsaId(notification.getReceiveId());
         } else {
             zipsa = zipsaRepository.findByZipsaId(notification.getSendId());

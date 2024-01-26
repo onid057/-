@@ -6,6 +6,7 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.util.ZipsaReview;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.Getter;
 
@@ -61,7 +62,7 @@ public class ZipsaDetailInfoResponse {
         if (zipsa.getZipsaId().getProfileImage() == null) {
             this.profileImage = null;
         } else {
-            this.profileImage = new String(zipsa.getZipsaId().getProfileImage());
+            this.profileImage = Arrays.toString(zipsa.getZipsaId().getProfileImage());
         }
         this.latitude = zipsa.getZipsaId().getLatitude();
         this.longitude = zipsa.getZipsaId().getLongitude();
