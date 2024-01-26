@@ -46,6 +46,7 @@ const ButtonWrapper = styled.button`
       color: black;
       font-size: 17px;
       background-color: white;
+      opacity: 0.9;
     `};
   ${props =>
     props.mode === 'FULL_PERCENT_WHITE' &&

@@ -6,8 +6,7 @@ import { styled } from 'styled-components';
 
 const NoticeWrapper = styled.div`
   cursor: pointer;
-  width: 294px;
-  /* padding 기본값: 20px 12px 30px 12px; */
+  width: 288px;
   padding: ${props =>
     props.$padding ? props.$padding : '20px 12px 30px 12px'};
   display: flex;
@@ -30,6 +29,9 @@ const FlexWrapper = styled.div`
 const TextWrapper = styled.div`
   width: 250px;
   margin: 0 auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   text-align: left;
 `;
 
@@ -43,6 +45,7 @@ function Notice({ upper, lower, nextPage, padding }) {
   };
 
   return (
+    <NoticeWrapper onClick={handleClick} $padding={padding}>
     <NoticeWrapper onClick={handleClick} $padding={padding}>
       {upper && (
         <FlexWrapper>
