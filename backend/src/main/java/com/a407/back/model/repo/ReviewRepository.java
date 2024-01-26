@@ -6,4 +6,5 @@ public interface ReviewRepository {
 
     void createReview(Review review);
 
+    Long countZipsaReview(Long zipsaId);
 }

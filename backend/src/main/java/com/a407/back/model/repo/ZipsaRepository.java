@@ -18,6 +18,9 @@ public interface ZipsaRepository {
     ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId);
 
     ZipsaRecordsResponse findRecordsByZipsaId(Long helperId);
-    
+
     ZipsaReservationResponse findReservationByZipsaId(Long zipsaId);
+
+    void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
+        Double rewindAverage);
 }

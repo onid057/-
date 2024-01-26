@@ -3,6 +3,7 @@ package com.a407.back.model.repo;
 import com.a407.back.domain.QReport;
 import com.a407.back.domain.QReview;
 import com.a407.back.domain.QRoom;
+import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.Report;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room.Process;
@@ -79,5 +80,13 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
                 .fetch());
     }
 
-
+    @Override
+    public void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
+        Double rewindAverage) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        query.update(qZipsa).set(qZipsa.kindnessAverage, kindnessAverage)
+            .set(qZipsa.skillAverage, skillAverage).set(qZipsa.rewindAverage, rewindAverage)
+            .where(qZipsa.zipsaId.userId.eq(zipsaId))
+            .execute();
+    }
 }
