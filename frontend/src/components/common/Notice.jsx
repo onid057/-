@@ -46,7 +46,6 @@ function Notice({ upper, lower, nextPage, padding }) {
 
   return (
     <NoticeWrapper onClick={handleClick} $padding={padding}>
-    <NoticeWrapper onClick={handleClick} $padding={padding}>
       {upper && (
         <FlexWrapper>
           {upper.map((component, index) => (
