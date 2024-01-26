@@ -54,7 +54,7 @@ const ButtonWrapper = styled.button`
       height: 38px;
       font-size: 14px;
       color: black;
-      background-color: white;
+      background-color: ${props => (props.bgcolor ? props.bgcolor : 'white')};
     `};
   ${props =>
     props.mode === 'INSIDE_IMAGE' &&
