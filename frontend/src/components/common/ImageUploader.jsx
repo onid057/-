@@ -7,12 +7,18 @@ const ImageUploaderWrapper = styled.div`
   height: 200px;
 `;
 
-const ImageWrapper = styled.div`
+const SliderWrapper = styled.div`
   width: 290px;
   height: 200px;
 `;
 
-function ImageUploader({ showImages, setShowImages, fileInputRef, Children }) {
+function ImageUploader({
+  showImages,
+  setShowImages,
+  fileInputRef,
+  Children,
+  onHandleFunc,
+}) {
   const handleImageChange = event => {
     const imageLists = event.target.files;
     let imageUrlLists = [...showImages];
@@ -51,15 +57,9 @@ function ImageUploader({ showImages, setShowImages, fileInputRef, Children }) {
         onChange={handleImageChange}
       />
       {/* 저장해둔 이미지들을 순회하면서 화면에 이미지 출력 */}
-      <ImageWrapper>
-        {/* {showImages.map((image, id) => (
-          <div key={id}>
-            <Image src={image} width={'30px'} height={'30px'}></Image>
-            <button onClick={() => handleDeleteImage(id)}>x</button>
-          </div>
-        ))} */}
+      {/* <SliderWrapper>
         <SimpleSlider showImages={showImages}></SimpleSlider>
-      </ImageWrapper>
+      </SliderWrapper> */}
     </ImageUploaderWrapper>
   );
 }
