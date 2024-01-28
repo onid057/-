@@ -28,7 +28,7 @@ public class ReviewController {
     public ResponseEntity<String> createReview(
         @RequestBody ReviewCreateRequest reviewCreateRequest) {
         reviewService.createReview(reviewCreateRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("성공");
+        return ResponseEntity.status(HttpStatus.CREATED).body("리뷰 작성 성공");
     }
 
     @GetMapping("/{userId}")
@@ -37,9 +37,9 @@ public class ReviewController {
     }
 
     @DeleteMapping("/{reviewId}")
-    public ApiResponse<?> removeReviewByReviewId(@PathVariable Long reviewId) {
+    public ApiResponse<String> removeReviewByReviewId(@PathVariable Long reviewId) {
         reviewService.removeReviewByReviewId(reviewId);
-        return new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "");
+        return new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "리뷰 삭제 성공");
     }
 
 
