@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MatchSearchRequest {
 
-    private long majorCategoryId;
+    private Long majorCategoryId;
     private String genderStr;
     private String age;
     private String grade;
@@ -17,15 +17,5 @@ public class MatchSearchRequest {
         return String.valueOf(majorCategoryId);
     }
 
-    @Override
-    public String toString() {
-        return "MatchSearchRequest{" +
-            "majorCategoryId=" + majorCategoryId +
-            ", genderStr='" + genderStr + '\'' +
-            ", age='" + age + '\'' +
-            ", grade='" + grade + '\'' +
-            ", scoreAverage='" + scoreAverage + '\'' +
-            '}';
-    }
 
 }
