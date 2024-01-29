@@ -17,4 +17,6 @@ public interface MatchService {
     Long changeMatchStartedAt(Long roomId);
 
     Long changeMatchEndedAt(Long roomId);
+
+    void changeMatchStatus(Long roomId, String status);
 }

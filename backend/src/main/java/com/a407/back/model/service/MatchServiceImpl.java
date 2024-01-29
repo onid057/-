@@ -97,6 +97,7 @@ public class MatchServiceImpl implements MatchService {
     @Transactional
     public Long changeMatchStartedAt(Long roomId) {
         matchRepository.changeMatchStartedAt(roomId);
+        changeMatchStatus(roomId, "ONGOING");
         return roomId;
     }
 
@@ -104,6 +105,12 @@ public class MatchServiceImpl implements MatchService {
     @Transactional
     public Long changeMatchEndedAt(Long roomId) {
         matchRepository.changeMatchEndedAt(roomId);
+        changeMatchStatus(roomId, "END");
         return roomId;
+    }
+
+    @Override
+    public void changeMatchStatus(Long roomId, String status) {
+        matchRepository.changeMatchStatus(roomId, status);
     }
 }

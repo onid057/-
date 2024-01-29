@@ -17,4 +17,6 @@ public interface MatchRepository {
 
     void changeMatchEndedAt(Long roomId);
 
+    void changeMatchStatus(Long roomId, String status);
+
 }
