@@ -110,7 +110,7 @@ function FilteredArticle({
     <Wrapper>
       <ContentImg>
         <Image
-          src={'/images/profile_img.svg'}
+          src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
           width={'69px'}
           height={'69px'}
         ></Image>
@@ -119,10 +119,10 @@ function FilteredArticle({
       <ContentZipsa>
         <ZipsaName>사과먹는 어피치</ZipsaName>
         <ZipsaInfos>
-          <GradeBadge grade="1"></GradeBadge>
+          <GradeBadge grade={1}></GradeBadge>
           <AvgScore>
             <Image
-              src={'/images/small_dia.svg'}
+              src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
               width={'15px'}
               height={'15px'}
             ></Image>
