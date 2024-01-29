@@ -36,9 +36,9 @@ public class UserController {
 
     // 알림 목록
     @GetMapping("/{userId}/notifications")
-    public ResponseEntity<List<NotificationListResponse>> getNotifications(
+    public ResponseEntity<List<NotificationListResponse>> getNotificationList(
         @PathVariable("userId") Long userId) {
-        List<NotificationListResponse> notificationResponseList = userService.findNotificationsByUserId(
+        List<NotificationListResponse> notificationResponseList = userService.findNotificationByUserIdList(
             userId);
         return ResponseEntity.status(HttpStatus.OK).body(notificationResponseList);
     }
