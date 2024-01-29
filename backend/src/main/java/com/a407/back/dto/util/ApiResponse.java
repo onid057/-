@@ -1,6 +1,6 @@
 package com.a407.back.dto.util;
 
-import com.a407.back.config.SuccessCode;
+import com.a407.back.config.constants.SuccessCode;
 import lombok.Getter;
 
 @Getter

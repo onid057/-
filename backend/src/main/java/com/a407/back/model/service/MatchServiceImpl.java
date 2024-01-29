@@ -78,14 +78,14 @@ public class MatchServiceImpl implements MatchService {
             .expectationStartedAt(roomCreateRequest.getExpectationStartedAt())
             .expectationEndedAt(roomCreateRequest.getExpectationEndedAt())
             .expectationPay(roomCreateRequest.getExpectationPay())
-            .notificationCount(notificationCount).status(Process.create).build();
+            .notificationCount(notificationCount).status(Process.CREATE).build();
         Room newRoom = matchRepository.makeRoom(room);
         Long newRoomId = newRoom.getRoomId();
         // 방 아이디 가지고 알림 보내기
         for (Long id : roomCreateRequest.getHelperList()) {
             Notification notification = Notification.builder().roomId(newRoom)
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
-                    Type.user).status(Status.standby).build();
+                    Type.USER).status(Status.STANDBY).build();
             notificationRepository.makeNotification(notification);
         }
 

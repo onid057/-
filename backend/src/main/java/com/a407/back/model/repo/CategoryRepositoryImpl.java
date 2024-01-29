@@ -14,8 +14,6 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     private final JPAQueryFactory query;
 
-    private final EntityManager em;
-
     @Override
     public String findMajorCategoryName(Long majorId) {
         QMajorCategory qMajorCategory = QMajorCategory.majorCategory;

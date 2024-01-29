@@ -51,6 +51,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @Column(name = "address", nullable = false, length = 50)
     private String address;
 
@@ -90,7 +93,7 @@ public class User {
 
     @Builder(toBuilder = true)
     public User(Association associationId, String email, String password, String name,
-        Timestamp birth, Gender gender, String address, Byte[] profileImage, Boolean isCertificated,
+        Timestamp birth, Gender gender, String phoneNumber, String address, Byte[] profileImage, Boolean isCertificated,
         Double latitude, Double longitude, String account, Boolean isBlocked, Boolean isAdmin,
         Boolean isAffiliated, int serviceCount) {
         this.associationId = associationId;
@@ -99,6 +102,7 @@ public class User {
         this.name = name;
         this.birth = birth;
         this.gender = gender;
+        this.phoneNumber = phoneNumber;
         this.address = address;
         this.profileImage = profileImage;
         this.isCertificated = isCertificated;
@@ -112,7 +116,7 @@ public class User {
     }
 
     public enum Gender {
-        man, woman
+        MAN, WOMAN
     }
 
     @Override

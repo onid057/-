@@ -15,8 +15,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ReviewRepositoryImpl implements ReviewRepository {
 
-    private final EntityManager em;
     private final JPAQueryFactory query;
+    
+    private final EntityManager em;
 
     @Override
     public void createReview(Review review) {

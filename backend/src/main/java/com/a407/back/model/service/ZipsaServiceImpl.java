@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class ZipsaServiceImpl implements ZipsaService {
 
     private final ZipsaRepository zipsaRepository;
+
     private final RoomRepository roomRepository;
 
     @Override

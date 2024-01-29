@@ -74,14 +74,14 @@ public class UserRepositoryImpl implements UserRepository {
         QRoom qRoom = QRoom.room;
         return new UserRecordsResponse(
             query.selectFrom(qRoom).where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(
-                Process.end))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
+                Process.END))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
     }
 
     @Override
     public UserReservationResponse findReservationByUserId(Long userId) {
         QRoom qRoom = QRoom.room;
         return new UserReservationResponse(query.selectFrom(qRoom).where(
-                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.before, Process.ongoing)))
+                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
             .orderBy(qRoom.expectationStartedAt.asc()).fetch());
     }
 
@@ -99,9 +99,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteAccount(User Id, String account) {
+    public void deleteAccount(User user, String account) {
         QUser qUser = QUser.user;
-        query.update(qUser).set(qUser.account, "").where(qUser.userId.eq(Id.getUserId())).execute();
+        query.update(qUser).set(qUser.account, "").where(qUser.userId.eq(user.getUserId())).execute();
     }
 
 }

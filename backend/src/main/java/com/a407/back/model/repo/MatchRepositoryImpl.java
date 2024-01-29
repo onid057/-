@@ -67,9 +67,11 @@ public class MatchRepositoryImpl implements MatchRepository {
         try {
             int ageInt = Integer.parseInt(age);
             Timestamp lowerBound = Timestamp.valueOf(
-                LocalDate.now().minusYears(ageInt + 10L).atStartOfDay()); // 예: 40대 미만인 경우 50년 전
+                // 예: 40대 미만인 경우 50년 전
+                LocalDate.now().minusYears(ageInt + 10L).atStartOfDay());
             Timestamp upperBound = Timestamp.valueOf(
-                LocalDate.now().minusYears(ageInt).atStartOfDay()); // 예: 40대 이상인 경우 40년 전
+                // 예: 40대 이상인 경우 40년 전
+                LocalDate.now().minusYears(ageInt).atStartOfDay());
 
             if (ageInt >= 40) {
                 // 40대 이상인 경우
@@ -111,7 +113,6 @@ public class MatchRepositoryImpl implements MatchRepository {
     public List<String> findCategoryNamesByZipsaId(Long zipsaId) {
 
         // 집사의 아이디를 기준으로 대분류 이름을 가져오는 함수
-
         QZipsaCategory qZipsaCategory = QZipsaCategory.zipsaCategory;
 
         return query.select(qZipsaCategory.majorCategoryId.name).from(qZipsaCategory)

@@ -25,7 +25,7 @@ public class RoomRepositoryImpl implements RoomRepository {
     }
 
     @Override
-    public void chageRoomStatus(Long roomId, String status) {
+    public void changeRoomStatus(Long roomId, String status) {
         QRoom qRoom = QRoom.room;
         query.update(qRoom).set(qRoom.status, Process.valueOf(status))
             .set(qRoom.matchCreatedAt, Timestamp.valueOf(
