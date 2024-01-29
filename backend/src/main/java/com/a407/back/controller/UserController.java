@@ -64,7 +64,7 @@ public class UserController {
     public ResponseEntity<UserAccountResponse> accountAdd(
         @RequestBody UserAccountRequest request
     ) {
-        UserAccountResponse response = userService.accountAdd(request);
+        UserAccountResponse response = userService.saveAccount(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -76,7 +76,7 @@ public class UserController {
 
     @DeleteMapping("/{userId}/payments")
     public ResponseEntity<Void> accountDelete(@PathVariable Long userId) {
-        userService.accountDelete(userId);
+        userService.deleteAccount(userId);
         return ResponseEntity.ok().body(null);
     }
 

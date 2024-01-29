@@ -26,9 +26,9 @@ public interface UserService {
     UserReservationResponse findReservationByUserId(Long userId);
 
 
-    UserAccountResponse accountAdd(UserAccountRequest userAccountRequest);
+    UserAccountResponse saveAccount(UserAccountRequest userAccountRequest);
 
     String getMaskedCardNumber(Long userId);
 
-    void accountDelete(Long userId);
+    void deleteAccount(Long userId);
 }
