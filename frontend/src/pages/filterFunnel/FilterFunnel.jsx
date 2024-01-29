@@ -105,7 +105,7 @@ function FilterFunnel() {
               scoreCondition: score,
             });
             axios
-              .get('localhost:8080/matches/filter', {
+              .get('http://localhost:8080/matches/filter', {
                 params: {
                   majorCategoryId: filterData.matchMainCategory,
                   genderStr: filterData.genderCondition,
