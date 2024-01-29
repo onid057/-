@@ -1,7 +1,7 @@
 package com.a407.back.model.service;
 
-import com.a407.back.config.ErrorCode;
-import com.a407.back.config.SuccessCode;
+import com.a407.back.config.constants.ErrorCode;
+import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
@@ -21,9 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService {
 
-
     private final ReviewRepository reviewRepository;
+
     private final RoomRepository roomRepository;
+
     private final ZipsaRepository zipsaRepository;
 
     @Override

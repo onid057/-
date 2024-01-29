@@ -1,6 +1,6 @@
 package com.a407.back.model.service;
 
-import com.a407.back.config.ErrorCode;
+import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
