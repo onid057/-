@@ -4,8 +4,10 @@ import Image from '../components/common/Image.jsx';
 import Paragraph from '../components/common/Paragraph.jsx';
 import Notice from '../components/common/Notice.jsx';
 import BoldText from '../components/common/BoldText.jsx';
+import MenuBar from '../components/common/MenuBar.jsx';
 
 const Wrapper = styled.div`
+  position: relative;
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
@@ -22,6 +24,8 @@ const Wrapper = styled.div`
 export default function Home() {
   return (
     <Wrapper>
+      <MenuBar currentMenu="HOME"></MenuBar>
+
       <Notice
         upper={[
           <Image
