@@ -10,27 +10,27 @@ const Wrapper = styled.div`
   background-size: auto 100%;
   background-position: center;
   ${props =>
-    props.grade === '1' &&
+    props.grade === 1 &&
     css`
       background-image: url('/images/grade_1.svg');
     `}
   ${props =>
-    props.grade === '2' &&
+    props.grade === 2 &&
     css`
       background-image: url('/images/grade_2.svg');
     `}
   ${props =>
-    props.grade === '3' &&
+    props.grade === 3 &&
     css`
       background-image: url('/images/grade_3.svg');
     `}
   ${props =>
-    props.grade === '4' &&
+    props.grade === 4 &&
     css`
       background-image: url('/images/grade_4.svg');
     `}
   ${props =>
-    props.grade === '5' &&
+    props.grade === 5 &&
     css`
       background-image: url('/images/grade_5.svg');
     `}
