@@ -21,6 +21,7 @@ public class AssociationController {
 
     @PostMapping
     public ApiResponse<String> makeAssociation() {
+        // 스프링 시큐리티 도입 전 임시 값
         associationService.makeAssociation(7L);
         return new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "연동 계정 생성 성공");
     }
@@ -28,13 +29,14 @@ public class AssociationController {
 
     @GetMapping
     public ApiResponse<List<UserAssociationResponse>> searchAssociationUserList() {
-
+        // 스프링 시큐리티 도입 전 임시 값
         return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
             associationService.searchAssociationUserList(4L));
     }
 
     @DeleteMapping
     public ApiResponse<String> deleteAssociation() {
+        // 스프링 시큐리티 도입 전 임시 값
         associationService.deleteAssociation(7L);
         return new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "연동 계정 삭제 성공");
     }
