@@ -30,4 +30,10 @@ public interface UserRepository {
     void makeAssociation(Long userId, Long associationId);
 
     List<UserAssociationResponse> searchAssociationUserList(Long associationId);
+
+    void deleteAssociation(Long userId);
+
+    List<Long> searchAssociationUserIdList(Long associationId);
+
+    boolean findIsAffiliated(Long userId);
 }

@@ -6,6 +6,7 @@ import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.AssociationService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +31,12 @@ public class AssociationController {
 
         return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
             associationService.searchAssociationUserList(4L));
+    }
+
+    @DeleteMapping
+    public ApiResponse<String> deleteAssociation() {
+        associationService.deleteAssociation(7L);
+        return new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "연동 계정 삭제 성공");
     }
 
 

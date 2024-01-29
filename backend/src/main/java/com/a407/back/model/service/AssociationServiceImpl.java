@@ -43,5 +43,27 @@ public class AssociationServiceImpl implements AssociationService {
         return userRepository.searchAssociationUserList(associationId);
     }
 
+    @Override
+    @Transactional
+    public void deleteAssociation(Long userId) {
+        Long associationId = associationRepository.findAssociation(userId);
+
+        if (associationId == null) {
+            if (!userRepository.findIsAffiliated(userId)) {
+                throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+            }
+            userRepository.deleteAssociation(userId);
+            return;
+        }
+
+        List<Long> userIdList = userRepository.searchAssociationUserIdList(associationId);
+        for (Long id : userIdList) {
+            userRepository.deleteAssociation(id);
+        }
+        associationRepository.deleteAssociation(associationId);
+
+
+    }
+
 
 }

@@ -128,4 +128,27 @@ public class UserRepositoryImpl implements UserRepository {
                 Objects.equals(user.getUserId(), adminId))).toList();
     }
 
+
+    @Override
+    public void deleteAssociation(Long userId) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.associationId.associationId, 0L)
+            .set(qUser.isAffiliated, false).where(qUser.userId.eq(userId)).execute();
+    }
+
+    @Override
+    public List<Long> searchAssociationUserIdList(Long associationId) {
+        QUser qUser = QUser.user;
+        return query.select(qUser.userId).from(qUser)
+            .where(qUser.associationId.associationId.eq(associationId)).fetch();
+    }
+
+    @Override
+    public boolean findIsAffiliated(Long userId) {
+        QUser qUser = QUser.user;
+        return Objects.requireNonNull(
+            query.select(qUser.isAffiliated).from(qUser).where(qUser.userId.eq(userId))
+                .fetchOne()).booleanValue();
+    }
+
 }
