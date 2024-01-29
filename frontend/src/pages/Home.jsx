@@ -95,7 +95,7 @@ export default function Home() {
           ></Paragraph>,
         ]}
         padding="20px 12px"
-        nextPage="/filterOption"
+        nextPage="/matchOption"
       ></Notice>
 
       {/*
