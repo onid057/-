@@ -93,7 +93,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public UserAccountResponse accountAdd(UserAccountRequest userAccountRequest) {
+    public UserAccountResponse saveAccount(UserAccountRequest userAccountRequest) {
         User user = userRepository.findByUserId(userAccountRequest.getUserId());
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void accountDelete(Long userId) {
+    public void deleteAccount(Long userId) {
         User user = userRepository.findByUserId(userId);
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
