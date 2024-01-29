@@ -52,7 +52,7 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @ColumnDefault("standby")
+    @ColumnDefault("STANDBY")
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;

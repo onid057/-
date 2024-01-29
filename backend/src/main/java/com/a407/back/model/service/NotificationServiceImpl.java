@@ -1,17 +1,18 @@
 package com.a407.back.model.service;
 
+import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Notification;
+import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.Room;
-import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.User.UserNotificationResponse;
 import com.a407.back.dto.User.ZipsaNotificationResponse;
+import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,27 +28,29 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final RoomRepository roomRepository;
 
-    private final ZipsaRepository zipsaRepository;
-
-    // 알림의 세부조회
+    // 고객이 자신의 알림 세부조회
     @Override
-    public Optional<?> getNotification(Long notificationId) {
+    public UserNotificationResponse findUserNotificationDetail(Long notificationId) {
         Notification notification = notificationRepository.findByNotificationId(notificationId);
-
-        Zipsa zipsa = zipsaRepository.findByZipsaId(notification.getReceiveId());
-        if (zipsa != null && zipsa.getIsWorked()) {
-            String userName = userRepository.findByUserId(notification.getSendId()).getName();
-            Room room = notification.getRoomId();
-            String majorCategoryName = categoryRepository.findMajorCategoryName(
-                room.getSubCategoryId().getMajorCategoryId().getMajorCategoryId());
-            ZipsaNotificationResponse zipsaNotificationResponse = new ZipsaNotificationResponse(
-                userName, room.getExpectationStartedAt(),
-                room.getExpectationEndedAt(),
-                room.getExpectationPay(), majorCategoryName, room.getContent());
-            return Optional.of(zipsaNotificationResponse);
-        }
+        // 만약 집사라면 error
+        if(!notification.getType().equals(Type.USER)) throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         String zipsaName = userRepository.findByUserId(notification.getSendId()).getName();
-        return Optional.of(new UserNotificationResponse(notification.getSendId(), zipsaName));
+        return new UserNotificationResponse(notification.getSendId(), zipsaName);
+    }
+
+    // 집사가 자신의 알림 세부조회
+    @Override
+    public ZipsaNotificationResponse findZipsaNotificationDetail(Long notificationId) {
+        Notification notification = notificationRepository.findByNotificationId(notificationId);
+        // 만약 고객이라면 error
+        if(!notification.getType().equals(Type.ZIPSA)) throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        String userName = userRepository.findByUserId(notification.getSendId()).getName();
+        Room room = notification.getRoomId();
+        String majorCategoryName = categoryRepository.findMajorCategoryName(
+            room.getSubCategoryId().getMajorCategoryId().getMajorCategoryId());
+        return new ZipsaNotificationResponse(userName, room.getExpectationStartedAt(),
+            room.getExpectationEndedAt(),
+            room.getExpectationPay(), majorCategoryName, room.getContent());
     }
 
     @Override
