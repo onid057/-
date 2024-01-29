@@ -78,17 +78,32 @@ public class MatchServiceImpl implements MatchService {
             .expectationStartedAt(roomCreateRequest.getExpectationStartedAt())
             .expectationEndedAt(roomCreateRequest.getExpectationEndedAt())
             .expectationPay(roomCreateRequest.getExpectationPay())
-            .notificationCount(notificationCount).status(Process.CREATE).build();
+            .notificationCount(notificationCount).status(Process.CREATE).isComplained(false)
+            .isReviewed(false).isPublic(false).isReported(false).build();
         Room newRoom = matchRepository.makeRoom(room);
         Long newRoomId = newRoom.getRoomId();
         // 방 아이디 가지고 알림 보내기
         for (Long id : roomCreateRequest.getHelperList()) {
             Notification notification = Notification.builder().roomId(newRoom)
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
-                    Type.USER).status(Status.STANDBY).build();
+                    Type.USER).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
         }
 
         return newRoomId;
+    }
+
+    @Override
+    @Transactional
+    public Long changeMatchStartedAt(Long roomId) {
+        matchRepository.changeMatchStartedAt(roomId);
+        return roomId;
+    }
+
+    @Override
+    @Transactional
+    public Long changeMatchEndedAt(Long roomId) {
+        matchRepository.changeMatchEndedAt(roomId);
+        return roomId;
     }
 }

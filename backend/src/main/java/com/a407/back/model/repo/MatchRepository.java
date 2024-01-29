@@ -13,4 +13,8 @@ public interface MatchRepository {
 
     Room makeRoom (Room room);
 
+    void changeMatchStartedAt(Long roomId);
+
+    void changeMatchEndedAt(Long roomId);
+
 }
