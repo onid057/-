@@ -1,4 +1,4 @@
-package com.a407.back.config;
+package com.a407.back.config.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
