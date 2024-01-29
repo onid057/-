@@ -24,5 +24,5 @@ public interface UserRepository {
     UserReservationResponse findReservationByUserId(Long userId);
     void saveAccount(Long userId, String account);
 
-    void deleteAccount(User Id, String account);
+    void deleteAccount(User user, String account);
 }
