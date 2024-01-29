@@ -25,7 +25,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     private final JPAQueryFactory query;
 
     private final EntityManager em;
-    private final QReport qReport = QReport.report;
+    private static final QReport qReport = QReport.report;
 
 
     @Override
@@ -55,7 +55,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
 
         QRoom qRoom = QRoom.room;
         List<String> subCategory = query.select(qRoom.subCategoryId.name).from(qRoom)
-            .where(qRoom.zipsaId.zipsaId.userId.eq(zipsaId).and(qRoom.status.eq(Process.end)))
+            .where(qRoom.zipsaId.zipsaId.userId.eq(zipsaId).and(qRoom.status.eq(Process.END)))
             .groupBy(qRoom.subCategoryId.subCategoryId)
             .orderBy(qRoom.subCategoryId.subCategoryId.count().desc()).limit(3).fetch();
 
@@ -67,7 +67,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         QRoom qRoom = QRoom.room;
         return new ZipsaRecordsResponse(query.selectFrom(qRoom)
             .where(qRoom.zipsaId.zipsaId.userId.eq(helperId).and(qRoom.status.eq(
-                Process.end))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
+                Process.END))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         return new ZipsaReservationResponse(
             query.selectFrom(qRoom)
                 .where(qRoom.zipsaId.zipsaId.userId.eq(zipsaId).and(qRoom.status.in(
-                    Process.before, Process.ongoing))).orderBy(qRoom.expectationStartedAt.asc())
+                    Process.BEFORE, Process.ONGOING))).orderBy(qRoom.expectationStartedAt.asc())
                 .fetch());
     }
 
