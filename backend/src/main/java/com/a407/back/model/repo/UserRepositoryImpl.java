@@ -104,4 +104,12 @@ public class UserRepositoryImpl implements UserRepository {
         query.update(qUser).set(qUser.account, "").where(qUser.userId.eq(user.getUserId())).execute();
     }
 
+
+    @Override
+    public void savePhoneNumber(String phoneNumber, String email) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.phoneNumber, phoneNumber).set(qUser.isCertificated, true)
+            .where(qUser.email.eq(email)).execute();
+    }
+
 }

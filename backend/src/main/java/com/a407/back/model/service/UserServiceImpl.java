@@ -1,5 +1,7 @@
 package com.a407.back.model.service;
 
+import static java.security.SecureRandom.getInstanceStrong;
+
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.User;
@@ -8,16 +10,25 @@ import com.a407.back.dto.Notification.NotificationListResponse;
 import com.a407.back.dto.User.UserAccountRequest;
 import com.a407.back.dto.User.UserAccountResponse;
 import com.a407.back.dto.User.UserNearZipsaResponse;
+import com.a407.back.dto.User.UserPhoneNumberAndEmail;
+import com.a407.back.dto.User.UserPhoneNumberRequest;
 import com.a407.back.dto.User.UserRecordsResponse;
 import com.a407.back.dto.User.UserReservationResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
+import com.a407.back.model.repo.RedisRepositoryImpl;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import net.nurigo.sdk.message.model.Message;
+import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
+import net.nurigo.sdk.message.response.SingleMessageSentResponse;
+import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,6 +40,10 @@ public class UserServiceImpl implements UserService {
     private final ZipsaRepository zipsaRepository;
 
     private final CategoryRepository categoryRepository;
+
+    private final DefaultMessageService messageService;
+
+    private final RedisRepositoryImpl redisRepository;
 
     @Override
     @Transactional
@@ -127,4 +142,34 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.deleteAccount(user, user.getAccount());
     }
+
+    @Override
+    public void sendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
+        throws JsonProcessingException, NoSuchAlgorithmException {
+        int code = getInstanceStrong().nextInt(1000, 9999);
+        Message message = new Message();
+        message.setFrom("01035511284");
+        message.setTo(userPhoneNumberRequest.getPhoneNumber());
+        message.setText("인증 번호 " + code + " 를 입력해주세요");
+        SingleMessageSentResponse response = messageService.sendOne(
+            new SingleMessageSendingRequest(message));
+        if (response == null || !response.getStatusCode().equals("2000")) {
+            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        }
+        UserPhoneNumberAndEmail userPhoneNumberAndEmail = new UserPhoneNumberAndEmail(email,
+            userPhoneNumberRequest.getPhoneNumber());
+        redisRepository.saveMessage(userPhoneNumberAndEmail, String.valueOf(code));
+    }
+
+    @Override
+    @Transactional
+    public void savePhoneNumber(String code, String email) throws JsonProcessingException {
+        UserPhoneNumberAndEmail userPhoneNumberAndEmail = redisRepository.findMessage(code);
+        if (userPhoneNumberAndEmail == null || !userPhoneNumberAndEmail.getEmail().equals(email)) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
+        userRepository.savePhoneNumber(userPhoneNumberAndEmail.getPhoneNumber(),
+            userPhoneNumberAndEmail.getEmail());
+    }
+
 }
