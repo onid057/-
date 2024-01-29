@@ -50,7 +50,7 @@ public class MatchRepositoryImpl implements MatchRepository {
             return null;
         }
         try {
-            Gender gender = Gender.valueOf(genderStr.toLowerCase());
+            Gender gender = Gender.valueOf(genderStr);
             return qZipsa.zipsaId.gender.eq(gender);
         } catch (IllegalArgumentException e) {
             return null;
@@ -90,7 +90,7 @@ public class MatchRepositoryImpl implements MatchRepository {
         if (grade == null || grade.equalsIgnoreCase("ALL")) {
             return null;
         } else {
-            return QZipsa.zipsa.gradeId.gradeId.goe(Long.parseLong(grade));
+            return QZipsa.zipsa.gradeId.name.eq(grade);
         }
     }
 

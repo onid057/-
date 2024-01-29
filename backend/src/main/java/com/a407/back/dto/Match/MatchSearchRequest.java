@@ -12,10 +12,5 @@ public class MatchSearchRequest {
     private String age;
     private String grade;
     private String scoreAverage;
-
-    public String getMajorCategory() {
-        return String.valueOf(majorCategoryId);
-    }
-
-
+    
 }
