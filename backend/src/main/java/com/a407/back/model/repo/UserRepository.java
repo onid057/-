@@ -25,4 +25,6 @@ public interface UserRepository {
     void saveAccount(Long userId, String account);
 
     void deleteAccount(User user, String account);
+
+    void makeAssociation(Long userId, Long associationId);
 }

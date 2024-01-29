@@ -101,7 +101,15 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void deleteAccount(User user, String account) {
         QUser qUser = QUser.user;
-        query.update(qUser).set(qUser.account, "").where(qUser.userId.eq(user.getUserId())).execute();
+        query.update(qUser).set(qUser.account, "").where(qUser.userId.eq(user.getUserId()))
+            .execute();
+    }
+
+    @Override
+    public void makeAssociation(Long userId, Long associationId) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.associationId.associationId, associationId)
+            .set(qUser.isAffiliated, true).where(qUser.userId.eq(userId)).execute();
     }
 
 }
