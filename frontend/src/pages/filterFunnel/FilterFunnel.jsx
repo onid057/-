@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { useFunnel } from '../../hooks/useFunnel';
 
+import axios from 'axios';
+
 import MainCategory from './MainCategory';
 import SubCategory from './SubCategory';
 import TargetDate from './TargetDate';
 import TargetTime from './TargetTime';
-import Description from './Description';
+import Detail from './Detail';
 import Condition from './Condition';
 
 function FilterFunnel() {
@@ -20,7 +22,7 @@ function FilterFunnel() {
         <MainCategory
           onPrevious={() => {
             // 추후 변경 요망
-            setStep('SUB_CATEGORY');
+            setStep('CONDITION');
           }}
           onNext={data => {
             setStep('SUB_CATEGORY');
@@ -62,35 +64,62 @@ function FilterFunnel() {
           onPrevious={() => {
             setStep('DATE');
           }}
-          onNext={data => {
-            setStep('DESCRIPTION');
-            setFilterData({ ...filterData, matchTime: data });
+          onNext={(startTime, endTime) => {
+            setStep('DETAIL');
+            setFilterData({
+              ...filterData,
+              matchStartTime: startTime,
+              matchEndTime: endTime,
+            });
           }}
-          matchTime={filterData.matchTime}
+          matchStartTime={filterData.matchStartTime}
+          matchEndTime={filterData.matchEndTime}
         ></TargetTime>
       </Funnel.Step>
 
-      <Funnel.Step name="DESCRIPTION">
-        <Description
+      <Funnel.Step name="DETAIL">
+        <Detail
           onPrevious={() => {
             setStep('TIME');
           }}
           onNext={data => {
             setStep('CONDITION');
-            setFilterData({ ...filterData, matchDescription: data });
+            setFilterData({ ...filterData, matchDetail: data });
           }}
-        ></Description>
+          matchDetail={filterData.matchDetail}
+        ></Detail>
       </Funnel.Step>
 
       <Funnel.Step name="CONDITION">
         <Condition
           onPrevious={() => {
-            setStep('DESCRIPTION');
+            setStep('DETAIL');
           }}
-          onNext={data => {
-            setStep('MAIN_CATEGORY');
-            setFilterData({ ...filterData, matchCondition: data });
+          onNext={(gender, age, grade, score) => {
+            // setStep('MAIN_CATEGORY');
+            setFilterData({
+              ...filterData,
+              genderCondition: gender,
+              ageCondition: age,
+              gradeCondition: grade,
+              scoreCondition: score,
+            });
+            axios
+              .get('localhost:8080/matches/filter', {
+                params: {
+                  majorCategoryId: filterData.matchMainCategory,
+                  genderStr: filterData.genderCondition,
+                  age: filterData.ageCondition,
+                  grade: filterData.gradeCondition,
+                  scoreAverage: filterData.scoreCondition,
+                },
+              })
+              .then(response => console.log(response));
           }}
+          genderCondition={filterData.genderCondition}
+          ageCondition={filterData.ageCondition}
+          gradeCondition={filterData.gradeCondition}
+          scoreCondition={filterData.scoreCondition}
         ></Condition>
       </Funnel.Step>
     </Funnel>
