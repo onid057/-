@@ -1,6 +1,6 @@
 package com.a407.back.controller;
 
-import com.a407.back.config.SuccessCode;
+import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.Review.ReviewCreateRequest;
 import com.a407.back.dto.Review.ReviewListResponse;
 import com.a407.back.dto.util.ApiResponse;

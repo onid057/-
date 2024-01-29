@@ -1,6 +1,6 @@
 package com.a407.back.controller;
 
-import com.a407.back.config.SuccessCode;
+import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.dto.Match.MatchCreateRequest;
 import com.a407.back.dto.Match.MatchSearchRequest;
