@@ -37,7 +37,6 @@ public class MatchServiceImpl implements MatchService {
     @Transactional
     public List<MatchSearchResponse> getMatchSearchResponses(MatchSearchRequest request) {
         List<Zipsa> zipsaList = matchRepository.findByConditions(request);
-
         return zipsaList.stream().map(zipsa -> {
             List<String> categories = getCategoryNamesForZipsa(zipsa);
             String gradeName = zipsa.getGradeId().getName();

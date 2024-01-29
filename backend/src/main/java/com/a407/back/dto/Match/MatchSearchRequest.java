@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public class MatchSearchRequest {
 
     private Long majorCategoryId;
@@ -14,5 +13,5 @@ public class MatchSearchRequest {
     private String age;
     private String grade;
     private String scoreAverage;
-    
+
 }
