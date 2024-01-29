@@ -67,7 +67,7 @@ public class MatchRepositoryImpl implements MatchRepository {
         try {
             int ageInt = Integer.parseInt(age);
             Timestamp lowerBound = Timestamp.valueOf(
-                LocalDate.now().minusYears(ageInt + 10).atStartOfDay()); // 예: 40대 미만인 경우 50년 전
+                LocalDate.now().minusYears(ageInt + 10L).atStartOfDay()); // 예: 40대 미만인 경우 50년 전
             Timestamp upperBound = Timestamp.valueOf(
                 LocalDate.now().minusYears(ageInt).atStartOfDay()); // 예: 40대 이상인 경우 40년 전
 

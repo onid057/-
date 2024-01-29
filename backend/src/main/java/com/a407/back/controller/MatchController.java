@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
@@ -30,14 +30,8 @@ public class MatchController {
 
     @GetMapping("/filter")
     public ResponseEntity<ApiResponse<List<MatchSearchResponse>>> getZipsas(
-        @RequestParam(name = "majorCategory") String majorCategory,
-        @RequestParam(name = "gender", required = false) String gender,
-        @RequestParam(name = "age", required = false) String age,
-        @RequestParam(name = "grade", required = false) String grade,
-        @RequestParam(name = "score", required = false) String score) {
+        @ModelAttribute MatchSearchRequest condition) {
 
-        MatchSearchRequest condition = new MatchSearchRequest(Long.parseLong(majorCategory), gender,
-            age, grade, score);
         List<MatchSearchResponse> matchSearchResponses = matchService.getMatchSearchResponses(
             condition);
         ApiResponse<List<MatchSearchResponse>> response = new ApiResponse<>(
