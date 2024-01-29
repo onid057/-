@@ -52,9 +52,11 @@ const TextAreaInput = styled.textarea`
   background-color: transparent;
   outline: none;
   border: none;
+  line-height: 1.3;
+  overflow: hidden;
 `;
 
-function LongInputBox({ title, placeholder }) {
+function LongInputBox({ title, placeholder, value, onChange }) {
   // title: ${props => (props.$fontSize ? props.$fontSize : 'inherit')};
 
   return (
@@ -68,6 +70,8 @@ function LongInputBox({ title, placeholder }) {
             // "ex)&#10;아파트 정문에 있는 공원 정문에서 만나요. 저는 벤치에 앉아있을 테니 먼저 말을 걸어주세요."
             placeholder={placeholder}
             type="text"
+            value={value}
+            onChange={onChange}
           ></TextAreaInput>
         </ContentBox>
       </InsideWrapper>

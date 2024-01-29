@@ -45,8 +45,8 @@ function Input({
   labelText,
   commentText,
   placeholder,
-  onInput,
-  data,
+  onChange,
+  value,
   ...rest
 }) {
   return (
@@ -54,10 +54,10 @@ function Input({
       <Label>{labelText}</Label>
       <InputWrapper
         type={type}
-        onInput={onInput}
+        onChange={onChange}
         placeholder={placeholder}
         required
-        defaultValue={data}
+        value={value}
         {...rest}
       ></InputWrapper>
       <Span>{commentText}</Span>
