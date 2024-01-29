@@ -3,12 +3,14 @@ package com.a407.back.model.service;
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Association;
 import com.a407.back.domain.User;
+import com.a407.back.dto.User.UserAssociationResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.AssociationRepository;
 import com.a407.back.model.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,11 @@ public class AssociationServiceImpl implements AssociationService {
 
         Long associationId = associationRepository.makeAssociation(association);
         userRepository.makeAssociation(user.getUserId(), associationId);
+    }
+
+    @Override
+    public List<UserAssociationResponse> searchAssociationUserList(Long associationId) {
+        return userRepository.searchAssociationUserList(associationId);
     }
 
 

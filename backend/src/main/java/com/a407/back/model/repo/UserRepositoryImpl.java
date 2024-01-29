@@ -2,12 +2,14 @@ package com.a407.back.model.repo;
 
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Type;
+import com.a407.back.domain.QAssociation;
 import com.a407.back.domain.QNotification;
 import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QUser;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
+import com.a407.back.dto.User.UserAssociationResponse;
 import com.a407.back.dto.User.UserNearZipsaResponse;
 import com.a407.back.dto.User.UserRecordsResponse;
 import com.a407.back.dto.User.UserReservationResponse;
@@ -16,6 +18,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -110,6 +113,19 @@ public class UserRepositoryImpl implements UserRepository {
         QUser qUser = QUser.user;
         query.update(qUser).set(qUser.associationId.associationId, associationId)
             .set(qUser.isAffiliated, true).where(qUser.userId.eq(userId)).execute();
+    }
+
+
+    @Override
+    public List<UserAssociationResponse> searchAssociationUserList(Long associationId) {
+        QUser qUser = QUser.user;
+        QAssociation qAssociation = QAssociation.association;
+        Long adminId = Objects.requireNonNull(query.selectFrom(qAssociation)
+            .where(qAssociation.associationId.eq(associationId)).fetchOne()).getUserId();
+        return query.selectFrom(qUser)
+            .where(qUser.associationId.associationId.eq(associationId)).fetch().stream()
+            .map(user -> new UserAssociationResponse(user,
+                Objects.equals(user.getUserId(), adminId))).toList();
     }
 
 }
