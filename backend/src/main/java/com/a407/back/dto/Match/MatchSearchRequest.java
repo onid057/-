@@ -2,9 +2,11 @@ package com.a407.back.dto.Match;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class MatchSearchRequest {
 
     private Long majorCategoryId;

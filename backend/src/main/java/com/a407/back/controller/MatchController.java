@@ -31,7 +31,6 @@ public class MatchController {
     @GetMapping("/filter")
     public ResponseEntity<ApiResponse<List<MatchSearchResponse>>> getZipsas(
         @ModelAttribute MatchSearchRequest condition) {
-
         List<MatchSearchResponse> matchSearchResponses = matchService.getMatchSearchResponses(
             condition);
         ApiResponse<List<MatchSearchResponse>> response = new ApiResponse<>(
