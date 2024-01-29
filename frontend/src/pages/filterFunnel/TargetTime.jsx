@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 
 import NavigationBar from '../../components/common/NavigationBar';
@@ -27,7 +28,10 @@ const TimeWrapper = styled.div`
   align-items: center;
 `;
 
-function TargetTime({ onPrevious, onNext, matchTime }) {
+function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
+  const [startTime, setStartTime] = useState(matchStartTime || '9');
+  const [endTime, setEndTime] = useState(matchEndTime || '12');
+
   return (
     <Wrapper>
       <NavigationBar
@@ -41,8 +45,9 @@ function TargetTime({ onPrevious, onNext, matchTime }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={onNext}
+        onNext={() => onNext(startTime, endTime)}
       ></NavigationBar>
+
       <Paragraph
         gap="5px"
         fontSize="35px"
@@ -51,12 +56,29 @@ function TargetTime({ onPrevious, onNext, matchTime }) {
           '정해주세요',
         ]}
       ></Paragraph>
+
       <ProgressBar value={68}></ProgressBar>
 
       <TimeWrapper>
-        <Input type="number" width="80px" step="1" defaultValue={9}></Input>
+        <Input
+          type="number"
+          width="80px"
+          step="1"
+          min={0}
+          max={24}
+          value={startTime}
+          onChange={event => setStartTime(event.target.value)}
+        ></Input>
         시부터
-        <Input type="number" width="80px" step="1" defaultValue={12}></Input>
+        <Input
+          type="number"
+          width="80px"
+          step="1"
+          min={0}
+          max={24}
+          value={endTime}
+          onChange={event => setEndTime(event.target.value)}
+        ></Input>
         시까지
       </TimeWrapper>
     </Wrapper>

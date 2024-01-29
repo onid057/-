@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { styled } from 'styled-components';
 
 import NavigationBar from '../../components/common/NavigationBar';
@@ -7,6 +7,8 @@ import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
+
+import CATEGORY_ID from '../../constants/categoryId';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -24,31 +26,15 @@ const Wrapper = styled.div`
 
 const ContentBox = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: 20px;
+  grid-column-gap: 7px;
 `;
 
 function MainCategory({ onPrevious, onNext, matchMainCategory }) {
-  const [mainCategory, setMainCategory] = useState('');
-  const [isOptionSelected, setIsOptionSelected] = useState({
-    '동네 동행': false,
-    '멀리 동행': false,
-    집안일: false,
-    배달: false,
-    목욕: false,
-    '반려 동물': false,
-    교육: false,
-    기타: false,
-  });
-
-  console.log(mainCategory);
-
-  useEffect(() => {
-    if (matchMainCategory) {
-      setIsOptionSelected({ ...isOptionSelected, matchMainCategory: true });
-      setMainCategory(matchMainCategory);
-    }
-  }, [matchMainCategory]);
+  const [mainCategory, setMainCategory] = useState(matchMainCategory);
 
   return (
     <Wrapper>
@@ -78,55 +64,29 @@ function MainCategory({ onPrevious, onNext, matchMainCategory }) {
       <ProgressBar value={17}></ProgressBar>
 
       <ContentBox>
-        <Button
-          mode={isOptionSelected['동네 동행'] ? 'SMALL' : 'SMALL_WHITE'}
-          msg={'동네 동행'}
-          onClick={() => {
-            setMainCategory('동네 동행');
-            setIsOptionSelected({ ...isOptionSelected, '동네 동행': true });
-          }}
-        ></Button>
-        <Button
-          mode={'SMALL_WHITE'}
-          msg={'멀리 동행'}
-          onClick={() => setMainCategory('멀리 동행')}
-        ></Button>
-      </ContentBox>
-      <ContentBox>
-        <Button
-          mode={'SMALL_WHITE'}
-          msg={'집안일'}
-          onClick={() => setMainCategory('집안일')}
-        ></Button>
-        <Button
-          mode={'SMALL_WHITE'}
-          msg={'배달'}
-          onClick={() => setMainCategory('배달')}
-        ></Button>
-      </ContentBox>
-      <ContentBox>
-        <Button
-          mode={'SMALL_WHITE'}
-          msg={'목욕'}
-          onClick={() => setMainCategory('목욕')}
-        ></Button>
-        <Button
-          mode={'SMALL_WHITE'}
-          msg={'반려 동물'}
-          onClick={() => setMainCategory('반려 동물')}
-        ></Button>
-      </ContentBox>
-      <ContentBox>
-        <Button
-          mode={'SMALL_WHITE'}
-          msg={'교육'}
-          onClick={() => setMainCategory('교육')}
-        ></Button>
-        <Button
-          mode={'SMALL_WHITE'}
-          msg={'기타'}
-          onClick={() => setMainCategory('기타')}
-        ></Button>
+        {[
+          '동네 동행',
+          '멀리 동행',
+          '집안일',
+          '배달',
+          '목욕',
+          '반려 동물',
+          '교육',
+          '기타',
+        ].map((category, index) => {
+          return (
+            <Button
+              key={index}
+              mode={
+                mainCategory === CATEGORY_ID[category]
+                  ? 'SELECTED'
+                  : 'SMALL_WHITE'
+              }
+              msg={category}
+              onClick={() => setMainCategory(CATEGORY_ID[category])}
+            ></Button>
+          );
+        })}
       </ContentBox>
     </Wrapper>
   );

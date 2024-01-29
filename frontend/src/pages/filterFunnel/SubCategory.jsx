@@ -23,8 +23,8 @@ const Wrapper = styled.div`
 `;
 
 // 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function SubCategory({ onPrevious, onNext }) {
-  const [subCategory, setSubCategory] = useState('');
+function SubCategory({ onPrevious, onNext, matchSubCategory }) {
+  const [subCategory, setSubCategory] = useState(matchSubCategory);
 
   const subCategoryList = [
     '행정복지센터 가기',
@@ -32,6 +32,7 @@ function SubCategory({ onPrevious, onNext }) {
     '장보기',
     '동네 병원 가기',
     '은행가기',
+    '상관 없음',
   ];
 
   return (
@@ -62,22 +63,16 @@ function SubCategory({ onPrevious, onNext }) {
       {/* ProgressBar 진척도 변경 부분 */}
       <ProgressBar value={34}></ProgressBar>
 
-      {/* '상관 없음'을 선택하면 모든 세부내용이 다 선택됨 */}
-      {subCategoryList.map((sub, index) => {
+      {subCategoryList.map((category, index) => {
         return (
           <Button
             key={index}
-            mode={'THIN_WHITE'}
-            msg={sub}
-            onClick={() => setSubCategory(sub)}
+            mode={subCategory === category ? 'THIN_BLUE' : 'THIN_WHITE'}
+            msg={category}
+            onClick={() => setSubCategory(category)}
           ></Button>
         );
       })}
-      <Button
-        mode={'THIN_WHITE'}
-        msg={'상관 없음'}
-        onClick={() => setSubCategory('상관 없음')}
-      ></Button>
     </Wrapper>
   );
 }
