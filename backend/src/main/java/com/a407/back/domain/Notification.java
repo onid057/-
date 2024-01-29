@@ -84,10 +84,10 @@ public class Notification {
     }
 
     public enum Type {
-        user, zipsa
+        USER, ZIPSA
     }
 
     public enum Status {
-        standby, accept, reject, close
+        STANDBY, ACCEPT, REJECT, CLOSE
     }
 }

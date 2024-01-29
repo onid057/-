@@ -134,7 +134,7 @@ public class Room implements Serializable {
     }
 
     public enum Process {
-        create, before, ongoing, end, broken
+        CREATE, BEFORE, ONGOING, END, BROKEN
     }
 
     @Override
