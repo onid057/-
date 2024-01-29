@@ -41,7 +41,7 @@ public class MatchServiceImpl implements MatchService {
             List<String> categories = getCategoryNamesForZipsa(zipsa);
             String gradeName = zipsa.getGradeId().getName();
             int gradeSalary = zipsa.getGradeId().getSalary();
-
+            double scoreAverage = (zipsa.getKindnessAverage() + zipsa.getRewindAverage() + zipsa.getSkillAverage()) / 3.0;
             return new MatchSearchResponse(
                 zipsa.getZipsaId().getName(),
                 zipsa.getZipsaId().getProfileImage(),
@@ -49,6 +49,7 @@ public class MatchServiceImpl implements MatchService {
                 gradeSalary,
                 zipsa.getServiceCount(),
                 String.valueOf(request.getMajorCategoryId()),
+                scoreAverage,
                 categories
             );
         }).toList();
