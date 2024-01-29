@@ -28,8 +28,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public void chageRoomStatus(Long roomId, String status) {
-        roomRepository.chageRoomStatus(roomId, status);
+    public void changeRoomStatus(Long roomId, String status) {
+        roomRepository.changeRoomStatus(roomId, status);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class RoomServiceImpl implements RoomService {
         Room room = roomRepository.findByRoomId(matchCreateRequest.getRoomId());
         notificationRepository.changeNotificationStatusClose(room);
         // 후에 방 상태 변경
-        roomRepository.chageRoomStatus(matchCreateRequest.getRoomId(), "before");
+        roomRepository.changeRoomStatus(matchCreateRequest.getRoomId(), "before");
         // 집사 아이디 입력
         Notification notification = notificationRepository.findByNotificationId(
             matchCreateRequest.getNotificationId());

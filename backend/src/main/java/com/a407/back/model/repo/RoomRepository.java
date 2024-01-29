@@ -8,7 +8,7 @@ public interface RoomRepository {
 
     Room findByRoomId(Long roomId);
 
-    void chageRoomStatus(Long roomId, String status);
+    void changeRoomStatus(Long roomId, String status);
 
     int reduceNotificationCount(int count, Long roomId);
 

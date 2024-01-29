@@ -81,7 +81,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         // 만약 알림 숫자를 줄였을 때 0이 된다면 방 broken으로 바꿈
         if (newNotificationCount == 0) {
-            roomRepository.chageRoomStatus(notification.getRoomId().getRoomId(), "broken");
+            roomRepository.changeRoomStatus(notification.getRoomId().getRoomId(), "broken");
         }
         return newNotificationCount;
     }
