@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import NavigationBar from '../components/common/NavigationBar';
 import Image from '../components/common/Image';
 import BoldText from '../components/common/BoldText';
+import Paragraph from '../components/common/Paragraph';
+import Accordian from '../components/common/Accordian';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -19,24 +21,7 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-const ContentWrapper = styled.div`
-  width: 288px;
-  margin: 0 auto;
-  padding: 0 16px;
-  border-radius: 25px;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
 function ActivityHistory() {
-  // const [isVisible, setIsVisible] = useState(false);
-
-  // const handleClick = () => {
-  //   setIsVisible(!isVisible);
-  // };
-
   const userList = ['곽희웅', '이수민'];
 
   return (
@@ -53,7 +38,37 @@ function ActivityHistory() {
       ></NavigationBar>
       <BoldText fontSize={'35px'} normalContent={'나의 사용 내역'}></BoldText>
       {userList.map((name, idx) => (
-        <ContentWrapper key={idx}>{name}</ContentWrapper>
+        <Accordian
+          title={
+            <Paragraph
+              gap={'8px'}
+              fontSize={'20px'}
+              sentences={[
+                <BoldText
+                  fontSize={'20px'}
+                  boldContent={`{ ${name} }`}
+                  normalContent={' 집사와'}
+                />,
+                '함께한 기억이 있어요',
+              ]}
+            ></Paragraph>
+          }
+          content={
+            <Paragraph
+              gap={'8px'}
+              fontSize={'20px'}
+              sentences={[
+                <BoldText
+                  fontSize={'20px'}
+                  boldContent={`{ ${name} }`}
+                  normalContent={' 집사와'}
+                />,
+                '함께한 기억이 있어요',
+              ]}
+            ></Paragraph>
+          }
+          key={idx}
+        ></Accordian>
       ))}
     </Wrapper>
   );
