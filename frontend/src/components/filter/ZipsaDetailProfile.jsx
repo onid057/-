@@ -1,39 +1,26 @@
 import styled from 'styled-components';
 import Image from '../common/Image';
 import GradeBadge from '../common/GradeBadge';
+import ScoreBadge from '../common/ScoreBadge';
 
 const Wrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
-  height: auto;
-  margin-bottom: 20px;
+  height: 120px;
   display: flex;
-  font-weight: light;
-  font-size: 16px;
-  /* background-color: #ffffff; */
-`;
-
-const LeftBox = styled.div`
-  width: 100%;
-  height: 100%;
-  padding-top: 5px;
-  flex: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
-  gap: 7px;
+  font-weight: 300;
+  font-size: 16px;
 `;
 
 const RightBox = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 10px 5px;
-  flex: 7;
+  max-width: 200px;
+  height: 100px;
+  padding: 5px 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 8px;
 `;
 
 const Name = styled.div`
@@ -43,25 +30,20 @@ const Name = styled.div`
 `;
 
 const Infos = styled.div`
+  width: 100%;
+  height: 18px;
   display: flex;
-  font-size: 14px;
-  font-weight: bold;
-`;
-
-const AvgScore = styled.span`
-  display: flex;
-  gap: 3px;
-`;
-
-const ReviewCount = styled.span`
-  margin-left: 5px;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
 `;
 
 const Description = styled.div`
-  word-break: keep-all;
-  font-size: 14px;
-  font-weight: light;
-  line-height: 18px;
+  word-break: break-all;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
 `;
 
 function ZipsaDetailProfile({
@@ -73,26 +55,17 @@ function ZipsaDetailProfile({
 }) {
   return (
     <Wrapper>
-      <LeftBox>
-        <Image
-          src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
-          width={'70px'}
-          height={'70px'}
-        ></Image>
-        <GradeBadge grade={gradeId}></GradeBadge>
-      </LeftBox>
+      <Image
+        src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
+        width={'70px'}
+        height={'70px'}
+      ></Image>
+
       <RightBox>
         <Name>{name}</Name>
         <Infos>
-          <AvgScore>
-            <Image
-              src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
-              width={'15px'}
-              height={'15px'}
-            ></Image>
-            {avgScore}
-          </AvgScore>
-          <ReviewCount>({reviewCount})</ReviewCount>
+          <GradeBadge grade={gradeId}></GradeBadge>
+          <ScoreBadge score={avgScore} actCount={reviewCount}></ScoreBadge>
         </Infos>
         <Description>"{description}"</Description>
       </RightBox>

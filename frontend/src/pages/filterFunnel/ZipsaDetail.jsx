@@ -5,38 +5,6 @@ import Image from '../../components/common/Image';
 import ZipsaDetailProfile from '../../components/filter/ZipsaDetailProfile';
 import ZipsaDetailRoute from '../../components/filter/ZipsaDetailRoute';
 
-const Wrapper = styled.div`
-  width: 320px;
-  min-height: 568px;
-  margin: 0 auto;
-  padding: 60px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  font-size: 14px;
-  font-weight: 300;
-  white-space: pre-wrap;
-`;
-
-const Moveto = styled.div`
-  padding: 0 5px;
-  display: flex;
-  justify-content: flex-start;
-  gap: 12px;
-  > span {
-    cursor: pointer;
-  }
-`;
-
-const BoldSpanWrapper = styled.span`
-  font-weight: bold;
-`;
-
-const NormalSpanWrapper = styled.span`
-  font-weight: normal;
-`;
-
 // 집사 상세정보를 서버에서 받아오는 부분?
 // 일단 나오는지 보려고 예시로 넣어놨어요
 const zipsaInfo = {
@@ -81,6 +49,37 @@ const zipsaInfo = {
   subCategory: ['병원 동행', '마트 동행', '식사 돌봄'],
 };
 
+const Wrapper = styled.div`
+  width: 320px;
+  min-height: 568px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  font-size: 14px;
+  font-weight: 300;
+  white-space: pre-wrap;
+`;
+
+const NavigationWrapper = styled.div`
+  cursor: pointer;
+  width: 100%;
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+`;
+
+const BoldSpanWrapper = styled.span`
+  font-weight: bold;
+`;
+
+const NormalSpanWrapper = styled.span`
+  font-weight: normal;
+`;
+
 function ZipsaDetail({ onPrevious, onNext }) {
   // 클릭 이벤트 핸들러 함수 정의
   const [selectedCompo, setSelectedCompo] = useState(null);
@@ -117,8 +116,7 @@ function ZipsaDetail({ onPrevious, onNext }) {
         description={zipsaInfo.description}
       ></ZipsaDetailProfile>
 
-      {/* Moveto 선택에 따라 다른 컴포넌트 출력되게 */}
-      <Moveto>
+      <NavigationWrapper>
         {selectedCompo === 'CATEGORY' ? (
           <BoldSpanWrapper onClick={() => setSelectedCompo('CATEGORY')}>
             집사 전문분야
@@ -148,10 +146,7 @@ function ZipsaDetail({ onPrevious, onNext }) {
             이용자 리뷰
           </NormalSpanWrapper>
         )}
-        {/* <span onClick={() => setSelectedCompo('CATEGORY')}>집사 전문분야</span> */}
-        {/* <span onClick={() => setSelectedCompo('HISTORY')}>집사 활동내역</span> */}
-        {/* <span onClick={() => setSelectedCompo('REVIEW')}>이용자 리뷰</span> */}
-      </Moveto>
+      </NavigationWrapper>
 
       {/* 컴포넌트가 출력되는 부분 */}
       <ZipsaDetailRoute
