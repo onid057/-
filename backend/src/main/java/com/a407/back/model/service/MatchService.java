@@ -12,5 +12,5 @@ public interface MatchService {
 
     List<String> getCategoryNamesForZipsa(Zipsa zipsa);
 
-    Long makeRoom(RoomCreateRequest roomCreateRequest);
+    Long makeFilterRoom(RoomCreateRequest roomCreateRequest);
 }

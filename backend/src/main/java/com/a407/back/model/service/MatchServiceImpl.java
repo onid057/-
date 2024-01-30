@@ -14,6 +14,7 @@ import com.a407.back.dto.Match.RoomCreateRequest;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.MatchRepository;
 import com.a407.back.model.repo.NotificationRepository;
+import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -32,6 +33,8 @@ public class MatchServiceImpl implements MatchService {
     private final CategoryRepository categoryRepository;
 
     private final NotificationRepository notificationRepository;
+
+    private final RoomRepository roomRepository;
 
     @Override
     @Transactional
@@ -63,7 +66,7 @@ public class MatchServiceImpl implements MatchService {
     // 필터링 기반 방 만들기
     @Override
     @Transactional
-    public Long makeRoom(RoomCreateRequest roomCreateRequest) {
+    public Long makeFilterRoom(RoomCreateRequest roomCreateRequest) {
         // User 가져오기
         User user = userRepository.findByUserId(roomCreateRequest.getUserId());
         // SubCategory 가져오기
@@ -78,14 +81,15 @@ public class MatchServiceImpl implements MatchService {
             .expectationStartedAt(roomCreateRequest.getExpectationStartedAt())
             .expectationEndedAt(roomCreateRequest.getExpectationEndedAt())
             .expectationPay(roomCreateRequest.getExpectationPay())
-            .notificationCount(notificationCount).status(Process.CREATE).build();
-        Room newRoom = matchRepository.makeRoom(room);
-        Long newRoomId = newRoom.getRoomId();
+            .notificationCount(notificationCount).status(Process.CREATE).isComplained(false)
+            .isPublic(false).isReviewed(false).isReported(false).build();
+        Long newRoomId = roomRepository.makeRoom(room);
+        Room newRoom = roomRepository.findByRoomId(newRoomId);
         // 방 아이디 가지고 알림 보내기
         for (Long id : roomCreateRequest.getHelperList()) {
             Notification notification = Notification.builder().roomId(newRoom)
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
-                    Type.USER).status(Status.STANDBY).build();
+                    Type.USER).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
         }
 
