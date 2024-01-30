@@ -72,20 +72,23 @@ public class MatchServiceImpl implements MatchService {
         // 알림 개수만큼 방 만들기
         int notificationCount = roomCreateRequest.getHelperList().size();
         Room room = Room.builder().userId(user).subCategoryId(subCategory)
+            .title(roomCreateRequest.getTitle())
             .content(roomCreateRequest.getContent())
+            .place(roomCreateRequest.getPlace())
             .estimateDuration(roomCreateRequest.getEstimateDuration())
             .roomCreatedAt(roomCreateRequest.getRoomCreatedAt())
             .expectationStartedAt(roomCreateRequest.getExpectationStartedAt())
             .expectationEndedAt(roomCreateRequest.getExpectationEndedAt())
             .expectationPay(roomCreateRequest.getExpectationPay())
-            .notificationCount(notificationCount).status(Process.CREATE).build();
+            .notificationCount(notificationCount).status(Process.CREATE).isComplained(false)
+            .isPublic(false).isReviewed(false).isReported(false).build();
         Room newRoom = matchRepository.makeRoom(room);
         Long newRoomId = newRoom.getRoomId();
         // 방 아이디 가지고 알림 보내기
         for (Long id : roomCreateRequest.getHelperList()) {
             Notification notification = Notification.builder().roomId(newRoom)
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
-                    Type.USER).status(Status.STANDBY).build();
+                    Type.USER).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
         }
 
