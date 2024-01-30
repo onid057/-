@@ -13,7 +13,9 @@ public class RoomCreateRequest {
 
     private Long userId;
     private Long subCategoryId;
+    private String title;
     private String content;
+    private String place;
     private int estimateDuration;
     private Timestamp roomCreatedAt;
     private Timestamp expectationStartedAt;

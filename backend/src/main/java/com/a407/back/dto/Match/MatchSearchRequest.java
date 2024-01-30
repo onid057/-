@@ -2,6 +2,7 @@ package com.a407.back.dto.Match;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @AllArgsConstructor
@@ -12,10 +13,5 @@ public class MatchSearchRequest {
     private String age;
     private String grade;
     private String scoreAverage;
-
-    public String getMajorCategory() {
-        return String.valueOf(majorCategoryId);
-    }
-
 
 }
