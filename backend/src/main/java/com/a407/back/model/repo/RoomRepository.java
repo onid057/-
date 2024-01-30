@@ -15,4 +15,6 @@ public interface RoomRepository {
     void changeRoomZipsa(Zipsa zipsa, Long roomId);
 
     void changeRoomReview(Long roomId);
+
+    Long makeRoom(Room room);
 }
