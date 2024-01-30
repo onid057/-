@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
 import MatchOption from './pages/MatchOption';
+import ZipsaList from './pages/filterFunnel/ZipsaList';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -167,6 +168,8 @@ function App() {
         <Route path="/register" element={<RegisterFunnel />}></Route>
         <Route path="/filter" element={<FilterFunnel />}></Route>
         <Route path="/matchOption" element={<MatchOption />}></Route>
+
+        <Route path="/zipsa/list" element={<ZipsaList />}></Route>
       </Routes>
     </ThemeProvider>
   );
