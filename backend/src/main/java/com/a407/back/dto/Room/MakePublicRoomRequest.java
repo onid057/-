@@ -13,17 +13,13 @@ public class MakePublicRoomRequest {
 
     private Long userId;
     private Long subCategoryId;
+    private String title;
     private String content;
+    private String place;
     private int estimateDuration;
     private Timestamp roomCreatedAt;
     private Timestamp expectationStartedAt;
     private Timestamp expectationEndedAt;
     private int expectationPay;
-
-    public Room toEntity() {
-        return Room.builder().content(content).estimateDuration(estimateDuration)
-            .roomCreatedAt(roomCreatedAt).expectationEndedAt(expectationEndedAt)
-            .expectationStartedAt(expectationStartedAt).expectationPay(expectationPay).build();
-    }
 
 }
