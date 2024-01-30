@@ -1,10 +1,9 @@
-import styled from 'styled-components';
 import ZipsaDetailCategory from './ZipsaDetailCategory';
 import ZipsaDetailHistory from './ZipsaDetailHistory';
 import ZipsaDetailReview from './ZipsaDetailReview';
 
 function ZipsaDetailRoute({
-  compo,
+  component,
   subCategory,
   preferTag,
   replyAverage,
@@ -15,14 +14,14 @@ function ZipsaDetailRoute({
   totalReview,
   reviews,
 }) {
-  if (compo === 'CATEGORY') {
+  if (component === 'CATEGORY') {
     return (
       <ZipsaDetailCategory
         subCategory={subCategory}
         preferTag={preferTag}
       ></ZipsaDetailCategory>
     );
-  } else if (compo === 'HISTORY') {
+  } else if (component === 'HISTORY') {
     return (
       <ZipsaDetailHistory
         replyAverage={replyAverage}
@@ -32,7 +31,7 @@ function ZipsaDetailRoute({
         rewindAverage={rewindAverage}
       ></ZipsaDetailHistory>
     );
-  } else if (compo === 'REVIEW') {
+  } else if (component === 'REVIEW') {
     return (
       <ZipsaDetailReview
         totalReview={totalReview}

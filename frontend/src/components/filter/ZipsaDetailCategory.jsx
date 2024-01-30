@@ -1,19 +1,18 @@
 import styled from 'styled-components';
-import Button from '../common/Button';
+import HorizontalLine from '../common/HorizontalLine';
 
 const Wrapper = styled.div`
   cursor: pointer;
   box-sizing: border-box;
   width: 100%;
-  height: auto;
-  padding: 28px 15px;
+  padding: 20px 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 15px;
-  font-weight: light;
-  font-size: 16px;
+  font-weight: 300;
+  font-size: 15px;
   background-color: #ffffff;
   border-radius: 25px;
 `;
@@ -21,8 +20,8 @@ const Wrapper = styled.div`
 const Title = styled.div`
   width: 100%;
   height: 25px;
-  font-size: 16px;
-  font-weight: normal;
+  font-size: 15px;
+  font-weight: 400;
 `;
 
 const TagContent = styled.div`
@@ -31,21 +30,15 @@ const TagContent = styled.div`
   display: flex;
   flex-wrap: wrap;
   row-gap: 5px;
-  column-gap: 15px;
+  column-gap: 8px;
 `;
 
 const CategoryContent = styled.div`
   width: 100%;
   height: auto;
   display: flex;
-  gap: 3px;
-`;
-
-const Horizon = styled.hr`
-  width: 100%;
-  height: 0.5px;
-  background-color: #d2d2d2;
-  border: 0;
+  flex-direction: column;
+  gap: 5px;
 `;
 
 function ZipsaDetailCategory({ subCategory, preferTag }) {
@@ -53,25 +46,22 @@ function ZipsaDetailCategory({ subCategory, preferTag }) {
 
   return (
     <Wrapper>
-      <Title>집사가 등록한 태그</Title>
+      <Title>이런 일을 잘해요!</Title>
       <TagContent>
         {zipsaTags.map((tag, index) => {
           return <span key={index}># {tag}</span>;
         })}
       </TagContent>
 
-      <Horizon></Horizon>
+      <HorizontalLine width={'100%'} height={'0.5px'}></HorizontalLine>
 
-      <Title>많이 수행한 소분류 3개</Title>
+      <Title>이런 일을 많이 했어요!</Title>
       <CategoryContent>
         {subCategory.map((category, index) => {
           return (
-            <Button
-              key={index}
-              mode="FULL_PERCENT_WHITE"
-              bgcolor="#DCEAF4"
-              msg={category}
-            ></Button>
+            <span key={index}>
+              {index + 1}. {category}
+            </span>
           );
         })}
       </CategoryContent>

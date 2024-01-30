@@ -1,18 +1,18 @@
 import styled from 'styled-components';
+import HorizontalLine from '../common/HorizontalLine';
 
 const Wrapper = styled.div`
   cursor: pointer;
   box-sizing: border-box;
   width: 100%;
-  height: auto;
-  padding: 28px 15px;
+  padding: 20px 15px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   gap: 15px;
-  font-weight: light;
-  font-size: 16px;
+  font-weight: 300;
+  font-size: 15px;
   background-color: #ffffff;
   border-radius: 25px;
 `;
@@ -20,30 +20,23 @@ const Wrapper = styled.div`
 const Title = styled.div`
   width: 100%;
   height: 25px;
-  font-size: 16px;
-  font-weight: normal;
+  font-size: 15px;
+  font-weight: 400;
 `;
 
 const TextBox = styled.div`
   width: 100%;
-  height: auto;
   display: flex;
   font-size: 14px;
-  font-weight: normal;
 `;
 
 const BoldText = styled.span`
-  width: 130px;
-  font-weight: bold;
+  font-weight: 700;
+  color: #629af9;
 `;
 
-const NormalText = styled.div``;
-
-const Horizon = styled.hr`
-  width: 100%;
-  height: 0.5px;
-  background-color: #d2d2d2;
-  border: 0;
+const NormalText = styled.div`
+  width: 130px;
 `;
 
 function ZipsaDetailHistory({
@@ -56,33 +49,27 @@ function ZipsaDetailHistory({
   return (
     <Wrapper>
       <Title>평균 제안 응답 시간</Title>
-      <TextBox>
-        <BoldText>실시간 매칭</BoldText>
-        <NormalText>{replyAverage}분</NormalText>
-      </TextBox>
+      <BoldText>{replyAverage}분</BoldText>
 
-      <Horizon></Horizon>
+      <HorizontalLine width={'100%'} height={'0.5px'}></HorizontalLine>
 
       <Title>총 매칭 횟수</Title>
-      <TextBox>
-        <BoldText>총 이용 횟수</BoldText>
-        <NormalText>{serviceCount}회</NormalText>
-      </TextBox>
+      <BoldText>{serviceCount}회</BoldText>
 
-      <Horizon></Horizon>
+      <HorizontalLine width={'100%'} height={'0.5px'}></HorizontalLine>
 
       <Title>고객 만족도</Title>
       <TextBox>
-        <BoldText>친절해요</BoldText>
-        <NormalText>{kindnessAverage}점</NormalText>
+        <NormalText>친절해요</NormalText>
+        <BoldText>{kindnessAverage}점</BoldText>
       </TextBox>
       <TextBox>
-        <BoldText>능숙해요</BoldText>
-        <NormalText>{skillAverage}점</NormalText>
+        <NormalText>능숙해요</NormalText>
+        <BoldText>{skillAverage}점</BoldText>
       </TextBox>
       <TextBox>
-        <BoldText>다시 만나고 싶어요</BoldText>
-        <NormalText>{rewindAverage}점</NormalText>
+        <NormalText>다시 만나고 싶어요</NormalText>
+        <BoldText>{rewindAverage}점</BoldText>
       </TextBox>
     </Wrapper>
   );

@@ -72,11 +72,11 @@ const NavigationWrapper = styled.div`
   gap: 12px;
 `;
 
-const BoldSpanWrapper = styled.span`
+const BoldTextWrapper = styled.div`
   font-weight: bold;
 `;
 
-const NormalSpanWrapper = styled.span`
+const NormalTextWrapper = styled.div`
   font-weight: normal;
 `;
 
@@ -118,39 +118,39 @@ function ZipsaDetail({ onPrevious, onNext }) {
 
       <NavigationWrapper>
         {selectedCompo === 'CATEGORY' ? (
-          <BoldSpanWrapper onClick={() => setSelectedCompo('CATEGORY')}>
+          <BoldTextWrapper onClick={() => setSelectedCompo('CATEGORY')}>
             집사 전문분야
-          </BoldSpanWrapper>
+          </BoldTextWrapper>
         ) : (
-          <NormalSpanWrapper onClick={() => setSelectedCompo('CATEGORY')}>
+          <NormalTextWrapper onClick={() => setSelectedCompo('CATEGORY')}>
             집사 전문분야
-          </NormalSpanWrapper>
+          </NormalTextWrapper>
         )}
 
         {selectedCompo === 'HISTORY' ? (
-          <BoldSpanWrapper onClick={() => setSelectedCompo('HISTORY')}>
+          <BoldTextWrapper onClick={() => setSelectedCompo('HISTORY')}>
             집사 활동내역
-          </BoldSpanWrapper>
+          </BoldTextWrapper>
         ) : (
-          <NormalSpanWrapper onClick={() => setSelectedCompo('HISTORY')}>
+          <NormalTextWrapper onClick={() => setSelectedCompo('HISTORY')}>
             집사 활동내역
-          </NormalSpanWrapper>
+          </NormalTextWrapper>
         )}
 
         {selectedCompo === 'REVIEW' ? (
-          <BoldSpanWrapper onClick={() => setSelectedCompo('REVIEW')}>
-            이용자 리뷰
-          </BoldSpanWrapper>
+          <BoldTextWrapper onClick={() => setSelectedCompo('REVIEW')}>
+            고객 리뷰
+          </BoldTextWrapper>
         ) : (
-          <NormalSpanWrapper onClick={() => setSelectedCompo('REVIEW')}>
-            이용자 리뷰
-          </NormalSpanWrapper>
+          <NormalTextWrapper onClick={() => setSelectedCompo('REVIEW')}>
+            고객 리뷰
+          </NormalTextWrapper>
         )}
       </NavigationWrapper>
 
       {/* 컴포넌트가 출력되는 부분 */}
       <ZipsaDetailRoute
-        compo={selectedCompo}
+        component={selectedCompo}
         subCategory={zipsaInfo.subCategory}
         preferTag={zipsaInfo.preferTag}
         replyAverage={zipsaInfo.replyAverage}
