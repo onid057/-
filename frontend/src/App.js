@@ -8,6 +8,7 @@ import Login from './pages/Login';
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
 import MatchOption from './pages/MatchOption';
+import NotFound from './pages/NotFound';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -167,6 +168,7 @@ function App() {
         <Route path="/register" element={<RegisterFunnel />}></Route>
         <Route path="/filter" element={<FilterFunnel />}></Route>
         <Route path="/matchOption" element={<MatchOption />}></Route>
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </ThemeProvider>
   );
