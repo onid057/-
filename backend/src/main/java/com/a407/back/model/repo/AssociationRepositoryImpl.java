@@ -75,5 +75,12 @@ public class AssociationRepositoryImpl implements AssociationRepository {
         return associationRedisTemplate.getExpire(code);
     }
 
+    @Override
+    public void changeAssociationRepresentative(Long userId, Long associationId) {
+        QAssociation qAssociation = QAssociation.association;
+        query.update(qAssociation).set(qAssociation.userId, userId)
+            .where(qAssociation.associationId.eq(associationId)).execute();
+    }
+
 
 }

@@ -20,4 +20,6 @@ public interface AssociationRepository {
     void saveCode(String email, String code);
 
     Long findTtl(String code);
+
+    void changeAssociationRepresentative(Long userId, Long associationId);
 }

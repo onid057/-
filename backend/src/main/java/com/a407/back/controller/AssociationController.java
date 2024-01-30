@@ -11,6 +11,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,6 +59,13 @@ public class AssociationController {
         // 스프링 시큐리티 도입 전 임시 값
         associationService.changeAssociation(8L, "66513330");
         return new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "연동 계정 참가 성공");
+    }
+
+    @PatchMapping("/representative")
+    public ApiResponse<String> changeAssociationRepresentative() {
+        // 스프링 시큐리티 도입 전 임시 값
+        associationService.changeAssociationRepresentative(8L, 8L);
+        return new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "연동 계정 대표 변경 성공");
     }
 
 

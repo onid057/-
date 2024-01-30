@@ -22,4 +22,6 @@ public interface AssociationService {
         throws JsonProcessingException, NoSuchAlgorithmException;
 
     void changeAssociation(Long userId, String code);
+
+    void changeAssociationRepresentative(Long representativeId, Long userId);
 }

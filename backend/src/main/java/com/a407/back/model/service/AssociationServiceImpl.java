@@ -31,12 +31,11 @@ public class AssociationServiceImpl implements AssociationService {
     @Override
     @Transactional
     public void makeAssociation(Long userId) {
-        Association association = new Association(userId,
-            new Timestamp(new Date().getTime()));
+        Association association = new Association(userId, new Timestamp(new Date().getTime()));
 
         User user = userRepository.findByUserId(userId);
-        if (user == null || user.getAssociationId().getAssociationId() != 0
-            || Boolean.TRUE.equals(user.getIsAffiliated())) {
+        if (user == null || user.getAssociationId().getAssociationId() != 0 || Boolean.TRUE.equals(
+            user.getIsAffiliated())) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         }
 
@@ -72,16 +71,14 @@ public class AssociationServiceImpl implements AssociationService {
     @Override
     @Transactional
     public AssociationAdditionCodeResponse makeAdditionCode(Long userId, String email,
-        Long associationId)
-        throws JsonProcessingException, NoSuchAlgorithmException {
+        Long associationId) throws JsonProcessingException, NoSuchAlgorithmException {
 
         // 현재 사용자가 대표인지 여부를 확인 해야한다
         if (!Objects.equals(associationId, associationRepository.findAssociation(userId))) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         }
 
-        String code = associationRepository.findAdditionCode(
-            email);
+        String code = associationRepository.findAdditionCode(email);
         // 이미 코드가 존재를 한다면 반환을 하고 종료
         if (code != null) {
             // 코드가 존재 한다면 남은 시간을 조회하도록 하자
@@ -115,6 +112,27 @@ public class AssociationServiceImpl implements AssociationService {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
         userRepository.makeAssociation(userId, associationId);
+    }
+
+
+    @Override
+    @Transactional
+    public void changeAssociationRepresentative(Long representativeId, Long userId) {
+        if (Objects.equals(representativeId, userId)) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
+        User representative = userRepository.findByUserId(representativeId);
+        User user = userRepository.findByUserId(userId);
+
+        // 대표인지를 확인 하고 사용자 번호가 같은 연동 계정인지
+        Long associationId = associationRepository.findAssociation(representativeId);
+        if (associationId == null || !Objects.equals(
+            representative.getAssociationId().getAssociationId(),
+            user.getAssociationId().getAssociationId())) {
+            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        }
+
+        associationRepository.changeAssociationRepresentative(userId, associationId);
     }
 
 
