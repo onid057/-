@@ -34,12 +34,20 @@ public class RoomRepositoryImpl implements RoomRepository {
     }
 
     @Override
-    public int reduceNotificationCount(int count, Long roomId) {
+    public int changeNotificationCountDecrease(int count, Long roomId) {
         QRoom qRoom = QRoom.room;
         int newCount = count - 1;
         query.update(qRoom).set(qRoom.notificationCount, newCount).where(qRoom.roomId.eq(roomId))
             .execute();
         return newCount;
+    }
+
+    @Override
+    public void changeNotificationCountIncrease(int count, Long roomId) {
+        QRoom qRoom = QRoom.room;
+        int newCount = count + 1;
+        query.update(qRoom).set(qRoom.notificationCount, newCount).where(qRoom.roomId.eq(roomId))
+            .execute();
     }
 
     @Override

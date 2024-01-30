@@ -10,7 +10,9 @@ public interface RoomRepository {
 
     void changeRoomStatus(Long roomId, String status);
 
-    int reduceNotificationCount(int count, Long roomId);
+    int changeNotificationCountDecrease(int count, Long roomId);
+
+    void changeNotificationCountIncrease(int count, Long roomId);
 
     void changeRoomZipsa(Zipsa zipsa, Long roomId);
 
