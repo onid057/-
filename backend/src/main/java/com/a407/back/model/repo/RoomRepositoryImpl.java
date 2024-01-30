@@ -62,5 +62,16 @@ public class RoomRepositoryImpl implements RoomRepository {
         query.update(qRoom).set(qRoom.isReviewed, true).where(qRoom.roomId.eq(roomId)).execute();
     }
 
+    @Override
+    public Long makeRoom(Room room) {
+        em.persist(room);
+        return room.getRoomId();
+    }
+
+    @Override
+    public void deletePublicRoom(Room room) {
+        em.remove(room);
+    }
+
 
 }

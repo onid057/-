@@ -40,7 +40,7 @@ public class MatchController {
     @PostMapping("/choice-helper")
     public ResponseEntity<ApiResponse<Long>> makeRoomWithHelper(
         @RequestBody RoomCreateRequest roomCreateRequest) {
-        Long roomId = matchService.makeRoom(roomCreateRequest);
+        Long roomId = matchService.makeFilterRoom(roomCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, roomId));
     }

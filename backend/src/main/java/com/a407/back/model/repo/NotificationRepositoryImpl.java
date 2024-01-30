@@ -6,6 +6,7 @@ import com.a407.back.domain.QNotification;
 import com.a407.back.domain.Room;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +40,16 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     @Override
     public void makeNotification(Notification notification) {
         em.persist(notification);
+    }
+
+    @Override
+    public List<Notification> findByRoomIdList(Room room) {
+        QNotification qNotification = QNotification.notification;
+        return query.selectFrom(qNotification).where(qNotification.roomId.eq(room)).fetch();
+    }
+
+    @Override
+    public void deleteNotification(Notification notification) {
+        em.remove(notification);
     }
 }

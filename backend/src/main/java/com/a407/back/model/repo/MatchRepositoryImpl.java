@@ -3,7 +3,6 @@ package com.a407.back.model.repo;
 import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.QZipsaCategory;
-import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
@@ -120,12 +119,6 @@ public class MatchRepositoryImpl implements MatchRepository {
 
         return query.select(qZipsaCategory.majorCategoryId.name).from(qZipsaCategory)
             .where(qZipsaCategory.zipsaId.zipsaId.userId.eq(zipsaId)).fetch();
-    }
-
-    @Override
-    public Room makeRoom(Room room) {
-        em.persist(room);
-        return room;
     }
 
     @Override
