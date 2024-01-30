@@ -4,6 +4,7 @@ import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.Room;
+import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.User.UserNotificationResponse;
 import com.a407.back.dto.User.ZipsaNotificationResponse;
 import com.a407.back.exception.CustomException;
@@ -27,6 +28,8 @@ public class NotificationServiceImpl implements NotificationService {
     private final CategoryRepository categoryRepository;
 
     private final RoomRepository roomRepository;
+
+    private final ZipsaRepository zipsaRepository;
 
     // 고객이 자신의 알림 세부조회
     @Override
@@ -79,7 +82,7 @@ public class NotificationServiceImpl implements NotificationService {
         // 방에서 알림 숫자를 줄임
         Notification notification = notificationRepository.findByNotificationId(notificationId);
         Room room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
-        int newNotificationCount = roomRepository.reduceNotificationCount(
+        int newNotificationCount = roomRepository.changeNotificationCountDecrease(
             room.getNotificationCount(), notification.getRoomId().getRoomId());
 
         // 만약 알림 숫자를 줄였을 때 0이 된다면 방 broken으로 바꿈
@@ -87,5 +90,27 @@ public class NotificationServiceImpl implements NotificationService {
             roomRepository.changeRoomStatus(notification.getRoomId().getRoomId(), "broken");
         }
         return newNotificationCount;
+    }
+
+    @Override
+    @Transactional
+    public void changeRoomToMatch(Long notificationId) {
+        Notification notification = notificationRepository.findByNotificationId(notificationId);
+        // 수락한 알림은 accept
+        notificationRepository.changeNotificationStatusAcceptOrReject(
+            notificationId, "ACCEPT");
+        // 다른 알림들이 있다면 close
+        Room room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
+        notificationRepository.changeNotificationStatusClose(room);
+        // 후에 방 상태 변경
+        roomRepository.changeRoomStatus(notification.getRoomId().getRoomId(), "BEFORE");
+        // 집사 아이디 입력
+        Zipsa zipsa = zipsaRepository.findByZipsaId(notification.getReceiveId());
+        if (zipsa != null && zipsa.getIsWorked()) {
+            zipsa = zipsaRepository.findByZipsaId(notification.getReceiveId());
+        } else {
+            zipsa = zipsaRepository.findByZipsaId(notification.getSendId());
+        }
+        roomRepository.changeRoomZipsa(zipsa, notification.getRoomId().getRoomId());
     }
 }

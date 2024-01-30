@@ -42,4 +42,12 @@ public class NotificationController {
         int newNotificationCount = notificationService.rejectNotification(notificationId);
         return ResponseEntity.status(HttpStatus.OK).body(newNotificationCount);
     }
+
+    @GetMapping("/{notificationId}")
+    public ResponseEntity<ApiResponse<Long>> changeRoomToMatch(
+        @PathVariable("notificationId") Long notificationId) {
+        notificationService.changeRoomToMatch(notificationId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, notificationId));
+    }
 }

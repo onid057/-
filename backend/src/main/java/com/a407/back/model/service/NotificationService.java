@@ -4,7 +4,6 @@ import com.a407.back.domain.Notification;
 import com.a407.back.domain.Room;
 import com.a407.back.dto.User.UserNotificationResponse;
 import com.a407.back.dto.User.ZipsaNotificationResponse;
-import java.util.Optional;
 
 public interface NotificationService {
 
@@ -19,4 +18,6 @@ public interface NotificationService {
     void changeNotificationStatusClose(Room room);
 
     int rejectNotification(Long notificationId);
+
+    void changeRoomToMatch(Long notificationId);
 }
