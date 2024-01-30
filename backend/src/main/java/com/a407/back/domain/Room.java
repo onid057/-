@@ -43,8 +43,14 @@ public class Room implements Serializable {
     @JoinColumn(name = "sub_category_id", nullable = false)
     private SubCategory subCategoryId;
 
+    @Column(name = "title", length = 30)
+    private String title;
+
     @Column(name = "content", length = 200, nullable = false)
     private String content;
+
+    @Column(name= "place", length = 50, nullable = false)
+    private String place;
 
     @Column(name = "estimate_duration", nullable = false)
     private int estimateDuration;
@@ -103,7 +109,7 @@ public class Room implements Serializable {
 
 
     @Builder
-    public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String content,
+    public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String title, String content, String place,
         int estimateDuration, Timestamp roomCreatedAt, Timestamp matchCreatedAt,
         Boolean isReported,
         int reportCycle, Boolean isPublic, int notificationCount, Timestamp startedAt,
@@ -114,7 +120,9 @@ public class Room implements Serializable {
         this.userId = userId;
         this.zipsaId = zipsaId;
         this.subCategoryId = subCategoryId;
+        this.title = title;
         this.content = content;
+        this.place =place;
         this.estimateDuration = estimateDuration;
         this.roomCreatedAt = roomCreatedAt;
         this.matchCreatedAt = matchCreatedAt;

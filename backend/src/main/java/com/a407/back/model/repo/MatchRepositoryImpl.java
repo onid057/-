@@ -1,8 +1,10 @@
 package com.a407.back.model.repo;
 
+import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.QZipsaCategory;
 import com.a407.back.domain.Room;
+import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.Match.MatchSearchRequest;
@@ -11,6 +13,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -123,5 +126,26 @@ public class MatchRepositoryImpl implements MatchRepository {
     public Room makeRoom(Room room) {
         em.persist(room);
         return room;
+    }
+
+    @Override
+    public void changeMatchStartedAt(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.startedAt, Timestamp.valueOf(LocalDateTime.now()))
+            .where(qRoom.roomId.eq(roomId)).execute();
+    }
+
+    @Override
+    public void changeMatchEndedAt(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.endedAt, Timestamp.valueOf(LocalDateTime.now()))
+            .where(qRoom.roomId.eq(roomId)).execute();
+    }
+
+    @Override
+    public void changeMatchStatus(Long roomId, String status) {
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.status, Process.valueOf(status))
+            .where(qRoom.roomId.eq(roomId)).execute();
     }
 }

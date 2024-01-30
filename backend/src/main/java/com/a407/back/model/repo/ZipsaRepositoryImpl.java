@@ -90,4 +90,13 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
             .where(qZipsa.zipsaId.userId.eq(zipsaId))
             .execute();
     }
+
+    @Override
+    public void changeServiceCountIncrease(Zipsa zipsa) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        int newServiceCount = zipsa.getServiceCount() + 1;
+        query.update(qZipsa)
+            .set(qZipsa.serviceCount, newServiceCount)
+            .where(qZipsa.eq(zipsa)).execute();
+    }
 }
