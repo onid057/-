@@ -17,4 +17,6 @@ public interface RoomRepository {
     void changeRoomReview(Long roomId);
 
     Long makeRoom(Room room);
+
+    void deletePublicRoom(Room room);
 }

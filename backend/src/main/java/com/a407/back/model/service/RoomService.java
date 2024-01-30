@@ -18,4 +18,6 @@ public interface RoomService {
     void makeMatch(MatchCreateRequest matchCreateRequest);
 
     Long makePublicRoom(MakePublicRoomRequest makePublicRoomRequest);
+
+    void deletePublicRoom(Long roomId);
 }

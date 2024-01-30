@@ -60,5 +60,10 @@ public class RoomRepositoryImpl implements RoomRepository {
         return room.getRoomId();
     }
 
+    @Override
+    public void deletePublicRoom(Room room) {
+        em.remove(room);
+    }
+
 
 }

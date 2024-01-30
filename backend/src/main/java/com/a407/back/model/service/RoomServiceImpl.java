@@ -14,6 +14,7 @@ import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -93,5 +94,18 @@ public class RoomServiceImpl implements RoomService {
             .expectationEndedAt(makePublicRoomRequest.getExpectationEndedAt()).isComplained(false)
             .isReviewed(false).isReported(false).status(Process.CREATE).build();
         return roomRepository.makeRoom(room);
+    }
+
+    @Override
+    @Transactional
+    public void deletePublicRoom(Long roomId) {
+        Room room = roomRepository.findByRoomId(roomId);
+        // 공개 방 삭제 전 연관된 알림들 삭제
+        List<Notification> notificationList = notificationRepository.findByRoomIdList(room);
+        for(Notification notification : notificationList) {
+            notificationRepository.deleteNotification(notification);
+        }
+        // 공개 방 삭제
+        roomRepository.deletePublicRoom(room);
     }
 }
