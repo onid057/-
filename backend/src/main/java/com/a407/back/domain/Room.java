@@ -1,5 +1,6 @@
 package com.a407.back.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -33,6 +34,7 @@ public class Room implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,6 +43,7 @@ public class Room implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sub_category_id", nullable = false)
+    @JsonIgnore
     private SubCategory subCategoryId;
 
     @Column(name = "content", length = 200, nullable = false)
