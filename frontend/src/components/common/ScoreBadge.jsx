@@ -27,7 +27,8 @@ function ScoreBadge({ width, height, score, actCount }) {
         height={'15px'}
       ></Image>
       <TextWrapper>
-        {score}({actCount})
+        {score}
+        {actCount > 0 && <>({actCount})</>}
       </TextWrapper>
     </Wrapper>
   );
