@@ -5,8 +5,11 @@ import com.a407.back.dto.Notification.NotificationListResponse;
 import com.a407.back.dto.User.UserAccountRequest;
 import com.a407.back.dto.User.UserAccountResponse;
 import com.a407.back.dto.User.UserNearZipsaResponse;
+import com.a407.back.dto.User.UserPhoneNumberRequest;
 import com.a407.back.dto.User.UserRecordsResponse;
 import com.a407.back.dto.User.UserReservationResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface UserService {
@@ -31,4 +34,9 @@ public interface UserService {
     String getMaskedCardNumber(Long userId);
 
     void deleteAccount(Long userId);
+
+    void sendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
+        throws JsonProcessingException, NoSuchAlgorithmException;
+
+    void savePhoneNumber(String code, String email) throws JsonProcessingException;
 }
