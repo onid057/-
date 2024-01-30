@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useFunnel } from '../../hooks/useFunnel';
+import { getFilteredHelperData } from '../../apis/api/match';
 
 import axios from 'axios';
 
@@ -104,17 +105,24 @@ function FilterFunnel() {
               gradeCondition: grade,
               scoreCondition: score,
             });
-            axios
-              .get('http://localhost:8080/matches/filter', {
-                params: {
-                  majorCategoryId: filterData.matchMainCategory,
-                  genderStr: filterData.genderCondition,
-                  age: filterData.ageCondition,
-                  grade: filterData.gradeCondition,
-                  scoreAverage: filterData.scoreCondition,
-                },
-              })
-              .then(response => console.log(response));
+            // axios
+            //   .get('http://localhost:8080/matches/filter', {
+            //     params: {
+            //       majorCategoryId: filterData.matchMainCategory,
+            //       genderStr: filterData.genderCondition,
+            //       age: filterData.ageCondition,
+            //       grade: filterData.gradeCondition,
+            //       scoreAverage: filterData.scoreCondition,
+            //     },
+            //   })
+            //   .then(response => console.log(response));
+            getFilteredHelperData(
+              filterData.matchMainCategory,
+              filterData.genderCondition,
+              filterData.ageCondition,
+              filterData.gradeCondition,
+              filterData.scoreCondition,
+            ).then(response => console.log(response));
           }}
           genderCondition={filterData.genderCondition}
           ageCondition={filterData.ageCondition}
