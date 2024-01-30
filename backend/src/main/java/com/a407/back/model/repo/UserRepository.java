@@ -14,7 +14,7 @@ public interface UserRepository {
 
     User save(User user);
 
-    List<Notification> findNotificationByUserId(Long userId, String type);
+    List<Notification> findNotificationByUserIdList(Long userId, String type);
 
     User findByUserId(Long userId);
 

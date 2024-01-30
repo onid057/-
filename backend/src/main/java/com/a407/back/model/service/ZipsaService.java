@@ -1,6 +1,7 @@
 package com.a407.back.model.service;
 
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.Zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.Zipsa.ReportCreateRequest;
 import com.a407.back.dto.Zipsa.ReportSearchResponse;
 import com.a407.back.dto.Zipsa.ZipsaDetailInfoResponse;
@@ -20,4 +21,6 @@ public interface ZipsaService {
     ZipsaRecordsResponse findRecordsByZipsaId(Long helperId);
     
     ZipsaReservationResponse findReservationByZipsaId(Long zipsaId);
+
+    void makePublicRoomNotification(PublicRoomNotificationRequest publicRoomNotificationRequest);
 }

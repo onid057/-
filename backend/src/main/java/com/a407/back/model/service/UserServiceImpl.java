@@ -57,14 +57,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public List<NotificationListResponse> findNotificationsByUserId(Long userId) {
+    public List<NotificationListResponse> findNotificationByUserIdList(Long userId) {
         boolean workedDistinction = isWorkedDistinction(userId);
         List<Notification> notificationList = null;
         List<NotificationListResponse> notificationResponseList = new ArrayList<>();
         if (workedDistinction) {
-            notificationList = userRepository.findNotificationByUserId(userId, "zipsa");
+            notificationList = userRepository.findNotificationByUserIdList(userId, "ZIPSA");
         } else {
-            notificationList = userRepository.findNotificationByUserId(userId, "user");
+            notificationList = userRepository.findNotificationByUserIdList(userId, "USER");
         }
         for (Notification n : notificationList) {
             notificationResponseList.add(new NotificationListResponse(

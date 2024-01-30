@@ -2,11 +2,14 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Room;
-import java.util.Optional;
+import com.a407.back.dto.User.UserNotificationResponse;
+import com.a407.back.dto.User.ZipsaNotificationResponse;
 
 public interface NotificationService {
 
-    Optional<?> getNotification(Long notificationId);
+    UserNotificationResponse findUserNotificationDetail(Long notificationId);
+
+    ZipsaNotificationResponse findZipsaNotificationDetail(Long notificationId);
 
     Notification findByNotificationId(Long notificationId);
 
@@ -15,4 +18,6 @@ public interface NotificationService {
     void changeNotificationStatusClose(Room room);
 
     int rejectNotification(Long notificationId);
+
+    void changeRoomToMatch(Long notificationId);
 }

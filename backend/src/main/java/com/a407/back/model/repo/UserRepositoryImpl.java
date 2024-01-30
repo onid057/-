@@ -46,14 +46,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Notification> findNotificationByUserId(Long userId, String type) {
+    public List<Notification> findNotificationByUserIdList(Long userId, String type) {
         QNotification qNotification = QNotification.notification;
         query.update(qNotification).set(qNotification.isRead, true)
             .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
             .execute();
         return query.selectFrom(qNotification).where(
                 qNotification.receiveId.eq(userId).and(qNotification.type.eq(Type.valueOf(type))))
-            .fetch();
+            .orderBy(qNotification.createdAt.desc()).fetch();
     }
 
     @Override
