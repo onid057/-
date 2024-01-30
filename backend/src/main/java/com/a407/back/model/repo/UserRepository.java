@@ -2,6 +2,7 @@ package com.a407.back.model.repo;
 
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.User;
+import com.a407.back.dto.User.UserAssociationResponse;
 import com.a407.back.dto.User.UserNearZipsaResponse;
 import com.a407.back.dto.User.UserRecordsResponse;
 import com.a407.back.dto.User.UserReservationResponse;
@@ -27,4 +28,14 @@ public interface UserRepository {
     void deleteAccount(User user, String account);
 
     void savePhoneNumber(String phoneNumber, String email);
+
+    void makeAssociation(Long userId, Long associationId);
+
+    List<UserAssociationResponse> searchAssociationUserList(Long associationId);
+
+    void deleteAssociation(Long userId);
+
+    List<Long> searchAssociationUserIdList(Long associationId);
+
+    boolean findIsAffiliated(Long userId);
 }
