@@ -23,4 +23,6 @@ public interface ZipsaRepository {
 
     void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
         Double rewindAverage);
+
+    void changeServiceCountIncrease(Zipsa zipsa);
 }

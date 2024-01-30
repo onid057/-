@@ -14,7 +14,9 @@ import com.a407.back.dto.Match.RoomCreateRequest;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.MatchRepository;
 import com.a407.back.model.repo.NotificationRepository;
+import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
+import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +34,10 @@ public class MatchServiceImpl implements MatchService {
     private final CategoryRepository categoryRepository;
 
     private final NotificationRepository notificationRepository;
+
+    private final RoomRepository roomRepository;
+
+    private final ZipsaRepository zipsaRepository;
 
     @Override
     @Transactional
@@ -106,6 +112,10 @@ public class MatchServiceImpl implements MatchService {
     public Long changeMatchEndedAt(Long roomId) {
         matchRepository.changeMatchEndedAt(roomId);
         changeMatchStatus(roomId, "END");
+        // 집사의 serviceCount + 1
+        Room room = roomRepository.findByRoomId(roomId);
+        Zipsa zipsa = zipsaRepository.findByZipsaId(room.getZipsaId().getZipsaId().getUserId());
+        zipsaRepository.changeServiceCountIncrease(zipsa);
         return roomId;
     }
 
