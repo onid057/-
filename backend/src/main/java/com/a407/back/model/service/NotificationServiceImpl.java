@@ -71,7 +71,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public int rejectNotification(Long notificationId) {
         // 해당 알림을 reject
-        notificationRepository.changeNotificationStatusAcceptOrReject(notificationId, "reject");
+        notificationRepository.changeNotificationStatusAcceptOrReject(notificationId, "REJECT");
 
         // 방에서 알림 숫자를 줄임
         Notification notification = notificationRepository.findByNotificationId(notificationId);
@@ -81,7 +81,7 @@ public class NotificationServiceImpl implements NotificationService {
 
         // 만약 알림 숫자를 줄였을 때 0이 된다면 방 broken으로 바꿈
         if (newNotificationCount == 0) {
-            roomRepository.changeRoomStatus(notification.getRoomId().getRoomId(), "broken");
+            roomRepository.changeRoomStatus(notification.getRoomId().getRoomId(), "BROKEN");
         }
         return newNotificationCount;
     }

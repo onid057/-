@@ -2,10 +2,16 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Room;
+import com.a407.back.domain.Room.Process;
+import com.a407.back.domain.SubCategory;
+import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.Match.MatchCreateRequest;
+import com.a407.back.dto.Room.MakePublicRoomRequest;
+import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
+import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +26,10 @@ public class RoomServiceImpl implements RoomService {
     private final NotificationRepository notificationRepository;
 
     private final ZipsaRepository zipsaRepository;
+
+    private final UserRepository userRepository;
+
+    private final CategoryRepository categoryRepository;
 
     @Override
     public Room findByRoomId(Long roomId) {
@@ -50,12 +60,12 @@ public class RoomServiceImpl implements RoomService {
     public void makeMatch(MatchCreateRequest matchCreateRequest) {
         // 수락한 알림은 accept
         notificationRepository.changeNotificationStatusAcceptOrReject(
-            matchCreateRequest.getNotificationId(), "accept");
+            matchCreateRequest.getNotificationId(), "ACCEPT");
         // 다른 알림들이 있다면 close
         Room room = roomRepository.findByRoomId(matchCreateRequest.getRoomId());
         notificationRepository.changeNotificationStatusClose(room);
         // 후에 방 상태 변경
-        roomRepository.changeRoomStatus(matchCreateRequest.getRoomId(), "before");
+        roomRepository.changeRoomStatus(matchCreateRequest.getRoomId(), "BEFORE");
         // 집사 아이디 입력
         Notification notification = notificationRepository.findByNotificationId(
             matchCreateRequest.getNotificationId());
@@ -66,5 +76,22 @@ public class RoomServiceImpl implements RoomService {
             zipsa = zipsaRepository.findByZipsaId(notification.getSendId());
         }
         roomRepository.changeRoomZipsa(zipsa, matchCreateRequest.getRoomId());
+    }
+
+    @Override
+    @Transactional
+    public Long makePublicRoom(MakePublicRoomRequest makePublicRoomRequest) {
+        User user = userRepository.findByUserId(makePublicRoomRequest.getUserId());
+        SubCategory subCategory = categoryRepository.findBySubCategoryId(
+            makePublicRoomRequest.getSubCategoryId());
+        Room room = Room.builder().userId(user).subCategoryId(subCategory).content(
+                makePublicRoomRequest.getContent()).isPublic(true)
+            .roomCreatedAt(makePublicRoomRequest.getRoomCreatedAt())
+            .estimateDuration(makePublicRoomRequest.getEstimateDuration())
+            .expectationPay(makePublicRoomRequest.getExpectationPay())
+            .expectationStartedAt(makePublicRoomRequest.getExpectationStartedAt())
+            .expectationEndedAt(makePublicRoomRequest.getExpectationEndedAt()).isComplained(false)
+            .isReviewed(false).isReported(false).status(Process.CREATE).build();
+        return roomRepository.makeRoom(room);
     }
 }
