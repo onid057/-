@@ -1,9 +1,12 @@
 package com.a407.back.controller;
 
+import com.a407.back.config.constants.SuccessCode;
+import com.a407.back.dto.Zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.Zipsa.ReportCreateRequest;
 import com.a407.back.dto.Zipsa.ReportSearchResponse;
 import com.a407.back.dto.Zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.Zipsa.ZipsaReservationResponse;
+import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.ZipsaServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,6 +54,13 @@ public class ZipsaController {
         @PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(zipsaService.findReservationByZipsaId(helperId));
+    }
+
+    @PostMapping("/participation")
+    public ResponseEntity<ApiResponse<String>> makePublicRoomNotification(@RequestBody PublicRoomNotificationRequest publicRoomNotificationRequest) {
+        zipsaService.makePublicRoomNotification(publicRoomNotificationRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "공개 방 참가 요청이 발신되었습니다."));
     }
 
 }
