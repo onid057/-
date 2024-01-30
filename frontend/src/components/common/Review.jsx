@@ -1,51 +1,57 @@
 import styled from 'styled-components';
-import Image from './Image';
+import Image from '../../components/common/Image';
+import CheckButton from '../../components/common/CheckButton';
+import Paragraph from '../common/Paragraph';
+import GradeBadge from '../../components/common/GradeBadge';
+import ScoreBadge from '../common/ScoreBadge';
 
 const Wrapper = styled.div`
+  cursor: pointer;
+  box-sizing: border-box;
   width: 100%;
   height: 100px;
+  padding: 0 10px;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
+  font-weight: 400;
+  font-size: 16px;
 `;
 
-const RightBox = styled.div`
-  width: 160px;
+const Content = styled.div`
+  width: 155px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  font-size: 15px;
-  /* background-color: blue; */
+  gap: 10px;
 `;
 
 const Name = styled.div`
   width: 100%;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 15px;
+  font-weight: 700;
 `;
 
 const Infos = styled.div`
-  margin-top: 1px;
+  // GradeBadge : 집사 등급
+  // AvgScore : 평점 (kindness_average, skill_average, rewind_average의 평균 값)
+  // ReviewCount : 리뷰 총 개수
+  width: 100%;
+  height: 18px;
   display: flex;
-  align-content: center;
-  font-size: 14px;
-  font-weight: bold;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
 `;
 
-const AvgScore = styled.span`
-  margin-left: 5px;
-`;
-
-const Date = styled.div`
-  margin-left: 10px;
-  font-weight: lighter;
-`;
-
-const Content = styled.div`
+const Description = styled.div`
   word-break: break-all;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.2;
 `;
 
-function ReviewBox({
+function Review({
   userName,
   profileImage,
   content,
@@ -78,24 +84,16 @@ function ReviewBox({
         height={'69px'}
       ></Image>
 
-      <RightBox>
+      <Content>
         <Name>{userName}</Name>
         <Infos>
-          <Image
-            src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
-            width={'18px'}
-            height={'18px'}
-          ></Image>
-          <AvgScore>{avgScore}</AvgScore>
-          <Date>
-            {year}/{month}/{day}
-          </Date>
+          <ScoreBadge score={avgScore}></ScoreBadge>
         </Infos>
 
-        <Content>{content}</Content>
-      </RightBox>
+        <Description>{content}...</Description>
+      </Content>
     </Wrapper>
   );
 }
 
-export default ReviewBox;
+export default Review;
