@@ -85,8 +85,9 @@ public class RoomServiceImpl implements RoomService {
         User user = userRepository.findByUserId(makePublicRoomRequest.getUserId());
         SubCategory subCategory = categoryRepository.findBySubCategoryId(
             makePublicRoomRequest.getSubCategoryId());
-        Room room = Room.builder().userId(user).subCategoryId(subCategory).content(
-                makePublicRoomRequest.getContent()).isPublic(true)
+        Room room = Room.builder().userId(user).subCategoryId(subCategory).title(
+                makePublicRoomRequest.getTitle()).content(
+                makePublicRoomRequest.getContent()).place(makePublicRoomRequest.getPlace()).isPublic(true)
             .roomCreatedAt(makePublicRoomRequest.getRoomCreatedAt())
             .estimateDuration(makePublicRoomRequest.getEstimateDuration())
             .expectationPay(makePublicRoomRequest.getExpectationPay())
