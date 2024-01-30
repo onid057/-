@@ -11,7 +11,6 @@ const Wrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   font-weight: 300;
-  font-size: 16px;
 `;
 
 const RightBox = styled.div`
@@ -42,7 +41,6 @@ const Infos = styled.div`
 const Description = styled.div`
   word-break: break-all;
   font-size: 13px;
-  font-weight: 400;
   line-height: 1.2;
 `;
 

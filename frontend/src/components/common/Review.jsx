@@ -14,8 +14,8 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-weight: 400;
-  font-size: 16px;
+  font-weight: 300;
+  font-size: 12px;
 `;
 
 const Content = styled.div`
@@ -26,28 +26,20 @@ const Content = styled.div`
 `;
 
 const Name = styled.div`
-  width: 100%;
-  font-size: 15px;
   font-weight: 700;
 `;
 
 const Infos = styled.div`
-  // GradeBadge : 집사 등급
-  // AvgScore : 평점 (kindness_average, skill_average, rewind_average의 평균 값)
-  // ReviewCount : 리뷰 총 개수
   width: 100%;
   height: 18px;
   display: flex;
   justify-content: flex-start;
   align-items: center;
   gap: 4px;
-  font-size: 12px;
 `;
 
 const Description = styled.div`
   word-break: break-all;
-  font-size: 13px;
-  font-weight: 400;
   line-height: 1.2;
 `;
 
@@ -85,10 +77,10 @@ function Review({
       ></Image>
 
       <Content>
-        <Name>{userName}</Name>
         <Infos>
-          <ScoreBadge score={avgScore}></ScoreBadge>
+          <Name>{userName}</Name>| 3일 전
         </Infos>
+        <ScoreBadge score={avgScore}></ScoreBadge>
 
         <Description>{content}...</Description>
       </Content>

@@ -82,7 +82,7 @@ const NormalTextWrapper = styled.div`
 
 function ZipsaDetail({ onPrevious, onNext }) {
   // 클릭 이벤트 핸들러 함수 정의
-  const [selectedCompo, setSelectedCompo] = useState(null);
+  const [selectedCompo, setSelectedCompo] = useState('CATEGORY');
 
   const number =
     (zipsaInfo.kindnessAverage +
