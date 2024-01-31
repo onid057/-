@@ -14,20 +14,18 @@ const Wrapper = styled.div`
 
 const Header = styled.div`
   width: 256px;
+  height: 70px;
   position: relative;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   cursor: pointer;
 `;
 
 const ImageWrapper = styled.div`
-  position: absolute;
-  bottom: -10px;
-  right: -10px;
-  z-index: 999;
-  border-radius: 50%;
   width: 40px;
   height: 40px;
+  padding: 0 0 0 -12px;
   background-image: url(${props => props.$imageUrl});
   background-size: cover;
   background-position: center;
@@ -42,7 +40,9 @@ const ContentWrapper = styled.div`
   transition: height 0.5s ease;
 `;
 
-const Contents = styled.div``;
+const Contents = styled.div`
+  padding: 4px;
+`;
 
 function Accordian({ title, content }) {
   const parentRef = useRef(null);
