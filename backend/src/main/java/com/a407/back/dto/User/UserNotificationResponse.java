@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class UserNotificationResponse {
+
     private Long zipsaId;
     private String zipsaName;
+
 }

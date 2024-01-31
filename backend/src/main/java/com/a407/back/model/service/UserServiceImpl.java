@@ -47,12 +47,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Long save(User user) {
+    public Long makeUser(User user) {
         // 에러 처리
         if (userRepository.findByUserEmail(user.getEmail()) != null) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
-        return userRepository.save(user).getUserId();
+        return userRepository.makeUser(user).getUserId();
     }
 
     @Override
@@ -98,17 +98,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRecordsResponse findRecordsByUserId(Long userId) {
-        return userRepository.findRecordsByUserId(userId);
+    public UserRecordsResponse getUserRecordList(Long userId) {
+        return userRepository.getUserRecordList(userId);
     }
 
     @Override
-    public UserReservationResponse findReservationByUserId(Long userId) {
-        return userRepository.findReservationByUserId(userId);
+    public UserReservationResponse getUserReservationList(Long userId) {
+        return userRepository.getUserReservationList(userId);
     }
 
     @Transactional
-    public UserAccountResponse saveAccount(UserAccountRequest userAccountRequest) {
+    public UserAccountResponse makeAccount(UserAccountRequest userAccountRequest) {
         User user = userRepository.findByUserId(userAccountRequest.getUserId());
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
             return new UserAccountResponse("이미 등록된 카드입니다");
         }
 
-        userRepository.saveAccount(user.getUserId(), userAccountRequest.getAccount());
+        userRepository.makeAccount(user.getUserId(), userAccountRequest.getAccount());
 
         return new UserAccountResponse("카드 등록 성공");
     }
@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void sendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
+    public void makeSendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
         throws JsonProcessingException, NoSuchAlgorithmException {
         int code = getInstanceStrong().nextInt(1000, 9999);
         Message message = new Message();
@@ -158,17 +158,17 @@ public class UserServiceImpl implements UserService {
         }
         UserPhoneNumberAndEmail userPhoneNumberAndEmail = new UserPhoneNumberAndEmail(email,
             userPhoneNumberRequest.getPhoneNumber());
-        redisRepository.saveMessage(userPhoneNumberAndEmail, String.valueOf(code));
+        redisRepository.makeSendMessage(userPhoneNumberAndEmail, String.valueOf(code));
     }
 
     @Override
     @Transactional
-    public void savePhoneNumber(String code, String email) throws JsonProcessingException {
+    public void makePhoneNumber(String code, String email) throws JsonProcessingException {
         UserPhoneNumberAndEmail userPhoneNumberAndEmail = redisRepository.findMessage(code);
         if (userPhoneNumberAndEmail == null || !userPhoneNumberAndEmail.getEmail().equals(email)) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
-        userRepository.savePhoneNumber(userPhoneNumberAndEmail.getPhoneNumber(),
+        userRepository.makePhoneNumber(userPhoneNumberAndEmail.getPhoneNumber(),
             userPhoneNumberAndEmail.getEmail());
     }
 

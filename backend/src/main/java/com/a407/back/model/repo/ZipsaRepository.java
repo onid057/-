@@ -9,17 +9,17 @@ import com.a407.back.dto.Zipsa.ZipsaReservationResponse;
 
 public interface ZipsaRepository {
 
-    Long saveReport(Report report);
+    Long makeReport(Report report);
 
-    ReportSearchResponse reportFindByRoomId(Long roomId);
+    ReportSearchResponse findReportByRoomIdList(Long roomId);
 
     Zipsa findByZipsaId(Long zipsaId);
 
-    ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId);
+    ZipsaDetailInfoResponse findZipsaAndReviewFindByZipsaId(Long zipsaId);
 
-    ZipsaRecordsResponse findRecordsByZipsaId(Long helperId);
+    ZipsaRecordsResponse getUserRecordList(Long helperId);
 
-    ZipsaReservationResponse findReservationByZipsaId(Long zipsaId);
+    ZipsaReservationResponse getZipsaReservationList(Long zipsaId);
 
     void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
         Double rewindAverage);

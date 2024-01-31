@@ -11,7 +11,6 @@ public class UserNearZipsaResponse {
 
     private final List<UserNearZipsaList> list;
 
-
     public UserNearZipsaResponse(List<Zipsa> list) {
         this.list = new ArrayList<>();
         for (Zipsa zipsa : list) {

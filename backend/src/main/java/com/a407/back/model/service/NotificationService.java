@@ -17,7 +17,7 @@ public interface NotificationService {
 
     void changeNotificationStatusClose(Room room);
 
-    int rejectNotification(Long notificationId);
+    int changeNotificationToReject(Long notificationId);
 
     void changeRoomToMatch(Long notificationId);
 }

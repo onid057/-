@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class ZipsaNotificationResponse {
+
     private String userName;
     private Timestamp expectationStartedAt;
     private Timestamp expectationEndedAt;
     private int expectationPay;
     private String majorCategoryName;
     private String content;
+
 }

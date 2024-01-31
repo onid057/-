@@ -37,8 +37,8 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/")
-    public ResponseEntity<Long> userSignUp(@RequestBody UserCreateRequest user) {
-        long id = userService.save(user.toEntity());
+    public ResponseEntity<Long> makeUser(@RequestBody UserCreateRequest user) {
+        long id = userService.makeUser(user.toEntity());
         return ResponseEntity.status(HttpStatus.CREATED).body(id);
     }
 
@@ -57,55 +57,57 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/records")
-    public ResponseEntity<UserRecordsResponse> getUserRecords(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findRecordsByUserId(userId));
+    public ResponseEntity<UserRecordsResponse> getUserRecordList(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserRecordList(userId));
     }
 
 
     @GetMapping("/{userId}/reservations")
-    public ResponseEntity<UserReservationResponse> getUserReservations(@PathVariable Long userId) {
+    public ResponseEntity<UserReservationResponse> getUserReservationList(
+        @PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(userService.findReservationByUserId(userId));
+            .body(userService.getUserReservationList(userId));
     }
 
     @PostMapping("/payments")
-    public ResponseEntity<UserAccountResponse> accountAdd(
+    public ResponseEntity<UserAccountResponse> makeAccount(
         @RequestBody UserAccountRequest request
     ) {
-        UserAccountResponse response = userService.saveAccount(request);
+        UserAccountResponse response = userService.makeAccount(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @GetMapping("/{userId}/payments/detail")
-    public ResponseEntity<String> getAccountDetails(@PathVariable Long userId) {
+    public ResponseEntity<String> getMaskedCardNumber(@PathVariable Long userId) {
         String maskedCardNumber = userService.getMaskedCardNumber(userId);
         return ResponseEntity.ok(maskedCardNumber);
     }
 
     @DeleteMapping("/{userId}/payments")
-    public ResponseEntity<Void> accountDelete(@PathVariable Long userId) {
+    public ResponseEntity<Void> deleteAccount(@PathVariable Long userId) {
         userService.deleteAccount(userId);
         return ResponseEntity.ok().body(null);
     }
 
     @PostMapping("/certification/phonenumber")
-    public ApiResponse<String> sendMessage(@RequestBody UserPhoneNumberRequest userPhoneNumberRequest)
+    public ApiResponse<String> makeSendMessage(
+        @RequestBody UserPhoneNumberRequest userPhoneNumberRequest)
         throws NoSuchAlgorithmException {
-        // 여기에서는 딱 전화번호만 입력을 받도록 하자
+        // 전화번호만 입력
         try {
-            userService.sendMessage(userPhoneNumberRequest,"test@test.com");
+            userService.makeSendMessage(userPhoneNumberRequest, "test@test.com");
         } catch (JsonProcessingException e) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 
-        return new ApiResponse<>(SuccessCode.INSERT_SUCCESS,"문자 발송 성공");
+        return new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "문자 발송 성공");
     }
 
     @PostMapping("/certification/code")
-    public ApiResponse<String> savePhoneNumber(@RequestBody UserCertificationCode code)
+    public ApiResponse<String> makePhoneNumber(@RequestBody UserCertificationCode code)
         throws JsonProcessingException {
-        userService.savePhoneNumber(code.getCode(),"test@test.com");
-        return new ApiResponse<>(SuccessCode.INSERT_SUCCESS,"전화 번호 저장 성공");
+        userService.makePhoneNumber(code.getCode(), "test@test.com");
+        return new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "전화 번호 저장 성공");
     }
 
 }

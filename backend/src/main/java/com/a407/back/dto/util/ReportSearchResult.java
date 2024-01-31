@@ -13,7 +13,6 @@ public class ReportSearchResult {
     private String processContent;
     private Timestamp createdAt;
 
-
     public ReportSearchResult(Report report) {
         this.processImage = new String(report.getProcessImage());
         this.processContent = report.getProcessContent();

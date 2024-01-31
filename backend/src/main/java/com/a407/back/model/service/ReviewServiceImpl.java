@@ -29,14 +29,14 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public void createReview(ReviewCreateRequest reviewCreateRequest) {
+    public void makeReview(ReviewCreateRequest reviewCreateRequest) {
         Room room = roomRepository.findByRoomId(reviewCreateRequest.getRoomId());
         if (reviewCreateRequest.getRoomId() == null) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
         Review review = reviewCreateRequest.toEntity(room);
 
-        reviewRepository.createReview(review);
+        reviewRepository.makeReview(review);
         roomRepository.changeRoomReview(room.getRoomId());
 
         Zipsa zipsa = zipsaRepository.findByZipsaId(room.getZipsaId().getZipsaId().getUserId());
@@ -44,7 +44,7 @@ public class ReviewServiceImpl implements ReviewService {
         Double kindnessAverage = zipsa.getKindnessAverage();
         Double skillAverage = zipsa.getSkillAverage();
         Double rewindAverage = zipsa.getRewindAverage();
-        Long countReview = reviewRepository.countZipsaReview(zipsa.getZipsaId().getUserId());
+        Long countReview = reviewRepository.findCountByZipsaId(zipsa.getZipsaId().getUserId());
 
         if (countReview == 0) {
             kindnessAverage = (double) reviewCreateRequest.getKindnessScore();
@@ -65,24 +65,24 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ApiResponse<List<ReviewListResponse>> getReviewsByUserId(Long userId) {
+    public ApiResponse<List<ReviewListResponse>> findReviewsByUserId(Long userId) {
         return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-            reviewRepository.getReviewsByUserId(userId));
+            reviewRepository.findReviewsByUserId(userId));
     }
 
     @Override
     @Transactional
-    public void removeReviewByReviewId(Long reviewId) {
+    public void deleteReview(Long reviewId) {
 
         // 지금 필요한 정보는 카운트된 값과 집사의 정보
 
-        Zipsa zipsa = reviewRepository.getZipsaByReviewId(reviewId);
-        Review review = reviewRepository.getReviewByReviewId(reviewId);
+        Zipsa zipsa = reviewRepository.findZipsaByReviewId(reviewId);
+        Review review = reviewRepository.findReviewByReviewId(reviewId);
 
         Double kindnessAverage = zipsa.getKindnessAverage();
         Double skillAverage = zipsa.getSkillAverage();
         Double rewindAverage = zipsa.getRewindAverage();
-        Long countReview = reviewRepository.countZipsaReview(zipsa.getZipsaId().getUserId());
+        Long countReview = reviewRepository.findCountByZipsaId(zipsa.getZipsaId().getUserId());
 
         if (countReview == 1) {
             kindnessAverage = 0D;
@@ -99,7 +99,7 @@ public class ReviewServiceImpl implements ReviewService {
         zipsaRepository.updateZipsaAverage(zipsa.getZipsaId().getUserId(), kindnessAverage,
             skillAverage, rewindAverage);
 
-        reviewRepository.removeReviewByReviewId(reviewId);
+        reviewRepository.deleteReview(reviewId);
     }
 
     private static double getAverageSave(int score, Double average, Long countReview) {

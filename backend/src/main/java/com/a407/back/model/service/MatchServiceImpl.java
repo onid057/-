@@ -40,8 +40,8 @@ public class MatchServiceImpl implements MatchService {
     private final ZipsaRepository zipsaRepository;
     @Override
     @Transactional
-    public List<MatchSearchResponse> getMatchSearchResponses(MatchSearchRequest request) {
-        List<Zipsa> zipsaList = matchRepository.findByConditions(request);
+    public List<MatchSearchResponse> getFilteredZipsaList(MatchSearchRequest matchSearchRequest) {
+        List<Zipsa> zipsaList = matchRepository.findByConditions(matchSearchRequest);
         return zipsaList.stream().map(zipsa -> {
             List<String> categories = getCategoryNamesForZipsa(zipsa);
             String gradeName = zipsa.getGradeId().getName();
@@ -53,7 +53,7 @@ public class MatchServiceImpl implements MatchService {
                 gradeName,
                 gradeSalary,
                 zipsa.getServiceCount(),
-                String.valueOf(request.getMajorCategoryId()),
+                String.valueOf(matchSearchRequest.getMajorCategoryId()),
                 scoreAverage,
                 categories
             );

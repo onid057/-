@@ -12,7 +12,7 @@ public interface AssociationService {
     @Transactional
     void makeAssociation(Long userId);
 
-    List<UserAssociationResponse> searchAssociationUserList(Long associationId);
+    List<UserAssociationResponse> getAssociationUserList(Long associationId);
 
     void deleteAssociation(Long userID);
 

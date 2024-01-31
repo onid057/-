@@ -26,7 +26,6 @@ public class ZipsaRecordsList {
     private final int expectationPay;
     private final int totalPay;
 
-
     public ZipsaRecordsList(Room room) {
         this.name = room.getUserId().getName();
         if (room.getUserId().getProfileImage() == null) {
@@ -50,4 +49,5 @@ public class ZipsaRecordsList {
         this.expectationPay = room.getExpectationPay();
         this.totalPay = room.getTotalPay();
     }
+
 }

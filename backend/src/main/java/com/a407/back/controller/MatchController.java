@@ -26,11 +26,11 @@ public class MatchController {
     private final MatchService matchService;
 
     @GetMapping("/filter")
-    public ResponseEntity<ApiResponse<List<MatchSearchResponse>>> getZipsas(
+    public ResponseEntity<ApiResponse<List<MatchSearchResponse>>> getFilteredZipsaList(
         @RequestParam("majorCategoryId") Long majorCategoryId,
         @RequestParam("genderStr") String genderStr, @RequestParam("age") String age,
         @RequestParam("grade") String grade, @RequestParam("scoreAverage") String scoreAverage) {
-        List<MatchSearchResponse> matchSearchResponses = matchService.getMatchSearchResponses(
+        List<MatchSearchResponse> matchSearchResponses = matchService.getFilteredZipsaList(
             new MatchSearchRequest(majorCategoryId, genderStr, age, grade, scoreAverage));
         ApiResponse<List<MatchSearchResponse>> response = new ApiResponse<>(
             SuccessCode.SELECT_SUCCESS, matchSearchResponses);

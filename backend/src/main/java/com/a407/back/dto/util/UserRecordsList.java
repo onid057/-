@@ -57,4 +57,5 @@ public class UserRecordsList {
         this.isComplained = room.getIsComplained();
         this.isReviewed = room.getIsReviewed();
     }
+
 }

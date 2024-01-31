@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class NotificationRequest {
+
     Long notificationId;
     Long userId;
+
 }

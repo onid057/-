@@ -75,7 +75,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     @Transactional
-    public int rejectNotification(Long notificationId) {
+    public int changeNotificationToReject(Long notificationId) {
         // 해당 알림을 reject
         notificationRepository.changeNotificationStatusAcceptOrReject(notificationId, "REJECT");
 

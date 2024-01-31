@@ -37,9 +37,9 @@ public class NotificationController {
     }
 
     @GetMapping("/{notificationId}/rejection")
-    public ResponseEntity<Integer> rejectNotification(
+    public ResponseEntity<Integer> changeNotificationToReject(
         @PathVariable("notificationId") Long notificationId) {
-        int newNotificationCount = notificationService.rejectNotification(notificationId);
+        int newNotificationCount = notificationService.changeNotificationToReject(notificationId);
         return ResponseEntity.status(HttpStatus.OK).body(newNotificationCount);
     }
 

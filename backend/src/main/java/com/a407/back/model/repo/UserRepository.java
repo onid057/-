@@ -12,7 +12,7 @@ public interface UserRepository {
 
     User findByUserEmail(String email);
 
-    User save(User user);
+    User makeUser(User user);
 
     List<Notification> findNotificationByUserIdList(Long userId, String type);
 
@@ -20,18 +20,18 @@ public interface UserRepository {
 
     UserNearZipsaResponse findNearZipsaList(Long userId);
 
-    UserRecordsResponse findRecordsByUserId(Long userId);
+    UserRecordsResponse getUserRecordList(Long userId);
     
-    UserReservationResponse findReservationByUserId(Long userId);
-    void saveAccount(Long userId, String account);
+    UserReservationResponse getUserReservationList(Long userId);
+    void makeAccount(Long userId, String account);
 
     void deleteAccount(User user, String account);
 
-    void savePhoneNumber(String phoneNumber, String email);
+    void makePhoneNumber(String phoneNumber, String email);
 
     void makeAssociation(Long userId, Long associationId);
 
-    List<UserAssociationResponse> searchAssociationUserList(Long associationId);
+    List<UserAssociationResponse> getAssociationUserList(Long associationId);
 
     void deleteAssociation(Long userId);
 

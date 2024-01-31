@@ -27,33 +27,33 @@ public class ZipsaController {
     private final ZipsaServiceImpl zipsaService;
 
     @PostMapping("/reports")
-    public ResponseEntity<Long> reportAdd(@ModelAttribute ReportCreateRequest reportCreateRequest) {
+    public ResponseEntity<Long> makeReport(@ModelAttribute ReportCreateRequest reportCreateRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(zipsaService.saveReport(reportCreateRequest));
+            .body(zipsaService.makeReport(reportCreateRequest));
     }
 
     @GetMapping("/reports/{roomId}")
-    public ResponseEntity<ReportSearchResponse> reportSearch(@PathVariable Long roomId) {
-        return ResponseEntity.status(HttpStatus.OK).body(zipsaService.reportFindByRoomId(roomId));
+    public ResponseEntity<ReportSearchResponse> findReportByRoomIdList(@PathVariable Long roomId) {
+        return ResponseEntity.status(HttpStatus.OK).body(zipsaService.findReportByRoomIdList(roomId));
     }
 
     @GetMapping("/{helperId}")
-    public ResponseEntity<ZipsaDetailInfoResponse> zipsaDetailInfo(@PathVariable Long helperId) {
+    public ResponseEntity<ZipsaDetailInfoResponse> findZipsaAndReviewFindByZipsaId(@PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(zipsaService.zipsaAndReviewFindByZipsaId(helperId));
+            .body(zipsaService.findZipsaAndReviewFindByZipsaId(helperId));
     }
 
     @GetMapping("/{helperId}/records")
-    public ResponseEntity<?> getUserRecords(@PathVariable Long helperId) {
+    public ResponseEntity<?> getUserRecordList(@PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(zipsaService.findRecordsByZipsaId(helperId));
+            .body(zipsaService.getUserRecordList(helperId));
     }
 
     @GetMapping("/{helperId}/reservations")
-    public ResponseEntity<ZipsaReservationResponse> getZipsaReservations(
+    public ResponseEntity<ZipsaReservationResponse> getZipsaReservationList(
         @PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(zipsaService.findReservationByZipsaId(helperId));
+            .body(zipsaService.getZipsaReservationList(helperId));
     }
 
     @PostMapping("/participation")

@@ -14,7 +14,6 @@ public class UserNearZipsaList {
     private final String preferTag;
     private final Long zipsaId;
 
-
     public UserNearZipsaList(Zipsa zipsa) {
         this.name = zipsa.getZipsaId().getName();
         this.gender = zipsa.getZipsaId().getGender();

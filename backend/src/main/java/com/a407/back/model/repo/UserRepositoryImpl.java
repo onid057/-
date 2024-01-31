@@ -40,7 +40,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(User user) {
+    public User makeUser(User user) {
         em.persist(user);
         return user;
     }
@@ -73,7 +73,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserRecordsResponse findRecordsByUserId(Long userId) {
+    public UserRecordsResponse getUserRecordList(Long userId) {
         QRoom qRoom = QRoom.room;
         return new UserRecordsResponse(
             query.selectFrom(qRoom).where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(
@@ -81,7 +81,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserReservationResponse findReservationByUserId(Long userId) {
+    public UserReservationResponse getUserReservationList(Long userId) {
         QRoom qRoom = QRoom.room;
         return new UserReservationResponse(query.selectFrom(qRoom).where(
                 qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
@@ -96,7 +96,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void saveAccount(Long userId, String account) {
+    public void makeAccount(Long userId, String account) {
         QUser qUser = QUser.user;
         query.update(qUser).set(qUser.account, account).where(qUser.userId.eq(userId)).execute();
     }
@@ -117,7 +117,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public List<UserAssociationResponse> searchAssociationUserList(Long associationId) {
+    public List<UserAssociationResponse> getAssociationUserList(Long associationId) {
         QUser qUser = QUser.user;
         QAssociation qAssociation = QAssociation.association;
         Long adminId = Objects.requireNonNull(query.selectFrom(qAssociation)
@@ -153,7 +153,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public void savePhoneNumber(String phoneNumber, String email) {
+    public void makePhoneNumber(String phoneNumber, String email) {
         QUser qUser = QUser.user;
         query.update(qUser).set(qUser.phoneNumber, phoneNumber).set(qUser.isCertificated, true)
             .where(qUser.email.eq(email)).execute();

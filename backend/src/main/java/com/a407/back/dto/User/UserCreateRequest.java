@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 public class UserCreateRequest {
+
     private String email;
     private String password;
     private String name;
@@ -32,4 +33,5 @@ public class UserCreateRequest {
             .longitude(longitude)
             .build();
     }
+
 }

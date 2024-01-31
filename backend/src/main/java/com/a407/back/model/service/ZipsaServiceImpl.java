@@ -31,20 +31,20 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     @Override
     @Transactional
-    public Long saveReport(ReportCreateRequest reportCreateRequest) {
+    public Long makeReport(ReportCreateRequest reportCreateRequest) {
         Room room = roomRepository.findByRoomId(reportCreateRequest.getRoomId());
         Report report = reportCreateRequest.toEntity(room);
-        return zipsaRepository.saveReport(report);
+        return zipsaRepository.makeReport(report);
     }
 
     @Override
-    public ReportSearchResponse reportFindByRoomId(Long roomId) {
-        return zipsaRepository.reportFindByRoomId(roomId);
+    public ReportSearchResponse findReportByRoomIdList(Long roomId) {
+        return zipsaRepository.findReportByRoomIdList(roomId);
     }
 
     @Override
-    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) {
-        return zipsaRepository.zipsaAndReviewFindByZipsaId(zipsaId);
+    public ZipsaDetailInfoResponse findZipsaAndReviewFindByZipsaId(Long zipsaId) {
+        return zipsaRepository.findZipsaAndReviewFindByZipsaId(zipsaId);
     }
 
     @Override
@@ -53,13 +53,13 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public ZipsaRecordsResponse findRecordsByZipsaId(Long helperId) {
-        return zipsaRepository.findRecordsByZipsaId(helperId);
+    public ZipsaRecordsResponse getUserRecordList(Long helperId) {
+        return zipsaRepository.getUserRecordList(helperId);
     }
 
     @Override
-    public ZipsaReservationResponse findReservationByZipsaId(Long zipsaId) {
-        return zipsaRepository.findReservationByZipsaId(zipsaId);
+    public ZipsaReservationResponse getZipsaReservationList(Long zipsaId) {
+        return zipsaRepository.getZipsaReservationList(zipsaId);
     }
 
     @Override

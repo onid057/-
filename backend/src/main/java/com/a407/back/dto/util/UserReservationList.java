@@ -49,4 +49,5 @@ public class UserReservationList {
         this.expectationEndedAt = room.getExpectationEndedAt();
         this.expectationPay = room.getExpectationPay();
     }
+
 }

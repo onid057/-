@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface UserService {
 
-    Long save(User user);
+    Long makeUser(User user);
 
     List<NotificationListResponse> findNotificationByUserIdList(Long userId);
 
@@ -24,19 +24,19 @@ public interface UserService {
 
     User findByUserId(Long userId);
 
-    UserRecordsResponse findRecordsByUserId(Long userId);
+    UserRecordsResponse getUserRecordList(Long userId);
 
-    UserReservationResponse findReservationByUserId(Long userId);
+    UserReservationResponse getUserReservationList(Long userId);
 
 
-    UserAccountResponse saveAccount(UserAccountRequest userAccountRequest);
+    UserAccountResponse makeAccount(UserAccountRequest userAccountRequest);
 
     String getMaskedCardNumber(Long userId);
 
     void deleteAccount(Long userId);
 
-    void sendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
+    void makeSendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
         throws JsonProcessingException, NoSuchAlgorithmException;
 
-    void savePhoneNumber(String code, String email) throws JsonProcessingException;
+    void makePhoneNumber(String code, String email) throws JsonProcessingException;
 }

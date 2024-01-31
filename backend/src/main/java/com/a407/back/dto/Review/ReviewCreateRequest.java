@@ -9,7 +9,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ReviewCreateRequest {
 
-
     private Long roomId;
     private String content;
     private int kindnessScore;

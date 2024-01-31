@@ -17,4 +17,5 @@ public class NotificationListResponse {
     private String majorCategory;
     private Long roomId;
     private Long notificationId;
+
 }

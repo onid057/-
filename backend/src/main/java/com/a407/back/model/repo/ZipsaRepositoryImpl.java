@@ -29,13 +29,13 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
 
 
     @Override
-    public Long saveReport(Report report) {
+    public Long makeReport(Report report) {
         em.persist(report);
         return report.getReportId();
     }
 
     @Override
-    public ReportSearchResponse reportFindByRoomId(Long roomId) {
+    public ReportSearchResponse findReportByRoomIdList(Long roomId) {
         return new ReportSearchResponse(
             query.selectFrom(qReport).where(qReport.roomId.roomId.eq(roomId)).fetch());
     }
@@ -46,7 +46,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) {
+    public ZipsaDetailInfoResponse findZipsaAndReviewFindByZipsaId(Long zipsaId) {
         QReview qReview = QReview.review;
         Zipsa zipsa = em.find(Zipsa.class, zipsaId);
         List<Review> reviews = query.selectFrom(qReview)
@@ -63,7 +63,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public ZipsaRecordsResponse findRecordsByZipsaId(Long helperId) {
+    public ZipsaRecordsResponse getUserRecordList(Long helperId) {
         QRoom qRoom = QRoom.room;
         return new ZipsaRecordsResponse(query.selectFrom(qRoom)
             .where(qRoom.zipsaId.zipsaId.userId.eq(helperId).and(qRoom.status.eq(
@@ -71,7 +71,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public ZipsaReservationResponse findReservationByZipsaId(Long zipsaId) {
+    public ZipsaReservationResponse getZipsaReservationList(Long zipsaId) {
         QRoom qRoom = QRoom.room;
 
         return new ZipsaReservationResponse(

@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface ReviewRepository {
 
-    void createReview(Review review);
+    void makeReview(Review review);
 
-    Long countZipsaReview(Long zipsaId);
+    Long findCountByZipsaId(Long zipsaId);
 
-    List<ReviewListResponse> getReviewsByUserId(Long userId);
+    List<ReviewListResponse> findReviewsByUserId(Long userId);
 
-    void removeReviewByReviewId(Long reviewId);
+    void deleteReview(Long reviewId);
 
-    Zipsa getZipsaByReviewId(Long reviewId);
+    Zipsa findZipsaByReviewId(Long reviewId);
 
-    Review getReviewByReviewId(Long reviewId);
+    Review findReviewByReviewId(Long reviewId);
 }

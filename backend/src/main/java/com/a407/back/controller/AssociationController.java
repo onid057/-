@@ -32,10 +32,10 @@ public class AssociationController {
 
 
     @GetMapping
-    public ApiResponse<List<UserAssociationResponse>> searchAssociationUserList() {
+    public ApiResponse<List<UserAssociationResponse>> getAssociationUserList() {
         // 스프링 시큐리티 도입 전 임시 값
         return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-            associationService.searchAssociationUserList(4L));
+            associationService.getAssociationUserList(4L));
     }
 
     @DeleteMapping

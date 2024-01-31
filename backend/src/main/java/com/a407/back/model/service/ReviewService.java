@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface ReviewService {
 
-    void createReview(ReviewCreateRequest reviewCreateRequest);
+    void makeReview(ReviewCreateRequest reviewCreateRequest);
 
-    ApiResponse<List<ReviewListResponse>> getReviewsByUserId(Long userId);
+    ApiResponse<List<ReviewListResponse>> findReviewsByUserId(Long userId);
 
-    void removeReviewByReviewId(Long reviewId);
+    void deleteReview(Long reviewId);
 }

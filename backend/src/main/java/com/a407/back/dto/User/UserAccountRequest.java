@@ -11,5 +11,4 @@ public class UserAccountRequest {
     private Long userId;
     private String account;
 
-
 }

@@ -44,8 +44,8 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Override
-    public List<UserAssociationResponse> searchAssociationUserList(Long associationId) {
-        return userRepository.searchAssociationUserList(associationId);
+    public List<UserAssociationResponse> getAssociationUserList(Long associationId) {
+        return userRepository.getAssociationUserList(associationId);
     }
 
     @Override

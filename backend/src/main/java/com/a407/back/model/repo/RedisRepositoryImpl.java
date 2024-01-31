@@ -14,7 +14,7 @@ public class RedisRepositoryImpl {
 
     private final RedisTemplate<String, String> redisTemplate;
 
-    public void saveMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)
+    public void makeSendMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)
         throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         String value = objectMapper.writeValueAsString(userPhoneNumberAndEmail);

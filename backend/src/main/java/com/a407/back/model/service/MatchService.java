@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MatchService {
 
-    List<MatchSearchResponse> getMatchSearchResponses(MatchSearchRequest request);
+    List<MatchSearchResponse> getFilteredZipsaList(MatchSearchRequest matchSearchRequest);
 
     List<String> getCategoryNamesForZipsa(Zipsa zipsa);
 
