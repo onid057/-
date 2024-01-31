@@ -81,7 +81,7 @@ function Condition({
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        rightContent="완료"
+        rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(gender, age, grade, score)}
       ></NavigationBar>
@@ -95,7 +95,7 @@ function Condition({
         ]}
       ></Paragraph>
 
-      <ProgressBar value={100}></ProgressBar>
+      <ProgressBar value={33}></ProgressBar>
 
       <ContentBox>
         <ContentTitle>성별</ContentTitle>

@@ -60,8 +60,7 @@ function SubCategory({ onPrevious, onNext, matchSubCategory }) {
         ]}
       ></Paragraph>
 
-      {/* ProgressBar 진척도 변경 부분 */}
-      <ProgressBar value={34}></ProgressBar>
+      <ProgressBar value={22}></ProgressBar>
 
       {subCategoryList.map((category, index) => {
         return (

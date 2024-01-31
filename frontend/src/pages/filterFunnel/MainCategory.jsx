@@ -61,7 +61,7 @@ function MainCategory({ onPrevious, onNext, matchMainCategory }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={17}></ProgressBar>
+      <ProgressBar value={11}></ProgressBar>
 
       <ContentBox>
         {[
