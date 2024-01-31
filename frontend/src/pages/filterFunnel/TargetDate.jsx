@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
+
 import Calendar from 'react-calendar';
 import '../../assets/styles/Calendar.css';
 
@@ -23,6 +25,10 @@ const Wrapper = styled.div`
 `;
 
 function TargetDate({ onPrevious, onNext, matchDate }) {
+  const [date, setDate] = useState(matchDate || new Date());
+
+  console.log(date);
+
   return (
     <Wrapper>
       <NavigationBar
@@ -36,7 +42,7 @@ function TargetDate({ onPrevious, onNext, matchDate }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={onNext}
+        onNext={() => onNext(date)}
       ></NavigationBar>
 
       <Paragraph
@@ -51,6 +57,8 @@ function TargetDate({ onPrevious, onNext, matchDate }) {
       <ProgressBar value={51}></ProgressBar>
 
       <Calendar
+        value={date}
+        onChange={setDate}
         view={'month'}
         minDate={new Date()}
         maxDate={new Date('2024-12-31')}

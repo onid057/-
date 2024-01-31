@@ -31,12 +31,21 @@ const ButtonWrapper = styled.button`
       font-size: 17px;
     `};
   ${props =>
+    props.mode === 'SELECTED' &&
+    css`
+      width: 138px;
+      background-color: #629af9;
+      font-size: 18px;
+      opacity: 0.9;
+    `};
+  ${props =>
     props.mode === 'SMALL_WHITE' &&
     css`
       width: 138px;
       font-size: 18px;
       color: black;
       background-color: white;
+      opacity: 0.9;
     `};
   ${props =>
     props.mode === 'THIN_WHITE' &&
@@ -49,6 +58,15 @@ const ButtonWrapper = styled.button`
       opacity: 0.9;
     `};
   ${props =>
+    props.mode === 'THIN_BLUE' &&
+    css`
+      width: 100%;
+      height: 38px;
+      font-size: 17px;
+      background-color: #629af9;
+      opacity: 0.9;
+    `};
+  ${props =>
     props.mode === 'FULL_PERCENT_WHITE' &&
     css`
       width: 100%;
@@ -56,6 +74,14 @@ const ButtonWrapper = styled.button`
       font-size: 14px;
       color: black;
       background-color: ${props => (props.bgcolor ? props.bgcolor : 'white')};
+    `};
+  ${props =>
+    props.mode === 'FULL_PERCENT_BLUE' &&
+    css`
+      width: 100%;
+      height: 38px;
+      font-size: 14px;
+      background-color: #629af9;
     `};
   ${props =>
     props.mode === 'INSIDE_IMAGE' &&
@@ -66,6 +92,14 @@ const ButtonWrapper = styled.button`
       font-size: 14px;
       color: black;
       background-color: white;
+    `};
+  ${props =>
+    props.mode === 'SELECTED_INSIDE_IMAGE' &&
+    css`
+      width: 100%;
+      height: 38px;
+      font-size: 14px;
+      background-color: #629af9;
     `};
   ${props =>
     (props.mode === 'IMAGE_UPLOAD') | (props.mode === 'IMAGE_EDIT') &&
@@ -125,7 +159,7 @@ function Button({ msg, color, mode, onClick, ...rest }) {
         </ContentWrapper>
       </ButtonWrapper>
     );
-  } else if (mode === 'INSIDE_IMAGE') {
+  } else if (mode === 'INSIDE_IMAGE' || mode === 'SELECTED_INSIDE_IMAGE') {
     return (
       <ButtonWrapper color={color} mode={mode} onClick={onClick} {...rest}>
         <ImgContentWrapper>

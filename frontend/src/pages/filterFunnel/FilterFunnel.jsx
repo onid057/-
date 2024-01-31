@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useFunnel } from '../../hooks/useFunnel';
+import { getFilteredHelperData } from '../../apis/api/match';
 
 import MainCategory from './MainCategory';
 import SubCategory from './SubCategory';
+import Condition from './Condition';
+import HelperList from './HelperList';
 import TargetDate from './TargetDate';
 import TargetTime from './TargetTime';
-import Description from './Description';
-import Condition from './Condition';
+import Detail from './Detail';
 
 function FilterFunnel() {
   const [filterData, setFilterData] = useState({});
@@ -19,8 +21,7 @@ function FilterFunnel() {
       <Funnel.Step name="MAIN_CATEGORY">
         <MainCategory
           onPrevious={() => {
-            // 추후 변경 요망
-            setStep('SUB_CATEGORY');
+            setStep('CONDITION');
           }}
           onNext={data => {
             setStep('SUB_CATEGORY');
@@ -33,16 +34,60 @@ function FilterFunnel() {
       <Funnel.Step name="SUB_CATEGORY">
         <SubCategory
           onPrevious={() => {
-            // 추후 변경 요망
             setStep('MAIN_CATEGORY');
           }}
           onNext={data => {
-            setStep('DATE');
+            setStep('CONDITION');
             setFilterData({ ...filterData, matchSubCategory: data });
           }}
           matchSubCategory={filterData.matchSubCategory}
         ></SubCategory>
       </Funnel.Step>
+
+      <Funnel.Step name="CONDITION">
+        <Condition
+          onPrevious={() => {
+            setStep('SUB_CATEGORY');
+          }}
+          onNext={(gender, age, grade, score) => {
+            setStep('HELPER_LIST');
+            const nextFilterData = {
+              ...filterData,
+              genderCondition: gender,
+              ageCondition: age,
+              gradeCondition: grade,
+              scoreCondition: score,
+            };
+            setFilterData(nextFilterData);
+            getFilteredHelperData(
+              nextFilterData.matchMainCategory,
+              nextFilterData.genderCondition,
+              nextFilterData.ageCondition,
+              nextFilterData.gradeCondition,
+              nextFilterData.scoreCondition,
+            ).then(response => console.log(response));
+          }}
+          genderCondition={filterData.genderCondition}
+          ageCondition={filterData.ageCondition}
+          gradeCondition={filterData.gradeCondition}
+          scoreCondition={filterData.scoreCondition}
+        ></Condition>
+      </Funnel.Step>
+
+      <Funnel.Step name="HELPER_LIST">
+        <HelperList
+          onPrevious={() => {
+            setStep('CONDITION');
+          }}
+          onNext={data => {
+            setStep('DATE');
+            setFilterData({ ...filterData, matchSubCategory: data });
+          }}
+          // matchSubCategory={filterData.matchSubCategory}
+        ></HelperList>
+      </Funnel.Step>
+
+      {/* 여기까지 플로우 완성 */}
 
       <Funnel.Step name="DATE">
         <TargetDate
@@ -62,36 +107,30 @@ function FilterFunnel() {
           onPrevious={() => {
             setStep('DATE');
           }}
-          onNext={data => {
-            setStep('DESCRIPTION');
-            setFilterData({ ...filterData, matchTime: data });
+          onNext={(startTime, endTime) => {
+            setStep('DETAIL');
+            setFilterData({
+              ...filterData,
+              matchStartTime: startTime,
+              matchEndTime: endTime,
+            });
           }}
-          matchTime={filterData.matchTime}
+          matchStartTime={filterData.matchStartTime}
+          matchEndTime={filterData.matchEndTime}
         ></TargetTime>
       </Funnel.Step>
 
-      <Funnel.Step name="DESCRIPTION">
-        <Description
+      <Funnel.Step name="DETAIL">
+        <Detail
           onPrevious={() => {
             setStep('TIME');
           }}
           onNext={data => {
             setStep('CONDITION');
-            setFilterData({ ...filterData, matchDescription: data });
+            setFilterData({ ...filterData, matchDetail: data });
           }}
-        ></Description>
-      </Funnel.Step>
-
-      <Funnel.Step name="CONDITION">
-        <Condition
-          onPrevious={() => {
-            setStep('DESCRIPTION');
-          }}
-          onNext={data => {
-            setStep('MAIN_CATEGORY');
-            setFilterData({ ...filterData, matchCondition: data });
-          }}
-        ></Condition>
+          matchDetail={filterData.matchDetail}
+        ></Detail>
       </Funnel.Step>
     </Funnel>
   );

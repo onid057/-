@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 
 import NavigationBar from '../../components/common/NavigationBar';
@@ -21,7 +22,9 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-function Description({ onPrevious, onNext }) {
+function Detail({ onPrevious, onNext, matchDetail }) {
+  const [detail, setDetail] = useState(matchDetail || '');
+
   return (
     <Wrapper>
       <NavigationBar
@@ -35,7 +38,7 @@ function Description({ onPrevious, onNext }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={onNext}
+        onNext={() => onNext(detail)}
       ></NavigationBar>
 
       <Paragraph
@@ -50,12 +53,14 @@ function Description({ onPrevious, onNext }) {
       <ProgressBar value={85}></ProgressBar>
 
       <LongInputBox
+        value={detail}
         placeholder={
-          '미용실에 갈 건데 함께 갔다가 다시 정문까지 돌아와 주세요. 이야기도 나눠요!'
+          '미용실에 함께 갔다가 다시 정문까지 돌아와 주세요. 이야기도 나눠요!'
         }
+        onChange={event => setDetail(event.target.value)}
       ></LongInputBox>
     </Wrapper>
   );
 }
 
-export default Description;
+export default Detail;

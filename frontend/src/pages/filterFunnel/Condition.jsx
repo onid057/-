@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { styled } from 'styled-components';
 
 import NavigationBar from '../../components/common/NavigationBar';
@@ -6,6 +7,11 @@ import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
+
+import GENDER from '../../constants/gender';
+import AGE from '../../constants/age';
+import GRADE from '../../constants/grade';
+import SCORE from '../../constants/score';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -21,14 +27,6 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-const ContentTitle = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  font-size: 16px;
-`;
-
 const ContentBox = styled.div`
   width: 100%;
   display: flex;
@@ -38,15 +36,40 @@ const ContentBox = styled.div`
   gap: 10px;
 `;
 
-const InnerContentBox = styled.div`
+const ContentTitle = styled.div`
+  width: 100%;
+  font-size: 16px;
+`;
+
+const FlexBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   gap: 8px;
 `;
 
+const GridBox = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-column-gap: 8px;
+  grid-row-gap: 10px;
+`;
+
 // 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function Condition({ onPrevious, onNext }) {
+function Condition({
+  onPrevious,
+  onNext,
+  genderCondition,
+  ageCondition,
+  gradeCondition,
+  scoreCondition,
+}) {
+  const [gender, setGender] = useState(genderCondition);
+  const [age, setAge] = useState(ageCondition);
+  const [grade, setGrade] = useState(gradeCondition);
+  const [score, setScore] = useState(scoreCondition);
+
   return (
     <Wrapper>
       <NavigationBar
@@ -58,9 +81,9 @@ function Condition({ onPrevious, onNext }) {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        rightContent="완료"
+        rightContent="다음"
         onPrevious={onPrevious}
-        onNext={onNext}
+        onNext={() => onNext(gender, age, grade, score)}
       ></NavigationBar>
 
       <Paragraph
@@ -72,53 +95,90 @@ function Condition({ onPrevious, onNext }) {
         ]}
       ></Paragraph>
 
-      {/* ProgressBar 진척도 변경 부분 */}
-      <ProgressBar value={100}></ProgressBar>
+      <ProgressBar value={33}></ProgressBar>
 
       <ContentBox>
         <ContentTitle>성별</ContentTitle>
-        <InnerContentBox>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'무관'}></Button>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'남성'}></Button>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'여성'}></Button>
-        </InnerContentBox>
+        <FlexBox>
+          {['남성', '여성', '상관 없음'].map((option, index) => {
+            return (
+              <Button
+                key={index}
+                mode={
+                  gender === GENDER[option]
+                    ? 'FULL_PERCENT_BLUE'
+                    : 'FULL_PERCENT_WHITE'
+                }
+                msg={option}
+                onClick={() => setGender(GENDER[option])}
+              ></Button>
+            );
+          })}
+        </FlexBox>
       </ContentBox>
 
       <ContentBox>
         <ContentTitle>연령</ContentTitle>
-        <InnerContentBox>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'무관'}></Button>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'40대 미만'}></Button>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'40대 이상'}></Button>
-        </InnerContentBox>
+        <FlexBox>
+          {['40세 미만', '40세 이상', '상관 없음'].map((option, index) => {
+            return (
+              <Button
+                key={index}
+                mode={
+                  age === AGE[option]
+                    ? 'FULL_PERCENT_BLUE'
+                    : 'FULL_PERCENT_WHITE'
+                }
+                msg={option}
+                onClick={() => setAge(AGE[option])}
+              ></Button>
+            );
+          })}
+        </FlexBox>
       </ContentBox>
 
       <ContentBox>
         <ContentTitle>집사 등급</ContentTitle>
-        <InnerContentBox>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'무관'}></Button>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'견습 집사'}></Button>
-        </InnerContentBox>
-        <InnerContentBox>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'프로 집사'}></Button>
-          <Button mode={'FULL_PERCENT_WHITE'} msg={'전설 집사'}></Button>
-        </InnerContentBox>
+        <GridBox>
+          {['견습 집사', '프로 집사', '전설 집사', '상관 없음'].map(
+            (option, index) => {
+              return (
+                <Button
+                  key={index}
+                  mode={
+                    grade === GRADE[option]
+                      ? 'FULL_PERCENT_BLUE'
+                      : 'FULL_PERCENT_WHITE'
+                  }
+                  msg={option}
+                  onClick={() => setGrade(GRADE[option])}
+                ></Button>
+              );
+            },
+          )}
+        </GridBox>
       </ContentBox>
 
       <ContentBox>
         <ContentTitle>다이아몬드 평점</ContentTitle>
-        <InnerContentBox>
-          <Button mode={'INSIDE_IMAGE'} msg={'5 이상'}></Button>
-          <Button mode={'INSIDE_IMAGE'} msg={'4 이상'}></Button>
-        </InnerContentBox>
-        <InnerContentBox>
-          <Button mode={'INSIDE_IMAGE'} msg={'3 이상'}></Button>
-          <Button mode={'INSIDE_IMAGE'} msg={'2 이상'}></Button>
-        </InnerContentBox>
-        <InnerContentBox>
-          <Button mode={'INSIDE_IMAGE'} msg={'1 이상'}></Button>
-          <Button mode={'INSIDE_IMAGE'} msg={'0 이상'}></Button>
-        </InnerContentBox>
+        <GridBox>
+          {['5 이상', '4 이상', '3 이상', '2 이상', '1 이상', '0 이상'].map(
+            (option, index) => {
+              return (
+                <Button
+                  key={index}
+                  mode={
+                    score === SCORE[option]
+                      ? 'SELECTED_INSIDE_IMAGE'
+                      : 'INSIDE_IMAGE'
+                  }
+                  msg={option}
+                  onClick={() => setScore(SCORE[option])}
+                ></Button>
+              );
+            },
+          )}
+        </GridBox>
       </ContentBox>
     </Wrapper>
   );

@@ -13,8 +13,8 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  background-color: #8bc6ec;
-  background-image: linear-gradient(0deg, #8bc6ec 0%, #9599e2 100%);
+  background-color: #0093e9;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;

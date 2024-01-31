@@ -30,7 +30,7 @@ const ButtonBox = styled.div`
   margin: 32px 0 16px 0;
 `;
 
-function ZipsaList({ onPrevious, onNext }) {
+function HelperList({ onPrevious, onNext }) {
   return (
     <Wrapper>
       <NavigationBar
@@ -74,4 +74,4 @@ function ZipsaList({ onPrevious, onNext }) {
   );
 }
 
-export default ZipsaList;
+export default HelperList;
