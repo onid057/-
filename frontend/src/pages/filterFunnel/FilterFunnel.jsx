@@ -8,10 +8,12 @@ import Condition from './Condition';
 import HelperList from './HelperList';
 import TargetDate from './TargetDate';
 import TargetTime from './TargetTime';
+import Address from './Address';
 import Detail from './Detail';
 
 function FilterFunnel() {
   const [filterData, setFilterData] = useState({});
+  const [helperData, setHelperData] = useState([]);
   const [Funnel, setStep] = useFunnel('MAIN_CATEGORY');
 
   console.log(filterData);
@@ -65,7 +67,10 @@ function FilterFunnel() {
               nextFilterData.ageCondition,
               nextFilterData.gradeCondition,
               nextFilterData.scoreCondition,
-            ).then(response => console.log(response));
+            ).then(response => {
+              console.log(response);
+              setHelperData(response?.data);
+            });
           }}
           genderCondition={filterData.genderCondition}
           ageCondition={filterData.ageCondition}
@@ -81,9 +86,9 @@ function FilterFunnel() {
           }}
           onNext={data => {
             setStep('DATE');
-            setFilterData({ ...filterData, matchSubCategory: data });
+            setFilterData({ ...filterData, helperId: data });
           }}
-          // matchSubCategory={filterData.matchSubCategory}
+          helperData={helperData}
         ></HelperList>
       </Funnel.Step>
 
@@ -92,7 +97,7 @@ function FilterFunnel() {
       <Funnel.Step name="DATE">
         <TargetDate
           onPrevious={() => {
-            setStep('SUB_CATEGORY');
+            setStep('HELPER_LIST');
           }}
           onNext={data => {
             setStep('TIME');
@@ -108,7 +113,7 @@ function FilterFunnel() {
             setStep('DATE');
           }}
           onNext={(startTime, endTime) => {
-            setStep('DETAIL');
+            setStep('ADDRESS');
             setFilterData({
               ...filterData,
               matchStartTime: startTime,
@@ -120,10 +125,28 @@ function FilterFunnel() {
         ></TargetTime>
       </Funnel.Step>
 
+      <Funnel.Step name="ADDRESS">
+        <Address
+          onPrevious={() => {
+            setStep('TIME');
+          }}
+          onNext={(address, detailAddress) => {
+            setStep('DETAIL');
+            setFilterData({
+              ...filterData,
+              matchAddress: address,
+              matchDetailAddress: detailAddress,
+            });
+          }}
+          matchAddress={filterData.matchAddress}
+          matchDetailAddress={filterData.matchDetailAddress}
+        ></Address>
+      </Funnel.Step>
+
       <Funnel.Step name="DETAIL">
         <Detail
           onPrevious={() => {
-            setStep('TIME');
+            setStep('ADDRESS');
           }}
           onNext={data => {
             setStep('CONDITION');
