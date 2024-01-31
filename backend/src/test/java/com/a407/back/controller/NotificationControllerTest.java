@@ -99,11 +99,12 @@ class NotificationControllerTest {
         SubCategory newSubCategory = em.find(SubCategory.class, subCategoryId);
 
         // 집사 생성
-        zipsaId = zipsaService.makeZipsa(
-            Zipsa.builder().zipsaId(zipsaUser).account("111").description("Asd").gradeId(grade)
-                .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-                .skillAverage(1.0)
-                .serviceCount(0).preferTag("abc").replyCount(0).build());
+        Zipsa newZipsa = Zipsa.builder().zipsaId(zipsaUser).account("111").description("Asd").gradeId(grade)
+            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0)
+            .serviceCount(0).preferTag("abc").replyCount(0).build();
+        em.persist(newZipsa);
+        zipsaId = newZipsa.getZipsaId().getUserId();
         // 집사 가져오기
         Zipsa zipsa = zipsaService.findByZipsaId(zipsaId);
 

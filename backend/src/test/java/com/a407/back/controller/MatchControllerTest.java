@@ -81,11 +81,12 @@ class MatchControllerTest {
         Long gradeId = newGrade.getGradeId();
         grade = em.find(Grade.class, gradeId);
         // 집사 생성
-        Long zipsaId = zipsaService.makeZipsa(
-            Zipsa.builder().zipsaId(user).account("111").description("Asd").gradeId(grade)
-                .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-                .skillAverage(1.0)
-                .serviceCount(0).preferTag("abc").replyCount(0).build());
+        Zipsa newZipsa = Zipsa.builder().zipsaId(user).account("111").description("Asd").gradeId(grade)
+            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0)
+            .serviceCount(0).preferTag("abc").replyCount(0).build();
+        em.persist(newZipsa);
+        Long zipsaId = newZipsa.getZipsaId().getUserId();
         // 집사 가져오기
         Zipsa zipsa = zipsaService.findByZipsaId(zipsaId);
         // 대분류 카테고리 생성
@@ -132,11 +133,12 @@ class MatchControllerTest {
             .isCertificated(false).build();
         Long userId1 = userService.makeUser(user1);
         User newUser1 = userService.findByUserId(userId1);
-        Long zipsaId1 = zipsaService.makeZipsa(
-            Zipsa.builder().zipsaId(newUser1).account("111").description("Asd").gradeId(grade)
-                .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-                .skillAverage(1.0)
-                .serviceCount(0).preferTag("abc").replyCount(0).build());
+        Zipsa newZipsa1 = Zipsa.builder().zipsaId(newUser1).account("111").description("Asd").gradeId(grade)
+            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0)
+            .serviceCount(0).preferTag("abc").replyCount(0).build();
+        em.persist(newZipsa1);
+        Long zipsaId1 = newZipsa1.getZipsaId().getUserId();
         Zipsa zipsa1 = zipsaService.findByZipsaId(zipsaId1);
         ZipsaCategory zipsaCategory1 = ZipsaCategory.builder().majorCategoryId(majorCategory).zipsaId(zipsa1).build();
         em.persist(zipsaCategory1);
@@ -148,11 +150,12 @@ class MatchControllerTest {
             .isCertificated(false).build();
         Long userId2 = userService.makeUser(user2);
         User newUser2 = userService.findByUserId(userId2);
-        Long zipsaId2 = zipsaService.makeZipsa(
-            Zipsa.builder().zipsaId(newUser2).account("111").description("Asd").gradeId(grade)
-                .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-                .skillAverage(1.0)
-                .serviceCount(0).preferTag("abc").replyCount(0).build());
+        Zipsa newZipsa2 = Zipsa.builder().zipsaId(newUser2).account("111").description("Asd").gradeId(grade)
+            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0)
+            .serviceCount(0).preferTag("abc").replyCount(0).build();
+        em.persist(newZipsa2);
+        Long zipsaId2 = newZipsa2.getZipsaId().getUserId();
         Zipsa zipsa2 = zipsaService.findByZipsaId(zipsaId2);
         ZipsaCategory zipsaCategory2 = ZipsaCategory.builder().majorCategoryId(majorCategory).zipsaId(zipsa2).build();
         em.persist(zipsaCategory2);
@@ -185,11 +188,12 @@ class MatchControllerTest {
             .isCertificated(false).build();
         Long userId1 = userService.makeUser(user1);
         User newUser1 = userService.findByUserId(userId1);
-        Long zipsaId1 = zipsaService.makeZipsa(
-            Zipsa.builder().zipsaId(newUser1).account("111").description("Asd").gradeId(grade)
-                .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-                .skillAverage(1.0)
-                .serviceCount(0).preferTag("abc").replyCount(0).build());
+        Zipsa newZipsa1 = Zipsa.builder().zipsaId(newUser1).account("111").description("Asd").gradeId(grade)
+            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0)
+            .serviceCount(0).preferTag("abc").replyCount(0).build();
+        em.persist(newZipsa1);
+        Long zipsaId1 = newZipsa1.getZipsaId().getUserId();
         Zipsa zipsa1 = zipsaService.findByZipsaId(zipsaId1);
         ZipsaCategory zipsaCategory1 = ZipsaCategory.builder().majorCategoryId(majorCategory).zipsaId(zipsa1).build();
         em.persist(zipsaCategory1);
@@ -217,11 +221,12 @@ class MatchControllerTest {
             .isCertificated(false).build();
         Long userId1 = userService.makeUser(user1);
         User newUser1 = userService.findByUserId(userId1);
-        Long zipsaId1 = zipsaService.makeZipsa(
-            Zipsa.builder().zipsaId(newUser1).account("111").description("Asd").gradeId(grade)
-                .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-                .skillAverage(1.0)
-                .serviceCount(0).preferTag("abc").replyCount(0).build());
+        Zipsa newZipsa1 = Zipsa.builder().zipsaId(newUser1).account("111").description("Asd").gradeId(grade)
+            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0)
+            .serviceCount(0).preferTag("abc").replyCount(0).build();
+        em.persist(newZipsa1);
+        Long zipsaId1 = newZipsa1.getZipsaId().getUserId();
         Zipsa zipsa1 = zipsaService.findByZipsaId(zipsaId1);
         ZipsaCategory zipsaCategory1 = ZipsaCategory.builder().majorCategoryId(majorCategory).zipsaId(zipsa1).build();
         em.persist(zipsaCategory1);
