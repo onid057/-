@@ -15,13 +15,13 @@ const Wrapper = styled.div`
 
 function GradeBadge({ grade, width, height }) {
   const [gradeName, gradeColor] =
-    grade === 1
+    grade === 'APPRENTICE'
       ? ['견습 집사', '#e3fee8']
-      : grade === 2
+      : grade === 'NOVICE'
         ? ['초보 집사', '#dcf0f5']
-        : grade === 3
+        : grade === 'ADVANCED'
           ? ['숙련 집사', '#d9e0f5']
-          : grade === 4
+          : grade === 'PROFESSIONAL'
             ? ['프로 집사', '#8bc3eb']
             : ['전설 집사', '#93a0e3'];
 
