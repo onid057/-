@@ -8,8 +8,6 @@ import BoldText from '../../components/common/BoldText';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
 
-import CATEGORY_ID from '../../constants/categoryId';
-
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
@@ -77,13 +75,9 @@ function MainCategory({ onPrevious, onNext, matchMainCategory }) {
           return (
             <Button
               key={index}
-              mode={
-                mainCategory === CATEGORY_ID[category]
-                  ? 'SELECTED'
-                  : 'SMALL_WHITE'
-              }
+              mode={mainCategory === category ? 'SELECTED' : 'SMALL_WHITE'}
               msg={category}
-              onClick={() => setMainCategory(CATEGORY_ID[category])}
+              onClick={() => setMainCategory(category)}
             ></Button>
           );
         })}

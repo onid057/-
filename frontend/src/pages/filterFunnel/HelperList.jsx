@@ -28,8 +28,8 @@ const ButtonBox = styled.div`
   margin: 32px 0 16px 0;
 `;
 
-function HelperList({ onPrevious, onNext, helperData }) {
-  const [selectedHelperId, setSelectedHelperId] = useState([]);
+function HelperList({ onPrevious, onNext, helperData, savedHelperId }) {
+  const [selectedHelperId, setSelectedHelperId] = useState(savedHelperId || []);
 
   return (
     <Wrapper>
@@ -42,7 +42,7 @@ function HelperList({ onPrevious, onNext, helperData }) {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        rightContent={`${helperData?.length || 0}명 선택`}
+        rightContent={`${selectedHelperId.length}명 선택`}
         onPrevious={onPrevious}
         onNext={() => onNext(selectedHelperId)}
       ></NavigationBar>
@@ -72,7 +72,13 @@ function HelperList({ onPrevious, onNext, helperData }) {
               serviceCount={helper.serviceCount}
               categories={helper.categories}
               onClick={() =>
-                setSelectedHelperId([...selectedHelperId, helper.zipsaId])
+                selectedHelperId.includes(helper.zipsaId)
+                  ? setSelectedHelperId(
+                      [...selectedHelperId].filter(
+                        selectedZipsaId => selectedZipsaId !== helper.zipsaId,
+                      ),
+                    )
+                  : setSelectedHelperId([...selectedHelperId, helper.zipsaId])
               }
               isSelected={selectedHelperId.includes(helper.zipsaId)}
             ></FilteredHelperInfo>
