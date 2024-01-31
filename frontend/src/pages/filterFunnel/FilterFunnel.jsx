@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useFunnel } from '../../hooks/useFunnel';
-import { getFilteredHelperData } from '../../apis/api/match';
+import {
+  getFilteredHelperData,
+  makeFilterSuggestion,
+} from '../../apis/api/match';
 
 import MainCategory from './MainCategory';
 import SubCategory from './SubCategory';
@@ -10,6 +13,8 @@ import TargetDate from './TargetDate';
 import TargetTime from './TargetTime';
 import Address from './Address';
 import Detail from './Detail';
+
+import CATEGORY_ID from '../../constants/categoryId';
 
 function FilterFunnel() {
   const [filterData, setFilterData] = useState({});
@@ -42,6 +47,7 @@ function FilterFunnel() {
             setStep('CONDITION');
             setFilterData({ ...filterData, matchSubCategory: data });
           }}
+          matchMainCategory={filterData.matchMainCategory}
           matchSubCategory={filterData.matchSubCategory}
         ></SubCategory>
       </Funnel.Step>
@@ -62,14 +68,14 @@ function FilterFunnel() {
             };
             setFilterData(nextFilterData);
             getFilteredHelperData(
-              nextFilterData.matchMainCategory,
+              CATEGORY_ID[nextFilterData.matchMainCategory][0],
               nextFilterData.genderCondition,
               nextFilterData.ageCondition,
               nextFilterData.gradeCondition,
               nextFilterData.scoreCondition,
             ).then(response => {
               console.log(response);
-              setHelperData(response?.data);
+              setHelperData(response.data);
             });
           }}
           genderCondition={filterData.genderCondition}
@@ -89,6 +95,7 @@ function FilterFunnel() {
             setFilterData({ ...filterData, helperId: data });
           }}
           helperData={helperData}
+          savedHelperId={filterData.helperId}
         ></HelperList>
       </Funnel.Step>
 
@@ -149,8 +156,29 @@ function FilterFunnel() {
             setStep('ADDRESS');
           }}
           onNext={data => {
-            setStep('CONDITION');
-            setFilterData({ ...filterData, matchDetail: data });
+            // setStep('CONDITION');
+            // setFilterData({ ...filterData, matchDetail: data });
+            makeFilterSuggestion(
+              1,
+              CATEGORY_ID[filterData.matchMainCategory][1][
+                filterData.matchSubCategory
+              ],
+              '도움이 필요합니다!',
+              filterData.Detail,
+              filterData.address + ' ' + filterData.detailAddress,
+              filterData.endTime - filterData.startTime,
+              new Date().toJSON(),
+              new Date(
+                filterData.matchDate.setHours(filterData.startTime, 0, 0, 0),
+              ).toJSON(),
+              new Date(
+                filterData.matchDate.setHours(filterData.endTime, 0, 0, 0),
+              ).toJSON(),
+              helperData.gradeSalary,
+              filterData.helperId,
+            ).then(response => {
+              console.log(response);
+            });
           }}
           matchDetail={filterData.matchDetail}
         ></Detail>
