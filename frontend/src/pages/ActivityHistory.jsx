@@ -21,8 +21,32 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
+const ContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+`;
+
+const DetailContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+`;
+
 function ActivityHistory() {
-  const userList = ['곽희웅', '이수민'];
+  const userList = [
+    { name: '곽희웅', date: '2024.01.10', job: '영어 과외', pay: '20000' },
+    { name: '이수민', date: '2024.01.12', job: '수학 과외', pay: '30000' },
+  ];
+
+  const detailInfo = [
+    { label: '일시', key: 'date' },
+    { label: '맡긴 일', key: 'job' },
+    { label: '지불한 금액', key: 'pay' },
+  ];
 
   return (
     <Wrapper>
@@ -37,7 +61,7 @@ function ActivityHistory() {
         }
       ></NavigationBar>
       <BoldText fontSize={'35px'} normalContent={'나의 사용 내역'}></BoldText>
-      {userList.map((name, idx) => (
+      {userList.map((user, idx) => (
         <Accordian
           title={
             <Paragraph
@@ -46,7 +70,7 @@ function ActivityHistory() {
               sentences={[
                 <BoldText
                   fontSize={'20px'}
-                  boldContent={`{ ${name} }`}
+                  boldContent={`{ ${user.name} }`}
                   normalContent={' 집사와'}
                 />,
                 '함께한 기억이 있어요',
@@ -54,18 +78,18 @@ function ActivityHistory() {
             ></Paragraph>
           }
           content={
-            <Paragraph
-              gap={'8px'}
-              fontSize={'20px'}
-              sentences={[
-                <BoldText
-                  fontSize={'20px'}
-                  boldContent={`{ ${name} }`}
-                  normalContent={' 집사와'}
-                />,
-                '함께한 기억이 있어요',
-              ]}
-            ></Paragraph>
+            <ContentWrapper>
+              {detailInfo.map((info, idx) => (
+                <DetailContentWrapper key={idx}>
+                  {info.label}
+                  <BoldText
+                    fontSize={'16px'}
+                    boldContent={user[info.key]}
+                    normalContent={null}
+                  ></BoldText>
+                </DetailContentWrapper>
+              ))}
+            </ContentWrapper>
           }
           key={idx}
         ></Accordian>
