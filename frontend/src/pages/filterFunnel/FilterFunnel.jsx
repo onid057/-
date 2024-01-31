@@ -157,24 +157,35 @@ function FilterFunnel() {
           }}
           onNext={data => {
             // setStep('CONDITION');
-            // setFilterData({ ...filterData, matchDetail: data });
+            const nextMatchDetailData = { ...filterData, matchDetail: data };
+            setFilterData(nextMatchDetailData);
             makeFilterSuggestion(
               1,
               CATEGORY_ID[filterData.matchMainCategory][1][
                 filterData.matchSubCategory
               ],
-              '도움이 필요합니다!',
-              filterData.Detail,
-              filterData.address + ' ' + filterData.detailAddress,
-              filterData.endTime - filterData.startTime,
+              'dummy',
+              nextMatchDetailData.matchDetail,
+              filterData.matchAddress + ' ' + filterData.matchDetailAddress,
+              filterData.matchEndTime - filterData.matchStartTime,
               new Date().toJSON(),
               new Date(
-                filterData.matchDate.setHours(filterData.startTime, 0, 0, 0),
+                filterData.matchDate.setHours(
+                  parseInt(filterData.matchStartTime),
+                  0,
+                  0,
+                  0,
+                ),
               ).toJSON(),
               new Date(
-                filterData.matchDate.setHours(filterData.endTime, 0, 0, 0),
+                filterData.matchDate.setHours(
+                  parseInt(filterData.matchEndTime),
+                  0,
+                  0,
+                  0,
+                ),
               ).toJSON(),
-              helperData.gradeSalary,
+              helperData[0].gradeSalary,
               filterData.helperId,
             ).then(response => {
               console.log(response);

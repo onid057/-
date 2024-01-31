@@ -28,6 +28,7 @@ function TargetDate({ onPrevious, onNext, matchDate }) {
   const [date, setDate] = useState(matchDate || new Date());
 
   console.log(date);
+  console.log(typeof date);
 
   return (
     <Wrapper>
@@ -42,7 +43,7 @@ function TargetDate({ onPrevious, onNext, matchDate }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={() => onNext(date)}
+        onNext={() => onNext(new Date(date))}
       ></NavigationBar>
 
       <Paragraph

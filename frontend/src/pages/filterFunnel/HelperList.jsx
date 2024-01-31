@@ -74,9 +74,7 @@ function HelperList({ onPrevious, onNext, helperData, savedHelperId }) {
               onClick={() =>
                 selectedHelperId.includes(helper.zipsaId)
                   ? setSelectedHelperId(
-                      [...selectedHelperId].filter(
-                        selectedZipsaId => selectedZipsaId !== helper.zipsaId,
-                      ),
+                      [...selectedHelperId].filter(Id => Id !== helper.zipsaId),
                     )
                   : setSelectedHelperId([...selectedHelperId, helper.zipsaId])
               }
@@ -85,9 +83,33 @@ function HelperList({ onPrevious, onNext, helperData, savedHelperId }) {
           );
         })}
 
-      {/* <FilteredHelperInfo></FilteredHelperInfo>
-      <FilteredHelperInfo></FilteredHelperInfo>
-      <FilteredHelperInfo></FilteredHelperInfo> */}
+      {/* <FilteredHelperInfo
+        zipsaId={3}
+        onClick={() =>
+          selectedHelperId.includes(3)
+            ? setSelectedHelperId([...selectedHelperId].filter(Id => Id !== 3))
+            : setSelectedHelperId([...selectedHelperId, 3])
+        }
+        isSelected={selectedHelperId.includes(3)}
+      ></FilteredHelperInfo>
+      <FilteredHelperInfo
+        zipsaId={4}
+        onClick={() =>
+          selectedHelperId.includes(4)
+            ? setSelectedHelperId([...selectedHelperId].filter(Id => Id !== 4))
+            : setSelectedHelperId([...selectedHelperId, 4])
+        }
+        isSelected={selectedHelperId.includes(4)}
+      ></FilteredHelperInfo>
+      <FilteredHelperInfo
+        zipsaId={5}
+        onClick={() =>
+          selectedHelperId.includes(5)
+            ? setSelectedHelperId([...selectedHelperId].filter(Id => Id !== 5))
+            : setSelectedHelperId([...selectedHelperId, 5])
+        }
+        isSelected={selectedHelperId.includes(5)}
+      ></FilteredHelperInfo> */}
 
       {/* <ButtonBox>
         <Button
