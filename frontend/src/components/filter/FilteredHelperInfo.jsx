@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   font-weight: 400;
   font-size: 16px;
   box-shadow: ${props =>
-    props.isSelected ? '0 0 0 1px #629af9 inset' : 'none'};
+    props.$isSelected ? '0 0 0 2px #629af9 inset' : 'none'};
   background-color: #ffffff;
   border-radius: 25px;
 `;
@@ -61,7 +61,7 @@ function FilteredHelperInfo({
   isSelected,
 }) {
   return (
-    <Wrapper onClick={onClick} isSelected={isSelected}>
+    <Wrapper onClick={onClick} $isSelected={isSelected}>
       <Image
         src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
         width={'69px'}
