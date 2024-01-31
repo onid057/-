@@ -1,10 +1,13 @@
+import { useState } from 'react';
+
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
+import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
-import FilteredArticle from '../../components/filter/FilteredArticle';
+import FilteredHelperInfo from '../../components/filter/FilteredHelperInfo';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -20,17 +23,14 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-const TitleBox = styled.div`
-  width: 100%;
-  margin-bottom: 32px;
-`;
-
 // Button 컴포넌트 상하 마진 주기 위한 div
 const ButtonBox = styled.div`
   margin: 32px 0 16px 0;
 `;
 
-function HelperList({ onPrevious, onNext }) {
+function HelperList({ onPrevious, onNext, helperData }) {
+  const [selectedHelperId, setSelectedHelperId] = useState([]);
+
   return (
     <Wrapper>
       <NavigationBar
@@ -42,34 +42,54 @@ function HelperList({ onPrevious, onNext }) {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        // rightContent는 없앴어요
+        rightContent={`${helperData?.length || 0}명 선택`}
         onPrevious={onPrevious}
-        onNext={onNext}
+        onNext={() => onNext(selectedHelperId)}
       ></NavigationBar>
 
-      <TitleBox>
-        <Paragraph
-          gap="5px"
-          fontSize="35px"
-          sentences={[
-            <BoldText boldContent="최대 5명" normalContent="의"></BoldText>,
-            '집사님을',
-            '선택해 주세요',
-          ]}
-        ></Paragraph>
-      </TitleBox>
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={[
+          <BoldText boldContent="최대 5명" normalContent="의"></BoldText>,
+          '집사님을',
+          '선택해 주세요',
+        ]}
+      ></Paragraph>
 
-      <FilteredArticle></FilteredArticle>
-      <FilteredArticle></FilteredArticle>
-      <FilteredArticle></FilteredArticle>
+      <ProgressBar value={44}></ProgressBar>
 
-      <ButtonBox>
+      {helperData?.length &&
+        helperData.map((helper, index) => {
+          return (
+            <FilteredHelperInfo
+              key={index}
+              zipsaId={helper.zipsaId}
+              profileImage={helper.profileImage}
+              name={helper.name}
+              gradeName={helper.gradeName}
+              scoreAverage={helper.scoreAverage}
+              serviceCount={helper.serviceCount}
+              categories={helper.categories}
+              onClick={() =>
+                setSelectedHelperId([...selectedHelperId, helper.zipsaId])
+              }
+              isSelected={selectedHelperId.includes(helper.zipsaId)}
+            ></FilteredHelperInfo>
+          );
+        })}
+
+      {/* <FilteredHelperInfo></FilteredHelperInfo>
+      <FilteredHelperInfo></FilteredHelperInfo>
+      <FilteredHelperInfo></FilteredHelperInfo> */}
+
+      {/* <ButtonBox>
         <Button
           mode={'NORMAL_BLUE'}
           color={'#629af9'}
           msg={'2/5명에게 요청 보내기'}
         ></Button>
-      </ButtonBox>
+      </ButtonBox> */}
     </Wrapper>
   );
 }
