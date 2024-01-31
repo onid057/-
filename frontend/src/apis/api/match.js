@@ -1,4 +1,4 @@
-import axios from '../api/instance';
+import axios from '../utils/instance';
 
 // filterFunnel을 통해 얻은 매치 데이터를 활용하여 집사 리스트 get
 const getFilteredHelperData = async (
