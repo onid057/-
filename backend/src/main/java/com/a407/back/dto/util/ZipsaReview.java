@@ -1,32 +1,20 @@
 package com.a407.back.dto.util;
 
-import com.a407.back.domain.Review;
 import java.sql.Timestamp;
-import java.util.Arrays;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class ZipsaReview {
 
-    private final String userName;
-    private final String profileImage;
-    private final String content;
-    private final int kindnessScore;
-    private final int skillScore;
-    private final int rewindScore;
-    private final Timestamp createdAt;
+    private String userName;
+    private String profileImage;
+    private String content;
+    private int kindnessScore;
+    private int skillScore;
+    private int rewindScore;
+    private Timestamp createdAt;
 
-    public ZipsaReview(Review review) {
-        this.userName = review.getUserId().getName();
-        if (review.getUserId().getProfileImage() == null) {
-            this.profileImage = null;
-        } else {
-            this.profileImage = Arrays.toString(review.getUserId().getProfileImage());
-        }
-        this.content = review.getContent();
-        this.kindnessScore = review.getKindnessScore();
-        this.skillScore = review.getSkillScore();
-        this.rewindScore = review.getRewindScore();
-        this.createdAt = review.getCreatedAt();
-    }
+
 }

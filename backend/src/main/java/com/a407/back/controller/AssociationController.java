@@ -1,7 +1,7 @@
 package com.a407.back.controller;
 
 import com.a407.back.config.constants.SuccessCode;
-import com.a407.back.dto.User.UserAssociationResponse;
+import com.a407.back.dto.user.UserAssociationResponse;
 import com.a407.back.dto.association.AssociationAdditionCodeResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.AssociationService;
@@ -35,7 +35,7 @@ public class AssociationController {
     public ApiResponse<List<UserAssociationResponse>> getAssociationUserList() {
         // 스프링 시큐리티 도입 전 임시 값
         return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-            associationService.getAssociationUserList(4L));
+            associationService.getAssociationUserList(1L));
     }
 
     @DeleteMapping

@@ -6,7 +6,7 @@ import com.a407.back.domain.QZipsaCategory;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Match.MatchSearchRequest;
+import com.a407.back.dto.match.MatchSearchRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

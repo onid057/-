@@ -1,6 +1,6 @@
 package com.a407.back.model.service;
 
-import com.a407.back.dto.User.UserAssociationResponse;
+import com.a407.back.dto.user.UserAssociationResponse;
 import com.a407.back.dto.association.AssociationAdditionCodeResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;

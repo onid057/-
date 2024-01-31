@@ -2,7 +2,7 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Room.MakePublicRoomRequest;
+import com.a407.back.dto.room.MakePublicRoomRequest;
 
 public interface RoomService {
 

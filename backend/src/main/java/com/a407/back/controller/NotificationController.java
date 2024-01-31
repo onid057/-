@@ -1,8 +1,8 @@
 package com.a407.back.controller;
 
 import com.a407.back.config.constants.SuccessCode;
-import com.a407.back.dto.User.UserNotificationResponse;
-import com.a407.back.dto.User.ZipsaNotificationResponse;
+import com.a407.back.dto.user.UserNotificationResponse;
+import com.a407.back.dto.user.ZipsaNotificationResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.NotificationService;
 import lombok.RequiredArgsConstructor;

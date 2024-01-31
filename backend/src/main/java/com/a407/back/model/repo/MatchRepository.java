@@ -1,7 +1,7 @@
 package com.a407.back.model.repo;
 
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Match.MatchSearchRequest;
+import com.a407.back.dto.match.MatchSearchRequest;
 import java.util.List;
 
 public interface MatchRepository {

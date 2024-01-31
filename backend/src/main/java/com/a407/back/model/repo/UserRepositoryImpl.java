@@ -2,17 +2,14 @@ package com.a407.back.model.repo;
 
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Type;
-import com.a407.back.domain.QAssociation;
 import com.a407.back.domain.QNotification;
 import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QUser;
 import com.a407.back.domain.QZipsa;
+import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
-import com.a407.back.dto.User.UserAssociationResponse;
-import com.a407.back.dto.User.UserNearZipsaResponse;
-import com.a407.back.dto.User.UserRecordsResponse;
-import com.a407.back.dto.User.UserReservationResponse;
+import com.a407.back.domain.Zipsa;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -63,29 +60,29 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public UserNearZipsaResponse findNearZipsaList(Long userId) {
+    public List<Zipsa> findNearZipsaList(Long userId) {
         QZipsa qZipsa = QZipsa.zipsa;
         User user = em.find(User.class, userId);
-        return new UserNearZipsaResponse((query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
+        return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
                 user.getLatitude(), user.getLongitude(), 0.009)))).orderBy(
-            qZipsa.serviceCount.desc()).fetch());
+            qZipsa.serviceCount.desc()).fetch();
     }
 
     @Override
-    public UserRecordsResponse getUserRecordList(Long userId) {
+    public List<Room> getUserRecordList(Long userId) {
         QRoom qRoom = QRoom.room;
-        return new UserRecordsResponse(
-            query.selectFrom(qRoom).where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(
-                Process.END))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
+        return query.selectFrom(qRoom)
+            .where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(Process.END)))
+            .orderBy(qRoom.expectationStartedAt.asc()).fetch();
     }
 
     @Override
-    public UserReservationResponse getUserReservationList(Long userId) {
+    public List<Room> getUserReservationList(Long userId) {
         QRoom qRoom = QRoom.room;
-        return new UserReservationResponse(query.selectFrom(qRoom).where(
+        return query.selectFrom(qRoom).where(
                 qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
-            .orderBy(qRoom.expectationStartedAt.asc()).fetch());
+            .orderBy(qRoom.expectationStartedAt.asc()).fetch();
     }
 
 
@@ -117,15 +114,10 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public List<UserAssociationResponse> getAssociationUserList(Long associationId) {
+    public List<User> searchAssociationUserList(Long associationId) {
         QUser qUser = QUser.user;
-        QAssociation qAssociation = QAssociation.association;
-        Long adminId = Objects.requireNonNull(query.selectFrom(qAssociation)
-            .where(qAssociation.associationId.eq(associationId)).fetchOne()).getUserId();
-        return query.selectFrom(qUser)
-            .where(qUser.associationId.associationId.eq(associationId)).fetch().stream()
-            .map(user -> new UserAssociationResponse(user,
-                Objects.equals(user.getUserId(), adminId))).toList();
+        return query.selectFrom(qUser).where(qUser.associationId.associationId.eq(associationId))
+            .fetch();
     }
 
 
@@ -147,8 +139,7 @@ public class UserRepositoryImpl implements UserRepository {
     public boolean findIsAffiliated(Long userId) {
         QUser qUser = QUser.user;
         return Objects.requireNonNull(
-            query.select(qUser.isAffiliated).from(qUser).where(qUser.userId.eq(userId))
-                .fetchOne()).booleanValue();
+            query.select(qUser.isAffiliated).from(qUser).where(qUser.userId.eq(userId)).fetchOne());
     }
 
 
