@@ -11,7 +11,6 @@ public class ZipsaRecordsResponse {
 
     private final List<ZipsaRecordsList> list;
 
-
     public ZipsaRecordsResponse(List<Room> roomList) {
 
         this.list = new ArrayList<>();
