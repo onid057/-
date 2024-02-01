@@ -5,6 +5,7 @@ import lombok.Getter;
 
 @Getter
 public class ApiResponse<T> {
+
     private final int status;
     private final String message;
     private final T data;
@@ -14,4 +15,5 @@ public class ApiResponse<T> {
         this.message = successCode.getMessage();
         this.data = data;
     }
+
 }

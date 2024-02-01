@@ -1,5 +1,6 @@
 package com.a407.back.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -31,6 +32,7 @@ public class Notification {
     private Long notificationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "room_id", nullable = false)
     private Room roomId;
 
@@ -52,7 +54,7 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @ColumnDefault("standby")
+    @ColumnDefault("STANDBY")
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;

@@ -6,17 +6,22 @@ import com.a407.back.domain.QNotification;
 import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QUser;
 import com.a407.back.domain.QZipsa;
+import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
-import com.a407.back.dto.User.UserNearZipsaResponse;
-import com.a407.back.dto.User.UserRecordsResponse;
-import com.a407.back.dto.User.UserReservationResponse;
+import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.user.UserPhoneNumberAndEmail;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,6 +31,8 @@ public class UserRepositoryImpl implements UserRepository {
     private final JPAQueryFactory query;
 
     private final EntityManager em;
+
+    private final RedisTemplate<String, String> redisTemplate;
 
 
     @Override
@@ -37,20 +44,20 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public User save(User user) {
+    public User makeUser(User user) {
         em.persist(user);
         return user;
     }
 
     @Override
-    public List<Notification> findNotificationByUserId(Long userId, String type) {
+    public List<Notification> findNotificationByUserIdList(Long userId, String type) {
         QNotification qNotification = QNotification.notification;
         query.update(qNotification).set(qNotification.isRead, true)
             .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
             .execute();
         return query.selectFrom(qNotification).where(
                 qNotification.receiveId.eq(userId).and(qNotification.type.eq(Type.valueOf(type))))
-            .fetch();
+            .orderBy(qNotification.createdAt.desc()).fetch();
     }
 
     @Override
@@ -60,29 +67,29 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public UserNearZipsaResponse findNearZipsaList(Long userId) {
+    public List<Zipsa> findNearZipsaList(Long userId) {
         QZipsa qZipsa = QZipsa.zipsa;
         User user = em.find(User.class, userId);
-        return new UserNearZipsaResponse((query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
+        return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
                 user.getLatitude(), user.getLongitude(), 0.009)))).orderBy(
-            qZipsa.serviceCount.desc()).fetch());
+            qZipsa.serviceCount.desc()).fetch();
     }
 
     @Override
-    public UserRecordsResponse findRecordsByUserId(Long userId) {
+    public List<Room> getUserRecordList(Long userId) {
         QRoom qRoom = QRoom.room;
-        return new UserRecordsResponse(
-            query.selectFrom(qRoom).where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(
-                Process.END))).orderBy(qRoom.expectationStartedAt.asc()).fetch());
+        return query.selectFrom(qRoom)
+            .where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(Process.END)))
+            .orderBy(qRoom.expectationStartedAt.asc()).fetch();
     }
 
     @Override
-    public UserReservationResponse findReservationByUserId(Long userId) {
+    public List<Room> getUserReservationList(Long userId) {
         QRoom qRoom = QRoom.room;
-        return new UserReservationResponse(query.selectFrom(qRoom).where(
+        return query.selectFrom(qRoom).where(
                 qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
-            .orderBy(qRoom.expectationStartedAt.asc()).fetch());
+            .orderBy(qRoom.expectationStartedAt.asc()).fetch();
     }
 
 
@@ -93,7 +100,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void saveAccount(Long userId, String account) {
+    public void makeAccount(Long userId, String account) {
         QUser qUser = QUser.user;
         query.update(qUser).set(qUser.account, account).where(qUser.userId.eq(userId)).execute();
     }
@@ -101,15 +108,74 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void deleteAccount(User user, String account) {
         QUser qUser = QUser.user;
-        query.update(qUser).set(qUser.account, "").where(qUser.userId.eq(user.getUserId())).execute();
+        query.update(qUser).set(qUser.account, "").where(qUser.userId.eq(user.getUserId()))
+            .execute();
+    }
+
+    @Override
+    public void makeAssociation(Long userId, Long associationId) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.associationId.associationId, associationId)
+            .set(qUser.isAffiliated, true).where(qUser.userId.eq(userId)).execute();
     }
 
 
     @Override
-    public void savePhoneNumber(String phoneNumber, String email) {
+    public List<User> searchAssociationUserList(Long associationId) {
+        QUser qUser = QUser.user;
+        return query.selectFrom(qUser).where(qUser.associationId.associationId.eq(associationId))
+            .fetch();
+    }
+
+
+    @Override
+    public void deleteAssociation(Long userId) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.associationId.associationId, 0L)
+            .set(qUser.isAffiliated, false).where(qUser.userId.eq(userId)).execute();
+    }
+
+    @Override
+    public List<Long> searchAssociationUserIdList(Long associationId) {
+        QUser qUser = QUser.user;
+        return query.select(qUser.userId).from(qUser)
+            .where(qUser.associationId.associationId.eq(associationId)).fetch();
+    }
+
+    @Override
+    public boolean findIsAffiliated(Long userId) {
+        QUser qUser = QUser.user;
+        return Objects.requireNonNull(
+            query.select(qUser.isAffiliated).from(qUser).where(qUser.userId.eq(userId)).fetchOne());
+    }
+
+
+    @Override
+    public void makePhoneNumber(String phoneNumber, String email) {
         QUser qUser = QUser.user;
         query.update(qUser).set(qUser.phoneNumber, phoneNumber).set(qUser.isCertificated, true)
             .where(qUser.email.eq(email)).execute();
+    }
+
+
+    @Override
+    public void makeSendMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)
+        throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String value = objectMapper.writeValueAsString(userPhoneNumberAndEmail);
+        redisTemplate.opsForValue().set(code, value, Duration.ofMinutes(5));
+    }
+
+    @Override
+    public UserPhoneNumberAndEmail findMessage(String code) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(redisTemplate.opsForValue().getAndDelete(code),
+            UserPhoneNumberAndEmail.class);
+    }
+
+    @Override
+    public String findCode(String code) {
+        return redisTemplate.opsForValue().get(code);
     }
 
 }

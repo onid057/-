@@ -1,26 +1,29 @@
 package com.a407.back.model.repo;
 
 import com.a407.back.domain.Report;
+import com.a407.back.domain.Review;
+import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Zipsa.ReportSearchResponse;
-import com.a407.back.dto.Zipsa.ZipsaDetailInfoResponse;
-import com.a407.back.dto.Zipsa.ZipsaRecordsResponse;
-import com.a407.back.dto.Zipsa.ZipsaReservationResponse;
+import java.util.List;
 
 public interface ZipsaRepository {
 
-    Long saveReport(Report report);
+    Long makeReport(Report report);
 
-    ReportSearchResponse reportFindByRoomId(Long roomId);
+    List<Report> findReportByRoomIdList(Long roomId);
 
     Zipsa findByZipsaId(Long zipsaId);
 
-    ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId);
+    List<String> searchSubCategoryList(Long zipsaId);
 
-    ZipsaRecordsResponse findRecordsByZipsaId(Long helperId);
+    List<Review> searchReviewList(Long zipsaId);
 
-    ZipsaReservationResponse findReservationByZipsaId(Long zipsaId);
+    List<Room> getZipsaRecordList(Long helperId);
+
+    List<Room> getZipsaReservationList(Long zipsaId);
 
     void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
         Double rewindAverage);
+
+    void changeServiceCountIncrease(Zipsa zipsa);
 }

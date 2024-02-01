@@ -1,8 +1,8 @@
 package com.a407.back.controller;
 
 import com.a407.back.config.constants.SuccessCode;
-import com.a407.back.dto.Review.ReviewCreateRequest;
-import com.a407.back.dto.Review.ReviewListResponse;
+import com.a407.back.dto.review.ReviewCreateRequest;
+import com.a407.back.dto.review.ReviewListResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.ReviewService;
 import java.util.List;
@@ -25,20 +25,21 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<String> createReview(
+    public ResponseEntity<String> makeReview(
         @RequestBody ReviewCreateRequest reviewCreateRequest) {
-        reviewService.createReview(reviewCreateRequest);
+        reviewService.makeReview(reviewCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body("리뷰 작성 성공");
     }
 
     @GetMapping("/{userId}")
-    public ApiResponse<List<ReviewListResponse>> getReviewsByUserId(@PathVariable Long userId) {
-        return reviewService.getReviewsByUserId(userId);
+    public ApiResponse<List<ReviewListResponse>> findReviewsByUserId(@PathVariable Long userId) {
+        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+            reviewService.findReviewsByUserId(userId));
     }
 
     @DeleteMapping("/{reviewId}")
-    public ApiResponse<String> removeReviewByReviewId(@PathVariable Long reviewId) {
-        reviewService.removeReviewByReviewId(reviewId);
+    public ApiResponse<String> deleteReview(@PathVariable Long reviewId) {
+        reviewService.deleteReview(reviewId);
         return new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "리뷰 삭제 성공");
     }
 

@@ -1,42 +1,42 @@
 package com.a407.back.model.service;
 
 import com.a407.back.domain.User;
-import com.a407.back.dto.Notification.NotificationListResponse;
-import com.a407.back.dto.User.UserAccountRequest;
-import com.a407.back.dto.User.UserAccountResponse;
-import com.a407.back.dto.User.UserNearZipsaResponse;
-import com.a407.back.dto.User.UserPhoneNumberRequest;
-import com.a407.back.dto.User.UserRecordsResponse;
-import com.a407.back.dto.User.UserReservationResponse;
+import com.a407.back.dto.notification.NotificationListResponse;
+import com.a407.back.dto.user.UserAccountRequest;
+import com.a407.back.dto.user.UserAccountResponse;
+import com.a407.back.dto.user.UserNearZipsaResponse;
+import com.a407.back.dto.user.UserPhoneNumberRequest;
+import com.a407.back.dto.user.UserRecordsResponse;
+import com.a407.back.dto.user.UserReservationResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 public interface UserService {
 
-    Long save(User user);
+    Long makeUser(User user);
 
-    List<NotificationListResponse> findNotificationsByUserId(Long userId);
+    List<NotificationListResponse> findNotificationByUserIdList(Long userId);
 
     boolean isWorkedDistinction(Long userId);
 
-    UserNearZipsaResponse findNearZipsaList(Long userId);
+    List<UserNearZipsaResponse> findNearZipsaList(Long userId);
 
     User findByUserId(Long userId);
 
-    UserRecordsResponse findRecordsByUserId(Long userId);
+    List<UserRecordsResponse> getUserRecordList(Long userId);
 
-    UserReservationResponse findReservationByUserId(Long userId);
+    List<UserReservationResponse> getUserReservationList(Long userId);
 
 
-    UserAccountResponse saveAccount(UserAccountRequest userAccountRequest);
+    UserAccountResponse makeAccount(UserAccountRequest userAccountRequest);
 
     String getMaskedCardNumber(Long userId);
 
     void deleteAccount(Long userId);
 
-    void sendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
+    void makeSendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
         throws JsonProcessingException, NoSuchAlgorithmException;
 
-    void savePhoneNumber(String code, String email) throws JsonProcessingException;
+    void makePhoneNumber(String code, String email) throws JsonProcessingException;
 }
