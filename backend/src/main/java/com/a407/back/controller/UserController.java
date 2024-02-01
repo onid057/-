@@ -36,12 +36,9 @@ public class UserController {
 
     private final UserService userService;
 
-    // 회원가입
-    @PostMapping("/")
-    public ResponseEntity<ApiResponse<Long>> makeUser(@RequestBody UserCreateRequest user) {
-        long id = userService.makeUser(user.toEntity());
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
+    @GetMapping("/")
+    public ResponseEntity<String> testServer() {
+        return ResponseEntity.status(HttpStatus.OK).body("server 이상 무");
     }
 
     // 알림 목록
@@ -52,6 +49,14 @@ public class UserController {
             userId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, notificationResponseList));
+    }
+    
+    // 회원가입
+    @PostMapping("/")
+    public ResponseEntity<ApiResponse<Long>> makeUser(@RequestBody UserCreateRequest user) {
+        long id = userService.makeUser(user.toEntity());
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
     }
 
     @PostMapping("/helpers-map/{userId}")
