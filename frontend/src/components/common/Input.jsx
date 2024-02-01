@@ -1,6 +1,4 @@
-// 공통 Input 컴포넌트
-
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   width: ${props => props.$width};

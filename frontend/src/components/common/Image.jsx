@@ -1,39 +1,52 @@
 import { styled } from 'styled-components';
 
 const ImageWrapper = styled.div`
+  position: relative;
   width: ${props => props.$width};
   height: ${props => props.$height};
-  margin: ${props => (props.$margin ? props.$margin : 'inherit')};
+  margin: ${props => (props.$margin ? props.$margin : '0')};
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   background-image: url(${props => props.$src});
-  position: relative;
+  border: ${props => (props.$needBorder ? '1px dashed #666666' : 'none')};
+  border-radius: ${props => props.$needBorder && '10px'};
+  background-color: ${props => props.$needBorder && '#ffffff'};
 `;
 
 const DeleteButton = styled.button`
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  z-index: 999;
-  border-radius: 50%;
-  width: 15px;
-  height: 15px;
-  background-image: url(${props => props.$url});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: none;
   cursor: pointer;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 9999;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-image: url(${props => props.$url});
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;
 `;
 
 function Image({ src, width, height, margin, onDelete }) {
-  const CloseUrl = `${process.env.PUBLIC_URL}/images/closebutton.svg`;
+  const isOnDelete = !!onDelete;
+
   return (
-    <ImageWrapper $src={src} $width={width} $height={height} $margin={margin}>
-      {onDelete ? (
-        <DeleteButton $url={CloseUrl} onClick={onDelete}></DeleteButton>
-      ) : null}
+    <ImageWrapper
+      $src={src}
+      $width={width}
+      $height={height}
+      $margin={margin}
+      $needBorder={isOnDelete}
+    >
+      {isOnDelete && (
+        <DeleteButton
+          $url={`${process.env.PUBLIC_URL}/images/closebutton.svg`}
+          onClick={onDelete}
+        ></DeleteButton>
+      )}
     </ImageWrapper>
   );
 }

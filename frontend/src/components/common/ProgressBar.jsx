@@ -1,13 +1,10 @@
 import { styled } from 'styled-components';
 
 const ProgressBarWrapper = styled.div`
-  box-sizing: border-box;
   width: 100%;
   margin: 20px 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 5px;
 `;
 
 const BarGage = styled.progress`
