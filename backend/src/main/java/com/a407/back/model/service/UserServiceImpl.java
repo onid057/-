@@ -155,6 +155,7 @@ public class UserServiceImpl implements UserService {
                 .build()).toList();
     }
 
+    @Override
     @Transactional
     public UserAccountResponse makeAccount(UserAccountRequest userAccountRequest) {
         User user = userRepository.findByUserId(userAccountRequest.getUserId());
