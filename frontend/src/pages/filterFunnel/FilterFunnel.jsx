@@ -4,6 +4,7 @@ import {
   getFilteredHelperData,
   makeFilterSuggestion,
 } from '../../apis/api/match';
+import { useNavigate } from 'react-router-dom';
 
 import MainCategory from './MainCategory';
 import SubCategory from './SubCategory';
@@ -20,6 +21,7 @@ function FilterFunnel() {
   const [filterData, setFilterData] = useState({});
   const [helperData, setHelperData] = useState([]);
   const [Funnel, setStep] = useFunnel('MAIN_CATEGORY');
+  const navigate = useNavigate();
 
   console.log(filterData);
 
@@ -190,6 +192,7 @@ function FilterFunnel() {
             ).then(response => {
               console.log(response);
             });
+            navigate('/startMatch');
           }}
           matchDetail={filterData.matchDetail}
         ></Detail>
