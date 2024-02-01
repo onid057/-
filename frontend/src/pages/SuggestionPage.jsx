@@ -42,7 +42,7 @@ function SuggestionPage() {
           gap="5px"
           fontSize="30px"
           sentences={[
-            <BoldText BoldContent="{ 곽희웅 }"></BoldText>,
+            <BoldText boldContent="{ 곽희웅 }"></BoldText>,
             '집사님의 제안',
           ]}
         ></Paragraph>

@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 30px 16px;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -21,9 +21,27 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
+const UpperWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
 export default function Home() {
   return (
     <Wrapper>
+      <UpperWrapper>
+        <BoldText fontSize="30px" boldContent="HAN.zip4"></BoldText>
+
+        <Image
+          src={process.env.PUBLIC_URL + '/images/alarm.svg'}
+          width="30px"
+          height="35px"
+          margin="0"
+        ></Image>
+      </UpperWrapper>
+
       <MenuBar currentMenu="HOME"></MenuBar>
 
       <Notice
