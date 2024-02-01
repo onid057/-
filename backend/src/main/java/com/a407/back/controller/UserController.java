@@ -36,6 +36,7 @@ public class UserController {
 
     private final UserService userService;
 
+    // 회원가입
     @PostMapping("/")
     public ResponseEntity<ApiResponse<Long>> makeUser(@RequestBody UserCreateRequest user) {
         long id = userService.makeUser(user.toEntity());
