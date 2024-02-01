@@ -57,6 +57,8 @@ public class ZipsaServiceImpl implements ZipsaService {
         List<String> subCategoryList = zipsaRepository.searchSubCategoryList(zipsaId);
         return ZipsaDetailInfoResponse.builder()
             .name(zipsa.getZipsaId().getName())
+            .email(zipsa.getZipsaId().getEmail())
+            .phoneNumber(zipsa.getZipsaId().getPhoneNumber())
             .birth(zipsa.getZipsaId().getBirth())
             .gender(zipsa.getZipsaId().getGender())
             .address(zipsa.getZipsaId().getAddress())
