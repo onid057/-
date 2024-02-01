@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ZipsaService {
 
-    Long makeReport(ReportCreateRequest reportCreateRequest);
+    void makeReport(ReportCreateRequest reportCreateRequest);
 
     List<ReportSearchResponse> findReportByRoomIdList(Long roomId);
 
