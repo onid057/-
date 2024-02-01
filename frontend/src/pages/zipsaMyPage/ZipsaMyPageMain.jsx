@@ -10,7 +10,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 60px 16px;
+  padding: 0px 16px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -27,7 +27,7 @@ const MenuText = styled.div`
   align-items: center;
 `;
 
-// 집사 상세정보 조회해 오기
+// 집사 상세정보 API 조회해 오기
 const zipsaData = {
   name: '이수민',
   birth: '2024-01-23T14:25:12.000+00:00',
@@ -39,14 +39,14 @@ const zipsaData = {
   gradeId: 1,
   gradeName: '견습',
   salary: 5000,
-  description: '열심히 하겠습니다.',
+  description: '옆집 아줌마처럼 친근한 사람이예요! 동네에서 친해져요!',
   preferTag: '저는 운전을 잘합니다.',
   serviceCount: 1,
   replyAverage: 0.0,
   replyCount: 0,
-  kindnessAverage: 0.0,
-  skillAverage: 0.0,
-  rewindAverage: 0.0,
+  kindnessAverage: 4.3,
+  skillAverage: 3.5,
+  rewindAverage: 2.7,
   reviews: [
     {
       userName: 'user4',
@@ -61,7 +61,7 @@ const zipsaData = {
   subCategory: ['병원 동행', '마트 동행', '식사 돌봄'],
 };
 
-function ZipsaMyPageMain({}) {
+function ZipsaMyPageMain() {
   const MenuList = ['활동 내역 보기', '정산하기', '작성한 게시물 확인하기'];
   const number =
     (zipsaData.kindnessAverage +
@@ -69,9 +69,22 @@ function ZipsaMyPageMain({}) {
       zipsaData.rewindAverage) /
     3;
   const avgScore = number.toFixed(2);
+  console.log(avgScore);
 
   return (
     <Wrapper>
+      <NavigationBar
+        leftContent={
+          <Image
+            src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
+            width={'40px'}
+            height={'40px'}
+            margin={'0 0 0 -12px'}
+          ></Image>
+        }
+      ></NavigationBar>
+
+      {/* 여기서 ProfileUpdate 페이지로 넘어가는데 페이지가 넘어갈 때는 data를 어떻게 보내지? */}
       <Notice
         upper={[
           <Image
@@ -103,7 +116,7 @@ function ZipsaMyPageMain({}) {
         name={zipsaData.name}
         gradeId={zipsaData.gradeId}
         gradeName={zipsaData.gradeName}
-        avgScore={zipsaData.avgScore}
+        avgScore={avgScore}
       ></TwoIndex>
 
       {MenuList.map((content, idx) => (
