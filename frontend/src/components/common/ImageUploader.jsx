@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import SimpleSlider from './SimpleSlider';
 
 const ImageUploaderWrapper = styled.div`
   width: 294px;
@@ -10,18 +9,7 @@ const ImageUploaderWrapper = styled.div`
   gap: 15px;
 `;
 
-const SliderWrapper = styled.div`
-  width: 290px;
-  height: 200px;
-`;
-
-function ImageUploader({
-  showImages,
-  setShowImages,
-  fileInputRef,
-  Children,
-  onHandleFunc,
-}) {
+function ImageUploader({ showImages, setShowImages, fileInputRef, children }) {
   const handleImageChange = event => {
     const imageLists = event.target.files;
     let imageUrlLists = [];
@@ -45,14 +33,9 @@ function ImageUploader({
     }
   };
 
-  // X 버튼 클릭 시 이미지 삭제
-  const handleDeleteImage = id => {
-    setShowImages(showImages.filter((_, index) => index !== id));
-  };
-
   return (
     <ImageUploaderWrapper>
-      {Children}
+      {children}
       <input
         type="file"
         ref={fileInputRef}
@@ -61,10 +44,6 @@ function ImageUploader({
         multiple
         onChange={handleImageChange}
       />
-      {/* 저장해둔 이미지들을 순회하면서 화면에 이미지 출력 */}
-      {/* <SliderWrapper>
-        <SimpleSlider showImages={showImages}></SimpleSlider>
-      </SliderWrapper> */}
     </ImageUploaderWrapper>
   );
 }

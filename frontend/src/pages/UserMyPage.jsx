@@ -27,7 +27,7 @@ const ContentWrapper = styled.div`
   align-items: center;
 `;
 
-function MyPage({ name }) {
+function UserMyPage({ name }) {
   const MenuList = [
     '사용 내역 보기',
     '작성한 게시물 확인하기',
@@ -117,4 +117,4 @@ function MyPage({ name }) {
   );
 }
 
-export default MyPage;
+export default UserMyPage;
