@@ -36,7 +36,7 @@ const DetailContentWrapper = styled.div`
   font-size: 16px;
 `;
 
-function ActivityHistory() {
+function UserActivityHistory() {
   const userList = [
     { name: '곽희웅', date: '2024.01.10', job: '영어 과외', pay: '20000' },
     { name: '이수민', date: '2024.01.12', job: '수학 과외', pay: '30000' },
@@ -97,4 +97,4 @@ function ActivityHistory() {
     </Wrapper>
   );
 }
-export default ActivityHistory;
+export default UserActivityHistory;
