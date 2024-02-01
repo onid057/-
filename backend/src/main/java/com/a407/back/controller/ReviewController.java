@@ -1,8 +1,8 @@
 package com.a407.back.controller;
 
 import com.a407.back.config.constants.SuccessCode;
-import com.a407.back.dto.Review.ReviewCreateRequest;
-import com.a407.back.dto.Review.ReviewListResponse;
+import com.a407.back.dto.review.ReviewCreateRequest;
+import com.a407.back.dto.review.ReviewListResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.ReviewService;
 import java.util.List;
@@ -33,7 +33,8 @@ public class ReviewController {
 
     @GetMapping("/{userId}")
     public ApiResponse<List<ReviewListResponse>> findReviewsByUserId(@PathVariable Long userId) {
-        return reviewService.findReviewsByUserId(userId);
+        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+            reviewService.findReviewsByUserId(userId));
     }
 
     @DeleteMapping("/{reviewId}")

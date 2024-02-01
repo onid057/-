@@ -2,15 +2,15 @@ package com.a407.back.controller;
 
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.config.constants.SuccessCode;
-import com.a407.back.dto.Notification.NotificationListResponse;
-import com.a407.back.dto.User.UserAccountRequest;
-import com.a407.back.dto.User.UserAccountResponse;
-import com.a407.back.dto.User.UserCertificationCode;
-import com.a407.back.dto.User.UserCreateRequest;
-import com.a407.back.dto.User.UserNearZipsaResponse;
-import com.a407.back.dto.User.UserPhoneNumberRequest;
-import com.a407.back.dto.User.UserRecordsResponse;
-import com.a407.back.dto.User.UserReservationResponse;
+import com.a407.back.dto.notification.NotificationListResponse;
+import com.a407.back.dto.user.UserAccountRequest;
+import com.a407.back.dto.user.UserAccountResponse;
+import com.a407.back.dto.user.UserCertificationCode;
+import com.a407.back.dto.user.UserCreateRequest;
+import com.a407.back.dto.user.UserNearZipsaResponse;
+import com.a407.back.dto.user.UserPhoneNumberRequest;
+import com.a407.back.dto.user.UserRecordsResponse;
+import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.UserService;
@@ -52,21 +52,21 @@ public class UserController {
     }
 
     @PostMapping("/helpers-map/{userId}")
-    public ResponseEntity<UserNearZipsaResponse> getNearUserList(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.findNearZipsaList(userId));
+    public ApiResponse<List<UserNearZipsaResponse>> getNearUserList(@PathVariable Long userId) {
+        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS, userService.findNearZipsaList(userId));
     }
 
     @GetMapping("/{userId}/records")
-    public ResponseEntity<UserRecordsResponse> getUserRecordList(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserRecordList(userId));
+    public ApiResponse<List<UserRecordsResponse>> getUserRecordList(@PathVariable Long userId) {
+        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS, userService.getUserRecordList(userId));
     }
 
 
     @GetMapping("/{userId}/reservations")
-    public ResponseEntity<UserReservationResponse> getUserReservationList(
+    public ApiResponse<List<UserReservationResponse>> getUserReservationList(
         @PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(userService.getUserReservationList(userId));
+        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+            userService.getUserReservationList(userId));
     }
 
     @PostMapping("/payments")

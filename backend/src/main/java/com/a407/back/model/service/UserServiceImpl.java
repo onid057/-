@@ -6,14 +6,14 @@ import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Notification.NotificationListResponse;
-import com.a407.back.dto.User.UserAccountRequest;
-import com.a407.back.dto.User.UserAccountResponse;
-import com.a407.back.dto.User.UserNearZipsaResponse;
-import com.a407.back.dto.User.UserPhoneNumberAndEmail;
-import com.a407.back.dto.User.UserPhoneNumberRequest;
-import com.a407.back.dto.User.UserRecordsResponse;
-import com.a407.back.dto.User.UserReservationResponse;
+import com.a407.back.dto.notification.NotificationListResponse;
+import com.a407.back.dto.user.UserAccountRequest;
+import com.a407.back.dto.user.UserAccountResponse;
+import com.a407.back.dto.user.UserNearZipsaResponse;
+import com.a407.back.dto.user.UserPhoneNumberAndEmail;
+import com.a407.back.dto.user.UserPhoneNumberRequest;
+import com.a407.back.dto.user.UserRecordsResponse;
+import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.RedisRepositoryImpl;
@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.message.model.Message;
@@ -88,8 +89,11 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserNearZipsaResponse findNearZipsaList(Long userId) {
-        return userRepository.findNearZipsaList(userId);
+    public List<UserNearZipsaResponse> findNearZipsaList(Long userId) {
+        return userRepository.findNearZipsaList(userId).stream()
+            .map(zipsa -> new UserNearZipsaResponse(zipsa.getZipsaId().getName(), zipsa.getZipsaId()
+                .getGender(), zipsa.getGradeId().getName(), zipsa.getDescription(),
+                zipsa.getPreferTag(), zipsa.getZipsaId().getUserId())).toList();
     }
 
     @Override
@@ -98,13 +102,57 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRecordsResponse getUserRecordList(Long userId) {
-        return userRepository.getUserRecordList(userId);
+    public List<UserRecordsResponse> getUserRecordList(Long userId) {
+        return userRepository.getUserRecordList(userId).stream()
+            .map(room -> UserRecordsResponse.builder()
+                .roomId(room.getRoomId())
+                .zipsaId(room.getZipsaId().getZipsaId().getUserId())
+                .name(room.getZipsaId().getZipsaId().getName())
+                .profile(room.getZipsaId().getZipsaId().getProfileImage() == null ? null
+                    : Arrays.toString(room.getZipsaId().getZipsaId().getProfileImage()))
+                .subCategoryName(room.getSubCategoryId().getName())
+                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+                .content(room.getContent())
+                .estimateDuration(room.getEstimateDuration())
+                .roomCreatedAt(room.getRoomCreatedAt())
+                .matchCreatedAt(room.getMatchCreatedAt())
+                .isReported(room.getIsReported())
+                .reportCycle(room.getReportCycle())
+                .isPublic(room.getIsPublic())
+                .startedAt(room.getStartedAt())
+                .endedAt(room.getEndedAt())
+                .expectationStartedAt(room.getExpectationStartedAt())
+                .expectationEndedAt(room.getExpectationEndedAt())
+                .expectationPay(room.getExpectationPay())
+                .totalPay(room.getTotalPay())
+                .isComplained(room.getIsComplained())
+                .isReviewed(room.getIsReviewed())
+                .build()).toList();
     }
 
     @Override
-    public UserReservationResponse getUserReservationList(Long userId) {
-        return userRepository.getUserReservationList(userId);
+    public List<UserReservationResponse> getUserReservationList(Long userId) {
+        return userRepository.getUserReservationList(userId).stream()
+            .map(room -> UserReservationResponse.builder()
+                .zipsaId(room.getZipsaId().getZipsaId().getUserId())
+                .name(room.getZipsaId().getZipsaId().getName())
+                .profile(room.getZipsaId().getZipsaId().getProfileImage() == null ? null
+                    : Arrays.toString(room.getZipsaId().getZipsaId().getProfileImage()))
+                .subCategoryName(room.getSubCategoryId().getName())
+                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+                .content(room.getContent())
+                .estimateDuration(room.getEstimateDuration())
+                .roomCreatedAt(room.getRoomCreatedAt())
+                .matchCreatedAt(room.getMatchCreatedAt())
+                .isReported(room.getIsReported())
+                .reportCycle(room.getReportCycle())
+                .isPublic(room.getIsPublic())
+                .startedAt(room.getStartedAt())
+                .endedAt(room.getEndedAt())
+                .expectationStartedAt(room.getExpectationStartedAt())
+                .expectationEndedAt(room.getExpectationEndedAt())
+                .expectationPay(room.getExpectationPay())
+                .build()).toList();
     }
 
     @Transactional

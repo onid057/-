@@ -1,7 +1,7 @@
 package com.a407.back.controller;
 
 import com.a407.back.config.constants.SuccessCode;
-import com.a407.back.dto.Room.MakePublicRoomRequest;
+import com.a407.back.dto.room.MakePublicRoomRequest;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.RoomService;
 import lombok.RequiredArgsConstructor;

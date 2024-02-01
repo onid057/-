@@ -1,11 +1,9 @@
 package com.a407.back.model.repo;
 
 import com.a407.back.domain.Notification;
+import com.a407.back.domain.Room;
 import com.a407.back.domain.User;
-import com.a407.back.dto.User.UserAssociationResponse;
-import com.a407.back.dto.User.UserNearZipsaResponse;
-import com.a407.back.dto.User.UserRecordsResponse;
-import com.a407.back.dto.User.UserReservationResponse;
+import com.a407.back.domain.Zipsa;
 import java.util.List;
 
 public interface UserRepository {
@@ -18,11 +16,12 @@ public interface UserRepository {
 
     User findByUserId(Long userId);
 
-    UserNearZipsaResponse findNearZipsaList(Long userId);
+    List<Zipsa> findNearZipsaList(Long userId);
 
-    UserRecordsResponse getUserRecordList(Long userId);
-    
-    UserReservationResponse getUserReservationList(Long userId);
+    List<Room> getUserRecordList(Long userId);
+
+    List<Room> getUserReservationList(Long userId);
+
     void makeAccount(Long userId, String account);
 
     void deleteAccount(User user, String account);
@@ -31,7 +30,7 @@ public interface UserRepository {
 
     void makeAssociation(Long userId, Long associationId);
 
-    List<UserAssociationResponse> getAssociationUserList(Long associationId);
+    List<User> searchAssociationUserList(Long associationId);
 
     void deleteAssociation(Long userId);
 

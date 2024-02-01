@@ -1,6 +1,6 @@
 package com.a407.back.model.repo;
 
-import com.a407.back.dto.User.UserPhoneNumberAndEmail;
+import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.time.Duration;

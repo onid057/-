@@ -1,9 +1,9 @@
 package com.a407.back.controller;
 
 import com.a407.back.config.constants.SuccessCode;
-import com.a407.back.dto.Match.MatchSearchRequest;
-import com.a407.back.dto.Match.MatchSearchResponse;
-import com.a407.back.dto.Match.RoomCreateRequest;
+import com.a407.back.dto.match.MatchSearchRequest;
+import com.a407.back.dto.match.MatchSearchResponse;
+import com.a407.back.dto.match.RoomCreateRequest;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.MatchService;
 import java.util.List;

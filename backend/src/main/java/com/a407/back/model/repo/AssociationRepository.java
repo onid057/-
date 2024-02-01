@@ -22,4 +22,6 @@ public interface AssociationRepository {
     Long findTtl(String code);
 
     void changeAssociationRepresentative(Long userId, Long associationId);
+
+    Long findAssociationRepresentative(Long associationId);
 }
