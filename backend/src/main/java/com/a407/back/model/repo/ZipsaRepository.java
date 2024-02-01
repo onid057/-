@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ZipsaRepository {
 
-    Long makeReport(Report report);
+    void makeReport(Report report);
 
     List<Report> findReportByRoomIdList(Long roomId);
 

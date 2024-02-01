@@ -34,7 +34,7 @@ public class MatchController {
             new MatchSearchRequest(majorCategoryId, genderStr, age, grade, scoreAverage));
         ApiResponse<List<MatchSearchResponse>> response = new ApiResponse<>(
             SuccessCode.SELECT_SUCCESS, matchSearchResponses);
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PostMapping("/choice-helper")

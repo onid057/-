@@ -25,22 +25,26 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @PostMapping
-    public ResponseEntity<String> makeReview(
+    public ResponseEntity<ApiResponse<String>> makeReview(
         @RequestBody ReviewCreateRequest reviewCreateRequest) {
         reviewService.makeReview(reviewCreateRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body("리뷰 작성 성공");
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "리뷰 작성 성공"));
     }
 
     @GetMapping("/{userId}")
-    public ApiResponse<List<ReviewListResponse>> findReviewsByUserId(@PathVariable Long userId) {
-        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-            reviewService.findReviewsByUserId(userId));
+    public ResponseEntity<ApiResponse<List<ReviewListResponse>>> findReviewsByUserId(
+        @PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                reviewService.findReviewsByUserId(userId)));
     }
 
     @DeleteMapping("/{reviewId}")
-    public ApiResponse<String> deleteReview(@PathVariable Long reviewId) {
+    public ResponseEntity<ApiResponse<String>> deleteReview(@PathVariable Long reviewId) {
         reviewService.deleteReview(reviewId);
-        return new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "리뷰 삭제 성공");
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "리뷰 삭제 성공"));
     }
 
 

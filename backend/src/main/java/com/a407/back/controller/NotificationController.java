@@ -37,10 +37,11 @@ public class NotificationController {
     }
 
     @GetMapping("/{notificationId}/rejection")
-    public ResponseEntity<Integer> changeNotificationToReject(
+    public ResponseEntity<ApiResponse<Integer>> changeNotificationToReject(
         @PathVariable("notificationId") Long notificationId) {
         int newNotificationCount = notificationService.changeNotificationToReject(notificationId);
-        return ResponseEntity.status(HttpStatus.OK).body(newNotificationCount);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, newNotificationCount));
     }
 
     @GetMapping("/{notificationId}")

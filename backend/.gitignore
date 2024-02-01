@@ -40,7 +40,7 @@ out/
 **/src/main/resources/*.properties
 
 ### logback-dev.xml ###
-**/src/main/resources/*.xml
+#**/src/main/resources/*.xml
 
 ### generated ###
 **/src/main/generated

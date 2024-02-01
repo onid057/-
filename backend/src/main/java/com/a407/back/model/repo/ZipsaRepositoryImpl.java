@@ -26,9 +26,8 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
 
 
     @Override
-    public Long makeReport(Report report) {
+    public void makeReport(Report report) {
         em.persist(report);
-        return report.getReportId();
     }
 
     @Override
