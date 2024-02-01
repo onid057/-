@@ -16,8 +16,8 @@ import com.a407.back.domain.SubCategory;
 import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.User.UserNotificationResponse;
-import com.a407.back.dto.User.ZipsaNotificationResponse;
+import com.a407.back.dto.user.UserNotificationResponse;
+import com.a407.back.dto.user.ZipsaNotificationResponse;
 import com.a407.back.model.service.NotificationService;
 import com.a407.back.model.service.RoomService;
 import com.a407.back.model.service.UserService;
@@ -29,8 +29,6 @@ import java.sql.Timestamp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -39,8 +37,6 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = BackendApplication.class)
 @Transactional
 class NotificationControllerTest {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     UserService userService;
@@ -99,7 +95,8 @@ class NotificationControllerTest {
         SubCategory newSubCategory = em.find(SubCategory.class, subCategoryId);
 
         // 집사 생성
-        Zipsa newZipsa = Zipsa.builder().zipsaId(zipsaUser).account("111").description("Asd").gradeId(grade)
+        Zipsa newZipsa = Zipsa.builder().zipsaId(zipsaUser).account("111").description("Asd")
+            .gradeId(grade)
             .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
             .skillAverage(1.0)
             .serviceCount(0).preferTag("abc").replyCount(0).build();
@@ -114,7 +111,8 @@ class NotificationControllerTest {
             .expectationStartedAt(Timestamp.valueOf("2024-01-01 01:01:01"))
             .expectationEndedAt(Timestamp.valueOf("2024-01-01 01:01:01"))
             .roomCreatedAt(Timestamp.valueOf("2024-01-01 01:01:01")).expectationPay(15000)
-            .notificationCount(1).isComplained(false).isPublic(false).isReported(false).isReviewed(false).status(
+            .notificationCount(1).isComplained(false).isPublic(false).isReported(false)
+            .isReviewed(false).status(
                 Process.CREATE).build();
         em.persist(newRoom);
         Long roomId = newRoom.getRoomId();

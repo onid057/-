@@ -11,10 +11,10 @@ import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Match.RoomCreateRequest;
-import com.a407.back.dto.User.UserAccountRequest;
-import com.a407.back.dto.User.UserPhoneNumberAndEmail;
-import com.a407.back.dto.User.UserPhoneNumberRequest;
+import com.a407.back.dto.match.RoomCreateRequest;
+import com.a407.back.dto.user.UserAccountRequest;
+import com.a407.back.dto.user.UserPhoneNumberAndEmail;
+import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.model.service.MatchService;
 import com.a407.back.model.service.RoomService;
 import com.a407.back.model.service.UserService;
@@ -174,21 +174,21 @@ class UserControllerTest {
         em.persist(zipsa);
         assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
 
-        assertThat(userService.findNearZipsaList(userId).getList()).isEmpty();
+        assertThat(userService.findNearZipsaList(userId)).isEmpty();
 
         QZipsa qZipsa = QZipsa.zipsa;
         query.update(qZipsa).set(qZipsa.isWorked, true).execute();
         em.flush();
         em.clear();
 
-        assertThat(userService.findNearZipsaList(userId).getList()).hasSize(1);
-        assertThat(userService.findNearZipsaList(userId).getList().get(0).getZipsaId()).isEqualTo(
+        assertThat(userService.findNearZipsaList(userId)).hasSize(1);
+        assertThat(userService.findNearZipsaList(userId).get(0).getZipsaId()).isEqualTo(
             zipsaId);
 
         query.update(qZipsa).set(qZipsa.isWorked, false).execute();
         em.flush();
         em.clear();
-        assertThat(userService.findNearZipsaList(userId).getList()).isEmpty();
+        assertThat(userService.findNearZipsaList(userId)).isEmpty();
     }
 
     @Test
@@ -229,12 +229,12 @@ class UserControllerTest {
         roomService.changeRoomZipsa(zipsa, roomId);
         em.flush();
         em.clear();
-        assertThat(userService.getUserRecordList(userId).getList()).isEmpty();
+        assertThat(userService.getUserRecordList(userId)).isEmpty();
 
         roomService.changeRoomStatus(roomId, "END");
         em.flush();
         em.clear();
-        assertThat(userService.getUserRecordList(userId).getList()).hasSize(1);
+        assertThat(userService.getUserRecordList(userId)).hasSize(1);
     }
 
     @Test
@@ -275,16 +275,16 @@ class UserControllerTest {
         roomService.changeRoomZipsa(zipsa, roomId);
         em.flush();
         em.clear();
-        assertThat(userService.getUserReservationList(userId).getList()).isEmpty();
+        assertThat(userService.getUserReservationList(userId)).isEmpty();
 
         roomService.changeRoomStatus(roomId, "BEFORE");
         em.flush();
         em.clear();
-        assertThat(userService.getUserReservationList(userId).getList()).hasSize(1);
+        assertThat(userService.getUserReservationList(userId)).hasSize(1);
         roomService.changeRoomStatus(roomId, "END");
         em.flush();
         em.clear();
-        assertThat(userService.getUserReservationList(userId).getList()).isEmpty();
+        assertThat(userService.getUserReservationList(userId)).isEmpty();
     }
 
     @Test

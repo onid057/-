@@ -7,11 +7,10 @@ import com.a407.back.domain.Grade;
 import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Match.RoomCreateRequest;
-import com.a407.back.dto.Review.ReviewCreateRequest;
-import com.a407.back.dto.Review.ReviewListResponse;
-import com.a407.back.dto.Zipsa.ZipsaDetailInfoResponse;
-import com.a407.back.dto.util.ApiResponse;
+import com.a407.back.dto.match.RoomCreateRequest;
+import com.a407.back.dto.review.ReviewCreateRequest;
+import com.a407.back.dto.review.ReviewListResponse;
+import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.model.service.MatchService;
 import com.a407.back.model.service.ReviewService;
 import com.a407.back.model.service.RoomService;
@@ -95,18 +94,18 @@ class ReviewControllerTest {
     @Test
     @DisplayName("리뷰 생성")
     void makeReview() {
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).isEmpty();
+        assertThat(reviewService.findReviewsByUserId(userId)).isEmpty();
         ReviewCreateRequest reviewCreateRequest = new ReviewCreateRequest(roomId, "리뷰 내용", 2, 3, 5);
         reviewService.makeReview(reviewCreateRequest);
         em.flush();
         em.clear();
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).hasSize(1);
+        assertThat(reviewService.findReviewsByUserId(userId)).hasSize(1);
         ReviewCreateRequest reviewCreateRequestTwo = new ReviewCreateRequest(roomId, "리뷰 내용2", 8, 5,
             3);
         reviewService.makeReview(reviewCreateRequestTwo);
         em.flush();
         em.clear();
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).hasSize(2);
+        assertThat(reviewService.findReviewsByUserId(userId)).hasSize(2);
         ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId = zipsaService.findZipsaAndReviewFindByZipsaId(
             zipsaId);
         assertThat(zipsaAndReviewFindByZipsaId.getReviews()).hasSize(2);
@@ -116,53 +115,52 @@ class ReviewControllerTest {
     @Test
     @DisplayName("리뷰 검색")
     void findReviewsByUserId() {
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).isEmpty();
+        assertThat(reviewService.findReviewsByUserId(userId)).isEmpty();
         ReviewCreateRequest reviewCreateRequest = new ReviewCreateRequest(roomId, "리뷰 내용", 2, 3, 5);
         reviewService.makeReview(reviewCreateRequest);
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).hasSize(1);
+        assertThat(reviewService.findReviewsByUserId(userId)).hasSize(1);
         ReviewCreateRequest reviewCreateRequestTwo = new ReviewCreateRequest(roomId, "리뷰 내용2", 9, 1,
             7);
         reviewService.makeReview(reviewCreateRequestTwo);
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).hasSize(2);
+        assertThat(reviewService.findReviewsByUserId(userId)).hasSize(2);
         ReviewCreateRequest reviewCreateRequestThree = new ReviewCreateRequest(roomId, "리뷰 내용3", 5,
             9, 3);
         reviewService.makeReview(reviewCreateRequestThree);
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).hasSize(3);
+        assertThat(reviewService.findReviewsByUserId(userId)).hasSize(3);
     }
 
     @Test
     @DisplayName("리뷰 삭제")
     void deleteReview() {
 
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).isEmpty();
+        assertThat(reviewService.findReviewsByUserId(userId)).isEmpty();
         ReviewCreateRequest reviewCreateRequest = new ReviewCreateRequest(roomId, "리뷰 내용", 4, 3, 5);
         reviewService.makeReview(reviewCreateRequest);
         em.flush();
         em.clear();
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).hasSize(1);
+        assertThat(reviewService.findReviewsByUserId(userId)).hasSize(1);
         ReviewCreateRequest reviewCreateRequestTwo = new ReviewCreateRequest(roomId, "리뷰 내용2", 9, 1,
             7);
         reviewService.makeReview(reviewCreateRequestTwo);
         em.flush();
         em.clear();
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).hasSize(2);
+        assertThat(reviewService.findReviewsByUserId(userId)).hasSize(2);
         ReviewCreateRequest reviewCreateRequestThree = new ReviewCreateRequest(roomId, "리뷰 내용3", 5,
             9, 3);
         reviewService.makeReview(reviewCreateRequestThree);
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).hasSize(3);
+        assertThat(reviewService.findReviewsByUserId(userId)).hasSize(3);
         em.flush();
         em.clear();
 
         assertThat(zipsaService.findByZipsaId(zipsaId).getKindnessAverage()).isEqualTo(6);
 
-        ApiResponse<List<ReviewListResponse>> reviewsByUserId = reviewService.findReviewsByUserId(
-            userId);
+        List<ReviewListResponse> reviewsByUserId = reviewService.findReviewsByUserId(userId);
 
-        reviewService.deleteReview(reviewsByUserId.getData().get(2).getReviewId());
+        reviewService.deleteReview(reviewsByUserId.get(2).getReviewId());
         em.flush();
         em.clear();
 
-        assertThat(reviewService.findReviewsByUserId(userId).getData()).hasSize(2);
+        assertThat(reviewService.findReviewsByUserId(userId)).hasSize(2);
         assertThat(zipsaService.findByZipsaId(zipsaId).getKindnessAverage()).isEqualTo(6.5);
     }
 

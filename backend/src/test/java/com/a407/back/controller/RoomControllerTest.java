@@ -4,8 +4,6 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.a407.back.BackendApplication;
 import com.a407.back.domain.MajorCategory;
@@ -13,7 +11,7 @@ import com.a407.back.domain.Room;
 import com.a407.back.domain.SubCategory;
 import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
-import com.a407.back.dto.Room.MakePublicRoomRequest;
+import com.a407.back.dto.room.MakePublicRoomRequest;
 import com.a407.back.model.service.RoomService;
 import com.a407.back.model.service.UserService;
 import jakarta.persistence.EntityManager;

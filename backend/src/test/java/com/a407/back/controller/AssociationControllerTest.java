@@ -15,7 +15,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Objects;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -89,7 +88,7 @@ class AssociationControllerTest {
             .getId()).isEqualTo(userIdOne);
         assertThat(associationService.getAssociationUserList(
                 userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
-            .getIsAdmin()).isTrue();
+            .getIsRepresentative()).isTrue();
     }
 
     @Test
@@ -143,8 +142,10 @@ class AssociationControllerTest {
 
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
 
-        Assertions.assertThrows(NullPointerException.class,
-            () -> associationService.getAssociationUserList(associationId));
+        assertThat(associationService.getAssociationUserList(associationId)).isEmpty();
+
+//        Assertions.assertThrows(NullPointerException.class,
+//            () -> associationService.getAssociationUserList(associationId));
 
     }
 
@@ -227,19 +228,19 @@ class AssociationControllerTest {
             userService.findByUserId(userIdTwo).getAssociationId().getAssociationId());
         assertThat(associationService.getAssociationUserList(
                 userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
-            .getIsAdmin()).isTrue();
+            .getIsRepresentative()).isTrue();
         assertThat(associationService.getAssociationUserList(
                 userService.findByUserId(userIdTwo).getAssociationId().getAssociationId()).get(1)
-            .getIsAdmin()).isFalse();
+            .getIsRepresentative()).isFalse();
         associationService.changeAssociationRepresentative(userIdOne, userIdTwo);
         em.flush();
         em.clear();
         assertThat(associationService.getAssociationUserList(
                 userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
-            .getIsAdmin()).isFalse();
+            .getIsRepresentative()).isFalse();
         assertThat(associationService.getAssociationUserList(
                 userService.findByUserId(userIdTwo).getAssociationId().getAssociationId()).get(1)
-            .getIsAdmin()).isTrue();
+            .getIsRepresentative()).isTrue();
 
     }
 }

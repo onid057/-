@@ -8,9 +8,9 @@ import com.a407.back.domain.Room;
 import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Match.RoomCreateRequest;
-import com.a407.back.dto.Zipsa.PublicRoomNotificationRequest;
-import com.a407.back.dto.Zipsa.ReportCreateRequest;
+import com.a407.back.dto.match.RoomCreateRequest;
+import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
+import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.model.service.MatchService;
 import com.a407.back.model.service.NotificationService;
 import com.a407.back.model.service.RoomService;
@@ -99,8 +99,8 @@ class ZipsaControllerTest {
         ReportCreateRequest reportCreateRequestTwo = new ReportCreateRequest(roomId,
             "https://www.flaticon.com/kr/free-icon-font/phone-call_5070407", "내용2");
         zipsaService.makeReport(reportCreateRequestTwo);
-        assertThat(zipsaService.findReportByRoomIdList(roomId).getList()).hasSize(2);
-        assertThat(zipsaService.findReportByRoomIdList(roomId).getList().get(0)
+        assertThat(zipsaService.findReportByRoomIdList(roomId)).hasSize(2);
+        assertThat(zipsaService.findReportByRoomIdList(roomId).get(0)
             .getProcessContent()).isEqualTo("내용");
     }
 
@@ -113,7 +113,7 @@ class ZipsaControllerTest {
         ReportCreateRequest reportCreateRequestTwo = new ReportCreateRequest(roomId,
             "https://www.flaticon.com/kr/free-icon-font/phone-call_5070407", "내용2");
         zipsaService.makeReport(reportCreateRequestTwo);
-        assertThat(zipsaService.findReportByRoomIdList(roomId).getList()).hasSize(2);
+        assertThat(zipsaService.findReportByRoomIdList(roomId)).hasSize(2);
     }
 
     @Test
@@ -125,7 +125,7 @@ class ZipsaControllerTest {
         ReportCreateRequest reportCreateRequestTwo = new ReportCreateRequest(roomId,
             "https://www.flaticon.com/kr/free-icon-font/phone-call_5070407", "내용2");
         zipsaService.makeReport(reportCreateRequestTwo);
-        assertThat(zipsaService.findReportByRoomIdList(roomId).getList()).hasSize(2);
+        assertThat(zipsaService.findReportByRoomIdList(roomId)).hasSize(2);
         assertThat(zipsaService.findZipsaAndReviewFindByZipsaId(zipsaId).getName()).isEqualTo(
             "zipsa");
     }
@@ -139,13 +139,13 @@ class ZipsaControllerTest {
         em.flush();
         em.clear();
 
-        assertThat(zipsaService.getZipsaReservationList(zipsaId).getList()).isEmpty();
+        assertThat(zipsaService.getZipsaReservationList(zipsaId)).isEmpty();
 
         roomService.changeRoomStatus(roomId, "BEFORE");
         em.flush();
         em.clear();
 
-        assertThat(zipsaService.getZipsaReservationList(zipsaId).getList()).hasSize(1);
+        assertThat(zipsaService.getZipsaReservationList(zipsaId)).hasSize(1);
 
         assertThat(
             roomService.findByRoomId(roomId).getZipsaId().getZipsaId().getUserId()).isEqualTo(
@@ -161,13 +161,14 @@ class ZipsaControllerTest {
         em.flush();
         em.clear();
 
-        assertThat(zipsaService.getUserRecordList(zipsaId).getList()).isEmpty();
+
+        assertThat(zipsaService.getZipsaRecordList(zipsaId)).isEmpty();
 
         roomService.changeRoomStatus(roomId, "END");
         em.flush();
         em.clear();
 
-        assertThat(zipsaService.getUserRecordList(zipsaId).getList()).hasSize(1);
+        assertThat(zipsaService.getZipsaRecordList(zipsaId)).hasSize(1);
     }
 
 
