@@ -10,13 +10,18 @@ import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.user.UserPhoneNumberAndEmail;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,6 +31,8 @@ public class UserRepositoryImpl implements UserRepository {
     private final JPAQueryFactory query;
 
     private final EntityManager em;
+
+    private final RedisTemplate<String, String> redisTemplate;
 
 
     @Override
@@ -148,6 +155,27 @@ public class UserRepositoryImpl implements UserRepository {
         QUser qUser = QUser.user;
         query.update(qUser).set(qUser.phoneNumber, phoneNumber).set(qUser.isCertificated, true)
             .where(qUser.email.eq(email)).execute();
+    }
+
+
+    @Override
+    public void makeSendMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)
+        throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String value = objectMapper.writeValueAsString(userPhoneNumberAndEmail);
+        redisTemplate.opsForValue().set(code, value, Duration.ofMinutes(5));
+    }
+
+    @Override
+    public UserPhoneNumberAndEmail findMessage(String code) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.readValue(redisTemplate.opsForValue().getAndDelete(code),
+            UserPhoneNumberAndEmail.class);
+    }
+
+    @Override
+    public String findCode(String code) {
+        return redisTemplate.opsForValue().get(code);
     }
 
 }

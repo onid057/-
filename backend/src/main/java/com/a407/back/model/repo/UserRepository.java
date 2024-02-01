@@ -4,6 +4,8 @@ import com.a407.back.domain.Notification;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.user.UserPhoneNumberAndEmail;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 
 public interface UserRepository {
@@ -37,4 +39,11 @@ public interface UserRepository {
     List<Long> searchAssociationUserIdList(Long associationId);
 
     boolean findIsAffiliated(Long userId);
+
+    void makeSendMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)
+            throws JsonProcessingException;
+
+    UserPhoneNumberAndEmail findMessage(String code) throws JsonProcessingException;
+
+    String findCode(String code);
 }

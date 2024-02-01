@@ -16,7 +16,6 @@ import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
-import com.a407.back.model.repo.RedisRepositoryImpl;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -44,7 +43,6 @@ public class UserServiceImpl implements UserService {
 
     private final DefaultMessageService messageService;
 
-    private final RedisRepositoryImpl redisRepository;
 
     @Override
     @Transactional
@@ -155,6 +153,7 @@ public class UserServiceImpl implements UserService {
                 .build()).toList();
     }
 
+    @Override
     @Transactional
     public UserAccountResponse makeAccount(UserAccountRequest userAccountRequest) {
         User user = userRepository.findByUserId(userAccountRequest.getUserId());
@@ -195,6 +194,9 @@ public class UserServiceImpl implements UserService {
     public void makeSendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
         throws JsonProcessingException, NoSuchAlgorithmException {
         int code = getInstanceStrong().nextInt(1000, 9999);
+        while (userRepository.findCode(String.valueOf(code)) != null) {
+            code = getInstanceStrong().nextInt(1000, 9999);
+        }
         Message message = new Message();
         message.setFrom("01035511284");
         message.setTo(userPhoneNumberRequest.getPhoneNumber());
@@ -206,13 +208,13 @@ public class UserServiceImpl implements UserService {
         }
         UserPhoneNumberAndEmail userPhoneNumberAndEmail = new UserPhoneNumberAndEmail(email,
             userPhoneNumberRequest.getPhoneNumber());
-        redisRepository.makeSendMessage(userPhoneNumberAndEmail, String.valueOf(code));
+        userRepository.makeSendMessage(userPhoneNumberAndEmail, String.valueOf(code));
     }
 
     @Override
     @Transactional
     public void makePhoneNumber(String code, String email) throws JsonProcessingException {
-        UserPhoneNumberAndEmail userPhoneNumberAndEmail = redisRepository.findMessage(code);
+        UserPhoneNumberAndEmail userPhoneNumberAndEmail = userRepository.findMessage(code);
         if (userPhoneNumberAndEmail == null || !userPhoneNumberAndEmail.getEmail().equals(email)) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }

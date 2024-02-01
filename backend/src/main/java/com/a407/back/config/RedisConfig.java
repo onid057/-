@@ -39,10 +39,7 @@ public class RedisConfig {
     public RedisTemplate<String, String> certificationRedisTemplate(
         @Qualifier(value = "certificationRedisConnectionFactory") RedisConnectionFactory certificationRedisConnectionFactory) {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(certificationRedisConnectionFactory);
-        redisTemplate.setDefaultSerializer(RedisSerializer.string());
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new StringRedisSerializer());
+        redisTemplateSetting(certificationRedisConnectionFactory, redisTemplate);
         return redisTemplate;
     }
 
@@ -51,11 +48,16 @@ public class RedisConfig {
     public RedisTemplate<String, String> associationRedisTemplate(
         @Qualifier(value = "associationRedisConnectionFactory") RedisConnectionFactory associationRedisConnectionFactory) {
         RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplateSetting(associationRedisConnectionFactory, redisTemplate);
+        return redisTemplate;
+    }
+
+    private static void redisTemplateSetting(RedisConnectionFactory associationRedisConnectionFactory,
+        RedisTemplate<String, String> redisTemplate) {
         redisTemplate.setConnectionFactory(associationRedisConnectionFactory);
         redisTemplate.setDefaultSerializer(RedisSerializer.string());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
-        return redisTemplate;
     }
 
 }
