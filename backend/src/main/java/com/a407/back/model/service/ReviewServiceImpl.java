@@ -51,9 +51,9 @@ public class ReviewServiceImpl implements ReviewService {
         } else {
             kindnessAverage = getAverageSave(reviewCreateRequest.getKindnessScore(),
                 kindnessAverage, countReview);
-            skillAverage = getAverageSave(reviewCreateRequest.getKindnessScore(), skillAverage,
+            skillAverage = getAverageSave(reviewCreateRequest.getSkillScore(), skillAverage,
                 countReview);
-            rewindAverage = getAverageSave(reviewCreateRequest.getKindnessScore(), rewindAverage,
+            rewindAverage = getAverageSave(reviewCreateRequest.getRewindScore(), rewindAverage,
                 countReview);
         }
 
@@ -96,8 +96,8 @@ public class ReviewServiceImpl implements ReviewService {
         } else {
             kindnessAverage = getAverageRemove(review.getKindnessScore(), kindnessAverage,
                 countReview);
-            skillAverage = getAverageRemove(review.getKindnessScore(), skillAverage, countReview);
-            rewindAverage = getAverageRemove(review.getKindnessScore(), rewindAverage, countReview);
+            skillAverage = getAverageRemove(review.getSkillScore(), skillAverage, countReview);
+            rewindAverage = getAverageRemove(review.getRewindScore(), rewindAverage, countReview);
         }
         zipsaRepository.updateZipsaAverage(zipsa.getZipsaId().getUserId(), kindnessAverage,
             skillAverage, rewindAverage);
@@ -106,10 +106,10 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     private static double getAverageSave(int score, Double average, Long countReview) {
-        return ((average * countReview) + score) / (countReview + 1);
+        return ((average * (countReview-1)) + score) / countReview;
     }
 
     private static double getAverageRemove(int score, Double average, Long countReview) {
-        return ((average * countReview) - score) / (countReview - 1);
+        return ((average * (countReview)) - score) / (countReview - 1);
     }
 }
