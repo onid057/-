@@ -4,6 +4,6 @@ services:
     container_name: frontend
     image: onid057/a407-frontend
     expose:
-      - 443
+      - 3000
     ports:
-      - 443:3000
+      - 3000:3000
