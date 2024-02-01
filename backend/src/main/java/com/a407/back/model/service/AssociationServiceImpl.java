@@ -35,8 +35,7 @@ public class AssociationServiceImpl implements AssociationService {
         Association association = new Association(userId, new Timestamp(new Date().getTime()));
 
         User user = userRepository.findByUserId(userId);
-        if (user == null || user.getAssociationId().getAssociationId() != 0 || Boolean.TRUE.equals(
-            user.getIsAffiliated())) {
+        if (user == null || Boolean.TRUE.equals(user.getIsAffiliated())) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         }
 
