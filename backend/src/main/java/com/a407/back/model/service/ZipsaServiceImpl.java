@@ -7,13 +7,13 @@ import com.a407.back.domain.Report;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.util.ZipsaReview;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
 import com.a407.back.dto.zipsa.ZipsaReservationResponse;
-import com.a407.back.dto.util.ZipsaReview;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.ZipsaRepository;
@@ -35,10 +35,10 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     @Override
     @Transactional
-    public Long makeReport(ReportCreateRequest reportCreateRequest) {
+    public void makeReport(ReportCreateRequest reportCreateRequest) {
         Room room = roomRepository.findByRoomId(reportCreateRequest.getRoomId());
         Report report = reportCreateRequest.toEntity(room);
-        return zipsaRepository.makeReport(report);
+        zipsaRepository.makeReport(report);
     }
 
     @Override
