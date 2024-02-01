@@ -20,10 +20,48 @@ const getFilteredHelperData = async (
         scoreAverage,
       },
     });
-    return response;
+    return response.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export { getFilteredHelperData };
+// filterFunnel에서 얻은 정보를 토대로 매칭 시작
+const makeFilterSuggestion = async (
+  userId,
+  subCategoryId,
+  title,
+  content,
+  place,
+  estimateDuration,
+  roomCreatedAt,
+  expectationStartedAt,
+  expectationEndedAt,
+  expectationPay,
+  helperList,
+) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: '/matches/choice-helper',
+      data: {
+        userId,
+        subCategoryId,
+        title,
+        content,
+        place,
+        estimateDuration,
+        roomCreatedAt,
+        expectationStartedAt,
+        expectationEndedAt,
+        expectationPay,
+        helperList,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getFilteredHelperData, makeFilterSuggestion };

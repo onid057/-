@@ -1,15 +1,13 @@
 import { styled } from 'styled-components';
 
-import BoldText from '../components/common/BoldText';
-import Paragraph from '../components/common/Paragraph';
 import Image from '../components/common/Image';
-import NavigateText from '../components/common/NavigateText';
+import Paragraph from '../components/common/Paragraph';
 
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 60px 16px;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   gap: 11px;
@@ -17,6 +15,7 @@ const Wrapper = styled.div`
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
+  line-height: 1.3;
 `;
 
 const Title = styled.div`
@@ -34,22 +33,18 @@ const Content = styled.div`
   gap: 32px;
 `;
 
-function SuggestionPage() {
+function StartMatch() {
   return (
     <Wrapper>
       <Title>
         <Paragraph
-          gap="5px"
-          fontSize="30px"
-          sentences={[
-            <BoldText boldContent="{ 곽희웅 }"></BoldText>,
-            '집사님의 제안',
-          ]}
+          fontSize="35px"
+          sentences={['매칭을', '시작했어요!']}
         ></Paragraph>
         <Image
-          src={process.env.PUBLIC_URL + '/images/finger.svg'}
-          width="100px"
-          height="100px"
+          src={process.env.PUBLIC_URL + '/images/handshaking.svg'}
+          width={'100px'}
+          height={'100px'}
         ></Image>
       </Title>
 
@@ -57,19 +52,21 @@ function SuggestionPage() {
         <Paragraph
           gap="5px"
           fontSize="18px"
-          sentences={['집사님의 프로필을', '보고 꼼꼼하게 선택하세요!']}
+          sentences={['가장 먼저 요청을 수락한', '집사님과 매칭이 성사돼요!']}
         ></Paragraph>
-
-        <NavigateText nextPage={-1}>{'곽희웅'} 집사님 프로필 보기</NavigateText>
-
         <Paragraph
           gap="5px"
           fontSize="18px"
-          sentences={['충분히 검토하셨다면', '결정을 내려주세요!']}
+          sentences={['24시간 동안 매칭이 이뤄지지', '않으면 요청이 사라져요.']}
+        ></Paragraph>
+        <Paragraph
+          gap="5px"
+          fontSize="18px"
+          sentences={['매칭의 경과는', '"예약" 배너에서 확인할 수 있어요.']}
         ></Paragraph>
       </Content>
     </Wrapper>
   );
 }
 
-export default SuggestionPage;
+export default StartMatch;

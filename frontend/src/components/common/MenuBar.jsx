@@ -2,13 +2,13 @@ import styled from 'styled-components';
 import Image from './Image';
 
 const Wrapper = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
+  position: -webkit-sticky;
+  position: sticky;
   bottom: 0;
   width: 320px;
   height: 59px;
   display: flex;
+  margin-left: -16px;
   justify-content: center;
   align-items: center;
   gap: 18px;
@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   font-size: 11px;
   font-weight: 400;
+  z-index: 9999;
 `;
 
 const MenuWrapper = styled.div`

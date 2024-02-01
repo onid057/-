@@ -1,9 +1,11 @@
-<svg width="23" height="18" viewBox="0 0 23 18" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-<rect width="23" height="18" fill="url(#pattern0)"/>
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_1053_2)">
+<rect width="18" height="18" fill="white"/>
+<path d="M2.25 12.9374V15.7499H5.0625L13.3575 7.45492L10.545 4.64242L2.25 12.9374ZM15.5325 5.27992C15.825 4.98742 15.825 4.51492 15.5325 4.22242L13.7775 2.46742C13.485 2.17492 13.0125 2.17492 12.72 2.46742L11.3475 3.83992L14.16 6.65242L15.5325 5.27992Z" fill="black"/>
+</g>
 <defs>
-<pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-<use xlink:href="#image0_258_22" transform="matrix(0.00815217 0 0 0.0104167 0.108696 0)"/>
-</pattern>
-<image id="image0_258_22" width="96" height="96" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGAAAABgCAYAAADimHc4AAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2dTWoUURSFjw6iG8moswpHEeLPIpwoOHXkGjTaBIXsQxzoKqLbcBADEtA68qAEQbvT1fe9uvfVPR/cWae67vneT1UIL4AQQgghhBBCCCGEEEIIIcS/HAE4BfAFwBUAJq+rMYvTMZtmHAA4A/ArQNMMWj8BrMesqof/OUCD7KQ+1ZZwFqApdlZva4V/NE4t74bYWZXMVjUEvAnQDDutVzUEfA3QCDutixoCvgdohJ3WZQ0B3k2w85IASID7KKRmgH8Q1BLkHwYdSnsAJMB9FFIzwD8IagnyD4MOpT0AEuA+CqkZ4B8EtQT5h0GH0h4ACXAfhdQM8A+CWoL8w6BDaQ+ABLiPQmoG+AdBLUFB1tT/8KThn1yaySCgpQQzWQS0kmAmk4AWEsxkE1BbgpmMAmpKMJNVQC0JZjILqCHBjHfgnNjQLte4BvBoJglmliiAM0ows1QBnEmCmSUL4AwSzCxdABtLMJNBABtKMJNFABtJMJNJABtIMJNNACtLMOMdOCc2dF1RwoMJOT0FMEgAcAzgR6CZYMZ7xHOPhiJJMNOjgEgSzDBYPZtw7ycB9gQzDFZDZxLMMKiE550sR2a8w2Z2Cd5BM7sE75AZXMJjNMY7YGaXcBkgYGaW0NORZYPzI+rDFgJeBwiWmWfCqsNjK4elzYR1gFCZWcLBeByvd6jsSEI5bxW1JZTjeLUc4cbw3wG4hUasxhNhLzo6U3SYcSY0DT8TJ3tI2Bb+4cz3vwiOJzyingO4veE6Lzx+i5pJwvkN4f/5nCQ0kLBr+JLQQMLU8CWh4sb8fsuG+3KHPaNc5571hrJKWBvDr/r/BcR+4Zf69tfPipnD5ziTRAW2bbib6iOAuzW+PDuHe7wxfwBwx/vGl8T9CW/MGvmOEhS+owSF7yhB4WNeyhtueckqz/nlUXPjhvsbPUCkZJcDy8EAAAAASUVORK5CYII="/>
+<clipPath id="clip0_1053_2">
+<rect width="18" height="18" fill="white"/>
+</clipPath>
 </defs>
 </svg>

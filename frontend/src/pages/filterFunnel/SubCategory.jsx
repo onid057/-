@@ -8,6 +8,8 @@ import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
 
+import CATEGORY_ID from '../../constants/categoryId';
+
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
@@ -23,17 +25,15 @@ const Wrapper = styled.div`
 `;
 
 // 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function SubCategory({ onPrevious, onNext, matchSubCategory }) {
+function SubCategory({
+  onPrevious,
+  onNext,
+  matchMainCategory,
+  matchSubCategory,
+}) {
   const [subCategory, setSubCategory] = useState(matchSubCategory);
 
-  const subCategoryList = [
-    '행정복지센터 가기',
-    '밥먹기',
-    '장보기',
-    '동네 병원 가기',
-    '은행가기',
-    '상관 없음',
-  ];
+  const subCategoryList = Object.keys(CATEGORY_ID[matchMainCategory][1]);
 
   return (
     <Wrapper>

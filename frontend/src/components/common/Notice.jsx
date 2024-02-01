@@ -1,22 +1,23 @@
-// 공통 알림 컴포넌트
-
 import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 
 const NoticeWrapper = styled.div`
-  cursor: pointer;
+  cursor: ${props => (props.$disabled ? 'default' : 'pointer')};
   width: 288px;
   padding: ${props =>
     props.$padding ? props.$padding : '20px 12px 30px 12px'};
   display: flex;
   flex-direction: column;
   gap: 28px;
-  background-color: ${({ theme }) => theme.colors.secondary};
+  background-color: ${props => (props.$disabled ? '#0093e9' : '#ffffff')};
+  background-image: ${props =>
+    props.$disabled
+      ? 'radial-gradient(circle 1224px at 10.6% 8.8%, rgba(255,255,255,1) 0%, rgba(153,202,251,1) 100.2%)'
+      : 'none'};
   border-radius: 25px;
 `;
 
-// 추후에 width(너비) 수정 필요
 const FlexWrapper = styled.div`
   width: 250px;
   margin: 0 auto;
@@ -35,9 +36,7 @@ const TextWrapper = styled.div`
   text-align: left;
 `;
 
-// upper에 컴포넌트 목록을 배열로 전달
-// lower에 텍스트 전달
-function Notice({ upper, lower, nextPage, padding }) {
+function Notice({ upper, lower, nextPage, padding, disabled }) {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -45,7 +44,11 @@ function Notice({ upper, lower, nextPage, padding }) {
   };
 
   return (
-    <NoticeWrapper onClick={handleClick} $padding={padding}>
+    <NoticeWrapper
+      onClick={handleClick}
+      $padding={padding}
+      $disabled={disabled}
+    >
       {upper && (
         <FlexWrapper>
           {upper.map((component, index) => (

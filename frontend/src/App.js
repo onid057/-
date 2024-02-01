@@ -9,6 +9,10 @@ import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
 import MatchOption from './pages/MatchOption';
 import NotFound from './pages/NotFound';
+import StartMatch from './pages/StartMatch';
+import NotificationPage from './pages/alarm/NotificationPage';
+import SuggestionPage from './pages/SuggestionPage';
+import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -169,6 +173,10 @@ function App() {
         <Route path="/filter" element={<FilterFunnel />}></Route>
         <Route path="/matchOption" element={<MatchOption />}></Route>
 
+        <Route
+          path="/experiment"
+          element={<ExperimentCommonComponent />}
+        ></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </ThemeProvider>

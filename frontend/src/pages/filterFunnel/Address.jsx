@@ -1,14 +1,12 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
 
-import Calendar from 'react-calendar';
-import '../../assets/styles/Calendar.css';
-
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
-import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
+import BoldText from '../../components/common/BoldText';
 import ProgressBar from '../../components/common/ProgressBar';
+import AddressInput from '../../components/common/AddressInput';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -24,11 +22,9 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-function TargetDate({ onPrevious, onNext, matchDate }) {
-  const [date, setDate] = useState(matchDate || new Date());
-
-  console.log(date);
-  console.log(typeof date);
+function Address({ onPrevious, onNext, matchAddress, matchDetailAddress }) {
+  const [address, setAddress] = useState(matchAddress);
+  const [detailAddress, setDetailAddress] = useState(matchDetailAddress);
 
   return (
     <Wrapper>
@@ -43,32 +39,28 @@ function TargetDate({ onPrevious, onNext, matchDate }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={() => onNext(new Date(date))}
+        onNext={() => onNext(address, detailAddress)}
       ></NavigationBar>
 
       <Paragraph
         gap="5px"
         fontSize="35px"
         sentences={[
-          <BoldText boldContent="날짜" normalContent="를"></BoldText>,
+          <BoldText boldContent="만날 장소" normalContent="를"></BoldText>,
           '정해주세요',
         ]}
       ></Paragraph>
 
-      <ProgressBar value={51}></ProgressBar>
+      <ProgressBar value={77}></ProgressBar>
 
-      <Calendar
-        value={date}
-        onChange={setDate}
-        view={'month'}
-        minDate={new Date()}
-        maxDate={new Date('2024-12-31')}
-        next2Label={null}
-        prev2Label={null}
-        formatDay={(_, date) => date.toLocaleString('en', { day: 'numeric' })}
-      ></Calendar>
+      <AddressInput
+        defaultAddress={address}
+        defaultDetailAddress={detailAddress}
+        setAddress={setAddress}
+        setDetailAddress={setDetailAddress}
+      ></AddressInput>
     </Wrapper>
   );
 }
 
-export default TargetDate;
+export default Address;
