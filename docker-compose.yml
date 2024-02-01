@@ -4,8 +4,9 @@ services:
     container_name: frontend
     image: onid057/a407-frontend
     ports:
-      - 80:81
+      - 80:80
       - 443:443
+      - 3000:3000
     depends_on:
       - server
 
