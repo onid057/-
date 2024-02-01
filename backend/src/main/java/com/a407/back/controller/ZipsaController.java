@@ -1,13 +1,13 @@
 package com.a407.back.controller;
 
 import com.a407.back.config.constants.SuccessCode;
+import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
 import com.a407.back.dto.zipsa.ZipsaReservationResponse;
-import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.ZipsaServiceImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -29,37 +29,43 @@ public class ZipsaController {
     private final ZipsaServiceImpl zipsaService;
 
     @PostMapping("/reports")
-    public ResponseEntity<Long> makeReport(
+    public ResponseEntity<ApiResponse<Long>> makeReport(
         @ModelAttribute ReportCreateRequest reportCreateRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(zipsaService.makeReport(reportCreateRequest));
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS,
+                zipsaService.makeReport(reportCreateRequest)));
     }
 
     @GetMapping("/reports/{roomId}")
-    public ApiResponse<List<ReportSearchResponse>> findReportByRoomIdList(
+    public ResponseEntity<ApiResponse<List<ReportSearchResponse>>> findReportByRoomIdList(
         @PathVariable Long roomId) {
-        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-            zipsaService.findReportByRoomIdList(roomId));
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.findReportByRoomIdList(roomId)));
     }
 
     @GetMapping("/{helperId}")
-    public ResponseEntity<ZipsaDetailInfoResponse> findZipsaAndReviewFindByZipsaId(
+    public ResponseEntity<ApiResponse<ZipsaDetailInfoResponse>> findZipsaAndReviewFindByZipsaId(
         @PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK)
-            .body(zipsaService.findZipsaAndReviewFindByZipsaId(helperId));
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.findZipsaAndReviewFindByZipsaId(helperId)));
     }
 
     @GetMapping("/{helperId}/records")
-    public ApiResponse<List<ZipsaRecordsResponse>> searchZipsaRecordList(@PathVariable Long helperId) {
-        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-            zipsaService.getZipsaRecordList(helperId));
+    public ResponseEntity<ApiResponse<List<ZipsaRecordsResponse>>> searchZipsaRecordList(
+        @PathVariable Long helperId) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.getZipsaRecordList(helperId)));
     }
 
     @GetMapping("/{helperId}/reservations")
-    public ApiResponse<List<ZipsaReservationResponse>> getZipsaReservationList(
+    public ResponseEntity<ApiResponse<List<ZipsaReservationResponse>>> getZipsaReservationList(
         @PathVariable Long helperId) {
-        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-            zipsaService.getZipsaReservationList(helperId));
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.getZipsaReservationList(helperId)));
     }
 
     @PostMapping("/participation")
