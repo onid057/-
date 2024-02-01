@@ -4,7 +4,6 @@ import com.a407.back.domain.QReview;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Review.ReviewListResponse;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -33,11 +32,10 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
-    public List<ReviewListResponse> findReviewsByUserId(Long userId) {
+    public List<Review> findReviewsByUserId(Long userId) {
         QReview qReview = QReview.review;
         return query.selectFrom(qReview).where(qReview.userId.userId.eq(userId))
-            .orderBy(qReview.createdAt.desc()).fetch().stream()
-            .map(ReviewListResponse::getDto).toList();
+            .orderBy(qReview.createdAt.desc()).fetch();
     }
 
     @Override

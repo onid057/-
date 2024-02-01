@@ -82,5 +82,13 @@ public class AssociationRepositoryImpl implements AssociationRepository {
             .where(qAssociation.associationId.eq(associationId)).execute();
     }
 
+    @Override
+    public Long findAssociationRepresentative(Long associationId) {
+        QAssociation qAssociation = QAssociation.association;
+        return query.select(qAssociation.userId).from(qAssociation)
+            .where(qAssociation.associationId.eq(associationId))
+            .fetchOne();
+    }
+
 
 }

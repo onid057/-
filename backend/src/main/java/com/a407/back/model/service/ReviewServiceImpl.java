@@ -1,13 +1,11 @@
 package com.a407.back.model.service;
 
 import com.a407.back.config.constants.ErrorCode;
-import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.Review.ReviewCreateRequest;
-import com.a407.back.dto.Review.ReviewListResponse;
-import com.a407.back.dto.util.ApiResponse;
+import com.a407.back.dto.review.ReviewCreateRequest;
+import com.a407.back.dto.review.ReviewListResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.ReviewRepository;
 import com.a407.back.model.repo.RoomRepository;
@@ -51,13 +49,12 @@ public class ReviewServiceImpl implements ReviewService {
             skillAverage = (double) reviewCreateRequest.getSkillScore();
             rewindAverage = (double) reviewCreateRequest.getRewindScore();
         } else {
-            kindnessAverage =
-                getAverageSave(reviewCreateRequest.getKindnessScore(), kindnessAverage,
-                    countReview);
-            skillAverage =
-                getAverageSave(reviewCreateRequest.getKindnessScore(), skillAverage, countReview);
-            rewindAverage =
-                getAverageSave(reviewCreateRequest.getKindnessScore(), rewindAverage, countReview);
+            kindnessAverage = getAverageSave(reviewCreateRequest.getKindnessScore(),
+                kindnessAverage, countReview);
+            skillAverage = getAverageSave(reviewCreateRequest.getKindnessScore(), skillAverage,
+                countReview);
+            rewindAverage = getAverageSave(reviewCreateRequest.getKindnessScore(), rewindAverage,
+                countReview);
         }
 
         zipsaRepository.updateZipsaAverage(zipsa.getZipsaId().getUserId(), kindnessAverage,
@@ -65,9 +62,17 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public ApiResponse<List<ReviewListResponse>> findReviewsByUserId(Long userId) {
-        return new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-            reviewRepository.findReviewsByUserId(userId));
+    public List<ReviewListResponse> findReviewsByUserId(Long userId) {
+        return reviewRepository.findReviewsByUserId(userId).stream()
+            .map(review -> ReviewListResponse.builder()
+                .zipsaId(review.getZipsaId().getZipsaId().getUserId())
+                .reviewId(review.getReviewId())
+                .content(review.getContent())
+                .kindnessScore(review.getKindnessScore())
+                .skillScore(review.getSkillScore())
+                .rewindScore(review.getRewindScore())
+                .createdAt(review.getCreatedAt())
+                .build()).toList();
     }
 
     @Override
@@ -89,12 +94,10 @@ public class ReviewServiceImpl implements ReviewService {
             skillAverage = 0D;
             rewindAverage = 0D;
         } else {
-            kindnessAverage =
-                getAverageRemove(review.getKindnessScore(), kindnessAverage, countReview);
-            skillAverage =
-                getAverageRemove(review.getKindnessScore(), skillAverage, countReview);
-            rewindAverage =
-                getAverageRemove(review.getKindnessScore(), rewindAverage, countReview);
+            kindnessAverage = getAverageRemove(review.getKindnessScore(), kindnessAverage,
+                countReview);
+            skillAverage = getAverageRemove(review.getKindnessScore(), skillAverage, countReview);
+            rewindAverage = getAverageRemove(review.getKindnessScore(), rewindAverage, countReview);
         }
         zipsaRepository.updateZipsaAverage(zipsa.getZipsaId().getUserId(), kindnessAverage,
             skillAverage, rewindAverage);

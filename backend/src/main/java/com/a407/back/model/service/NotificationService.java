@@ -2,8 +2,8 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Room;
-import com.a407.back.dto.User.UserNotificationResponse;
-import com.a407.back.dto.User.ZipsaNotificationResponse;
+import com.a407.back.dto.user.UserNotificationResponse;
+import com.a407.back.dto.user.ZipsaNotificationResponse;
 
 public interface NotificationService {
 

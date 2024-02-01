@@ -7,7 +7,7 @@ import com.a407.back.domain.SubCategory;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.model.repo.RoomRepository;
-import com.a407.back.dto.Room.MakePublicRoomRequest;
+import com.a407.back.dto.room.MakePublicRoomRequest;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.UserRepository;
