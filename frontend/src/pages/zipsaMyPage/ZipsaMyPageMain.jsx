@@ -138,6 +138,7 @@ function ZipsaMyPageMain() {
             </MenuText>,
           ]}
           lower={null}
+          // 각자 페이지로 이동하기
           nextPage={''}
           padding={'20px 12px'}
         ></Notice>
