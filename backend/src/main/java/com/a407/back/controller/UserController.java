@@ -5,7 +5,7 @@ import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
-import com.a407.back.dto.user.UserCertificationCode;
+import com.a407.back.dto.user.UserCertificationRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
@@ -36,11 +36,9 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/")
-    public ResponseEntity<ApiResponse<Long>> makeUser(@RequestBody UserCreateRequest user) {
-        long id = userService.makeUser(user.toEntity());
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
+    @GetMapping("/")
+    public ResponseEntity<String> testServer() {
+        return ResponseEntity.status(HttpStatus.OK).body("server 이상 무");
     }
 
     // 알림 목록
@@ -51,6 +49,14 @@ public class UserController {
             userId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, notificationResponseList));
+    }
+
+    // 회원가입
+    @PostMapping("/")
+    public ResponseEntity<ApiResponse<Long>> makeUser(@RequestBody UserCreateRequest user) {
+        long id = userService.makeUser(user.toEntity());
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
     }
 
     @PostMapping("/helpers-map/{userId}")
@@ -71,15 +77,14 @@ public class UserController {
     @GetMapping("/{userId}/reservations")
     public ResponseEntity<ApiResponse<List<UserReservationResponse>>> getUserReservationList(
         @PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 userService.getUserReservationList(userId)));
     }
 
     @PostMapping("/payments")
     public ResponseEntity<ApiResponse<UserAccountResponse>> makeAccount(
-        @RequestBody UserAccountRequest request
-    ) {
+        @RequestBody UserAccountRequest request) {
         UserAccountResponse response = userService.makeAccount(request);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, response));
@@ -88,22 +93,23 @@ public class UserController {
     @GetMapping("/{userId}/payments/detail")
     public ResponseEntity<ApiResponse<String>> getMaskedCardNumber(@PathVariable Long userId) {
         String maskedCardNumber = userService.getMaskedCardNumber(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,maskedCardNumber));
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, maskedCardNumber));
     }
 
     @DeleteMapping("/{userId}/payments")
     public ResponseEntity<ApiResponse<String>> deleteAccount(@PathVariable Long userId) {
         userService.deleteAccount(userId);
-        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS,"결제 정보 삭제"));
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "결제 정보 삭제"));
     }
 
     @PostMapping("/certification/phonenumber")
     public ResponseEntity<ApiResponse<String>> makeSendMessage(
-        @RequestBody UserPhoneNumberRequest userPhoneNumberRequest)
+        @RequestBody UserPhoneNumberRequest request)
         throws NoSuchAlgorithmException {
-        // 전화번호만 입력
         try {
-            userService.makeSendMessage(userPhoneNumberRequest, "test@test.com");
+            userService.makeSendMessage(request.getPhoneNumber(), request.getEmail());
         } catch (JsonProcessingException e) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
@@ -114,9 +120,8 @@ public class UserController {
 
     @PostMapping("/certification/code")
     public ResponseEntity<ApiResponse<String>> makePhoneNumber(
-        @RequestBody UserCertificationCode code)
-        throws JsonProcessingException {
-        userService.makePhoneNumber(code.getCode(), "test@test.com");
+        @RequestBody UserCertificationRequest request) throws JsonProcessingException {
+        userService.makePhoneNumber(request.getCode(), request.getEmail());
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "전화 번호 저장 성공"));
     }

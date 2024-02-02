@@ -5,11 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor
-public class UserPhoneNumberRequest {
+@AllArgsConstructor
+public class UserCertificationRequest {
 
-    private String phoneNumber;
+    private String code;
     private String email;
+
 
 }

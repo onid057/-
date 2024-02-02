@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class MatchSearchResponse {
 
+    private Long zipsaId;
     private String name;
     private Byte[] profileImage;
     private String gradeName;

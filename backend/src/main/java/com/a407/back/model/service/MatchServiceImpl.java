@@ -47,6 +47,7 @@ public class MatchServiceImpl implements MatchService {
             int gradeSalary = zipsa.getGradeId().getSalary();
             double scoreAverage = (zipsa.getKindnessAverage() + zipsa.getRewindAverage() + zipsa.getSkillAverage()) / 3.0;
             return new MatchSearchResponse(
+                zipsa.getZipsaId().getUserId(),
                 zipsa.getZipsaId().getName(),
                 zipsa.getZipsaId().getProfileImage(),
                 gradeName,
