@@ -1,5 +1,6 @@
 package com.a407.back.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -33,6 +34,7 @@ public class Room implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,10 +43,17 @@ public class Room implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sub_category_id", nullable = false)
+    @JsonIgnore
     private SubCategory subCategoryId;
+
+    @Column(name = "title", length = 30)
+    private String title;
 
     @Column(name = "content", length = 200, nullable = false)
     private String content;
+
+    @Column(name = "place", length = 50, nullable = false)
+    private String place;
 
     @Column(name = "estimate_duration", nullable = false)
     private int estimateDuration;
@@ -58,14 +67,14 @@ public class Room implements Serializable {
 
     @ColumnDefault("false")
     @Column(name = "is_reported", nullable = false)
-    private boolean isReported;
+    private Boolean isReported;
 
     @Column(name = "report_cycle")
     private int reportCycle;
 
     @ColumnDefault("false")
     @Column(name = "is_public", nullable = false)
-    private boolean isPublic;
+    private Boolean isPublic;
 
     @Column(name = "notification_count", nullable = false)
     private int notificationCount;
@@ -90,11 +99,11 @@ public class Room implements Serializable {
 
     @ColumnDefault("false")
     @Column(name = "is_complained", nullable = false)
-    private boolean isComplained;
+    private Boolean isComplained;
 
     @ColumnDefault("false")
     @Column(name = "is_reviewed", nullable = false)
-    private boolean isReviewed;
+    private Boolean isReviewed;
 
     @ColumnDefault("create")
     @Column(name = "status", nullable = false)
@@ -103,18 +112,21 @@ public class Room implements Serializable {
 
 
     @Builder
-    public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String content,
+    public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String title, String content,
+        String place,
         int estimateDuration, Timestamp roomCreatedAt, Timestamp matchCreatedAt,
-        boolean isReported,
-        int reportCycle, boolean isPublic, int notificationCount, Timestamp startedAt,
+        Boolean isReported,
+        int reportCycle, Boolean isPublic, int notificationCount, Timestamp startedAt,
         Timestamp endedAt, Timestamp expectationStartedAt,
-        Timestamp expectationEndedAt, int expectationPay, int totalPay, boolean isComplained,
-        boolean isReviewed,
+        Timestamp expectationEndedAt, int expectationPay, int totalPay, Boolean isComplained,
+        Boolean isReviewed,
         Process status) {
         this.userId = userId;
         this.zipsaId = zipsaId;
         this.subCategoryId = subCategoryId;
+        this.title = title;
         this.content = content;
+        this.place = place;
         this.estimateDuration = estimateDuration;
         this.roomCreatedAt = roomCreatedAt;
         this.matchCreatedAt = matchCreatedAt;
@@ -134,33 +146,7 @@ public class Room implements Serializable {
     }
 
     public enum Process {
-        create, before, ongoing, end, broken
+        CREATE, BEFORE, ONGOING, END, BROKEN
     }
 
-    @Override
-    public String toString() {
-        return "Room{" +
-            "roomId=" + roomId +
-            ", userId=" + userId +
-            ", zipsaId=" + zipsaId +
-            ", subCategoryId=" + subCategoryId +
-            ", content='" + content + '\'' +
-            ", estimateDuration=" + estimateDuration +
-            ", roomCreatedAt=" + roomCreatedAt +
-            ", matchCreatedAt=" + matchCreatedAt +
-            ", isReported=" + isReported +
-            ", reportCycle=" + reportCycle +
-            ", isPublic=" + isPublic +
-            ", notificationCount=" + notificationCount +
-            ", startedAt=" + startedAt +
-            ", endedAt=" + endedAt +
-            ", expectationStartedAt=" + expectationStartedAt +
-            ", expectationEndedAt=" + expectationEndedAt +
-            ", expectationPay=" + expectationPay +
-            ", totalPay=" + totalPay +
-            ", isComplained=" + isComplained +
-            ", isReviewed=" + isReviewed +
-            ", status=" + status +
-            '}';
-    }
 }

@@ -14,6 +14,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 @Table(name = "REVIEW")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -46,6 +47,7 @@ public class Review {
     @Column(name = "rewind_score", nullable = false)
     private int rewindScore;
 
+    @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Timestamp createdAt;
 
@@ -60,4 +62,6 @@ public class Review {
         this.rewindScore = rewindScore;
         this.createdAt = createdAt;
     }
+
+
 }

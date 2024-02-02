@@ -1,15 +1,18 @@
 package com.a407.back.model.repo;
 
+import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.QZipsaCategory;
+import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.MatchSearchRequest;
+import com.a407.back.dto.match.MatchSearchRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -46,13 +49,13 @@ public class MatchRepositoryImpl implements MatchRepository {
     private BooleanExpression userGenderEq(String genderStr) {
         QZipsa qZipsa = QZipsa.zipsa;
         if (genderStr == null || genderStr.equalsIgnoreCase("ALL")) {
-            return null; // 'ALL' 또는 null이 선택된 경우 성별 필터링을 적용하지 않음
+            return null;
         }
         try {
-            Gender gender = Gender.valueOf(genderStr.toLowerCase());
+            Gender gender = Gender.valueOf(genderStr);
             return qZipsa.zipsaId.gender.eq(gender);
         } catch (IllegalArgumentException e) {
-            return null; // 잘못된 성별 입력 처리
+            return null;
         }
     }
 
@@ -66,9 +69,11 @@ public class MatchRepositoryImpl implements MatchRepository {
         try {
             int ageInt = Integer.parseInt(age);
             Timestamp lowerBound = Timestamp.valueOf(
-                LocalDate.now().minusYears(ageInt + 10).atStartOfDay()); // 예: 40대 미만인 경우 50년 전
+                // 예: 40대 미만인 경우 50년 전
+                LocalDate.now().minusYears(ageInt + 10L).atStartOfDay());
             Timestamp upperBound = Timestamp.valueOf(
-                LocalDate.now().minusYears(ageInt).atStartOfDay()); // 예: 40대 이상인 경우 40년 전
+                // 예: 40대 이상인 경우 40년 전
+                LocalDate.now().minusYears(ageInt).atStartOfDay());
 
             if (ageInt >= 40) {
                 // 40대 이상인 경우
@@ -87,7 +92,7 @@ public class MatchRepositoryImpl implements MatchRepository {
         if (grade == null || grade.equalsIgnoreCase("ALL")) {
             return null;
         } else {
-            return QZipsa.zipsa.gradeId.gradeId.goe(Long.parseLong(grade));
+            return QZipsa.zipsa.gradeId.name.eq(grade);
         }
     }
 
@@ -106,18 +111,10 @@ public class MatchRepositoryImpl implements MatchRepository {
         }
     }
 
-
-    @Override
-    public Zipsa save(Zipsa zipsa) {
-        em.persist(zipsa);
-        return zipsa;
-    }
-
     @Override
     public List<String> findCategoryNamesByZipsaId(Long zipsaId) {
 
         // 집사의 아이디를 기준으로 대분류 이름을 가져오는 함수
-
         QZipsaCategory qZipsaCategory = QZipsaCategory.zipsaCategory;
 
         return query.select(qZipsaCategory.majorCategoryId.name).from(qZipsaCategory)
@@ -125,8 +122,23 @@ public class MatchRepositoryImpl implements MatchRepository {
     }
 
     @Override
-    public List<Zipsa> findByIsWorked(boolean isWorked) {
-        QZipsa qZipsa = QZipsa.zipsa;
-        return query.selectFrom(qZipsa).where(qZipsa.isWorked.eq(isWorked)).fetch();
+    public void changeMatchStartedAt(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.startedAt, Timestamp.valueOf(LocalDateTime.now()))
+            .where(qRoom.roomId.eq(roomId)).execute();
+    }
+
+    @Override
+    public void changeMatchEndedAt(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.endedAt, Timestamp.valueOf(LocalDateTime.now()))
+            .where(qRoom.roomId.eq(roomId)).execute();
+    }
+
+    @Override
+    public void changeMatchStatus(Long roomId, String status) {
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.status, Process.valueOf(status))
+            .where(qRoom.roomId.eq(roomId)).execute();
     }
 }

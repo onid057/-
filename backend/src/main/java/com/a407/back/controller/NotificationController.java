@@ -1,11 +1,10 @@
 package com.a407.back.controller;
 
-import com.a407.back.domain.Notification;
-import com.a407.back.dto.UserNotificationResponse;
-import com.a407.back.dto.ZipsaNotificationResponse;
+import com.a407.back.config.constants.SuccessCode;
+import com.a407.back.dto.user.UserNotificationResponse;
+import com.a407.back.dto.user.ZipsaNotificationResponse;
+import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.NotificationService;
-import com.a407.back.model.service.RoomService;
-import com.a407.back.model.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,38 +19,36 @@ import org.springframework.web.bind.annotation.RestController;
 public class NotificationController {
 
     private final NotificationService notificationService;
-    private final UserService userService;
-    private final RoomService roomService;
 
-    @GetMapping("/{notificationId}")
-    public ResponseEntity<?> getNotificationDetail(
+    @GetMapping("/{notificationId}/user")
+    public ResponseEntity<ApiResponse<UserNotificationResponse>> findUserNotificationDetail(
         @PathVariable("notificationId") Long notificationId) {
-        Notification notification = notificationService.findByNotificationId(notificationId);
-        boolean isZipsa = userService.isWorkedDistinction(notification.getReceiveId());
-        if (isZipsa) {
-            ZipsaNotificationResponse zipsaNotificationResponse = notificationService.getZipsaNotification(
-                notification);
-            return ResponseEntity.status(HttpStatus.OK).body(zipsaNotificationResponse);
-        }
-        UserNotificationResponse userNotificationResponse = notificationService.getUserNotification(
-            notification);
-        return ResponseEntity.status(HttpStatus.OK).body(userNotificationResponse);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                notificationService.findUserNotificationDetail(notificationId)));
+    }
+
+    @GetMapping("/{notificationId}/zipsa")
+    public ResponseEntity<ApiResponse<ZipsaNotificationResponse>> findZipsaNotificationDetail(
+        @PathVariable("notificationId") Long notificationId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                notificationService.findZipsaNotificationDetail(notificationId)));
     }
 
     @GetMapping("/{notificationId}/rejection")
-    public ResponseEntity<Integer> rejectNotification(
+    public ResponseEntity<ApiResponse<Integer>> changeNotificationToReject(
         @PathVariable("notificationId") Long notificationId) {
-        // 해당 알림을 reject
-        notificationService.changeNotificationStatusAcceptOrReject(notificationId, "reject");
-        // 방에서 알림 숫자를 줄임
-        Notification notification = notificationService.findByNotificationId(notificationId);
-        int newNotificationCount = roomService.reduceNotificationCount(
-            notification.getRoomId().getRoomId());
-        // 만약 알림 숫자를 줄였을 때 0이 된다면 방 broken으로 바꿈
-        if (newNotificationCount == 0) {
-            System.out.println(notification.getRoomId().getRoomId());
-            roomService.chageRoomStatus(notification.getRoomId().getRoomId(), "broken");
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(newNotificationCount);
+        int newNotificationCount = notificationService.changeNotificationToReject(notificationId);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, newNotificationCount));
+    }
+
+    @GetMapping("/{notificationId}")
+    public ResponseEntity<ApiResponse<Long>> changeRoomToMatch(
+        @PathVariable("notificationId") Long notificationId) {
+        notificationService.changeRoomToMatch(notificationId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, notificationId));
     }
 }

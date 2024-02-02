@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 30초마다 변경 여부 체크 -->
+<configuration scan="true" scanPeriod="30 second">
+  <property resource="application.properties"/>
+
+  <!-- 로그 패턴 색상 적용 %clr(pattern){color} -->
+  <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+
+  <!-- 콘솔 -->
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- log Level : info만 -->
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>INFO</level>
+    </filter>
+    <encoder>
+      <!-- [시간][로그레벨][PID][thread이름] logger이름 메시지 \n -->
+      <pattern>[%blue(%d{yyyy-MM-dd HH:mm:ss.SSS})] [%clr(%-5level)] %boldMagenta(${PID:-}) [%cyan(%thread)] --- %boldYellow(%logger) - %msg %n</pattern>
+    </encoder>
+  </appender>
+
+  <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>C:/logs/local.log</file>
+    <encoder>
+      <pattern>[%blue(%d{yyyy-MM-dd HH:mm:ss.SSS})] [%clr(%-5level)] %boldMagenta(${PID:-}) [%cyan(%thread)] --- %boldYellow(%logger) - %msg %n</pattern>
+    </encoder>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>application.log.%d{yyyy-MM-dd}.gz</fileNamePattern>
+      <maxHistory>50</maxHistory>
+      <totalSizeCap>15GB</totalSizeCap>
+    </rollingPolicy>
+  </appender>
+
+  <root level="INFO">
+    <!-- INFO 윗 단계들 모두 아래의 console 방식 출력 -->
+    <appender-ref ref="console"/>
+    <appender-ref ref="file"/>
+  </root>
+
+</configuration>
