@@ -23,7 +23,7 @@ public class Complain {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "complain_id", updatable = false)
-    private long complainId;
+    private Long complainId;
 
     @OneToOne
     @JoinColumn(name = "room_id", nullable = false)
@@ -34,10 +34,10 @@ public class Complain {
 
     @ColumnDefault("false")
     @Column(name = "is_processed", nullable = false)
-    private boolean isProcessed;
+    private Boolean isProcessed;
 
     @Builder
-    public Complain(Room roomId, String content, boolean isProcessed) {
+    public Complain(Room roomId, String content, Boolean isProcessed) {
         this.roomId = roomId;
         this.content = content;
         this.isProcessed = isProcessed;

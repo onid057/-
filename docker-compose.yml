@@ -1,0 +1,19 @@
+version: "3"
+services:
+  client:
+    container_name: frontend
+    image: onid057/a407-frontend
+    ports:
+      - 80:81
+      - 443:443
+    depends_on:
+      - server
+
+  server:
+    container_name: backend
+    image: onid057/a407-backend
+    expose:
+      - 8081
+    ports:
+      - 8081:8081 #로컬포트:컨테이너포트
+    restart: "always"

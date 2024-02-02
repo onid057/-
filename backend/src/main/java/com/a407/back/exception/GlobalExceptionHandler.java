@@ -1,7 +1,7 @@
 package com.a407.back.exception;
 
-import com.a407.back.config.ErrorCode;
-import com.a407.back.dto.ErrorResponse;
+import com.a407.back.config.constants.ErrorCode;
+import com.a407.back.dto.util.ErrorResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -20,12 +20,11 @@ public class GlobalExceptionHandler {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-
     // 임의로 보내는 예외 처리
     @ExceptionHandler(CustomException.class)
     protected ResponseEntity<ErrorResponse> handleCustomException(CustomException ex) {
-        log.error(String.valueOf(ex.getErrorCode()));
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse(ex.getErrorCode()),
+        log.error("CustomException", ex);
+        return new ResponseEntity<>(new ErrorResponse(ex.getErrorCode()),
             HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
 
@@ -35,7 +34,7 @@ public class GlobalExceptionHandler {
         MethodArgumentNotValidException ex) {
         log.error("handleMethodArgumentNotValidException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INVALID_PARAMETER);
-        return new ResponseEntity<ErrorResponse>(errorResponse,
+        return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
     }
 
@@ -45,7 +44,7 @@ public class GlobalExceptionHandler {
         HttpMessageNotReadableException ex) {
         log.error("handleHttpMessageNotReadableException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.REQUEST_BODY_MISSING_ERROR);
-        return new ResponseEntity<ErrorResponse>(errorResponse,
+        return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
     }
 
@@ -55,7 +54,7 @@ public class GlobalExceptionHandler {
         MissingServletRequestParameterException ex) {
         log.error("handleMissingServletRequestParameterException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.MISSING_REQUEST_PARAMETER_ERROR);
-        return new ResponseEntity<ErrorResponse>(errorResponse,
+        return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
     }
 
@@ -65,7 +64,7 @@ public class GlobalExceptionHandler {
         HttpClientErrorException ex) {
         log.error("handleHttpClientErrorExceptionBadRequestException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.BAD_REQUEST_ERROR);
-        return new ResponseEntity<ErrorResponse>(errorResponse,
+        return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
     }
 
@@ -76,7 +75,7 @@ public class GlobalExceptionHandler {
         NoHandlerFoundException ex) {
         log.error("handleNoHandlerFoundException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.NOT_FOUND_ERROR);
-        return new ResponseEntity<ErrorResponse>(errorResponse,
+        return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
     }
 
@@ -86,7 +85,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleException(Exception ex) {
         log.error("Exception", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
-        return new ResponseEntity<ErrorResponse>(errorResponse,
+        return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
     }
 

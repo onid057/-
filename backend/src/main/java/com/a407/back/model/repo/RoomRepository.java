@@ -8,9 +8,17 @@ public interface RoomRepository {
 
     Room findByRoomId(Long roomId);
 
-    void chageRoomStatus(Long roomId, String status);
+    void changeRoomStatus(Long roomId, String status);
 
-    int reduceNotificationCount(int count, Long roomId);
+    int changeNotificationCountDecrease(int count, Long roomId);
+
+    void changeNotificationCountIncrease(int count, Long roomId);
 
     void changeRoomZipsa(Zipsa zipsa, Long roomId);
+
+    void changeRoomReview(Long roomId);
+
+    Long makeRoom(Room room);
+
+    void deletePublicRoom(Room room);
 }

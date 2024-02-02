@@ -1,17 +1,27 @@
 package com.a407.back.model.service;
 
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.ReportCreateRequest;
-import com.a407.back.dto.ReportSearchResponse;
-import com.a407.back.dto.ZipsaDetailInfoResponse;
+import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
+import com.a407.back.dto.zipsa.ReportCreateRequest;
+import com.a407.back.dto.zipsa.ReportSearchResponse;
+import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
+import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
+import com.a407.back.dto.zipsa.ZipsaReservationResponse;
+import java.util.List;
 
 public interface ZipsaService {
 
-    Long saveReport(ReportCreateRequest reportCreateRequest);
+    void makeReport(ReportCreateRequest reportCreateRequest);
 
-    ReportSearchResponse reportFindByRoomId(Long roomId);
+    List<ReportSearchResponse> findReportByRoomIdList(Long roomId);
 
-    ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId);
+    ZipsaDetailInfoResponse findZipsaAndReviewFindByZipsaId(Long zipsaId);
 
     Zipsa findByZipsaId(Long zipsaId);
+
+    List<ZipsaRecordsResponse> getZipsaRecordList(Long helperId);
+
+    List<ZipsaReservationResponse> getZipsaReservationList(Long zipsaId);
+
+    void makePublicRoomNotification(PublicRoomNotificationRequest publicRoomNotificationRequest);
 }

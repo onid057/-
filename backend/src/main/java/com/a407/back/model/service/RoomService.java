@@ -2,14 +2,19 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.room.MakePublicRoomRequest;
 
 public interface RoomService {
 
     Room findByRoomId(Long roomId);
 
-    void chageRoomStatus(Long roomId, String status);
+    void changeRoomStatus(Long roomId, String status);
 
-    int reduceNotificationCount(Long roomId);
+    int changeNotificationCountDecrease(Long roomId);
 
     void changeRoomZipsa(Zipsa zipsa, Long roomId);
+
+    Long makePublicRoom(MakePublicRoomRequest makePublicRoomRequest);
+
+    void deletePublicRoom(Long roomId);
 }

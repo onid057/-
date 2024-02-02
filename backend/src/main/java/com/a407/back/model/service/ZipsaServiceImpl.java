@@ -1,14 +1,25 @@
 package com.a407.back.model.service;
 
+import com.a407.back.domain.Notification;
+import com.a407.back.domain.Notification.Status;
+import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.Report;
+import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.ReportCreateRequest;
-import com.a407.back.dto.ReportSearchResponse;
-import jakarta.transaction.Transactional;
+import com.a407.back.dto.util.ZipsaReview;
+import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
+import com.a407.back.dto.zipsa.ReportCreateRequest;
+import com.a407.back.dto.zipsa.ReportSearchResponse;
+import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
+import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
+import com.a407.back.dto.zipsa.ZipsaReservationResponse;
+import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
-import com.a407.back.dto.ZipsaDetailInfoResponse;
 import com.a407.back.model.repo.ZipsaRepository;
+import jakarta.transaction.Transactional;
+import java.util.Arrays;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,29 +28,139 @@ import org.springframework.stereotype.Service;
 public class ZipsaServiceImpl implements ZipsaService {
 
     private final ZipsaRepository zipsaRepository;
+
     private final RoomRepository roomRepository;
+
+    private final NotificationRepository notificationRepository;
 
     @Override
     @Transactional
-    public Long saveReport(ReportCreateRequest reportCreateRequest) {
+    public void makeReport(ReportCreateRequest reportCreateRequest) {
         Room room = roomRepository.findByRoomId(reportCreateRequest.getRoomId());
         Report report = reportCreateRequest.toEntity(room);
-        return zipsaRepository.saveReport(report);
+        zipsaRepository.makeReport(report);
     }
 
     @Override
-    public ReportSearchResponse reportFindByRoomId(Long roomId) {
-        return zipsaRepository.reportFindByRoomId(roomId);
+    public List<ReportSearchResponse> findReportByRoomIdList(Long roomId) {
+        List<Report> reports = zipsaRepository.findReportByRoomIdList(roomId);
+        return reports.stream().map(
+            report -> new ReportSearchResponse(new String(report.getProcessImage()),
+                report.getProcessContent(),
+                report.getCreatedAt())).toList();
     }
 
     @Override
-    public ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId(Long zipsaId) {
-        return zipsaRepository.zipsaAndReviewFindByZipsaId(zipsaId);
+    public ZipsaDetailInfoResponse findZipsaAndReviewFindByZipsaId(Long zipsaId) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
+        List<Review> reviews = zipsaRepository.searchReviewList(zipsaId);
+        List<String> subCategoryList = zipsaRepository.searchSubCategoryList(zipsaId);
+        return ZipsaDetailInfoResponse.builder()
+            .name(zipsa.getZipsaId().getName())
+            .email(zipsa.getZipsaId().getEmail())
+            .phoneNumber(zipsa.getZipsaId().getPhoneNumber())
+            .birth(zipsa.getZipsaId().getBirth())
+            .gender(zipsa.getZipsaId().getGender())
+            .address(zipsa.getZipsaId().getAddress())
+            .profileImage(zipsa.getZipsaId().getProfileImage() == null ? null : Arrays.toString(
+                zipsa.getZipsaId().getProfileImage()))
+            .latitude(zipsa.getZipsaId().getLatitude())
+            .longitude(zipsa.getZipsaId().getLongitude())
+            .gradeName(zipsa.getGradeId().getName())
+            .salary(zipsa.getGradeId().getSalary())
+            .description(zipsa.getDescription())
+            .preferTag(zipsa.getPreferTag())
+            .serviceCount(zipsa.getServiceCount())
+            .replyCount(zipsa.getReplyCount())
+            .replyAverage(zipsa.getReplyAverage())
+            .kindnessAverage(zipsa.getKindnessAverage())
+            .skillAverage(zipsa.getSkillAverage())
+            .rewindAverage(zipsa.getRewindAverage())
+            .reviews(reviews.stream().map(review -> ZipsaReview.builder()
+                .userName(review.getUserId().getName())
+                .profileImage(review.getUserId().getProfileImage() == null ? null
+                    : Arrays.toString(review.getUserId().getProfileImage()))
+                .content(review.getContent())
+                .kindnessScore(review.getKindnessScore())
+                .skillScore(review.getSkillScore())
+                .rewindScore(review.getRewindScore())
+                .createdAt(review.getCreatedAt())
+                .build()).toList())
+            .subCategory(subCategoryList)
+            .build();
     }
 
     @Override
     public Zipsa findByZipsaId(Long zipsaId) {
         return zipsaRepository.findByZipsaId(zipsaId);
+    }
+
+    @Override
+    public List<ZipsaRecordsResponse> getZipsaRecordList(Long helperId) {
+        return zipsaRepository.getZipsaRecordList(helperId).stream().map(room ->
+            ZipsaRecordsResponse.builder()
+                .name(room.getUserId().getName())
+                .profileImage(room.getUserId().getProfileImage() == null ? null
+                    : Arrays.toString(room.getUserId().getProfileImage()))
+                .subCategoryName(room.getSubCategoryId().getName())
+                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+                .content(room.getContent())
+                .estimateDuration(room.getEstimateDuration())
+                .roomCreatedAt(room.getRoomCreatedAt())
+                .matchCreatedAt(room.getMatchCreatedAt())
+                .isReported(room.getIsReported())
+                .reportCycle(room.getReportCycle())
+                .isPublic(room.getIsPublic())
+                .startedAt(room.getStartedAt())
+                .endedAt(room.getEndedAt())
+                .expectationStartedAt(room.getExpectationStartedAt())
+                .expectationEndedAt(room.getExpectationEndedAt())
+                .expectationPay(room.getExpectationPay())
+                .totalPay(room.getTotalPay())
+                .build()
+        ).toList();
+    }
+
+    @Override
+    public List<ZipsaReservationResponse> getZipsaReservationList(Long zipsaId) {
+        // 여기에서 적용
+        return zipsaRepository.getZipsaReservationList(zipsaId).stream().map(room ->
+            ZipsaReservationResponse.builder()
+                .name(room.getUserId().getName())
+                .profileImage(room.getUserId().getProfileImage() == null ? null
+                    : Arrays.toString(room.getUserId().getProfileImage()))
+                .subCategoryName(room.getSubCategoryId().getName())
+                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+                .content(room.getContent())
+                .estimateDuration(room.getEstimateDuration())
+                .roomCreatedAt(room.getRoomCreatedAt())
+                .matchCreatedAt(room.getMatchCreatedAt())
+                .isReported(room.getIsReported())
+                .reportCycle(room.getReportCycle())
+                .isPublic(room.getIsPublic())
+                .startedAt(room.getStartedAt())
+                .endedAt(room.getEndedAt())
+                .expectationStartedAt(room.getExpectationStartedAt())
+                .expectationEndedAt(room.getExpectationEndedAt())
+                .expectationPay(room.getExpectationPay())
+                .build()
+        ).toList();
+    }
+
+    @Override
+    @Transactional
+    public void makePublicRoomNotification(
+        PublicRoomNotificationRequest publicRoomNotificationRequest) {
+        // notification 생성
+        Room room = roomRepository.findByRoomId(publicRoomNotificationRequest.getRoomId());
+        Notification notification = Notification.builder()
+            .sendId(publicRoomNotificationRequest.getZipsaId())
+            .receiveId(room.getUserId().getUserId()).roomId(room).type(
+                Type.USER).status(Status.STANDBY).isRead(false).build();
+        notificationRepository.makeNotification(notification);
+        // 방에 notification_count 1 증가
+        roomRepository.changeNotificationCountIncrease(room.getNotificationCount(),
+            publicRoomNotificationRequest.getRoomId());
     }
 
 }

@@ -1,5 +1,6 @@
 package com.a407.back.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -31,6 +32,7 @@ public class Notification {
     private Long notificationId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "room_id", nullable = false)
     private Room roomId;
 
@@ -42,7 +44,7 @@ public class Notification {
 
     @ColumnDefault("false")
     @Column(name = "is_read", nullable = false)
-    private boolean isRead;
+    private Boolean isRead;
 
     @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
@@ -52,13 +54,13 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @ColumnDefault("standby")
+    @ColumnDefault("STANDBY")
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
     @Builder
-    public Notification(Room roomId, Long sendId, Long receiveId, boolean isRead,
+    public Notification(Room roomId, Long sendId, Long receiveId, Boolean isRead,
         Timestamp createdAt, Type type, Status status) {
         this.roomId = roomId;
         this.sendId = sendId;
@@ -69,25 +71,12 @@ public class Notification {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Notification{" +
-            "notificationId=" + notificationId +
-            ", sendId=" + sendId +
-            ", receiveId=" + receiveId +
-            ", roomId=" + roomId +
-            ", isRead=" + isRead +
-            ", createdAt=" + createdAt +
-            ", type=" + type +
-            ", status=" + status +
-            '}';
-    }
 
     public enum Type {
-        user, zipsa
+        USER, ZIPSA
     }
 
     public enum Status {
-        standby, accept, reject, close
+        STANDBY, ACCEPT, REJECT, CLOSE
     }
 }
