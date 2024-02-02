@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCertificationCode {
+public class UserCertificationRequest {
 
     private String code;
+    private String email;
+
 
 }
