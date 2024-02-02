@@ -7,6 +7,8 @@ import com.a407.back.domain.Report;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.room.PublicRoomListResponse;
+import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.dto.util.ZipsaReview;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
@@ -17,6 +19,7 @@ import com.a407.back.dto.zipsa.ZipsaReservationResponse;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.ZipsaRepository;
+import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
@@ -161,6 +164,21 @@ public class ZipsaServiceImpl implements ZipsaService {
         // 방에 notification_count 1 증가
         roomRepository.changeNotificationCountIncrease(room.getNotificationCount(),
             publicRoomNotificationRequest.getRoomId());
+    }
+
+    @Override
+    public PublicRoomListResponse getPublicRoomList(int page, int size) {
+        QueryResults<Room> results = zipsaRepository.getPublicRoomList((page-1)*size, size);
+        List<PublicRoom> roomList = results.getResults().stream()
+            .map(room ->
+            new PublicRoom(room.getRoomId(),
+                room.getSubCategoryId().getSubCategoryId(), room.getTitle(), room.getContent(),
+                room.getPlace(), room.getEstimateDuration(), room.getRoomCreatedAt(),
+                room.getExpectationStartedAt(), room.getExpectationEndedAt(),
+                room.getExpectationPay())
+        ).toList();
+        return new PublicRoomListResponse(results.getTotal(), page, roomList);
+
     }
 
 }

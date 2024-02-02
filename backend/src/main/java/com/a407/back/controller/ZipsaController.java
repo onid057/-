@@ -1,6 +1,7 @@
 package com.a407.back.controller;
 
 import com.a407.back.config.constants.SuccessCode;
+import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -73,6 +75,12 @@ public class ZipsaController {
         zipsaService.makePublicRoomNotification(publicRoomNotificationRequest);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "공개 방 참가 요청이 발신되었습니다."));
+    }
+
+    @GetMapping("/rooms")
+    public ResponseEntity<ApiResponse<PublicRoomListResponse>> getPublicRoomList(
+        @RequestParam("page") int page, @RequestParam("size") int size) {
+        return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, zipsaService.getPublicRoomList(page, size)));
     }
 
 }

@@ -9,6 +9,7 @@ import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.Zipsa;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -92,5 +93,12 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         query.update(qZipsa)
             .set(qZipsa.serviceCount, newServiceCount)
             .where(qZipsa.eq(zipsa)).execute();
+    }
+
+    @Override
+    public QueryResults<Room> getPublicRoomList(int page, int size) {
+        QRoom qRoom = QRoom.room;
+        QueryResults<Room> result = query.selectFrom(qRoom).orderBy(qRoom.roomCreatedAt.desc()).offset(page).limit(size).fetchResults();
+        return result;
     }
 }
