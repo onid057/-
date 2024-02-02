@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import Image from '../common/Image';
-import CheckButton from '../common/CheckButton';
 import Paragraph from '../common/Paragraph';
 import GradeBadge from '../common/GradeBadge';
 import ScoreBadge from '../common/ScoreBadge';
