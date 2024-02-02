@@ -8,6 +8,7 @@ import com.a407.back.model.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,7 +37,7 @@ public class NotificationController {
                 notificationService.findZipsaNotificationDetail(notificationId)));
     }
 
-    @GetMapping("/{notificationId}/rejection")
+    @DeleteMapping("/{notificationId}/rejection")
     public ResponseEntity<ApiResponse<Integer>> changeNotificationToReject(
         @PathVariable("notificationId") Long notificationId) {
         int newNotificationCount = notificationService.changeNotificationToReject(notificationId);
