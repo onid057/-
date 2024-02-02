@@ -7,13 +7,14 @@ import com.a407.back.domain.Report;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.dto.util.ZipsaReview;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
+import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
 import com.a407.back.dto.zipsa.ZipsaReservationResponse;
+import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.ZipsaRepository;
@@ -51,9 +52,8 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public ZipsaDetailInfoResponse findZipsaAndReviewFindByZipsaId(Long zipsaId) {
+    public ZipsaDetailInfoResponse findZipsaDetailFindByZipsaId(Long zipsaId) {
         Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
-        List<Review> reviews = zipsaRepository.searchReviewList(zipsaId);
         List<String> subCategoryList = zipsaRepository.searchSubCategoryList(zipsaId);
         return ZipsaDetailInfoResponse.builder()
             .name(zipsa.getZipsaId().getName())
@@ -66,6 +66,7 @@ public class ZipsaServiceImpl implements ZipsaService {
                 zipsa.getZipsaId().getProfileImage()))
             .latitude(zipsa.getZipsaId().getLatitude())
             .longitude(zipsa.getZipsaId().getLongitude())
+            .gradeId(zipsa.getGradeId().getGradeId())
             .gradeName(zipsa.getGradeId().getName())
             .salary(zipsa.getGradeId().getSalary())
             .description(zipsa.getDescription())
@@ -76,18 +77,37 @@ public class ZipsaServiceImpl implements ZipsaService {
             .kindnessAverage(zipsa.getKindnessAverage())
             .skillAverage(zipsa.getSkillAverage())
             .rewindAverage(zipsa.getRewindAverage())
-            .reviews(reviews.stream().map(review -> ZipsaReview.builder()
-                .userName(review.getUserId().getName())
-                .profileImage(review.getUserId().getProfileImage() == null ? null
-                    : Arrays.toString(review.getUserId().getProfileImage()))
-                .content(review.getContent())
-                .kindnessScore(review.getKindnessScore())
-                .skillScore(review.getSkillScore())
-                .rewindScore(review.getRewindScore())
-                .createdAt(review.getCreatedAt())
-                .build()).toList())
             .subCategory(subCategoryList)
             .build();
+    }
+
+    @Override
+    public ZipsaInfoResponse findZipsaFindByZipsaId(Long zipsaId) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
+        return ZipsaInfoResponse.builder()
+            .name(zipsa.getZipsaId().getName())
+            .gradeId(zipsa.getGradeId().getGradeId())
+            .gradeName(zipsa.getGradeId().getName())
+            .kindnessAverage(zipsa.getKindnessAverage())
+            .skillAverage(zipsa.getSkillAverage())
+            .rewindAverage(zipsa.getRewindAverage())
+            .build();
+    }
+
+
+    @Override
+    public List<ZipsaReviewResponse> findsZipsaReviewFindByZipsaId(Long zipsaId) {
+        List<Review> reviews = zipsaRepository.searchReviewList(zipsaId);
+        return reviews.stream().map(review -> ZipsaReviewResponse.builder()
+            .userName(review.getUserId().getName())
+            .profileImage(review.getUserId().getProfileImage() == null ? null
+                : Arrays.toString(review.getUserId().getProfileImage()))
+            .content(review.getContent())
+            .kindnessScore(review.getKindnessScore())
+            .skillScore(review.getSkillScore())
+            .rewindScore(review.getRewindScore())
+            .createdAt(review.getCreatedAt())
+            .build()).toList();
     }
 
     @Override

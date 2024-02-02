@@ -6,8 +6,10 @@ import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
+import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
 import com.a407.back.dto.zipsa.ZipsaReservationResponse;
+import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.model.service.ZipsaServiceImpl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -44,11 +46,27 @@ public class ZipsaController {
     }
 
     @GetMapping("/{helperId}")
-    public ResponseEntity<ApiResponse<ZipsaDetailInfoResponse>> findZipsaAndReviewFindByZipsaId(
+    public ResponseEntity<ApiResponse<ZipsaInfoResponse>> findZipsaFindByZipsaId(
         @PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.findZipsaAndReviewFindByZipsaId(helperId)));
+                zipsaService.findZipsaFindByZipsaId(helperId)));
+    }
+
+    @GetMapping("/{helperId}/detail")
+    public ResponseEntity<ApiResponse<ZipsaDetailInfoResponse>> findZipsaDetailFindByZipsaId(
+        @PathVariable Long helperId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.findZipsaDetailFindByZipsaId(helperId)));
+    }
+
+    @GetMapping("/{helperId}/reviews")
+    public ResponseEntity<ApiResponse<List<ZipsaReviewResponse>>> findsZipsaReviewFindByZipsaId(
+        @PathVariable Long helperId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.findsZipsaReviewFindByZipsaId(helperId)));
     }
 
     @GetMapping("/{helperId}/records")

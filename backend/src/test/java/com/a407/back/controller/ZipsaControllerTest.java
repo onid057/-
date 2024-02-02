@@ -126,7 +126,7 @@ class ZipsaControllerTest {
             "https://www.flaticon.com/kr/free-icon-font/phone-call_5070407", "내용2");
         zipsaService.makeReport(reportCreateRequestTwo);
         assertThat(zipsaService.findReportByRoomIdList(roomId)).hasSize(2);
-        assertThat(zipsaService.findZipsaAndReviewFindByZipsaId(zipsaId).getName()).isEqualTo(
+        assertThat(zipsaService.findZipsaDetailFindByZipsaId(zipsaId).getName()).isEqualTo(
             "zipsa");
     }
 
@@ -160,7 +160,6 @@ class ZipsaControllerTest {
         roomService.changeRoomZipsa(zipsa, roomId);
         em.flush();
         em.clear();
-
 
         assertThat(zipsaService.getZipsaRecordList(zipsaId)).isEmpty();
 
