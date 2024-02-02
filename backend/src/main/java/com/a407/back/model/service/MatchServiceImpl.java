@@ -93,7 +93,7 @@ public class MatchServiceImpl implements MatchService {
         for (Long id : roomCreateRequest.getHelperList()) {
             Notification notification = Notification.builder().roomId(newRoom)
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
-                    Type.USER).status(Status.STANDBY).isRead(false).build();
+                    Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
         }
 
