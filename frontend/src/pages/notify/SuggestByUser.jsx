@@ -10,6 +10,7 @@ import { useParams } from 'react-router-dom';
 import {
   getMatchNotificationByUser,
   rejectSuggestionByUser,
+  allowSuggestionByUser,
 } from '../../apis/api/notify';
 
 const Wrapper = styled.div`
@@ -102,7 +103,16 @@ function SuggestByUser() {
         ></Paragraph>
 
         <ButtonWrapper>
-          <Button mode={'THICK_BLUE'}>수락</Button>
+          <Button
+            mode={'THICK_BLUE'}
+            onClick={() =>
+              allowSuggestionByUser(notificationId).then(response =>
+                console.log(response),
+              )
+            }
+          >
+            수락
+          </Button>
           <Button
             mode={'THICK_GRAY'}
             onClick={() =>

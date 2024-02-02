@@ -32,7 +32,19 @@ const rejectSuggestionByUser = async notificationId => {
     const response = await axios({
       method: 'delete',
       url: `/notifications/${notificationId}/rejection`,
-      mode: 'cors',
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 집사가 고객의 제안 승락, 매치 성사
+const allowSuggestionByUser = async notificationId => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/notifications/${notificationId}`,
     });
     return response.data;
   } catch (error) {
@@ -44,4 +56,5 @@ export {
   getMatchNotificationList,
   getMatchNotificationByUser,
   rejectSuggestionByUser,
+  allowSuggestionByUser,
 };
