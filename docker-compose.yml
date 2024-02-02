@@ -1,16 +1,16 @@
 version: "3"
 services:
-  nginx:
-    build:
-      context: ./frontend
+  client:
+    container_name: frontend
+    image: onid057/a407-frontend
     ports:
-      - 80:80
+      - 80:81
       - 443:443
     depends_on:
       - server
 
   server:
-    container_name: a407
+    container_name: backend
     image: onid057/a407-backend
     expose:
       - 8081

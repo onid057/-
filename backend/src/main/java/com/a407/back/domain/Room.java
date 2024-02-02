@@ -52,7 +52,7 @@ public class Room implements Serializable {
     @Column(name = "content", length = 200, nullable = false)
     private String content;
 
-    @Column(name= "place", length = 50, nullable = false)
+    @Column(name = "place", length = 50, nullable = false)
     private String place;
 
     @Column(name = "estimate_duration", nullable = false)
@@ -112,7 +112,8 @@ public class Room implements Serializable {
 
 
     @Builder
-    public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String title, String content, String place,
+    public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String title, String content,
+        String place,
         int estimateDuration, Timestamp roomCreatedAt, Timestamp matchCreatedAt,
         Boolean isReported,
         int reportCycle, Boolean isPublic, int notificationCount, Timestamp startedAt,
@@ -125,7 +126,7 @@ public class Room implements Serializable {
         this.subCategoryId = subCategoryId;
         this.title = title;
         this.content = content;
-        this.place =place;
+        this.place = place;
         this.estimateDuration = estimateDuration;
         this.roomCreatedAt = roomCreatedAt;
         this.matchCreatedAt = matchCreatedAt;
@@ -148,30 +149,4 @@ public class Room implements Serializable {
         CREATE, BEFORE, ONGOING, END, BROKEN
     }
 
-    @Override
-    public String toString() {
-        return "Room{" +
-            "roomId=" + roomId +
-            ", userId=" + userId +
-            ", zipsaId=" + zipsaId +
-            ", subCategoryId=" + subCategoryId +
-            ", content='" + content + '\'' +
-            ", estimateDuration=" + estimateDuration +
-            ", roomCreatedAt=" + roomCreatedAt +
-            ", matchCreatedAt=" + matchCreatedAt +
-            ", isReported=" + isReported +
-            ", reportCycle=" + reportCycle +
-            ", isPublic=" + isPublic +
-            ", notificationCount=" + notificationCount +
-            ", startedAt=" + startedAt +
-            ", endedAt=" + endedAt +
-            ", expectationStartedAt=" + expectationStartedAt +
-            ", expectationEndedAt=" + expectationEndedAt +
-            ", expectationPay=" + expectationPay +
-            ", totalPay=" + totalPay +
-            ", isComplained=" + isComplained +
-            ", isReviewed=" + isReviewed +
-            ", status=" + status +
-            '}';
-    }
 }

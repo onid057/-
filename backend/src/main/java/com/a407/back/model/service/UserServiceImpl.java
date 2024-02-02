@@ -11,7 +11,6 @@ import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
-import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.exception.CustomException;
@@ -29,6 +28,7 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,6 +42,9 @@ public class UserServiceImpl implements UserService {
     private final CategoryRepository categoryRepository;
 
     private final DefaultMessageService messageService;
+
+    @Value("${sms.number}")
+    private String senderPhoneNumber;
 
 
     @Override
@@ -66,15 +69,11 @@ public class UserServiceImpl implements UserService {
             notificationList = userRepository.findNotificationByUserIdList(userId, "USER");
         }
         for (Notification n : notificationList) {
-            notificationResponseList.add(new NotificationListResponse(
-                userRepository.findByUserId(userId).getName(),
-                n.getType(),
-                n.getStatus(),
-                categoryRepository.findMajorCategoryName(
+            notificationResponseList.add(
+                new NotificationListResponse(userRepository.findByUserId(userId).getName(),
+                    n.getType(), n.getStatus(), categoryRepository.findMajorCategoryName(
                     n.getRoomId().getSubCategoryId().getMajorCategoryId().getMajorCategoryId()),
-                n.getRoomId().getRoomId(),
-                n.getNotificationId()
-            ));
+                    n.getRoomId().getRoomId(), n.getNotificationId(),n.getCreatedAt()));
         }
         return notificationResponseList;
     }
@@ -88,10 +87,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserNearZipsaResponse> findNearZipsaList(Long userId) {
-        return userRepository.findNearZipsaList(userId).stream()
-            .map(zipsa -> new UserNearZipsaResponse(zipsa.getZipsaId().getName(), zipsa.getZipsaId()
-                .getGender(), zipsa.getGradeId().getName(), zipsa.getDescription(),
-                zipsa.getPreferTag(), zipsa.getZipsaId().getUserId())).toList();
+        return userRepository.findNearZipsaList(userId).stream().map(
+                zipsa -> new UserNearZipsaResponse(zipsa.getZipsaId().getName(),
+                    zipsa.getZipsaId().getGender(), zipsa.getGradeId().getName(),
+                    zipsa.getDescription(), zipsa.getPreferTag(), zipsa.getZipsaId().getUserId()))
+            .toList();
     }
 
     @Override
@@ -101,56 +101,42 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserRecordsResponse> getUserRecordList(Long userId) {
-        return userRepository.getUserRecordList(userId).stream()
-            .map(room -> UserRecordsResponse.builder()
-                .roomId(room.getRoomId())
-                .zipsaId(room.getZipsaId().getZipsaId().getUserId())
-                .name(room.getZipsaId().getZipsaId().getName())
-                .profile(room.getZipsaId().getZipsaId().getProfileImage() == null ? null
-                    : Arrays.toString(room.getZipsaId().getZipsaId().getProfileImage()))
-                .subCategoryName(room.getSubCategoryId().getName())
-                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
-                .content(room.getContent())
-                .estimateDuration(room.getEstimateDuration())
-                .roomCreatedAt(room.getRoomCreatedAt())
-                .matchCreatedAt(room.getMatchCreatedAt())
-                .isReported(room.getIsReported())
-                .reportCycle(room.getReportCycle())
-                .isPublic(room.getIsPublic())
-                .startedAt(room.getStartedAt())
-                .endedAt(room.getEndedAt())
-                .expectationStartedAt(room.getExpectationStartedAt())
-                .expectationEndedAt(room.getExpectationEndedAt())
-                .expectationPay(room.getExpectationPay())
-                .totalPay(room.getTotalPay())
-                .isComplained(room.getIsComplained())
-                .isReviewed(room.getIsReviewed())
-                .build()).toList();
+        return userRepository.getUserRecordList(userId).stream().map(
+                room -> UserRecordsResponse.builder().roomId(room.getRoomId())
+                    .zipsaId(room.getZipsaId().getZipsaId().getUserId())
+                    .name(room.getZipsaId().getZipsaId().getName()).profile(
+                        room.getZipsaId().getZipsaId().getProfileImage() == null ? null
+                            : Arrays.toString(room.getZipsaId().getZipsaId().getProfileImage()))
+                    .subCategoryName(room.getSubCategoryId().getName())
+                    .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+                    .content(room.getContent()).estimateDuration(room.getEstimateDuration())
+                    .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
+                    .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
+                    .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
+                    .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
+                    .expectationEndedAt(room.getExpectationEndedAt())
+                    .expectationPay(room.getExpectationPay()).totalPay(room.getTotalPay())
+                    .isComplained(room.getIsComplained()).isReviewed(room.getIsReviewed()).build())
+            .toList();
     }
 
     @Override
     public List<UserReservationResponse> getUserReservationList(Long userId) {
-        return userRepository.getUserReservationList(userId).stream()
-            .map(room -> UserReservationResponse.builder()
+        return userRepository.getUserReservationList(userId).stream().map(
+            room -> UserReservationResponse.builder()
                 .zipsaId(room.getZipsaId().getZipsaId().getUserId())
-                .name(room.getZipsaId().getZipsaId().getName())
-                .profile(room.getZipsaId().getZipsaId().getProfileImage() == null ? null
-                    : Arrays.toString(room.getZipsaId().getZipsaId().getProfileImage()))
+                .name(room.getZipsaId().getZipsaId().getName()).profile(
+                    room.getZipsaId().getZipsaId().getProfileImage() == null ? null
+                        : Arrays.toString(room.getZipsaId().getZipsaId().getProfileImage()))
                 .subCategoryName(room.getSubCategoryId().getName())
                 .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
-                .content(room.getContent())
-                .estimateDuration(room.getEstimateDuration())
-                .roomCreatedAt(room.getRoomCreatedAt())
-                .matchCreatedAt(room.getMatchCreatedAt())
-                .isReported(room.getIsReported())
-                .reportCycle(room.getReportCycle())
-                .isPublic(room.getIsPublic())
-                .startedAt(room.getStartedAt())
-                .endedAt(room.getEndedAt())
-                .expectationStartedAt(room.getExpectationStartedAt())
+                .content(room.getContent()).estimateDuration(room.getEstimateDuration())
+                .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
+                .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
+                .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
+                .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
                 .expectationEndedAt(room.getExpectationEndedAt())
-                .expectationPay(room.getExpectationPay())
-                .build()).toList();
+                .expectationPay(room.getExpectationPay()).build()).toList();
     }
 
     @Override
@@ -181,25 +167,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public void deleteAccount(Long userId) {
-        User user = userRepository.findByUserId(userId);
-        if (user == null) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
-        userRepository.deleteAccount(user, user.getAccount());
-    }
-
-    @Override
-    public void makeSendMessage(UserPhoneNumberRequest userPhoneNumberRequest, String email)
+    public void makeSendMessage(String phoneNumber, String email)
         throws JsonProcessingException, NoSuchAlgorithmException {
         int code = getInstanceStrong().nextInt(1000, 9999);
         while (userRepository.findCode(String.valueOf(code)) != null) {
             code = getInstanceStrong().nextInt(1000, 9999);
         }
         Message message = new Message();
-        message.setFrom("01035511284");
-        message.setTo(userPhoneNumberRequest.getPhoneNumber());
+        message.setFrom(senderPhoneNumber);
+        message.setTo(phoneNumber);
         message.setText("인증 번호 " + code + " 를 입력해주세요");
         SingleMessageSentResponse response = messageService.sendOne(
             new SingleMessageSendingRequest(message));
@@ -207,8 +183,18 @@ public class UserServiceImpl implements UserService {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         }
         UserPhoneNumberAndEmail userPhoneNumberAndEmail = new UserPhoneNumberAndEmail(email,
-            userPhoneNumberRequest.getPhoneNumber());
+            phoneNumber);
         userRepository.makeSendMessage(userPhoneNumberAndEmail, String.valueOf(code));
+    }
+
+    @Override
+    @Transactional
+    public void deleteAccount(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        if (user == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+        userRepository.deleteAccount(user, user.getAccount());
     }
 
     @Override
