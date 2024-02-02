@@ -54,20 +54,20 @@ const DiamondBlueButton = styled(ThinButtonWrapper)`
 function Button({ mode, onClick, children }) {
   switch (mode) {
     case 'THICK_GRAY':
-      return <ThickGrayButton onCLick={onClick}>{children}</ThickGrayButton>;
+      return <ThickGrayButton onClick={onClick}>{children}</ThickGrayButton>;
     case 'THIN_GRAY':
-      return <ThinGrayButton onCLick={onClick}>{children}</ThinGrayButton>;
+      return <ThinGrayButton onClick={onClick}>{children}</ThinGrayButton>;
     case 'THICK_BLUE':
-      return <ThickBlueButton onCLick={onClick}>{children}</ThickBlueButton>;
+      return <ThickBlueButton onClick={onClick}>{children}</ThickBlueButton>;
     case 'THIN_BLUE':
-      return <ThinBlueButton onCLick={onClick}>{children}</ThinBlueButton>;
+      return <ThinBlueButton onClick={onClick}>{children}</ThinBlueButton>;
     case 'THICK_WHITE':
-      return <ThickWhiteButton onCLick={onClick}>{children}</ThickWhiteButton>;
+      return <ThickWhiteButton onClick={onClick}>{children}</ThickWhiteButton>;
     case 'THIN_WHITE':
-      return <ThinWhiteButton onCLick={onClick}>{children}</ThinWhiteButton>;
+      return <ThinWhiteButton onClick={onClick}>{children}</ThinWhiteButton>;
     case 'IMAGE_UPLOAD':
       return (
-        <ImageButton onCLick={onClick}>
+        <ImageButton onClick={onClick}>
           <Image
             src={`${process.env.PUBLIC_URL}/images/camera.svg`}
             width="24px"
@@ -78,7 +78,7 @@ function Button({ mode, onClick, children }) {
       );
     case 'IMAGE_EDIT':
       return (
-        <ImageButton onCLick={onClick}>
+        <ImageButton onClick={onClick}>
           <Image
             src={`${process.env.PUBLIC_URL}/images/edit.svg`}
             width="24px"
@@ -89,7 +89,7 @@ function Button({ mode, onClick, children }) {
       );
     case 'DIAMOND_WHITE':
       return (
-        <DiamondWhiteButton onCLick={onClick}>
+        <DiamondWhiteButton onClick={onClick}>
           <Image
             src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
             width="29px"
@@ -100,7 +100,7 @@ function Button({ mode, onClick, children }) {
       );
     case 'DIAMOND_BLUE':
       return (
-        <DiamondBlueButton onCLick={onClick}>
+        <DiamondBlueButton onClick={onClick}>
           <Image
             src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
             width="29px"
