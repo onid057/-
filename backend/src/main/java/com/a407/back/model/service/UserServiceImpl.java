@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
                 new NotificationListResponse(userRepository.findByUserId(userId).getName(),
                     n.getType(), n.getStatus(), categoryRepository.findMajorCategoryName(
                     n.getRoomId().getSubCategoryId().getMajorCategoryId().getMajorCategoryId()),
-                    n.getRoomId().getRoomId(), n.getNotificationId()));
+                    n.getRoomId().getRoomId(), n.getNotificationId(),n.getCreatedAt()));
         }
         return notificationResponseList;
     }
