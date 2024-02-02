@@ -10,8 +10,9 @@ import FilterFunnel from './pages/filterFunnel/FilterFunnel';
 import MatchOption from './pages/MatchOption';
 import NotFound from './pages/NotFound';
 import StartMatch from './pages/StartMatch';
-import NotificationPage from './pages/alarm/NotificationPage';
-import SuggestionPage from './pages/SuggestionPage';
+import Notify from './pages/notify/Notify';
+import SuggestByZipsa from './pages/notify/SuggestByZipsa';
+import SuggestByUser from './pages/notify/SuggestByUser';
 import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
 
 const GlobalStyle = createGlobalStyle`
@@ -172,6 +173,13 @@ function App() {
         <Route path="/register" element={<RegisterFunnel />}></Route>
         <Route path="/filter" element={<FilterFunnel />}></Route>
         <Route path="/matchOption" element={<MatchOption />}></Route>
+
+        <Route path="/notify" element={<Notify />}></Route>
+        <Route path="/suggest-by-zipsa" element={<SuggestByZipsa />}></Route>
+        <Route
+          path="/suggest-by-user/:notificationId"
+          element={<SuggestByUser />}
+        ></Route>
 
         <Route
           path="/experiment"
