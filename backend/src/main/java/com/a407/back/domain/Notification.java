@@ -71,19 +71,6 @@ public class Notification {
         this.status = status;
     }
 
-    @Override
-    public String toString() {
-        return "Notification{" +
-            "notificationId=" + notificationId +
-            ", sendId=" + sendId +
-            ", receiveId=" + receiveId +
-            ", roomId=" + roomId +
-            ", isRead=" + isRead +
-            ", createdAt=" + createdAt +
-            ", type=" + type +
-            ", status=" + status +
-            '}';
-    }
 
     public enum Type {
         USER, ZIPSA

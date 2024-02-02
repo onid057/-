@@ -13,7 +13,6 @@ import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -93,7 +92,8 @@ public class User {
 
     @Builder(toBuilder = true)
     public User(Association associationId, String email, String password, String name,
-        Timestamp birth, Gender gender, String phoneNumber, String address, Byte[] profileImage, Boolean isCertificated,
+        Timestamp birth, Gender gender, String phoneNumber, String address, Byte[] profileImage,
+        Boolean isCertificated,
         Double latitude, Double longitude, String account, Boolean isBlocked, Boolean isAdmin,
         Boolean isAffiliated, int serviceCount) {
         this.associationId = associationId;
@@ -119,26 +119,4 @@ public class User {
         MAN, WOMAN
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-            "userId=" + userId +
-            ", associationId=" + associationId +
-            ", email='" + email + '\'' +
-            ", password='" + password + '\'' +
-            ", name='" + name + '\'' +
-            ", birth=" + birth +
-            ", gender=" + gender +
-            ", address='" + address + '\'' +
-            ", profileImage=" + Arrays.toString(profileImage) +
-            ", isCertificated=" + isCertificated +
-            ", latitude=" + latitude +
-            ", longitude=" + longitude +
-            ", account='" + account + '\'' +
-            ", isBlocked=" + isBlocked +
-            ", isAdmin=" + isAdmin +
-            ", isAffiliated=" + isAffiliated +
-            ", serviceCount=" + serviceCount +
-            '}';
-    }
 }

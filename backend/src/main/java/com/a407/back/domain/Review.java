@@ -64,17 +64,4 @@ public class Review {
     }
 
 
-    @Override
-    public String toString() {
-        return "Review{" +
-            "reviewId=" + reviewId +
-            ", userId=" + userId +
-            ", zipsaId=" + zipsaId +
-            ", content='" + content + '\'' +
-            ", kindnessScore=" + kindnessScore +
-            ", skillScore=" + skillScore +
-            ", rewindScore=" + rewindScore +
-            ", createdAt=" + createdAt +
-            '}';
-    }
 }
