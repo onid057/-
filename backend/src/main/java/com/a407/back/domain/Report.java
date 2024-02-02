@@ -12,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -54,14 +53,4 @@ public class Report implements Serializable {
         this.createdAt = createdAt;
     }
 
-    @Override
-    public String toString() {
-        return "Report{" +
-            "reportId=" + reportId +
-            ", roomId=" + roomId +
-            ", processImage=" + Arrays.toString(processImage) +
-            ", processContent='" + processContent + '\'' +
-            ", createdAt=" + createdAt +
-            '}';
-    }
 }

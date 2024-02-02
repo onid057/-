@@ -351,8 +351,8 @@ class UserControllerTest {
     void makeSendMessage() throws NoSuchAlgorithmException, JsonProcessingException {
         // 주의 해당 테스트 실행 전 userServiceImpl로 가서 makeSendMessage 에서 외부 API 사용하는 부분 주석 해주기
         assertThat(redisTemplate.keys("*")).isEmpty();
-        UserPhoneNumberRequest userPhoneNumberRequest = new UserPhoneNumberRequest("01012341234");
-        userService.makeSendMessage(userPhoneNumberRequest, "test@test.com");
+        UserPhoneNumberRequest request = new UserPhoneNumberRequest("01012341234", "test@test.com");
+        userService.makeSendMessage(request.getPhoneNumber(), request.getEmail());
         assertThat(redisTemplate.keys("*")).hasSize(1);
     }
 
@@ -361,8 +361,8 @@ class UserControllerTest {
     void makePhoneNumber() throws NoSuchAlgorithmException, JsonProcessingException {
         // 주의 해당 테스트 실행 전 userServiceImpl로 가서 makeSendMessage 에서 외부 API 사용하는 부분 주석 해주기
         assertThat(redisTemplate.keys("*")).isEmpty();
-        UserPhoneNumberRequest userPhoneNumberRequest = new UserPhoneNumberRequest("01012341234");
-        userService.makeSendMessage(userPhoneNumberRequest, "test@test.com");
+        UserPhoneNumberRequest request = new UserPhoneNumberRequest("01012341234", "test@test.com");
+        userService.makeSendMessage(request.getPhoneNumber(), request.getEmail());
         assertThat(redisTemplate.keys("*")).hasSize(1);
         ObjectMapper objectMapper = new ObjectMapper();
         UserPhoneNumberAndEmail userPhoneNumberAndEmail = objectMapper.readValue(

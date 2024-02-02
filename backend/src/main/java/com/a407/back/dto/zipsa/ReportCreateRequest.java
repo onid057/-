@@ -19,12 +19,4 @@ public class ReportCreateRequest {
     }
 
 
-    @Override
-    public String toString() {
-        return "ReportCreateRequest{" +
-            "roomId=" + roomId +
-            ", processImage='" + processImage + '\'' +
-            ", processContent='" + processContent + '\'' +
-            '}';
-    }
 }
