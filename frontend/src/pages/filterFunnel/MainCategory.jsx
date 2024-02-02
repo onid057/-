@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { styled } from 'styled-components';
-
+import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
+
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -75,10 +75,11 @@ function MainCategory({ onPrevious, onNext, matchMainCategory }) {
           return (
             <Button
               key={index}
-              mode={mainCategory === category ? 'SELECTED' : 'SMALL_WHITE'}
-              msg={category}
+              mode={mainCategory === category ? 'THICK_BLUE' : 'THICK_WHITE'}
               onClick={() => setMainCategory(category)}
-            ></Button>
+            >
+              {category}
+            </Button>
           );
         })}
       </ContentBox>

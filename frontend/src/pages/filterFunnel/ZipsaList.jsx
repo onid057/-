@@ -6,7 +6,6 @@ import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
-import Button from '../../components/common/Button';
 import FilteredHelperInfo from '../../components/filter/FilteredHelperInfo';
 
 const Wrapper = styled.div`
@@ -23,12 +22,7 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-// Button 컴포넌트 상하 마진 주기 위한 div
-const ButtonBox = styled.div`
-  margin: 32px 0 16px 0;
-`;
-
-function HelperList({ onPrevious, onNext, helperData, savedHelperId }) {
+function ZipsaList({ onPrevious, onNext, helperData, savedHelperId }) {
   const [selectedHelperId, setSelectedHelperId] = useState(savedHelperId || []);
 
   return (
@@ -59,7 +53,7 @@ function HelperList({ onPrevious, onNext, helperData, savedHelperId }) {
 
       <ProgressBar value={44}></ProgressBar>
 
-      {helperData?.length &&
+      {helperData.length > 0 &&
         helperData.map((helper, index) => {
           return (
             <FilteredHelperInfo
@@ -122,4 +116,4 @@ function HelperList({ onPrevious, onNext, helperData, savedHelperId }) {
   );
 }
 
-export default HelperList;
+export default ZipsaList;

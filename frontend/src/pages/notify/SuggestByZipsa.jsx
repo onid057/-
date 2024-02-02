@@ -1,9 +1,9 @@
-import { styled } from 'styled-components';
-
-import BoldText from '../components/common/BoldText';
-import Paragraph from '../components/common/Paragraph';
-import Image from '../components/common/Image';
-import NavigateText from '../components/common/NavigateText';
+import styled from 'styled-components';
+import BoldText from '../../components/common/BoldText';
+import Paragraph from '../../components/common/Paragraph';
+import Image from '../../components/common/Image';
+import NavigateText from '../../components/common/NavigateText';
+import Button from '../../components/common/Button';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -34,7 +34,13 @@ const Content = styled.div`
   gap: 32px;
 `;
 
-function SuggestionPage() {
+const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 10px;
+`;
+
+function SuggestByZipsa() {
   return (
     <Wrapper>
       <Title>
@@ -67,9 +73,14 @@ function SuggestionPage() {
           fontSize="18px"
           sentences={['충분히 검토하셨다면', '결정을 내려주세요!']}
         ></Paragraph>
+
+        <ButtonWrapper>
+          <Button mode={'THICK_BLUE'}>수락</Button>
+          <Button mode={'THICK_GRAY'}>거절</Button>
+        </ButtonWrapper>
       </Content>
     </Wrapper>
   );
 }
 
-export default SuggestionPage;
+export default SuggestByZipsa;

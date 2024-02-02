@@ -69,7 +69,7 @@ function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
           value={startTime}
           onChange={event => setStartTime(event.target.value)}
         ></Input>
-        시부터
+        <>시부터</>
         <Input
           type="number"
           width="80px"
@@ -79,7 +79,7 @@ function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
           value={endTime}
           onChange={event => setEndTime(event.target.value)}
         ></Input>
-        시까지
+        <>시까지</>
       </TimeWrapper>
     </Wrapper>
   );

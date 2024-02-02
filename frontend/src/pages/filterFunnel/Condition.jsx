@@ -1,17 +1,16 @@
-import { useState } from 'react';
-import { styled } from 'styled-components';
-
+import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
-
 import GENDER from '../../constants/gender';
 import AGE from '../../constants/age';
 import GRADE from '../../constants/grade';
 import SCORE from '../../constants/score';
+
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -104,14 +103,11 @@ function Condition({
             return (
               <Button
                 key={index}
-                mode={
-                  gender === GENDER[option]
-                    ? 'FULL_PERCENT_BLUE'
-                    : 'FULL_PERCENT_WHITE'
-                }
-                msg={option}
+                mode={gender === GENDER[option] ? 'THIN_BLUE' : 'THIN_WHITE'}
                 onClick={() => setGender(GENDER[option])}
-              ></Button>
+              >
+                {option}
+              </Button>
             );
           })}
         </FlexBox>
@@ -124,14 +120,11 @@ function Condition({
             return (
               <Button
                 key={index}
-                mode={
-                  age === AGE[option]
-                    ? 'FULL_PERCENT_BLUE'
-                    : 'FULL_PERCENT_WHITE'
-                }
-                msg={option}
+                mode={age === AGE[option] ? 'THIN_BLUE' : 'THIN_WHITE'}
                 onClick={() => setAge(AGE[option])}
-              ></Button>
+              >
+                {option}
+              </Button>
             );
           })}
         </FlexBox>
@@ -145,14 +138,11 @@ function Condition({
               return (
                 <Button
                   key={index}
-                  mode={
-                    grade === GRADE[option]
-                      ? 'FULL_PERCENT_BLUE'
-                      : 'FULL_PERCENT_WHITE'
-                  }
-                  msg={option}
+                  mode={grade === GRADE[option] ? 'THIN_BLUE' : 'THIN_WHITE'}
                   onClick={() => setGrade(GRADE[option])}
-                ></Button>
+                >
+                  {option}
+                </Button>
               );
             },
           )}
@@ -168,13 +158,12 @@ function Condition({
                 <Button
                   key={index}
                   mode={
-                    score === SCORE[option]
-                      ? 'SELECTED_INSIDE_IMAGE'
-                      : 'INSIDE_IMAGE'
+                    score === SCORE[option] ? 'DIAMOND_BLUE' : 'DIAMOND_WHITE'
                   }
-                  msg={option}
                   onClick={() => setScore(SCORE[option])}
-                ></Button>
+                >
+                  {option}
+                </Button>
               );
             },
           )}

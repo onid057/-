@@ -4,6 +4,7 @@ const Wrapper = styled.div`
   display: flex;
   align-items: center;
   font-size: ${props => (props.$fontSize ? props.$fontSize : 'inherit')};
+  word-break: keep-all;
 `;
 
 const BoldTextWrapper = styled.div`

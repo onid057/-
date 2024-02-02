@@ -1,4 +1,5 @@
-import { styled } from 'styled-components';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 import Image from '../components/common/Image.jsx';
 import Paragraph from '../components/common/Paragraph.jsx';
@@ -29,6 +30,8 @@ const UpperWrapper = styled.div`
 `;
 
 export default function Home() {
+  const navigate = useNavigate('/notify');
+
   return (
     <Wrapper>
       <UpperWrapper>
@@ -38,7 +41,7 @@ export default function Home() {
           src={process.env.PUBLIC_URL + '/images/alarm.svg'}
           width="30px"
           height="35px"
-          margin="0"
+          onClick={() => navigate('/notify')}
         ></Image>
       </UpperWrapper>
 

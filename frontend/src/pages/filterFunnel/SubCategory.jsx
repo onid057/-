@@ -67,9 +67,10 @@ function SubCategory({
           <Button
             key={index}
             mode={subCategory === category ? 'THIN_BLUE' : 'THIN_WHITE'}
-            msg={category}
             onClick={() => setSubCategory(category)}
-          ></Button>
+          >
+            {category}
+          </Button>
         );
       })}
     </Wrapper>
