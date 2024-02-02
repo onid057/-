@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import MainCategory from './MainCategory';
 import SubCategory from './SubCategory';
 import Condition from './Condition';
-import HelperList from './HelperList';
+import ZipsaList from './ZipsaList';
 import TargetDate from './TargetDate';
 import TargetTime from './TargetTime';
 import Address from './Address';
@@ -60,7 +60,7 @@ function FilterFunnel() {
             setStep('SUB_CATEGORY');
           }}
           onNext={(gender, age, grade, score) => {
-            setStep('HELPER_LIST');
+            setStep('ZIPSA_LIST');
             const nextFilterData = {
               ...filterData,
               genderCondition: gender,
@@ -87,8 +87,8 @@ function FilterFunnel() {
         ></Condition>
       </Funnel.Step>
 
-      <Funnel.Step name="HELPER_LIST">
-        <HelperList
+      <Funnel.Step name="ZIPSA_LIST">
+        <ZipsaList
           onPrevious={() => {
             setStep('CONDITION');
           }}
@@ -98,7 +98,7 @@ function FilterFunnel() {
           }}
           helperData={helperData}
           savedHelperId={filterData.helperId}
-        ></HelperList>
+        ></ZipsaList>
       </Funnel.Step>
 
       {/* 여기까지 플로우 완성 */}
@@ -106,7 +106,7 @@ function FilterFunnel() {
       <Funnel.Step name="DATE">
         <TargetDate
           onPrevious={() => {
-            setStep('HELPER_LIST');
+            setStep('ZIPSA_LIST');
           }}
           onNext={data => {
             setStep('TIME');

@@ -174,6 +174,7 @@ function App() {
         <Route path="/filter" element={<FilterFunnel />}></Route>
         <Route path="/matchOption" element={<MatchOption />}></Route>
 
+        <Route path="/startMatch" element={<StartMatch />}></Route>
         <Route path="/notify" element={<Notify />}></Route>
         <Route path="/suggest-by-zipsa" element={<SuggestByZipsa />}></Route>
         <Route
