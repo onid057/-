@@ -28,6 +28,7 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -41,6 +42,9 @@ public class UserServiceImpl implements UserService {
     private final CategoryRepository categoryRepository;
 
     private final DefaultMessageService messageService;
+
+    @Value("${sms.number}")
+    private String senderPhoneNumber;
 
 
     @Override
@@ -69,7 +73,7 @@ public class UserServiceImpl implements UserService {
                 new NotificationListResponse(userRepository.findByUserId(userId).getName(),
                     n.getType(), n.getStatus(), categoryRepository.findMajorCategoryName(
                     n.getRoomId().getSubCategoryId().getMajorCategoryId().getMajorCategoryId()),
-                    n.getRoomId().getRoomId(), n.getNotificationId(),n.getCreatedAt()));
+                    n.getRoomId().getRoomId(), n.getNotificationId(), n.getCreatedAt()));
         }
         return notificationResponseList;
     }
@@ -170,7 +174,7 @@ public class UserServiceImpl implements UserService {
             code = getInstanceStrong().nextInt(1000, 9999);
         }
         Message message = new Message();
-        message.setFrom("01035511284");
+        message.setFrom(senderPhoneNumber);
         message.setTo(phoneNumber);
         message.setText("인증 번호 " + code + " 를 입력해주세요");
         SingleMessageSentResponse response = messageService.sendOne(

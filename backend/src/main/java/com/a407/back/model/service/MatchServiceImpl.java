@@ -37,6 +37,7 @@ public class MatchServiceImpl implements MatchService {
     private final RoomRepository roomRepository;
 
     private final ZipsaRepository zipsaRepository;
+
     @Override
     @Transactional
     public List<MatchSearchResponse> getFilteredZipsaList(MatchSearchRequest matchSearchRequest) {
@@ -45,7 +46,9 @@ public class MatchServiceImpl implements MatchService {
             List<String> categories = getCategoryNamesForZipsa(zipsa);
             String gradeName = zipsa.getGradeId().getName();
             int gradeSalary = zipsa.getGradeId().getSalary();
-            double scoreAverage = (zipsa.getKindnessAverage() + zipsa.getRewindAverage() + zipsa.getSkillAverage()) / 3.0;
+            double scoreAverage =
+                (zipsa.getKindnessAverage() + zipsa.getRewindAverage() + zipsa.getSkillAverage())
+                    / 3.0;
             return new MatchSearchResponse(
                 zipsa.getZipsaId().getUserId(),
                 zipsa.getZipsaId().getName(),
@@ -93,7 +96,7 @@ public class MatchServiceImpl implements MatchService {
         for (Long id : roomCreateRequest.getHelperList()) {
             Notification notification = Notification.builder().roomId(newRoom)
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
-                    Type.USER).status(Status.STANDBY).isRead(false).build();
+                    Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
         }
 
