@@ -14,6 +14,7 @@ import Notify from './pages/notify/Notify';
 import SuggestByZipsa from './pages/notify/SuggestByZipsa';
 import SuggestByUser from './pages/notify/SuggestByUser';
 import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
+import Map from './pages/Map';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -186,6 +187,7 @@ function App() {
           path="/experiment"
           element={<ExperimentCommonComponent />}
         ></Route>
+        <Route path="/map" element={<Map />}></Route>
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </ThemeProvider>
