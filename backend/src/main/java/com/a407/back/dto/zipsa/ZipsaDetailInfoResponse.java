@@ -1,7 +1,6 @@
 package com.a407.back.dto.zipsa;
 
 import com.a407.back.domain.User.Gender;
-import com.a407.back.dto.util.ZipsaReview;
 import java.sql.Timestamp;
 import java.util.List;
 import lombok.Builder;
@@ -31,7 +30,6 @@ public class ZipsaDetailInfoResponse {
     private Double kindnessAverage;
     private Double skillAverage;
     private Double rewindAverage;
-    private List<ZipsaReview> reviews;
     private List<String> subCategory;
 
 }

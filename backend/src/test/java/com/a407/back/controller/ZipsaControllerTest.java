@@ -1,6 +1,7 @@
 package com.a407.back.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 import com.a407.back.BackendApplication;
 import com.a407.back.domain.Grade;
@@ -9,10 +10,13 @@ import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.match.RoomCreateRequest;
+import com.a407.back.dto.review.ReviewCreateRequest;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
+import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.model.service.MatchService;
 import com.a407.back.model.service.NotificationService;
+import com.a407.back.model.service.ReviewService;
 import com.a407.back.model.service.RoomService;
 import com.a407.back.model.service.UserService;
 import com.a407.back.model.service.ZipsaService;
@@ -21,6 +25,7 @@ import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import org.awaitility.Durations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -44,6 +49,9 @@ class ZipsaControllerTest {
 
     @Autowired
     MatchService matchService;
+
+    @Autowired
+    ReviewService reviewService;
 
     @Autowired
     EntityManager em;
@@ -77,8 +85,8 @@ class ZipsaControllerTest {
         assertThat(userService.findByUserId(userId)).isEqualTo(userService.findByUserId(userId));
         assertThat(userService.findByUserId(zipsaId)).isEqualTo(userService.findByUserId(zipsaId));
         Zipsa zipsa = Zipsa.builder().zipsaId(zipsaUser).account("계좌").description("설명")
-            .gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D)
-            .rewindAverage(0D).replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
+            .gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D).rewindAverage(0D)
+            .replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
         em.persist(zipsa);
         assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
 
@@ -88,6 +96,9 @@ class ZipsaControllerTest {
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), 15000, list);
         roomId = matchService.makeFilterRoom(roomCreateRequest);
+        roomService.changeRoomZipsa(zipsa, roomId);
+        em.flush();
+        em.clear();
     }
 
     @Test
@@ -100,8 +111,8 @@ class ZipsaControllerTest {
             "https://www.flaticon.com/kr/free-icon-font/phone-call_5070407", "내용2");
         zipsaService.makeReport(reportCreateRequestTwo);
         assertThat(zipsaService.findReportByRoomIdList(roomId)).hasSize(2);
-        assertThat(zipsaService.findReportByRoomIdList(roomId).get(0)
-            .getProcessContent()).isEqualTo("내용");
+        assertThat(
+            zipsaService.findReportByRoomIdList(roomId).get(0).getProcessContent()).isEqualTo("내용");
     }
 
     @Test
@@ -117,17 +128,46 @@ class ZipsaControllerTest {
     }
 
     @Test
+    @DisplayName("집사 정보 조회")
+    void findZipsaFindByZipsaId() {
+        ZipsaInfoResponse zipsaFindByZipsaId = zipsaService.findZipsaFindByZipsaId(zipsaId);
+        assertThat(zipsaFindByZipsaId.getName()).isEqualTo("zipsa");
+    }
+
+    @Test
     @DisplayName("집사 상세 정보 조회")
-    void findZipsaAndReviewFindByZipsaId() {
-        ReportCreateRequest reportCreateRequest = new ReportCreateRequest(roomId,
-            "https://www.flaticon.com/kr/free-icon-font/phone-call_5070407", "내용");
-        zipsaService.makeReport(reportCreateRequest);
-        ReportCreateRequest reportCreateRequestTwo = new ReportCreateRequest(roomId,
-            "https://www.flaticon.com/kr/free-icon-font/phone-call_5070407", "내용2");
-        zipsaService.makeReport(reportCreateRequestTwo);
-        assertThat(zipsaService.findReportByRoomIdList(roomId)).hasSize(2);
-        assertThat(zipsaService.findZipsaAndReviewFindByZipsaId(zipsaId).getName()).isEqualTo(
-            "zipsa");
+    void findZipsaDetailFindByZipsaId() {
+        ReviewCreateRequest reviewCreateRequest = new ReviewCreateRequest(roomId, "내용", 10, 10, 10);
+        ReviewCreateRequest reviewCreateRequestTwo = new ReviewCreateRequest(roomId, "내용2", 20, 20,
+            20);
+
+        reviewService.makeReview(reviewCreateRequest);
+        em.flush();
+        em.clear();
+        reviewService.makeReview(reviewCreateRequestTwo);
+        em.flush();
+        em.clear();
+        assertThat(
+            zipsaService.findZipsaDetailFindByZipsaId(zipsaId).getKindnessAverage()).isEqualTo(15);
+    }
+
+    @Test
+    @DisplayName("집사 리뷰 조회")
+    void findsZipsaReviewFindByZipsaId()  {
+        ReviewCreateRequest reviewCreateRequest = new ReviewCreateRequest(roomId, "내용", 10, 10, 10);
+        reviewService.makeReview(reviewCreateRequest);
+        em.flush();
+        em.clear();
+        await().pollDelay(Durations.ONE_SECOND).until(() -> true);
+        ReviewCreateRequest reviewCreateRequestTwo = new ReviewCreateRequest(roomId, "내용2", 20, 20,
+            20);
+        reviewService.makeReview(reviewCreateRequestTwo);
+        em.flush();
+        em.clear();
+        assertThat(zipsaService.findsZipsaReviewFindByZipsaId(zipsaId)).hasSize(2);
+        assertThat(
+            zipsaService.findsZipsaReviewFindByZipsaId(zipsaId).get(0).getContent()).isEqualTo(
+            "내용2");
     }
 
     @Test
@@ -160,7 +200,6 @@ class ZipsaControllerTest {
         roomService.changeRoomZipsa(zipsa, roomId);
         em.flush();
         em.clear();
-
 
         assertThat(zipsaService.getZipsaRecordList(zipsaId)).isEmpty();
 

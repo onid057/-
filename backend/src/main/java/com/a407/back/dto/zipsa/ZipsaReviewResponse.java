@@ -1,4 +1,4 @@
-package com.a407.back.dto.util;
+package com.a407.back.dto.zipsa;
 
 import java.sql.Timestamp;
 import lombok.Builder;
@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ZipsaReview {
+public class ZipsaReviewResponse {
 
     private String userName;
     private String profileImage;

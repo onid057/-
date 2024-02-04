@@ -10,7 +10,7 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.match.RoomCreateRequest;
 import com.a407.back.dto.review.ReviewCreateRequest;
 import com.a407.back.dto.review.ReviewListResponse;
-import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
+import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.model.service.MatchService;
 import com.a407.back.model.service.ReviewService;
 import com.a407.back.model.service.RoomService;
@@ -106,10 +106,12 @@ class ReviewControllerTest {
         em.flush();
         em.clear();
         assertThat(reviewService.findReviewsByUserId(userId)).hasSize(2);
-        ZipsaDetailInfoResponse zipsaAndReviewFindByZipsaId = zipsaService.findZipsaAndReviewFindByZipsaId(
+        List<ZipsaReviewResponse> zipsaReviewResponses = zipsaService.findsZipsaReviewFindByZipsaId(
             zipsaId);
-        assertThat(zipsaAndReviewFindByZipsaId.getReviews()).hasSize(2);
-        assertThat(zipsaAndReviewFindByZipsaId.getKindnessAverage()).isEqualTo(5.0);
+        assertThat(zipsaReviewResponses).hasSize(2);
+
+        assertThat(
+            zipsaService.findZipsaDetailFindByZipsaId(zipsaId).getKindnessAverage()).isEqualTo(5.0);
     }
 
     @Test
