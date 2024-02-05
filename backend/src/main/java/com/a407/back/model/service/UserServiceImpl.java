@@ -9,6 +9,7 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
+import com.a407.back.dto.user.UserDetailInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserRecordsResponse;
@@ -229,6 +230,30 @@ public class UserServiceImpl implements UserService {
             request.getPassword(), request.getDescription());
 
         userRepository.updateUserInfo(userId, userUpdateDto);
+
+    }
+
+    @Override
+    @Transactional
+    public UserDetailInfoResponse userDetailInfoResponse(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+
+        Byte[] bytes = user.getProfileImage();
+
+        byte[] bytes1 = new byte[bytes.length];
+
+        for (int i = 0; i < bytes.length; i++) {
+            bytes1[i] = bytes[i];
+        }
+
+        String profileImage = new String(bytes1);
+
+        return UserDetailInfoResponse.builder()
+            .profileImage(profileImage).name(user.getName())
+            .birth(user.getBirth()).email(user.getEmail()).phoneNumber(user.getPhoneNumber())
+            .address(user.getAddress()).description(zipsa != null ? zipsa.getDescription() : null)
+            .build();
 
     }
 

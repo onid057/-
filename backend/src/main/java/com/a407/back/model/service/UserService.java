@@ -4,6 +4,7 @@ import com.a407.back.domain.User;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
+import com.a407.back.dto.user.UserDetailInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
@@ -41,4 +42,6 @@ public interface UserService {
     void makePhoneNumber(String code, String email) throws JsonProcessingException;
 
     void updateUserInfo(Long userId, UserUpdateRequest request);
+
+    UserDetailInfoResponse userDetailInfoResponse(Long userId);
 }

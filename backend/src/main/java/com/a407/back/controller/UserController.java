@@ -7,6 +7,7 @@ import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserCertificationRequest;
 import com.a407.back.dto.user.UserCreateRequest;
+import com.a407.back.dto.user.UserDetailInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
@@ -135,6 +136,14 @@ public class UserController {
         userService.updateUserInfo(userId, userUpdateRequest);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 정보 수정 성공"));
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<ApiResponse<UserDetailInfoResponse>> findUserDetailInfo(
+        @PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.userDetailInfoResponse(userId)));
     }
 
 }
