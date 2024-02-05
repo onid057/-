@@ -52,9 +52,10 @@ public class UserController {
     }
 
     // 회원가입
-    @PostMapping("/")
-    public ResponseEntity<ApiResponse<Long>> makeUser(@RequestBody UserCreateRequest user) {
-        long id = userService.makeUser(user.toEntity());
+    @PostMapping
+    public ResponseEntity<ApiResponse<Long>> makeUser(
+        @RequestBody UserCreateRequest userCreateRequest) {
+        long id = userService.makeUser(userCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
     }

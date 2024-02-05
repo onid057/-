@@ -9,6 +9,7 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
+import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserRecordsResponse;
@@ -49,11 +50,27 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Long makeUser(User user) {
+    public Long makeUser(UserCreateRequest request) {
         // 에러 처리
-        if (userRepository.findByUserEmail(user.getEmail()) != null) {
+        if (userRepository.findByUserEmail(request.getEmail()) != null) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
+
+        User user = User.builder()
+            .email(request.getEmail())
+            .password(request.getPassword())
+            .name(request.getName())
+            .birth(request.getBirth())
+            .gender(request.getGender())
+            .address(request.getAddress())
+            .latitude(request.getLatitude())
+            .longitude(request.getLongitude())
+            .isAdmin(false)
+            .isCertificated(false)
+            .isBlocked(false)
+            .isAffiliated(false)
+            .build();
+
         return userRepository.makeUser(user).getUserId();
     }
 
