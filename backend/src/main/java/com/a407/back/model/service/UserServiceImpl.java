@@ -90,7 +90,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findNearZipsaList(userId).stream().map(
                 zipsa -> new UserNearZipsaResponse(zipsa.getZipsaId().getName(),
                     zipsa.getZipsaId().getGender(), zipsa.getGradeId().getName(),
-                    zipsa.getDescription(), zipsa.getPreferTag(), zipsa.getZipsaId().getUserId()))
+                    zipsa.getDescription(), zipsa.getPreferTag(), zipsa.getZipsaId().getUserId(),
+                    zipsa.getZipsaId().getLatitude(), zipsa.getZipsaId().getLongitude()))
             .toList();
     }
 
