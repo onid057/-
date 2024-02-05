@@ -7,6 +7,7 @@ import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
+import com.a407.back.dto.user.UserUpdateRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -38,4 +39,6 @@ public interface UserService {
         throws JsonProcessingException, NoSuchAlgorithmException;
 
     void makePhoneNumber(String code, String email) throws JsonProcessingException;
+
+    void updateUserInfo(Long userId, UserUpdateRequest request);
 }

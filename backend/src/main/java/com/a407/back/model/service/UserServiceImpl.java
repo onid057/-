@@ -13,6 +13,8 @@ import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
+import com.a407.back.dto.user.UserUpdateDto;
+import com.a407.back.dto.user.UserUpdateRequest;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.UserRepository;
@@ -206,6 +208,28 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.makePhoneNumber(userPhoneNumberAndEmail.getPhoneNumber(),
             userPhoneNumberAndEmail.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public void updateUserInfo(Long userId, UserUpdateRequest request) {
+
+        Byte[] profileImage = null;
+        if (request.getProfileImage() != null) {
+            int length = request.getProfileImage().getBytes().length;
+            profileImage = new Byte[length];
+            byte[] profileImageBefore = request.getProfileImage().getBytes();
+            for (int i = 0; i < length; i++) {
+                profileImage[i] = profileImageBefore[i];
+            }
+        }
+
+        UserUpdateDto userUpdateDto = new UserUpdateDto(profileImage,
+            request.getAddress(), request.getLatitude(), request.getLongitude(),
+            request.getPassword(), request.getDescription());
+
+        userRepository.updateUserInfo(userId, userUpdateDto);
+
     }
 
 }

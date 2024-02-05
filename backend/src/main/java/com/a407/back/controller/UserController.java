@@ -11,6 +11,7 @@ import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
+import com.a407.back.dto.user.UserUpdateRequest;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.UserService;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -124,6 +126,15 @@ public class UserController {
         userService.makePhoneNumber(request.getCode(), request.getEmail());
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "전화 번호 저장 성공"));
+    }
+
+
+    @PatchMapping("/{userId}")
+    public ResponseEntity<ApiResponse<String>> updateUserInfo(@PathVariable Long userId,
+        @RequestBody UserUpdateRequest userUpdateRequest) {
+        userService.updateUserInfo(userId, userUpdateRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 정보 수정 성공"));
     }
 
 }

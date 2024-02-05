@@ -11,11 +11,13 @@ import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
+import com.a407.back.dto.user.UserUpdateDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.querydsl.jpa.impl.JPAUpdateClause;
 import jakarta.persistence.EntityManager;
 import java.time.Duration;
 import java.util.List;
@@ -176,6 +178,37 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public String findCode(String code) {
         return redisTemplate.opsForValue().get(code);
+    }
+
+    @Override
+    public void updateUserInfo(Long userId, UserUpdateDto userUpdateDto) {
+        QUser qUser = QUser.user;
+        JPAUpdateClause clause = query.update(qUser);
+        boolean flag = false;
+
+        if (userUpdateDto.getAddress() != null && !userUpdateDto.getAddress().isBlank()) {
+            clause.set(qUser.address, userUpdateDto.getAddress());
+            clause.set(qUser.latitude, userUpdateDto.getLatitude());
+            clause.set(qUser.longitude, userUpdateDto.getLongitude());
+            flag = true;
+        }
+        if (userUpdateDto.getPassword() != null && !userUpdateDto.getPassword().isBlank()) {
+            clause.set(qUser.password, userUpdateDto.getPassword());
+            flag = true;
+        }
+        if (userUpdateDto.getProfileImage() != null
+            && userUpdateDto.getProfileImage().length != 0) {
+            clause.set(qUser.profileImage, userUpdateDto.getProfileImage());
+            flag = true;
+        }
+        if (userUpdateDto.getDescription() != null && !userUpdateDto.getDescription().isBlank()) {
+            QZipsa qZipsa = QZipsa.zipsa;
+            query.update(qZipsa).set(qZipsa.description, userUpdateDto.getDescription())
+                .where(qZipsa.zipsaId.userId.eq(userId)).execute();
+        }
+        if (flag) {
+            clause.where(qUser.userId.eq(userId)).execute();
+        }
     }
 
 }
