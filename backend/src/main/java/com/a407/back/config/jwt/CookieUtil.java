@@ -8,9 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CookieUtil {
 
-    public static final int COOKIE_MAX_AGE = 60 * 60 * 3;
-
-
     public static String getCookieValue(Cookie[] cookies, String name) {
         if (cookies == null) {
             return null;
