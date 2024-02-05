@@ -7,9 +7,10 @@ import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import clusterPositionsData from '../chicken.json';
 import BottomSheet from '../components/common/BottomSheet';
-import { getZipsaListFromMap } from '../apis/api/map';
+import { getZipsaListFromMap, practice } from '../apis/api/map';
 import GradeBadge from '../components/common/GradeBadge';
 import Button from '../components/common/Button';
+import { useQuery } from '@tanstack/react-query';
 
 const Wrapper = styled.div`
   position: relative;
@@ -93,6 +94,15 @@ function Map() {
       document.removeEventListener('mousedown', closeModal);
     };
   }, [isOpen]);
+
+  // const { data, isError, error, isLoading } = useQuery({
+  //   queryKey: ['zipsaListFromMap'],
+  //   queryFn: () => getZipsaListFromMap(2),
+  // });
+  const { data, isError, error, isLoading } = useQuery({
+    queryKey: ['practice'],
+    queryFn: practice,
+  });
 
   useEffect(() => {
     // getZipsaListFromMap(2).then(response => {
