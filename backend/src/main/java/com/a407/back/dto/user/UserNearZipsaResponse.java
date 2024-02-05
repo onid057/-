@@ -14,5 +14,7 @@ public class UserNearZipsaResponse {
     private String description;
     private String preferTag;
     private Long zipsaId;
+    private double lat;
+    private double lng;
 
 }

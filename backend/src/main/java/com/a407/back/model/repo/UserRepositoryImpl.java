@@ -72,7 +72,7 @@ public class UserRepositoryImpl implements UserRepository {
         User user = em.find(User.class, userId);
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
-                user.getLatitude(), user.getLongitude(), 0.009)))).orderBy(
+                user.getLatitude(), user.getLongitude(), 0.018)))).orderBy(
             qZipsa.serviceCount.desc()).fetch();
     }
 
