@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserNearZipsaResponse {
+public class UserNearZipsaInfoResponse {
 
     private String name;
     private Gender gender;
@@ -14,7 +14,5 @@ public class UserNearZipsaResponse {
     private String description;
     private String preferTag;
     private Long zipsaId;
-    private double lat;
-    private double lng;
 
 }

@@ -7,7 +7,9 @@ import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserCertificationRequest;
 import com.a407.back.dto.user.UserCreateRequest;
-import com.a407.back.dto.user.UserNearZipsaResponse;
+import com.a407.back.dto.user.UserNearZipsaInfoResponse;
+import com.a407.back.dto.user.UserNearZipsaLocationResponse;
+import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
@@ -60,10 +62,19 @@ public class UserController {
     }
 
     @PostMapping("/helpers-map/{userId}")
-    public ResponseEntity<ApiResponse<List<UserNearZipsaResponse>>> getNearUserList(
+    public ResponseEntity<ApiResponse<List<UserNearZipsaLocationResponse>>> getNearUserLocationList(
         @PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS, userService.findNearZipsaList(userId)));
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.findNearZipsaLocationList(userId)));
+    }
+
+    @PostMapping("/helpers-map")
+    public ResponseEntity<ApiResponse<List<UserNearZipsaInfoResponse>>> getNearUserInfoList(
+        @RequestBody UserNearZipsaRequest userNearZipsaRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.findNearZipsaInfoList(userNearZipsaRequest)));
     }
 
     @GetMapping("/{userId}/records")
