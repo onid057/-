@@ -31,4 +31,6 @@ public interface ZipsaRepository {
     QueryResults<Room> getPublicRoomList(int page, int size);
 
     void deleteZipsa(Long zipsaId);
+
+    void changeZipsaDescription(Long zipsaId, String description);
 }

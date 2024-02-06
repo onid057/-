@@ -108,4 +108,11 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         QZipsa qZipsa = QZipsa.zipsa;
         query.delete(qZipsa).where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
     }
+
+    @Override
+    public void changeZipsaDescription(Long zipsaId, String description) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        query.update(qZipsa).set(qZipsa.description, description)
+            .where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
+    }
 }

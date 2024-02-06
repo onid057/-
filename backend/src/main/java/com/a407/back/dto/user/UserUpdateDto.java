@@ -12,6 +12,5 @@ public class UserUpdateDto {
     private Double latitude;
     private Double longitude;
     private String password;
-    private String description;
 
 }

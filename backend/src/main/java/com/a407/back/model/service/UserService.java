@@ -41,9 +41,9 @@ public interface UserService {
 
     void makePhoneNumber(String code, String email) throws JsonProcessingException;
 
-    void updateUserInfo(Long userId, UserUpdateRequest request);
+    void changeUserInfo(Long userId, UserUpdateRequest request);
 
-    UserDetailInfoResponse userDetailInfoResponse(Long userId);
+    UserDetailInfoResponse findUserDetailInfo(Long userId);
 
     void deleteUser(Long userId);
 }

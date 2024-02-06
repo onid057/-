@@ -213,8 +213,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserInfo(Long userId, UserUpdateRequest request) {
-
+    public void changeUserInfo(Long userId, UserUpdateRequest request) {
         Byte[] profileImage = null;
         if (request.getProfileImage() != null) {
             int length = request.getProfileImage().getBytes().length;
@@ -224,37 +223,42 @@ public class UserServiceImpl implements UserService {
                 profileImage[i] = profileImageBefore[i];
             }
         }
-
-        UserUpdateDto userUpdateDto = new UserUpdateDto(profileImage,
-            request.getAddress(), request.getLatitude(), request.getLongitude(),
-            request.getPassword(), request.getDescription());
-
-        userRepository.updateUserInfo(userId, userUpdateDto);
-
+        User user = userRepository.findByUserId(userId);
+        UserUpdateDto userUpdateDto = new UserUpdateDto(
+            profileImage == null ? user.getProfileImage() : profileImage,
+            request.getAddress() == null ? user.getAddress() : request.getAddress(),
+            request.getLatitude() == null ? user.getLatitude() : request.getLatitude(),
+            request.getLongitude() == null ? user.getLongitude() : request.getLongitude(),
+            request.getPassword() == null ? user.getPassword() : request.getPassword());
+        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+        if (zipsa != null) {
+            zipsaRepository.changeZipsaDescription(userId,
+                request.getDescription() == null ? zipsa.getDescription()
+                    : request.getDescription());
+        }
+        userRepository.changeUserInfo(userId, userUpdateDto);
     }
 
     @Override
     @Transactional
-    public UserDetailInfoResponse userDetailInfoResponse(Long userId) {
+    public UserDetailInfoResponse findUserDetailInfo(Long userId) {
         User user = userRepository.findByUserId(userId);
         Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
 
-        Byte[] bytes = user.getProfileImage();
+        Byte[] originByte = user.getProfileImage();
 
-        byte[] bytes1 = new byte[bytes.length];
+        byte[] responseByte = new byte[originByte.length];
 
-        for (int i = 0; i < bytes.length; i++) {
-            bytes1[i] = bytes[i];
+        for (int i = 0; i < originByte.length; i++) {
+            responseByte[i] = originByte[i];
         }
 
-        String profileImage = new String(bytes1);
+        String profileImage = new String(responseByte);
 
-        return UserDetailInfoResponse.builder()
-            .profileImage(profileImage).name(user.getName())
+        return UserDetailInfoResponse.builder().profileImage(profileImage).name(user.getName())
             .birth(user.getBirth()).email(user.getEmail()).phoneNumber(user.getPhoneNumber())
             .address(user.getAddress()).description(zipsa != null ? zipsa.getDescription() : null)
             .build();
-
     }
 
     @Override

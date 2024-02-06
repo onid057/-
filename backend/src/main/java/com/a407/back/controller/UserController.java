@@ -133,7 +133,7 @@ public class UserController {
     @PatchMapping("/{userId}")
     public ResponseEntity<ApiResponse<String>> updateUserInfo(@PathVariable Long userId,
         @RequestBody UserUpdateRequest userUpdateRequest) {
-        userService.updateUserInfo(userId, userUpdateRequest);
+        userService.changeUserInfo(userId, userUpdateRequest);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 정보 수정 성공"));
     }
@@ -143,7 +143,7 @@ public class UserController {
         @PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                userService.userDetailInfoResponse(userId)));
+                userService.findUserDetailInfo(userId)));
     }
 
     @DeleteMapping("/{userId}")
