@@ -14,14 +14,20 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
-    @Value("${spring.data.redis.host}")
-    private String host;
+    @Value("${spring.data.redis.certification.host}")
+    private String certificationHost;
 
     @Value("${spring.data.redis.certification.port}")
     private int certificationPort;
 
+    @Value("${spring.data.redis.association.host}")
+    private String associationHost;
+
     @Value("${spring.data.redis.association.port}")
     private int associationPort;
+
+    @Value("${spring.data.redis.token.host}")
+    private String tokenHost;
 
     @Value("${spring.data.redis.token.port}")
     private int tokenPort;
@@ -29,17 +35,17 @@ public class RedisConfig {
     @Primary
     @Bean(name = "certificationRedisConnectionFactory")
     public RedisConnectionFactory certificationRedisConnectionFactory() {
-        return new LettuceConnectionFactory(host, certificationPort);
+        return new LettuceConnectionFactory(certificationHost, certificationPort);
     }
 
     @Bean(name = "associationRedisConnectionFactory")
     public RedisConnectionFactory associationRedisConnectionFactory() {
-        return new LettuceConnectionFactory(host, associationPort);
+        return new LettuceConnectionFactory(associationHost, associationPort);
     }
 
     @Bean(name = "refreshTokenRedisConnectionFactory")
     public RedisConnectionFactory refreshTokenRedisConnectionFactory() {
-        return new LettuceConnectionFactory(host, tokenPort);
+        return new LettuceConnectionFactory(tokenHost, tokenPort);
     }
 
     @Primary
@@ -68,7 +74,8 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    private static void redisTemplateSetting(RedisConnectionFactory associationRedisConnectionFactory,
+    private static void redisTemplateSetting(
+        RedisConnectionFactory associationRedisConnectionFactory,
         RedisTemplate<String, String> redisTemplate) {
         redisTemplate.setConnectionFactory(associationRedisConnectionFactory);
         redisTemplate.setDefaultSerializer(RedisSerializer.string());
