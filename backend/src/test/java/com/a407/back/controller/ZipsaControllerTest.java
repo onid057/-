@@ -6,11 +6,11 @@ import static org.awaitility.Awaitility.await;
 import com.a407.back.BackendApplication;
 import com.a407.back.domain.Grade;
 import com.a407.back.domain.Room;
-import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.match.RoomCreateRequest;
 import com.a407.back.dto.review.ReviewCreateRequest;
+import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
@@ -67,16 +67,12 @@ class ZipsaControllerTest {
     @BeforeEach
     void beforeEach() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         // 집사를 할 사용자 생성
-        User zipsaUser = User.builder().email("zipsa@abc.com").name("zipsa").password("zipsa")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -84,9 +80,9 @@ class ZipsaControllerTest {
         zipsaId = userService.makeUser(zipsaUser);
         assertThat(userService.findByUserId(userId)).isEqualTo(userService.findByUserId(userId));
         assertThat(userService.findByUserId(zipsaId)).isEqualTo(userService.findByUserId(zipsaId));
-        Zipsa zipsa = Zipsa.builder().zipsaId(zipsaUser).account("계좌").description("설명")
-            .gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D).rewindAverage(0D)
-            .replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
+        Zipsa zipsa = Zipsa.builder().zipsaId(userService.findByUserId(zipsaId)).account("계좌")
+            .description("설명").gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D)
+            .rewindAverage(0D).replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
         em.persist(zipsa);
         assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
 
@@ -153,7 +149,7 @@ class ZipsaControllerTest {
 
     @Test
     @DisplayName("집사 리뷰 조회")
-    void findsZipsaReviewFindByZipsaId()  {
+    void findsZipsaReviewFindByZipsaId() {
         ReviewCreateRequest reviewCreateRequest = new ReviewCreateRequest(roomId, "내용", 10, 10, 10);
         reviewService.makeReview(reviewCreateRequest);
         em.flush();

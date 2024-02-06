@@ -9,9 +9,9 @@ import com.a407.back.BackendApplication;
 import com.a407.back.domain.MajorCategory;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.SubCategory;
-import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.dto.room.MakePublicRoomRequest;
+import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.model.service.RoomService;
 import com.a407.back.model.service.UserService;
 import jakarta.persistence.EntityManager;
@@ -48,10 +48,9 @@ class RoomControllerTest {
     @BeforeEach
     void setup() {
         // 사용자 생성
-        User firstUser = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest firstUser = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+
         userId = userService.makeUser(firstUser);
         // 대분류 카테고리 생성
         MajorCategory newMajorCategory = MajorCategory.builder().name("동행").build();
@@ -60,8 +59,8 @@ class RoomControllerTest {
         // 대분류 카테고리 가져오기
         MajorCategory majorCategory = em.find(MajorCategory.class, majorCategoryId);
         // 소분류 카테고리 생성
-        SubCategory newSubCategory = SubCategory.builder().majorCategoryId(majorCategory).name("병원 동행")
-            .build();
+        SubCategory newSubCategory = SubCategory.builder().majorCategoryId(majorCategory)
+            .name("병원 동행").build();
         em.persist(newSubCategory);
         subCategoryId = newSubCategory.getSubCategoryId();
     }
@@ -70,8 +69,10 @@ class RoomControllerTest {
     @Transactional
     @DisplayName("공개 방 생성하기")
     void makePublicRoom() {
-        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(userId, subCategoryId, "방 제목", "방 내용", "약속 장소", 2,
-            Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"), 15000);
+        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(userId,
+            subCategoryId, "방 제목", "방 내용", "약속 장소", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
+            Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
+            15000);
         Long roomId = roomService.makePublicRoom(makePublicRoomRequest);
         Room room = roomService.findByRoomId(roomId);
         assertThat(room.getUserId().getUserId(), is(equalTo(userId)));
@@ -81,8 +82,10 @@ class RoomControllerTest {
     @Transactional
     @DisplayName("공개 방 삭제하기")
     void deletePublicRoom() {
-        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(userId, subCategoryId, "방 제목", "방 내용", "약속 장소", 2,
-            Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"), 15000);
+        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(userId,
+            subCategoryId, "방 제목", "방 내용", "약속 장소", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
+            Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
+            15000);
         Long roomId = roomService.makePublicRoom(makePublicRoomRequest);
         Room room = roomService.findByRoomId(roomId);
         try {

@@ -8,11 +8,11 @@ import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Status;
 import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.QZipsa;
-import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.match.RoomCreateRequest;
 import com.a407.back.dto.user.UserAccountRequest;
+import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
@@ -78,39 +78,29 @@ class UserControllerTest {
     @Test
     @DisplayName("사용자 생성")
     void makeUser() {
-        // 사용자 생성
-        User userOne = User.builder().email("userOne@abc.com").name("userOne").password("userOne")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest userOne = new UserCreateRequest("userOne@abc.com", "userOne", "userOne",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
-        // 집사를 할 사용자 생성
-        User userTwo = User.builder().email("userTwo@abc.com").name("userTwo").password("userTwo")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest userTwo = new UserCreateRequest("userTwo@abc.com", "userTwo", "userTwo",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         Long userOneId = userService.makeUser(userOne);
         Long userTwoId = userService.makeUser(userTwo);
 
-        assertThat(userService.findByUserId(userOneId)).isEqualTo(userOne);
-        assertThat(userService.findByUserId(userTwoId)).isEqualTo(userTwo);
+        assertThat(userService.findByUserId(userOneId).getEmail()).isEqualTo(userOne.getEmail());
+        assertThat(userService.findByUserId(userTwoId).getEmail()).isEqualTo(userTwo.getEmail());
     }
 
     @Test
     @DisplayName("사용자 알림 조회")
     void getNotificationList() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         // 집사를 할 사용자 생성
-        User zipsaUser = User.builder().email("zipsa@abc.com").name("zipsa").password("zipsa")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -118,9 +108,9 @@ class UserControllerTest {
         Long zipsaId = userService.makeUser(zipsaUser);
         assertThat(userService.findByUserId(userId)).isEqualTo(userService.findByUserId(userId));
         assertThat(userService.findByUserId(zipsaId)).isEqualTo(userService.findByUserId(zipsaId));
-        Zipsa zipsa = Zipsa.builder().zipsaId(zipsaUser).account("계좌").description("설명")
-            .gradeId(grade).isWorked(false).kindnessAverage(0D).skillAverage(0D).rewindAverage(0D)
-            .replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
+        Zipsa zipsa = Zipsa.builder().zipsaId(userService.findByUserId(zipsaId)).account("계좌")
+            .description("설명").gradeId(grade).isWorked(false).kindnessAverage(0D).skillAverage(0D)
+            .rewindAverage(0D).replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
         em.persist(zipsa);
         assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
 
@@ -152,16 +142,12 @@ class UserControllerTest {
     @DisplayName("근처 집사 위치 조회")
     void getNearUserLocationList() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(50.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 50, 127.5);
 
         // 집사를 할 사용자 생성
-        User zipsaUser = User.builder().email("zipsa@abc.com").name("zipsa").password("zipsa")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(50.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 50, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -169,9 +155,9 @@ class UserControllerTest {
         Long zipsaId = userService.makeUser(zipsaUser);
         assertThat(userService.findByUserId(userId)).isEqualTo(userService.findByUserId(userId));
         assertThat(userService.findByUserId(zipsaId)).isEqualTo(userService.findByUserId(zipsaId));
-        Zipsa zipsa = Zipsa.builder().zipsaId(zipsaUser).account("계좌").description("설명")
-            .gradeId(grade).isWorked(false).kindnessAverage(0D).skillAverage(0D).rewindAverage(0D)
-            .replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
+        Zipsa zipsa = Zipsa.builder().zipsaId(userService.findByUserId(zipsaId)).account("계좌")
+            .description("설명").gradeId(grade).isWorked(false).kindnessAverage(0D).skillAverage(0D)
+            .rewindAverage(0D).replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
         em.persist(zipsa);
         assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
 
@@ -195,16 +181,12 @@ class UserControllerTest {
     @DisplayName("근처 집사 정보 조회")
     void getNearUserInfoList() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(50.0).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         // 집사를 할 사용자 생성
-        User zipsaUser = User.builder().email("zipsa@abc.com").name("zipsa").password("zipsa")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(50.0).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -212,9 +194,9 @@ class UserControllerTest {
         Long zipsaId = userService.makeUser(zipsaUser);
         assertThat(userService.findByUserId(userId)).isEqualTo(userService.findByUserId(userId));
         assertThat(userService.findByUserId(zipsaId)).isEqualTo(userService.findByUserId(zipsaId));
-        Zipsa zipsa = Zipsa.builder().zipsaId(zipsaUser).account("계좌").description("설명")
-            .gradeId(grade).isWorked(false).kindnessAverage(0D).skillAverage(0D).rewindAverage(0D)
-            .replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
+        Zipsa zipsa = Zipsa.builder().zipsaId(userService.findByUserId(zipsaId)).account("계좌")
+            .description("설명").gradeId(grade).isWorked(false).kindnessAverage(0D).skillAverage(0D)
+            .rewindAverage(0D).replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
         em.persist(zipsa);
         assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
 
@@ -230,8 +212,7 @@ class UserControllerTest {
             new UserNearZipsaRequest(user.getLatitude(), user.getLongitude()))).hasSize(1);
         assertThat(userService.findNearZipsaInfoList(
                 new UserNearZipsaRequest(user.getLatitude(), user.getLongitude())).get(0)
-            .getZipsaId()).isEqualTo(
-            zipsaId);
+            .getZipsaId()).isEqualTo(zipsaId);
 
         query.update(qZipsa).set(qZipsa.isWorked, false).execute();
         em.flush();
@@ -244,16 +225,12 @@ class UserControllerTest {
     @DisplayName("사용자 이용 내역 조회")
     void getUserRecordList() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         // 집사를 할 사용자 생성
-        User zipsaUser = User.builder().email("zipsa@abc.com").name("zipsa").password("zipsa")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -261,9 +238,9 @@ class UserControllerTest {
         Long zipsaId = userService.makeUser(zipsaUser);
         assertThat(userService.findByUserId(userId)).isEqualTo(userService.findByUserId(userId));
         assertThat(userService.findByUserId(zipsaId)).isEqualTo(userService.findByUserId(zipsaId));
-        Zipsa zipsa = Zipsa.builder().zipsaId(zipsaUser).account("계좌").description("설명")
-            .gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D).rewindAverage(0D)
-            .replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
+        Zipsa zipsa = Zipsa.builder().zipsaId(userService.findByUserId(zipsaId)).account("계좌")
+            .description("설명").gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D)
+            .rewindAverage(0D).replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
         em.persist(zipsa);
         assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
 
@@ -290,16 +267,12 @@ class UserControllerTest {
     @DisplayName("사용자 진행, 예약 내역 조회")
     void getUserReservationList() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         // 집사를 할 사용자 생성
-        User zipsaUser = User.builder().email("zipsa@abc.com").name("zipsa").password("zipsa")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -307,9 +280,9 @@ class UserControllerTest {
         Long zipsaId = userService.makeUser(zipsaUser);
         assertThat(userService.findByUserId(userId)).isEqualTo(userService.findByUserId(userId));
         assertThat(userService.findByUserId(zipsaId)).isEqualTo(userService.findByUserId(zipsaId));
-        Zipsa zipsa = Zipsa.builder().zipsaId(zipsaUser).account("계좌").description("설명")
-            .gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D).rewindAverage(0D)
-            .replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
+        Zipsa zipsa = Zipsa.builder().zipsaId(userService.findByUserId(zipsaId)).account("계좌")
+            .description("설명").gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D)
+            .rewindAverage(0D).replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
         em.persist(zipsa);
         assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
 
@@ -340,10 +313,8 @@ class UserControllerTest {
     @DisplayName("결제 정보 등록")
     void makeAccount() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(user);
         assertThat(userService.findByUserId(userId).getAccount()).isNullOrEmpty();
         UserAccountRequest userAccountRequest = new UserAccountRequest(userId, "0000-0000-0000");
@@ -357,10 +328,8 @@ class UserControllerTest {
     @DisplayName("마스킹 처리된 결제 정보 조회")
     void getMaskedCardNumber() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(user);
         assertThat(userService.findByUserId(userId).getAccount()).isNull();
         UserAccountRequest userAccountRequest = new UserAccountRequest(userId,
@@ -376,10 +345,9 @@ class UserControllerTest {
     @DisplayName("결제 정보 삭제")
     void deleteAccount() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+
         Long userId = userService.makeUser(user);
         assertThat(userService.findByUserId(userId).getAccount()).isNull();
         UserAccountRequest userAccountRequest = new UserAccountRequest(userId, "0000-0000-0000");
