@@ -11,6 +11,7 @@ import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
+import com.a407.back.dto.user.UserUpdateDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -67,12 +68,21 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public List<Zipsa> findNearZipsaList(Long userId) {
+    public List<Zipsa> findNearZipsaLocationList(Long userId) {
         QZipsa qZipsa = QZipsa.zipsa;
         User user = em.find(User.class, userId);
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
-                user.getLatitude(), user.getLongitude(), 0.009)))).orderBy(
+                user.getLatitude(), user.getLongitude(), 0.018)))).orderBy(
+            qZipsa.serviceCount.desc()).fetch();
+    }
+
+    @Override
+    public List<Zipsa> findNearZipsaInfoList(Double lat, Double lng) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
+            createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
+                lat, lng, 0.0045)))).orderBy(
             qZipsa.serviceCount.desc()).fetch();
     }
 
@@ -176,6 +186,24 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public String findCode(String code) {
         return redisTemplate.opsForValue().get(code);
+    }
+
+    @Override
+    public void changeUserInfo(Long userId, UserUpdateDto userUpdateDto) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.address, userUpdateDto.getAddress())
+            .set(qUser.latitude, userUpdateDto.getLatitude())
+            .set(qUser.longitude, userUpdateDto.getLongitude())
+            .set(qUser.password, userUpdateDto.getPassword())
+            .set(qUser.profileImage, userUpdateDto.getProfileImage())
+            .where(qUser.userId.eq(userId))
+            .execute();
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        QUser qUser = QUser.user;
+        query.delete(qUser).where(qUser.userId.eq(userId)).execute();
     }
 
 }

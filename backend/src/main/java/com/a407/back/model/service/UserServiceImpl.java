@@ -3,18 +3,30 @@ package com.a407.back.model.service;
 import static java.security.SecureRandom.getInstanceStrong;
 
 import com.a407.back.config.constants.ErrorCode;
+import com.a407.back.domain.Complain;
 import com.a407.back.domain.Notification;
+import com.a407.back.domain.Room;
+import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
-import com.a407.back.dto.user.UserNearZipsaResponse;
+import com.a407.back.dto.user.UserComplainRequest;
+import com.a407.back.dto.user.UserCreateRequest;
+import com.a407.back.dto.user.UserDetailInfoResponse;
+import com.a407.back.dto.user.UserNearZipsaInfoResponse;
+import com.a407.back.dto.user.UserNearZipsaLocationResponse;
+import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
+import com.a407.back.dto.user.UserUpdateDto;
+import com.a407.back.dto.user.UserUpdateRequest;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
+import com.a407.back.model.repo.ComplainRepository;
+import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -43,17 +55,37 @@ public class UserServiceImpl implements UserService {
 
     private final DefaultMessageService messageService;
 
+    private final RoomRepository roomRepository;
+
+    private final ComplainRepository complainRepository;
+
     @Value("${sms.number}")
     private String senderPhoneNumber;
 
 
     @Override
     @Transactional
-    public Long makeUser(User user) {
+    public Long makeUser(UserCreateRequest request) {
         // 에러 처리
-        if (userRepository.findByUserEmail(user.getEmail()) != null) {
+        if (userRepository.findByUserEmail(request.getEmail()) != null) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
+
+        User user = User.builder()
+            .email(request.getEmail())
+            .password(request.getPassword())
+            .name(request.getName())
+            .birth(request.getBirth())
+            .gender(request.getGender())
+            .address(request.getAddress())
+            .latitude(request.getLatitude())
+            .longitude(request.getLongitude())
+            .isAdmin(false)
+            .isCertificated(false)
+            .isBlocked(false)
+            .isAffiliated(false)
+            .build();
+
         return userRepository.makeUser(user).getUserId();
     }
 
@@ -86,9 +118,19 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserNearZipsaResponse> findNearZipsaList(Long userId) {
-        return userRepository.findNearZipsaList(userId).stream().map(
-                zipsa -> new UserNearZipsaResponse(zipsa.getZipsaId().getName(),
+    public List<UserNearZipsaLocationResponse> findNearZipsaLocationList(Long userId) {
+        return userRepository.findNearZipsaLocationList(userId).stream().map(
+            zipsa -> new UserNearZipsaLocationResponse(zipsa.getZipsaId().getLatitude(),
+                zipsa.getZipsaId().getLongitude())).toList();
+    }
+
+    @Override
+    public List<UserNearZipsaInfoResponse> findNearZipsaInfoList(
+        UserNearZipsaRequest userNearZipsaRequest) {
+
+        return userRepository.findNearZipsaInfoList(userNearZipsaRequest.getLat(),
+                userNearZipsaRequest.getLng()).stream().map(
+                zipsa -> new UserNearZipsaInfoResponse(zipsa.getZipsaId().getName(),
                     zipsa.getZipsaId().getGender(), zipsa.getGradeId().getName(),
                     zipsa.getDescription(), zipsa.getPreferTag(), zipsa.getZipsaId().getUserId()))
             .toList();
@@ -207,5 +249,78 @@ public class UserServiceImpl implements UserService {
         userRepository.makePhoneNumber(userPhoneNumberAndEmail.getPhoneNumber(),
             userPhoneNumberAndEmail.getEmail());
     }
+
+    @Override
+    @Transactional
+    public void makeComplain(UserComplainRequest userComplainRequest) {
+        Room room = roomRepository.findByRoomId(userComplainRequest.getRoomId());
+        if (room == null || room.getIsComplained() || room.getStatus() != Process.END
+            || complainRepository.findComplain(userComplainRequest.getRoomId()) != null) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
+        Complain complain = Complain.builder()
+            .roomId(roomRepository.findByRoomId(userComplainRequest.getRoomId()))
+            .content(userComplainRequest.getContent()).isProcessed(false).build();
+        complainRepository.makeComplain(complain);
+        roomRepository.changeIsComplained(room.getRoomId());
+    }
+
+    @Override
+    @Transactional
+    public void changeUserInfo(Long userId, UserUpdateRequest request) {
+        Byte[] profileImage = null;
+        if (request.getProfileImage() != null) {
+            int length = request.getProfileImage().getBytes().length;
+            profileImage = new Byte[length];
+            byte[] profileImageBefore = request.getProfileImage().getBytes();
+            for (int i = 0; i < length; i++) {
+                profileImage[i] = profileImageBefore[i];
+            }
+        }
+        User user = userRepository.findByUserId(userId);
+        UserUpdateDto userUpdateDto = new UserUpdateDto(
+            profileImage == null ? user.getProfileImage() : profileImage,
+            request.getAddress() == null ? user.getAddress() : request.getAddress(),
+            request.getLatitude() == null ? user.getLatitude() : request.getLatitude(),
+            request.getLongitude() == null ? user.getLongitude() : request.getLongitude(),
+            request.getPassword() == null ? user.getPassword() : request.getPassword());
+        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+        if (zipsa != null) {
+            zipsaRepository.changeZipsaDescription(userId,
+                request.getDescription() == null ? zipsa.getDescription()
+                    : request.getDescription());
+        }
+        userRepository.changeUserInfo(userId, userUpdateDto);
+    }
+
+    @Override
+    @Transactional
+    public UserDetailInfoResponse findUserDetailInfo(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+
+        Byte[] originByte = user.getProfileImage();
+
+        byte[] responseByte = new byte[originByte.length];
+
+        for (int i = 0; i < originByte.length; i++) {
+            responseByte[i] = originByte[i];
+        }
+
+        String profileImage = new String(responseByte);
+
+        return UserDetailInfoResponse.builder().profileImage(profileImage).name(user.getName())
+            .birth(user.getBirth()).email(user.getEmail()).phoneNumber(user.getPhoneNumber())
+            .address(user.getAddress()).description(zipsa != null ? zipsa.getDescription() : null)
+            .build();
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long userId) {
+        zipsaRepository.deleteZipsa(userId);
+        userRepository.deleteUser(userId);
+    }
+
 
 }

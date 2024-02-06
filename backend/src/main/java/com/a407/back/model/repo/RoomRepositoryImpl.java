@@ -73,5 +73,11 @@ public class RoomRepositoryImpl implements RoomRepository {
         em.remove(room);
     }
 
+    @Override
+    public void changeIsComplained(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.isComplained, true).where(qRoom.roomId.eq(roomId)).execute();
+    }
+
 
 }
