@@ -18,7 +18,9 @@ public interface UserRepository {
 
     User findByUserId(Long userId);
 
-    List<Zipsa> findNearZipsaList(Long userId);
+    List<Zipsa> findNearZipsaLocationList(Long userId);
+
+    List<Zipsa> findNearZipsaInfoList(Double lat, Double lng);
 
     List<Room> getUserRecordList(Long userId);
 
@@ -41,7 +43,7 @@ public interface UserRepository {
     boolean findIsAffiliated(Long userId);
 
     void makeSendMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)
-            throws JsonProcessingException;
+        throws JsonProcessingException;
 
     UserPhoneNumberAndEmail findMessage(String code) throws JsonProcessingException;
 
