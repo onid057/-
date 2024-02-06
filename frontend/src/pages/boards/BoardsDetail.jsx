@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
+import SimpleProfile from '../../components/common/SimpleProfile';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -16,7 +17,23 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
+const ArticleWrapper = styled.div`
+  width: 100%;
+  height: auto;
+  padding: 20px 10px 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 25px;
+  background-color: white;
+`;
+
 function BoardsDetail() {
+  const userName = '피치피치어피치이십자까지닉네임이된다니이';
+  const updatedAt = '3일 전';
+  const content =
+    '저희 아버지도 강아지를 키우시는데 다음에 여행가실 때 맡겨봐야겠어요~';
+
   return (
     <Wrapper>
       <NavigationBar
@@ -29,6 +46,24 @@ function BoardsDetail() {
           ></Image>
         }
       ></NavigationBar>
+
+      <ArticleWrapper>
+        <SimpleProfile
+          userName={userName}
+          updatedAt={updatedAt}
+          content={content}
+          updateButton
+          deleteButton
+        ></SimpleProfile>
+      </ArticleWrapper>
+
+      <SimpleProfile
+        userName={userName}
+        updatedAt={updatedAt}
+        content={content}
+        updateButton
+        deleteButton
+      ></SimpleProfile>
     </Wrapper>
   );
 }
