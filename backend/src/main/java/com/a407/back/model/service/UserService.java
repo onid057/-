@@ -45,4 +45,6 @@ public interface UserService {
         throws JsonProcessingException, NoSuchAlgorithmException;
 
     void makePhoneNumber(String code, String email) throws JsonProcessingException;
+
+    void changeUserCertificated(Long userId);
 }

@@ -48,4 +48,6 @@ public interface UserRepository {
     UserPhoneNumberAndEmail findMessage(String code) throws JsonProcessingException;
 
     String findCode(String code);
+
+    void changeUserCertificated(Long userId);
 }

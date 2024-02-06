@@ -237,4 +237,10 @@ public class UserServiceImpl implements UserService {
             userPhoneNumberAndEmail.getEmail());
     }
 
+    @Override
+    @Transactional
+    public void changeUserCertificated(Long userId) {
+        userRepository.changeUserCertificated(userId);
+    }
+
 }
