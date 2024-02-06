@@ -113,7 +113,7 @@ function ProfileUpdate() {
 
   // preferTag 업데이트 위한 변수 선언
   const [preferTags, setPreferTags] = useState(zipsaData.preferTag);
-  console.log('ProfileUpdate에서 내려준 preferTags: ', preferTags);
+  // console.log('ProfileUpdate에서 내려준 preferTags: ', preferTags);
 
   return (
     <Wrapper>
