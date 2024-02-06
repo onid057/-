@@ -3,7 +3,7 @@ import { useFunnel } from '../../hooks/useFunnel';
 import { makeRoom } from '../../apis/api/room';
 import { useNavigate } from 'react-router-dom';
 
-import RoomDetail from './RoomDetail';
+import DetailContent from './DetailContent';
 import TargetDate from '../filterFunnel/TargetDate';
 import TargetTime from '../filterFunnel/TargetTime';
 import Address from '../filterFunnel/Address';
@@ -18,9 +18,9 @@ function CreateRoomFunnel() {
   return (
     <Funnel>
       <Funnel.Step name="DETAIL">
-        <RoomDetail
+        <DetailContent
           onPrevious={() => {
-            setStep('PAYMENT');
+            navigate(-1);
           }}
           onNext={(title, content) => {
             setStep('DATE');
@@ -32,7 +32,7 @@ function CreateRoomFunnel() {
           }}
           matchTitle={filterData.matchTitle}
           matchContent={filterData.matchContent}
-        ></RoomDetail>
+        ></DetailContent>
       </Funnel.Step>
 
       <Funnel.Step name="DATE">
@@ -98,9 +98,9 @@ function CreateRoomFunnel() {
             setFilterData(roomData);
             makeRoom(
               1,
-              'ALL',
-              roomData.title,
-              roomData.content,
+              41,
+              roomData.matchTitle,
+              roomData.matchContent,
               roomData.matchAddress + ' ' + roomData.matchDetailAddress,
               roomData.matchEndTime - roomData.matchStartTime,
               new Date().toJSON(),
