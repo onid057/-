@@ -146,4 +146,11 @@ public class UserController {
                 userService.userDetailInfoResponse(userId)));
     }
 
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "회원 정보 삭제 성공"));
+    }
+
 }

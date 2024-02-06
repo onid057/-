@@ -257,4 +257,12 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    @Transactional
+    public void deleteUser(Long userId) {
+        zipsaRepository.deleteZipsa(userId);
+        userRepository.deleteUser(userId);
+    }
+
+
 }

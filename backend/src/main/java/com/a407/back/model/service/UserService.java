@@ -44,4 +44,6 @@ public interface UserService {
     void updateUserInfo(Long userId, UserUpdateRequest request);
 
     UserDetailInfoResponse userDetailInfoResponse(Long userId);
+
+    void deleteUser(Long userId);
 }

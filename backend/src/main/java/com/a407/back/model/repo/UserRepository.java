@@ -49,4 +49,6 @@ public interface UserRepository {
     String findCode(String code);
 
     void updateUserInfo(Long userId, UserUpdateDto userUpdateDto);
+
+    void deleteUser(Long userId);
 }

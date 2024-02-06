@@ -102,4 +102,10 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
             .offset(page).limit(size).fetchResults();
         return result;
     }
+
+    @Override
+    public void deleteZipsa(Long zipsaId) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        query.delete(qZipsa).where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
+    }
 }

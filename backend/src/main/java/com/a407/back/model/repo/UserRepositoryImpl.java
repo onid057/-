@@ -211,4 +211,10 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+    @Override
+    public void deleteUser(Long userId) {
+        QUser qUser = QUser.user;
+        query.delete(qUser).where(qUser.userId.eq(userId)).execute();
+    }
+
 }
