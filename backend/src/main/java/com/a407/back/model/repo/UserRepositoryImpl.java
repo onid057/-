@@ -68,12 +68,21 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public List<Zipsa> findNearZipsaList(Long userId) {
+    public List<Zipsa> findNearZipsaLocationList(Long userId) {
         QZipsa qZipsa = QZipsa.zipsa;
         User user = em.find(User.class, userId);
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
-                user.getLatitude(), user.getLongitude(), 0.009)))).orderBy(
+                user.getLatitude(), user.getLongitude(), 0.018)))).orderBy(
+            qZipsa.serviceCount.desc()).fetch();
+    }
+
+    @Override
+    public List<Zipsa> findNearZipsaInfoList(Double lat, Double lng) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
+            createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
+                lat, lng, 0.0045)))).orderBy(
             qZipsa.serviceCount.desc()).fetch();
     }
 

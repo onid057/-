@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserNearZipsaResponse {
+public class UserNearZipsaInfoResponse {
 
     private String name;
     private Gender gender;

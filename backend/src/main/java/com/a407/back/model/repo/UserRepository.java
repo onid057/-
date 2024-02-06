@@ -19,7 +19,9 @@ public interface UserRepository {
 
     User findByUserId(Long userId);
 
-    List<Zipsa> findNearZipsaList(Long userId);
+    List<Zipsa> findNearZipsaLocationList(Long userId);
+
+    List<Zipsa> findNearZipsaInfoList(Double lat, Double lng);
 
     List<Room> getUserRecordList(Long userId);
 

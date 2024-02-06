@@ -3,9 +3,9 @@ package com.a407.back.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.a407.back.BackendApplication;
-import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.dto.association.AssociationAdditionCodeResponse;
+import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.model.service.AssociationService;
 import com.a407.back.model.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,20 +50,13 @@ class AssociationControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        User userOne = User.builder().email("userOne@abc.com").name("userOne").password("userOne")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
-
-        User userTwo = User.builder().email("userTwo@abc.com").name("userTwo").password("userTwo")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
-
-        User userThree = User.builder().email("userThree@abc.com").name("userThree")
-            .password("userThree").birth(Timestamp.valueOf("2024-01-01 01:01:01"))
-            .gender(Gender.MAN).address("서울시").latitude(36.5).longitude(127.5).isAdmin(false)
-            .isAffiliated(false).isBlocked(false).isCertificated(false).build();
+        // 사용자 생성
+        UserCreateRequest userOne = new UserCreateRequest("userOne@abc.com", "userOne", "userOne",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+        UserCreateRequest userTwo = new UserCreateRequest("userTwo@abc.com", "userTwo", "userTwo",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+        UserCreateRequest userThree = new UserCreateRequest("userThree@abc.com", "userThree",
+            "userThree", Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
         userIdOne = userService.makeUser(userOne);
         userIdTwo = userService.makeUser(userTwo);

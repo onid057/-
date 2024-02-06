@@ -1,6 +1,5 @@
 package com.a407.back.dto.user;
 
-import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import java.sql.Timestamp;
 import lombok.AllArgsConstructor;
@@ -21,17 +20,5 @@ public class UserCreateRequest {
     private double latitude;
     private double longitude;
 
-    public User toEntity() {
-        return User.builder()
-            .email(email)
-            .password(password)
-            .name(name)
-            .birth(birth)
-            .gender(gender)
-            .address(address)
-            .latitude(latitude)
-            .longitude(longitude)
-            .build();
-    }
 
 }
