@@ -6,6 +6,7 @@ import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserCertificationRequest;
+import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
@@ -124,6 +125,14 @@ public class UserController {
         userService.makePhoneNumber(request.getCode(), request.getEmail());
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "전화 번호 저장 성공"));
+    }
+
+    @PostMapping("/complaint")
+    public ResponseEntity<ApiResponse<String>> makeComplain(
+        @RequestBody UserComplainRequest userComplainRequest) {
+        userService.makeComplain(userComplainRequest);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "신고 성공"));
     }
 
 }

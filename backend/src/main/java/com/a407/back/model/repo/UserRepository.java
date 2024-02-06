@@ -41,7 +41,7 @@ public interface UserRepository {
     boolean findIsAffiliated(Long userId);
 
     void makeSendMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)
-            throws JsonProcessingException;
+        throws JsonProcessingException;
 
     UserPhoneNumberAndEmail findMessage(String code) throws JsonProcessingException;
 

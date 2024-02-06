@@ -3,18 +3,24 @@ package com.a407.back.model.service;
 import static java.security.SecureRandom.getInstanceStrong;
 
 import com.a407.back.config.constants.ErrorCode;
+import com.a407.back.domain.Complain;
 import com.a407.back.domain.Notification;
+import com.a407.back.domain.Room;
+import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
+import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserNearZipsaResponse;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
+import com.a407.back.model.repo.ComplainRepository;
+import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -42,6 +48,10 @@ public class UserServiceImpl implements UserService {
     private final CategoryRepository categoryRepository;
 
     private final DefaultMessageService messageService;
+
+    private final RoomRepository roomRepository;
+
+    private final ComplainRepository complainRepository;
 
     @Value("${sms.number}")
     private String senderPhoneNumber;
@@ -207,6 +217,21 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.makePhoneNumber(userPhoneNumberAndEmail.getPhoneNumber(),
             userPhoneNumberAndEmail.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public void makeComplain(UserComplainRequest userComplainRequest) {
+        Room room = roomRepository.findByRoomId(userComplainRequest.getRoomId());
+        if (room == null || room.getIsComplained() || room.getStatus() != Process.END
+            || complainRepository.findComplain(userComplainRequest.getRoomId()) != null) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
+        Complain complain = Complain.builder()
+            .roomId(roomRepository.findByRoomId(userComplainRequest.getRoomId()))
+            .content(userComplainRequest.getContent()).isProcessed(false).build();
+        complainRepository.makeComplain(complain);
+        roomRepository.changeIsComplained(room.getRoomId());
     }
 
 }
