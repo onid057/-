@@ -5,6 +5,7 @@ import com.a407.back.domain.Room;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
+import com.a407.back.dto.user.UserUpdateDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
 
@@ -18,7 +19,9 @@ public interface UserRepository {
 
     User findByUserId(Long userId);
 
-    List<Zipsa> findNearZipsaList(Long userId);
+    List<Zipsa> findNearZipsaLocationList(Long userId);
+
+    List<Zipsa> findNearZipsaInfoList(Double lat, Double lng);
 
     List<Room> getUserRecordList(Long userId);
 
@@ -46,4 +49,8 @@ public interface UserRepository {
     UserPhoneNumberAndEmail findMessage(String code) throws JsonProcessingException;
 
     String findCode(String code);
+
+    void changeUserInfo(Long userId, UserUpdateDto userUpdateDto);
+
+    void deleteUser(Long userId);
 }

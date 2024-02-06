@@ -18,6 +18,7 @@ import com.a407.back.dto.match.MatchSearchRequest;
 import com.a407.back.dto.match.MatchSearchResponse;
 import com.a407.back.dto.match.RoomCreateRequest;
 import com.a407.back.dto.room.MakePublicRoomRequest;
+import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.model.service.MatchService;
 import com.a407.back.model.service.RoomService;
 import com.a407.back.model.service.UserService;
@@ -69,10 +70,8 @@ class MatchControllerTest {
     @BeforeEach
     void setup() {
         // 사용자 생성
-        User firstUser = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest firstUser = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(firstUser);
         user = em.find(User.class, userId);
         // grade 생성
@@ -82,10 +81,8 @@ class MatchControllerTest {
         grade = em.find(Grade.class, gradeId);
         // 집사 생성
         Zipsa newZipsa = Zipsa.builder().zipsaId(user).account("111").description("Asd")
-            .gradeId(grade)
-            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-            .skillAverage(1.0)
-            .serviceCount(0).preferTag("abc").replyCount(0).build();
+            .gradeId(grade).isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0).serviceCount(0).preferTag("abc").replyCount(0).build();
         em.persist(newZipsa);
         Long zipsaId = newZipsa.getZipsaId().getUserId();
         // 집사 가져오기
@@ -98,8 +95,7 @@ class MatchControllerTest {
         majorCategory = em.find(MajorCategory.class, majorCategoryId);
         // 소분류 카테고리 생성
         SubCategory newSubCategory = SubCategory.builder().majorCategoryId(majorCategory)
-            .name("병원 동행")
-            .build();
+            .name("병원 동행").build();
         em.persist(newSubCategory);
         Long subCategoryId = newSubCategory.getSubCategoryId();
         subCategory = em.find(SubCategory.class, subCategoryId);
@@ -114,9 +110,7 @@ class MatchControllerTest {
     void getFilteredZipsaList() {
         // 필터링 기반 탐색
         MatchSearchRequest matchSearchRequest = new MatchSearchRequest(
-            majorCategory.getMajorCategoryId(), "MAN", "0",
-            "APPRENTICE",
-            "1");
+            majorCategory.getMajorCategoryId(), "MAN", "0", "APPRENTICE", "1");
         List<MatchSearchResponse> matchSearchResponses = matchService.getFilteredZipsaList(
             matchSearchRequest);
         if (!matchSearchResponses.isEmpty()) {
@@ -131,17 +125,13 @@ class MatchControllerTest {
     @DisplayName("필터링 기반 검색 후 방 만들기 구현")
     void makeRoomWithHelper() {
         // 집사1 생성
-        User user1 = User.builder().email("user1@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user1 = new UserCreateRequest("user1@abc.com", "user1", "user1",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId1 = userService.makeUser(user1);
         User newUser1 = userService.findByUserId(userId1);
         Zipsa newZipsa1 = Zipsa.builder().zipsaId(newUser1).account("111").description("Asd")
-            .gradeId(grade)
-            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-            .skillAverage(1.0)
-            .serviceCount(0).preferTag("abc").replyCount(0).build();
+            .gradeId(grade).isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0).serviceCount(0).preferTag("abc").replyCount(0).build();
         em.persist(newZipsa1);
         Long zipsaId1 = newZipsa1.getZipsaId().getUserId();
         Zipsa zipsa1 = zipsaService.findByZipsaId(zipsaId1);
@@ -150,17 +140,13 @@ class MatchControllerTest {
         em.persist(zipsaCategory1);
 
         // 집사2 생성
-        User user2 = User.builder().email("user2@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user2 = new UserCreateRequest("user2@abc.com", "user2", "user2",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId2 = userService.makeUser(user2);
         User newUser2 = userService.findByUserId(userId2);
         Zipsa newZipsa2 = Zipsa.builder().zipsaId(newUser2).account("111").description("Asd")
-            .gradeId(grade)
-            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-            .skillAverage(1.0)
-            .serviceCount(0).preferTag("abc").replyCount(0).build();
+            .gradeId(grade).isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0).serviceCount(0).preferTag("abc").replyCount(0).build();
         em.persist(newZipsa2);
         Long zipsaId2 = newZipsa2.getZipsaId().getUserId();
         Zipsa zipsa2 = zipsaService.findByZipsaId(zipsaId2);
@@ -173,10 +159,9 @@ class MatchControllerTest {
         zipsaList.add(zipsaId2);
 
         RoomCreateRequest roomCreateRequest = new RoomCreateRequest(user.getUserId(),
-            subCategory.getSubCategoryId(), "title",
-            "content", "place", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
+            subCategory.getSubCategoryId(), "title", "content", "place", 2,
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
-            15000, zipsaList);
+            Timestamp.valueOf("2024-01-01 01:01:01"), 15000, zipsaList);
         Long roomId = matchService.makeFilterRoom(roomCreateRequest);
         Room room = roomService.findByRoomId(roomId);
         if (room != null) {
@@ -191,17 +176,13 @@ class MatchControllerTest {
     @DisplayName("업무 시작 버튼 구현")
     void changeMatchStartedAt() {
         // 집사1 생성
-        User user1 = User.builder().email("user1@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user1 = new UserCreateRequest("user1@abc.com", "user1", "user1",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId1 = userService.makeUser(user1);
         User newUser1 = userService.findByUserId(userId1);
         Zipsa newZipsa1 = Zipsa.builder().zipsaId(newUser1).account("111").description("Asd")
-            .gradeId(grade)
-            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-            .skillAverage(1.0)
-            .serviceCount(0).preferTag("abc").replyCount(0).build();
+            .gradeId(grade).isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0).serviceCount(0).preferTag("abc").replyCount(0).build();
         em.persist(newZipsa1);
         Long zipsaId1 = newZipsa1.getZipsaId().getUserId();
         Zipsa zipsa1 = zipsaService.findByZipsaId(zipsaId1);
@@ -212,9 +193,9 @@ class MatchControllerTest {
         // 방 만들기
         Long roomId = roomService.makePublicRoom(
             new MakePublicRoomRequest(user.getUserId(), subCategory.getSubCategoryId(), "title",
-                "content", "place", 2,
+                "content", "place", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
                 Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
-                Timestamp.valueOf("2024-01-01 01:01:01"), 15000));
+                15000));
         matchService.changeMatchStartedAt(roomId);
         em.flush();
         em.clear();
@@ -227,17 +208,13 @@ class MatchControllerTest {
     @DisplayName("업무 종료 버튼 구현")
     void changeMatchEndedAt() {
         // 집사1 생성
-        User user1 = User.builder().email("user1@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user1 = new UserCreateRequest("user1@abc.com", "user1", "user1",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId1 = userService.makeUser(user1);
         User newUser1 = userService.findByUserId(userId1);
         Zipsa newZipsa1 = Zipsa.builder().zipsaId(newUser1).account("111").description("Asd")
-            .gradeId(grade)
-            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-            .skillAverage(1.0)
-            .serviceCount(0).preferTag("abc").replyCount(0).build();
+            .gradeId(grade).isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0).serviceCount(0).preferTag("abc").replyCount(0).build();
         em.persist(newZipsa1);
         Long zipsaId1 = newZipsa1.getZipsaId().getUserId();
         Zipsa zipsa1 = zipsaService.findByZipsaId(zipsaId1);
@@ -248,9 +225,9 @@ class MatchControllerTest {
         // 방 만들기
         Long roomId = roomService.makePublicRoom(
             new MakePublicRoomRequest(user.getUserId(), subCategory.getSubCategoryId(), "title",
-                "content", "place", 2,
+                "content", "place", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
                 Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
-                Timestamp.valueOf("2024-01-01 01:01:01"), 15000));
+                15000));
         roomService.changeRoomZipsa(zipsa1, roomId);
         em.flush();
         em.clear();
