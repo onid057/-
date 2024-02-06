@@ -5,11 +5,8 @@ import {
 } from 'react-kakao-maps-sdk';
 import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import clusterPositionsData from '../chicken.json';
 import BottomSheet from '../components/common/BottomSheet';
-import { getZipsaListFromMap, practice } from '../apis/api/map';
-import GradeBadge from '../components/common/GradeBadge';
-import Button from '../components/common/Button';
+import { getZipsaPositionWithinTwoKilos } from '../apis/api/map';
 import { useQuery } from '@tanstack/react-query';
 
 const Wrapper = styled.div`
@@ -26,103 +23,50 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-const NameWrapper = styled.div`
-  cursor: pointer;
-  width: 280px;
-  margin: 0 auto;
-  padding: 7px 19px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: ${({ theme }) => theme.colors.primary};
-  border-radius: 25px;
-`;
-
-const DetailWrapper = styled.div`
-  width: 100%;
-  padding: 0 23px;
-  display: flex;
-  flex-direction: column;
-  gap: 13px;
-`;
-
-const BadgeWrapper = styled.div`
-  width: 280px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-`;
-
-const GenderBadge = styled.div`
-  width: 70px;
-  height: 18px;
-  padding-bottom: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 500;
-  background-color: #d9d9d9;
-  border-radius: 25px;
-`;
-
-const TextWrapper = styled.div`
-  font-size: 14px;
-`;
+const data = [
+  { lat: 37.510389, lng: 127.044645 },
+  { lat: 37.506320759000715, lng: 127.05368251210247 },
+  { lat: 37.506320759000715, lng: 127.05368251210247 },
+  { lat: 37.494612, lng: 127.063642 },
+];
 
 // Map 컴포넌트를 띄울 때, lat값과 lng값이 입력되어야 함.
 function Map() {
-  const [positions, setPositions] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [targetZipsa, setTargetZipsa] = useState({});
-
+  const [targetCluster, setTargetCluster] = useState();
   const modalRef = useRef(null);
 
+  // 현재 API 동작하지 않음
+  // 중심 좌표 기준으로 2km 이내의 집사들의 lat, lng 값을 받아옴
+  // const { data, isPending, error } = useQuery({
+  //   queryKey: ['zipsaPositionWithinTwoKilos'],
+  //   queryFn: () => getZipsaPositionWithinTwoKilos(2),
+  // });
+
+  // bottom sheet 영역 이외의 부분을 클릭 시 모달 isOpen 변경
   useEffect(() => {
-    const closeModal = event => {
-      if (
-        isOpen &&
+    const closeBottomSheet = event => {
+      isOpen &&
         modalRef.current &&
-        !modalRef.current.contains(event.target)
-      ) {
+        !modalRef.current.contains(event.target) &&
         setIsOpen(false);
-      }
     };
-    document.addEventListener('mousedown', closeModal);
+    document.addEventListener('mousedown', closeBottomSheet);
     return () => {
-      document.removeEventListener('mousedown', closeModal);
+      document.removeEventListener('mousedown', closeBottomSheet);
     };
   }, [isOpen]);
 
-  // const { data, isError, error, isLoading } = useQuery({
-  //   queryKey: ['zipsaListFromMap'],
-  //   queryFn: () => getZipsaListFromMap(2),
-  // });
-  const { data, isError, error, isLoading } = useQuery({
-    queryKey: ['practice'],
-    queryFn: practice,
-  });
-
-  useEffect(() => {
-    // getZipsaListFromMap(2).then(response => {
-    //   console.log(response);
-    //   setPositions(response.data);
-    // });
-    setPositions(clusterPositionsData.data);
-  }, []);
-
   const onClusterclick = (_target, cluster) => {
-    console.log(cluster.getCenter());
+    const { Ma, La } = cluster.getCenter(); // Ma: 위도, La: 경도
+    setTargetCluster({ lat: Ma, lng: La });
     setIsOpen(true);
-    setIsDetailOpen(false);
   };
 
   return (
     <Wrapper>
       <KakaoMap
         center={{ lat: 37.506320759000715, lng: 127.05368251210247 }}
-        // center={{ lat: 36.2683, lng: 127.6358 }}
         style={{
           width: '320px',
           height: '568px',
@@ -151,7 +95,7 @@ function Map() {
           disableClickZoom={true}
           onClusterclick={onClusterclick}
         >
-          {positions.map((pos, index) => (
+          {data.map((pos, index) => (
             <MapMarker
               key={`${pos.lat}-${pos.lng}-${index}`}
               position={{
@@ -164,39 +108,11 @@ function Map() {
       </KakaoMap>
 
       <BottomSheet
-        open={isOpen}
-        title={isDetailOpen ? `${targetZipsa.name} 집사` : '집사 목록'}
+        isOpen={isOpen}
         ref={modalRef}
         onClick={() => setIsOpen(false)}
-      >
-        {!isDetailOpen ? (
-          positions.map((pos, index) => (
-            <NameWrapper
-              key={`${pos.name}-${index}`}
-              onClick={() => {
-                setIsDetailOpen(true);
-                setTargetZipsa(pos);
-              }}
-            >
-              {pos.name + ' 집사'}
-            </NameWrapper>
-          ))
-        ) : (
-          <DetailWrapper>
-            <BadgeWrapper>
-              <GenderBadge>{targetZipsa.gender}</GenderBadge>
-              <GradeBadge grade={targetZipsa.gradeName}></GradeBadge>
-            </BadgeWrapper>
-            <TextWrapper>
-              {targetZipsa.preferTag.split(',').map((tag, index) => (
-                <span key={index}>{`#${tag} `}</span>
-              ))}
-            </TextWrapper>
-            <TextWrapper>{targetZipsa.description}</TextWrapper>
-            <Button mode="THIN_GRAY">집사에게 제안하기</Button>
-          </DetailWrapper>
-        )}
-      </BottomSheet>
+        targetCluster={targetCluster}
+      ></BottomSheet>
     </Wrapper>
   );
 }
