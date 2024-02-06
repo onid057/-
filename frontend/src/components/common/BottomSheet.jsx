@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Image from './Image';
 import Button from './Button';
+import GenderBadge from './GenderBadge';
 import GradeBadge from './GradeBadge';
 import { getZipsaListFromMap } from '../../apis/api/map';
 import { forwardRef, useState, useEffect } from 'react';
@@ -16,6 +17,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 11px;
+  font-size: 18px;
   background-color: ${({ theme }) => theme.colors.secondary};
   border-radius: 25px 25px 0 0;
   z-index: 9999;
@@ -54,19 +56,6 @@ const BadgeWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-`;
-
-const GenderBadge = styled.div`
-  width: 70px;
-  height: 18px;
-  padding-bottom: 1px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 11px;
-  font-weight: 500;
-  background-color: #d9d9d9;
-  border-radius: 25px;
 `;
 
 const Text = styled.div`

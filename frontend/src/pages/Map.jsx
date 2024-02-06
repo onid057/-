@@ -17,7 +17,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 11px;
   background-color: ${({ theme }) => theme.colors.primary};
-  font-size: 18px;
+  font-size: 25px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
@@ -76,13 +76,13 @@ function Map() {
           calculator={[1]}
           styles={[
             {
-              width: '50px',
-              height: '50px',
-              background: 'rgba(232, 46, 28, .5)',
+              width: '70px',
+              height: '70px',
+              background: 'rgba(232, 46, 28, .4)',
               borderRadius: '50%',
               textAlign: 'center',
               fontWeight: '500',
-              lineHeight: '50px',
+              lineHeight: '70px',
             },
           ]}
           disableClickZoom={true}
