@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class BoardDetailResponse {
     private String userName;
     private String address;
+    private String profileImage;
     private String title;
     private String content;
     private Timestamp updatedAt;

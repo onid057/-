@@ -140,7 +140,21 @@ public class BoardServiceImpl implements BoardService {
                 return new CommentListDto(comment.getUserId().getName(), comment.getContent(),
                     comment.getUpdatedAt());
             }).toList();
-        return new BoardDetailResponse(user.getName(), user.getAddress(), board.getTitle(),
+
+        String profileImage = "";
+        if(user.getProfileImage() != null) {
+            Byte[] byteImage = user.getProfileImage();
+            byte[] imageToByte = new byte[byteImage.length];
+
+            int count = 0;
+            for(Byte byteImagePiece : byteImage) {
+                imageToByte[count++] = byteImagePiece;
+            }
+
+            profileImage = new String(imageToByte);
+        }
+
+        return new BoardDetailResponse(user.getName(), user.getAddress(), profileImage, board.getTitle(),
             board.getContent(), board.getUpdatedAt(), commentList);
     }
 }
