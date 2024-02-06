@@ -5,7 +5,9 @@ import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserCreateRequest;
-import com.a407.back.dto.user.UserNearZipsaResponse;
+import com.a407.back.dto.user.UserNearZipsaInfoResponse;
+import com.a407.back.dto.user.UserNearZipsaLocationResponse;
+import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,7 +22,11 @@ public interface UserService {
 
     boolean isWorkedDistinction(Long userId);
 
-    List<UserNearZipsaResponse> findNearZipsaList(Long userId);
+
+    List<UserNearZipsaLocationResponse> findNearZipsaLocationList(Long userId);
+
+    List<UserNearZipsaInfoResponse> findNearZipsaInfoList(
+        UserNearZipsaRequest userNearZipsaRequest);
 
     User findByUserId(Long userId);
 

@@ -10,7 +10,9 @@ import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserCreateRequest;
-import com.a407.back.dto.user.UserNearZipsaResponse;
+import com.a407.back.dto.user.UserNearZipsaInfoResponse;
+import com.a407.back.dto.user.UserNearZipsaLocationResponse;
+import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
@@ -103,9 +105,19 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserNearZipsaResponse> findNearZipsaList(Long userId) {
-        return userRepository.findNearZipsaList(userId).stream().map(
-                zipsa -> new UserNearZipsaResponse(zipsa.getZipsaId().getName(),
+    public List<UserNearZipsaLocationResponse> findNearZipsaLocationList(Long userId) {
+        return userRepository.findNearZipsaLocationList(userId).stream().map(
+            zipsa -> new UserNearZipsaLocationResponse(zipsa.getZipsaId().getLatitude(),
+                zipsa.getZipsaId().getLongitude())).toList();
+    }
+
+    @Override
+    public List<UserNearZipsaInfoResponse> findNearZipsaInfoList(
+        UserNearZipsaRequest userNearZipsaRequest) {
+
+        return userRepository.findNearZipsaInfoList(userNearZipsaRequest.getLat(),
+                userNearZipsaRequest.getLng()).stream().map(
+                zipsa -> new UserNearZipsaInfoResponse(zipsa.getZipsaId().getName(),
                     zipsa.getZipsaId().getGender(), zipsa.getGradeId().getName(),
                     zipsa.getDescription(), zipsa.getPreferTag(), zipsa.getZipsaId().getUserId()))
             .toList();

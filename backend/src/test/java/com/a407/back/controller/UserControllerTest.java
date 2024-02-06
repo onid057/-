@@ -13,6 +13,7 @@ import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.match.RoomCreateRequest;
 import com.a407.back.dto.user.UserAccountRequest;
+import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.model.service.MatchService;
@@ -148,18 +149,18 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("근처 집사 조회")
-    void getNearUserList() {
+    @DisplayName("근처 집사 위치 조회")
+    void getNearUserLocationList() {
         // 사용자 생성
         User user = User.builder().email("user@abc.com").name("user").password("user")
             .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
+            .latitude(50.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
             .isCertificated(false).build();
 
         // 집사를 할 사용자 생성
         User zipsaUser = User.builder().email("zipsa@abc.com").name("zipsa").password("zipsa")
             .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
+            .latitude(50.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
             .isCertificated(false).build();
 
         Grade grade = new Grade("임시 등급", 10);
@@ -174,21 +175,69 @@ class UserControllerTest {
         em.persist(zipsa);
         assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
 
-        assertThat(userService.findNearZipsaList(userId)).isEmpty();
+        assertThat(userService.findNearZipsaLocationList(userId)).isEmpty();
 
         QZipsa qZipsa = QZipsa.zipsa;
         query.update(qZipsa).set(qZipsa.isWorked, true).execute();
         em.flush();
         em.clear();
 
-        assertThat(userService.findNearZipsaList(userId)).hasSize(1);
-        assertThat(userService.findNearZipsaList(userId).get(0).getZipsaId()).isEqualTo(
+        assertThat(userService.findNearZipsaLocationList(userId)).hasSize(1);
+
+        query.update(qZipsa).set(qZipsa.isWorked, false).execute();
+        em.flush();
+        em.clear();
+        assertThat(userService.findNearZipsaLocationList(userId)).isEmpty();
+    }
+
+
+    @Test
+    @DisplayName("근처 집사 정보 조회")
+    void getNearUserInfoList() {
+        // 사용자 생성
+        User user = User.builder().email("user@abc.com").name("user").password("user")
+            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
+            .latitude(50.0).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
+            .isCertificated(false).build();
+
+        // 집사를 할 사용자 생성
+        User zipsaUser = User.builder().email("zipsa@abc.com").name("zipsa").password("zipsa")
+            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
+            .latitude(50.0).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
+            .isCertificated(false).build();
+
+        Grade grade = new Grade("임시 등급", 10);
+        em.persist(grade);
+        Long userId = userService.makeUser(user);
+        Long zipsaId = userService.makeUser(zipsaUser);
+        assertThat(userService.findByUserId(userId)).isEqualTo(userService.findByUserId(userId));
+        assertThat(userService.findByUserId(zipsaId)).isEqualTo(userService.findByUserId(zipsaId));
+        Zipsa zipsa = Zipsa.builder().zipsaId(zipsaUser).account("계좌").description("설명")
+            .gradeId(grade).isWorked(false).kindnessAverage(0D).skillAverage(0D).rewindAverage(0D)
+            .replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
+        em.persist(zipsa);
+        assertThat(zipsaService.findByZipsaId(zipsaId).getDescription()).isEqualTo("설명");
+
+        assertThat(userService.findNearZipsaInfoList(
+            new UserNearZipsaRequest(user.getLatitude(), user.getLongitude()))).isEmpty();
+
+        QZipsa qZipsa = QZipsa.zipsa;
+        query.update(qZipsa).set(qZipsa.isWorked, true).execute();
+        em.flush();
+        em.clear();
+
+        assertThat(userService.findNearZipsaInfoList(
+            new UserNearZipsaRequest(user.getLatitude(), user.getLongitude()))).hasSize(1);
+        assertThat(userService.findNearZipsaInfoList(
+                new UserNearZipsaRequest(user.getLatitude(), user.getLongitude())).get(0)
+            .getZipsaId()).isEqualTo(
             zipsaId);
 
         query.update(qZipsa).set(qZipsa.isWorked, false).execute();
         em.flush();
         em.clear();
-        assertThat(userService.findNearZipsaList(userId)).isEmpty();
+        assertThat(userService.findNearZipsaInfoList(
+            new UserNearZipsaRequest(user.getLatitude(), user.getLongitude()))).isEmpty();
     }
 
     @Test
