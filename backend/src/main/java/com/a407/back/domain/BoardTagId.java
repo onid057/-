@@ -5,18 +5,18 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.io.Serializable;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 @Getter
-@Setter
 public class BoardTagId implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -26,5 +26,11 @@ public class BoardTagId implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tag_id")
     public Tag tagId;
+
+    @Builder
+    public BoardTagId(Board board, Tag tag) {
+        this.boardId = board;
+        this.tagId = tag;
+    }
 
 }
