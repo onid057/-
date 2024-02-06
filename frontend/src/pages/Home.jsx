@@ -8,11 +8,10 @@ import BoldText from '../components/common/BoldText.jsx';
 import MenuBar from '../components/common/MenuBar.jsx';
 
 const Wrapper = styled.div`
-  position: relative;
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 20px 16px;
+  padding: 20px 16px 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -44,8 +43,6 @@ export default function Home() {
           onClick={() => navigate('/notify')}
         ></Image>
       </UpperWrapper>
-
-      <MenuBar currentMenu="HOME"></MenuBar>
 
       <Notice
         upper={[
@@ -122,6 +119,8 @@ export default function Home() {
         padding="20px 12px"
         nextPage="/matchOption"
       ></Notice>
+
+      <MenuBar currentMenu="HOME"></MenuBar>
 
       {/*
 			<InLineBox gap="10px">

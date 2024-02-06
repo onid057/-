@@ -14,7 +14,6 @@ const Wrapper = styled.div`
   gap: 18px;
   background-color: ${({ theme }) => theme.colors.secondary};
   border-radius: 25px 25px 0 0;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   font-size: 11px;
   font-weight: 400;
   z-index: 9999;
