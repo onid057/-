@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 `;
 
 const BoldTextWrapper = styled.div`
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 function BoldText({ fontSize, boldContent, normalContent }) {
