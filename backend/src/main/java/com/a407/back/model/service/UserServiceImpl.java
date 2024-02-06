@@ -41,6 +41,7 @@ import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -59,6 +60,8 @@ public class UserServiceImpl implements UserService {
 
     private final ComplainRepository complainRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Value("${sms.number}")
     private String senderPhoneNumber;
 
@@ -73,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
         User user = User.builder()
             .email(request.getEmail())
-            .password(request.getPassword())
+            .password(bCryptPasswordEncoder.encode(request.getPassword()))
             .name(request.getName())
             .birth(request.getBirth())
             .gender(request.getGender())
@@ -283,7 +286,8 @@ public class UserServiceImpl implements UserService {
             request.getAddress() == null ? user.getAddress() : request.getAddress(),
             request.getLatitude() == null ? user.getLatitude() : request.getLatitude(),
             request.getLongitude() == null ? user.getLongitude() : request.getLongitude(),
-            request.getPassword() == null ? user.getPassword() : request.getPassword());
+            request.getPassword() == null ? user.getPassword()
+                : bCryptPasswordEncoder.encode(request.getPassword()));
         Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
         if (zipsa != null) {
             zipsaRepository.changeZipsaDescription(userId,

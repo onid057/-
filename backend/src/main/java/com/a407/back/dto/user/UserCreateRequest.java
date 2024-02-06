@@ -19,11 +19,5 @@ public class UserCreateRequest {
     private String address;
     private double latitude;
     private double longitude;
-    private boolean isAdmin;
-    private boolean isAffiliated;
-    private boolean isBlocked;
-    private boolean isCertificated;
-
-
 
 }

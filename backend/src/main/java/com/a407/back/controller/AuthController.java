@@ -14,12 +14,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -33,7 +34,7 @@ public class AuthController {
     private String cookieMaxAge;
 
 
-    @PostMapping("/auth")
+    @PostMapping("/sign-in")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody AuthRequest authRequest,
         HttpServletRequest request, HttpServletResponse response) {
 
@@ -50,7 +51,7 @@ public class AuthController {
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "로그인 성공"));
     }
 
-    @DeleteMapping("/auth")
+    @PostMapping("/sign-out")
     public ResponseEntity<ApiResponse<String>> logout(HttpServletRequest request,
         HttpServletResponse response) {
 

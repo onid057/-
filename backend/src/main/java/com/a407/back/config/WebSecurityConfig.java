@@ -45,11 +45,11 @@ public class WebSecurityConfig {
         http.addFilterBefore(new TokenAuthenticationFilter(tokenProvider, userDetailsService),
             UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(
-            requests -> requests.requestMatchers("/admin/**", "/temp").hasAuthority("ADMIN"));
+            requests -> requests.requestMatchers("/admin/**").hasAuthority("ADMIN"));
         http.authorizeHttpRequests(
-            requests -> requests.requestMatchers("/auth", "/users").permitAll().anyRequest()
+            requests -> requests.requestMatchers("/auth/sign-in", "/users").permitAll().anyRequest()
                 .authenticated());
-        http.logout(logout -> logout.invalidateHttpSession(true).logoutSuccessUrl("/auth"));
+        http.logout(logout -> logout.invalidateHttpSession(true).logoutSuccessUrl("/auth/sign-out"));
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
 
