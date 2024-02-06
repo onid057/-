@@ -49,6 +49,7 @@ const RoomItemWrapper = styled.div`
   background-color: white;
   gap: 30px;
   font-size: 14px;
+  cursor: pointer;
 `;
 
 const RoomInfoWrapper = styled.div`
@@ -62,7 +63,7 @@ const HeadingWrapper = styled.div`
   font-size: 14px;
 `;
 
-function CreateRoom() {
+function RoomList() {
   const roomList = [
     {
       title: '강아지 대신 산책시켜 주실 분',
@@ -78,7 +79,11 @@ function CreateRoom() {
   const navigate = useNavigate();
 
   const onClickButton = () => {
-    navigate('/test/2');
+    navigate('/rooms/2');
+  };
+
+  const onClickRoom = () => {
+    navigate('/rooms/1');
   };
 
   const calculateRemainingTime = roomCreatedAt => {
@@ -117,7 +122,7 @@ function CreateRoom() {
         ></Paragraph>
       )}
       {roomList.map((item, idx) => (
-        <RoomItemWrapper key={idx}>
+        <RoomItemWrapper key={idx} onClick={onClickRoom}>
           <BoldText fontSize={'16px'} boldContent={item.title} />
           <RoomInfoWrapper>
             <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
@@ -137,4 +142,4 @@ function CreateRoom() {
   );
 }
 
-export default CreateRoom;
+export default RoomList;
