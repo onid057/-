@@ -9,9 +9,9 @@ import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
+import com.a407.back.dto.util.ImageUploadUtil;
 import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
-import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
@@ -25,10 +25,13 @@ import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -40,11 +43,22 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     private final NotificationRepository notificationRepository;
 
+    private final ImageUploadUtil imageUploadUtil;
+
+    @Value("${image.prefix}")
+    private String imagePrefix;
+
+
     @Override
     @Transactional
-    public void makeReport(ReportCreateRequest reportCreateRequest) {
-        Room room = roomRepository.findByRoomId(reportCreateRequest.getRoomId());
-        Report report = reportCreateRequest.toEntity(room);
+    public void makeReport(Long roomId, MultipartFile image, String content) throws IOException {
+        Room room = roomRepository.findByRoomId(roomId);
+
+        String fileName = imageUploadUtil.resizer(image, 300);
+
+        Report report = Report.builder().roomId(room).processImage(fileName).processContent(content)
+            .build();
+
         zipsaRepository.makeReport(report);
     }
 
@@ -52,9 +66,8 @@ public class ZipsaServiceImpl implements ZipsaService {
     public List<ReportSearchResponse> findReportByRoomIdList(Long roomId) {
         List<Report> reports = zipsaRepository.findReportByRoomIdList(roomId);
         return reports.stream().map(
-            report -> new ReportSearchResponse(new String(report.getProcessImage()),
-                report.getProcessContent(),
-                report.getCreatedAt())).toList();
+            report -> new ReportSearchResponse(imagePrefix + report.getProcessImage(),
+                report.getProcessContent(), report.getCreatedAt())).toList();
     }
 
     @Override
@@ -209,7 +222,7 @@ public class ZipsaServiceImpl implements ZipsaService {
     @Transactional
     public void changeZipsaStatus(Long zipsaId) {
         Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
-        if(zipsa == null) {
+        if (zipsa == null) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         }
         zipsaRepository.changeZipsaStatus(zipsaId, !Boolean.TRUE.equals(zipsa.getIsWorked()));
