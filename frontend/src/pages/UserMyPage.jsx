@@ -3,6 +3,7 @@ import Notice from '../components/common/Notice';
 import Image from '../components/common/Image';
 import BoldText from '../components/common/BoldText';
 import Paragraph from '../components/common/Paragraph';
+import NavigateButton from '../components/common/NavigateButton';
 import MenuBar from '../components/common/MenuBar';
 
 const Wrapper = styled.div`
@@ -14,7 +15,7 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
@@ -80,27 +81,12 @@ function UserMyPage({ name }) {
             ></Image>
           </ContentWrapper>,
         ]}
-        nextPage={'/'}
+        nextPage={'/connectOption'}
       ></Notice>
       {MenuList.map((content, idx) => (
-        <Notice
-          key={idx}
-          upper={[
-            <ContentWrapper>
-              <BoldText
-                fontSize={'18px'}
-                boldContent={null}
-                normalContent={content}
-              ></BoldText>
-              <Image
-                src={process.env.PUBLIC_URL + '/images/right_arrow.svg'}
-                width={'24px'}
-                height={'24px'}
-              ></Image>
-            </ContentWrapper>,
-          ]}
-          nextPage={'/'}
-        ></Notice>
+        <NavigateButton key={idx} onClick={() => console.log('페이지 이동')}>
+          {content}
+        </NavigateButton>
       ))}
       <MenuBar currentMenu="USER"></MenuBar>
     </Wrapper>
