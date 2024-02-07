@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 const LeftBox = styled.div`
   width: 100%;
   height: 100%;
-  flex: 3;
+  flex: 2.5;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -22,10 +22,10 @@ const LeftBox = styled.div`
 const RightBox = styled.div`
   width: 100%;
   height: 100%;
-  flex: 7;
+  flex: 7.5;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   font-size: 14px;
   font-weight: normal;
 `;
@@ -37,7 +37,6 @@ const Name = styled.div`
 const Address = styled.div``;
 
 const Content = styled.div`
-  margin: 3px 0px;
   font-size: 14px;
   font-weight: 350;
 `;
@@ -77,6 +76,8 @@ function BoardComment({
         <UpdateDeleteButton
           updateButton={updateButton}
           deleteButton={deleteButton}
+          updateOnClick={''}
+          deleteOnClick={''}
         ></UpdateDeleteButton>
       </RightBox>
     </Wrapper>
