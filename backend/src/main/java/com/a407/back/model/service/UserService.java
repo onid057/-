@@ -2,6 +2,7 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.User;
 import com.a407.back.dto.notification.NotificationListResponse;
+import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserComplainRequest;
@@ -25,7 +26,6 @@ public interface UserService {
 
     boolean isWorkedDistinction(Long userId);
 
-
     List<UserNearZipsaLocationResponse> findNearZipsaLocationList(Long userId);
 
     List<UserNearZipsaInfoResponse> findNearZipsaInfoList(
@@ -36,7 +36,6 @@ public interface UserService {
     List<UserRecordsResponse> getUserRecordList(Long userId);
 
     List<UserReservationResponse> getUserReservationList(Long userId);
-
 
     UserAccountResponse makeAccount(UserAccountRequest userAccountRequest);
 
@@ -56,4 +55,6 @@ public interface UserService {
     void deleteUser(Long userId);
 
     void makeComplain(UserComplainRequest userComplainRequest);
+
+    PublicRoomListResponse getUserPublicRoomList(Long userId);
 }

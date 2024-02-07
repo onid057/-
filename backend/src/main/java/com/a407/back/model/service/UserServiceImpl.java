@@ -10,6 +10,7 @@ import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.notification.NotificationListResponse;
+import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserComplainRequest;
@@ -23,6 +24,7 @@ import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.user.UserUpdateDto;
 import com.a407.back.dto.user.UserUpdateRequest;
+import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.ComplainRepository;
@@ -263,6 +265,18 @@ public class UserServiceImpl implements UserService {
             .content(userComplainRequest.getContent()).isProcessed(false).build();
         complainRepository.makeComplain(complain);
         roomRepository.changeIsComplained(room.getRoomId());
+    }
+
+    @Override
+    public PublicRoomListResponse getUserPublicRoomList(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        List<PublicRoom> publicRoomList = roomRepository.getUserPublicRoomList(user).stream()
+            .map(
+                room -> new PublicRoom(room.getRoomId(), room.getSubCategoryId().getSubCategoryId(),
+                    room.getTitle(), room.getContent(), room.getPlace(), room.getEstimateDuration(),
+                    room.getRoomCreatedAt(), room.getExpectationStartedAt(),
+                    room.getExpectationEndedAt(), room.getExpectationPay())).toList();
+        return new PublicRoomListResponse((long) publicRoomList.size(), 1, publicRoomList);
     }
 
     @Override
