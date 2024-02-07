@@ -49,6 +49,7 @@ const getUserRoomList = async userId => {
   }
 };
 
+// 공개방 상세 페이지 조회
 const getRoomDetailInfo = async roomId => {
   {
     try {
@@ -63,6 +64,7 @@ const getRoomDetailInfo = async roomId => {
   }
 };
 
+// 사용자기준, 공개방 상세페이지에서 해당 방에 등록된 요청리스트 조회
 const getZipsaListFromDetailInfo = async roomId => {
   try {
     const response = await axios({
@@ -70,6 +72,19 @@ const getZipsaListFromDetailInfo = async roomId => {
       url: `/rooms/${roomId}/notifications`,
     });
     return response.data.data.roomNotificationList;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 사용자기준, 공개방 상세페이지에서 해당 방의 요청리스트 중 집사 요청 수락
+const acceptZipsaRequest = async notificationId => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/notifications/${notificationId}`,
+    });
+    return response.data;
   } catch (error) {
     console.log(error);
   }
@@ -107,6 +122,7 @@ const applyForRoom = async (roomId, zipsaId) => {
 
 export {
   makeRoom,
+  acceptZipsaRequest,
   getUserRoomList,
   getZipsaRoomList,
   getRoomDetailInfo,
