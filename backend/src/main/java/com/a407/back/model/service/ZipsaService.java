@@ -10,6 +10,7 @@ import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
 import com.a407.back.dto.zipsa.ZipsaReservationResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
+import com.a407.back.dto.zipsa.ZipsaStatusResponse;
 import java.util.List;
 
 public interface ZipsaService {
@@ -33,4 +34,8 @@ public interface ZipsaService {
     void makePublicRoomNotification(PublicRoomNotificationRequest publicRoomNotificationRequest);
 
     PublicRoomListResponse getPublicRoomList(int page, int size);
+
+    void changeZipsaStatus(Long zipsaId);
+
+    ZipsaStatusResponse getZipsaWorkStatus(Long zipsaId);
 }

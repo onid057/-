@@ -107,4 +107,11 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         query.update(qZipsa).set(qZipsa.description, description)
             .where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
     }
+
+    @Override
+    public void changeZipsaStatus(Long zipsaId, boolean status) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        query.update(qZipsa).set(qZipsa.isWorked, status)
+            .where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
+    }
 }
