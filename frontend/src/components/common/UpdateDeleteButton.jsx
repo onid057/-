@@ -14,6 +14,7 @@ const Wrapper = styled.div`
 `;
 
 const UpdateButton = styled.button`
+  cursor: pointer;
   width: 51px;
   height: 23px;
   border-radius: 5px;
@@ -21,6 +22,7 @@ const UpdateButton = styled.button`
   color: white;
 `;
 const DeleteButton = styled.button`
+  cursor: pointer;
   width: 51px;
   height: 23px;
   border-radius: 5px;
@@ -28,11 +30,24 @@ const DeleteButton = styled.button`
   color: white;
 `;
 
-function UpdateDeleteButton({ updateButton, deleteButton, onClick }) {
+function UpdateDeleteButton({
+  updateButton,
+  deleteButton,
+  updateOnClick,
+  deleteOnClick,
+}) {
   return (
     <Wrapper>
-      {!updateButton ? '' : <UpdateButton onClick={onClick}>수정</UpdateButton>}
-      {!deleteButton ? '' : <DeleteButton onClick={onClick}>삭제</DeleteButton>}
+      {!updateButton ? (
+        ''
+      ) : (
+        <UpdateButton onClick={updateOnClick}>수정</UpdateButton>
+      )}
+      {!deleteButton ? (
+        ''
+      ) : (
+        <DeleteButton onClick={deleteOnClick}>삭제</DeleteButton>
+      )}
     </Wrapper>
   );
 }
