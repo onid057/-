@@ -21,6 +21,6 @@ public class RoomCreateRequest {
     private Timestamp expectationStartedAt;
     private Timestamp expectationEndedAt;
     private int expectationPay;
-    private List<Long> helperList;
+    private List<Long> zipsaList;
 
 }
