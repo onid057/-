@@ -1,6 +1,7 @@
 package com.a407.back.model.service;
 
 import com.a407.back.domain.User;
+import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.room.UserPublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
@@ -57,4 +58,6 @@ public interface UserService {
     void makeComplain(UserComplainRequest userComplainRequest);
 
     UserPublicRoomListResponse getUserPublicRoomList(Long userId);
+
+    BoardListResponse getUserBoardList(Long userId, int page, int size);
 }

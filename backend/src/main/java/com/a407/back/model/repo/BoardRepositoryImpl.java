@@ -5,6 +5,7 @@ import com.a407.back.domain.BoardTag;
 import com.a407.back.domain.QBoard;
 import com.a407.back.domain.QBoardTag;
 import com.a407.back.domain.Tag;
+import com.a407.back.domain.User;
 import com.a407.back.dto.util.BoardChangeDto;
 import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -74,6 +75,13 @@ public class BoardRepositoryImpl implements BoardRepository {
     public QueryResults<Board> findBoardList(int page, int size) {
         QBoard qBoard = QBoard.board;
         return query.selectFrom(qBoard).orderBy(qBoard.updatedAt.desc())
+            .offset(page).limit(size).fetchResults();
+    }
+
+    @Override
+    public QueryResults<Board> getUserBoardList(User user, int page, int size) {
+        QBoard qBoard = QBoard.board;
+        return query.selectFrom(qBoard).where(qBoard.userId.eq(user)).orderBy(qBoard.updatedAt.desc())
             .offset(page).limit(size).fetchResults();
     }
 
