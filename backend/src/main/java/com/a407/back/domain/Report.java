@@ -35,7 +35,7 @@ public class Report implements Serializable {
 
     @Lob
     @Column(name = "process_image", nullable = false, columnDefinition = "MEDIUMBLOB")
-    private byte[] processImage;
+    private String processImage;
 
     @Column(name = "process_content", nullable = false, length = 50)
     private String processContent;
@@ -45,7 +45,7 @@ public class Report implements Serializable {
     private Timestamp createdAt;
 
     @Builder
-    public Report(Room roomId, byte[] processImage, String processContent,
+    public Report(Room roomId, String processImage, String processContent,
         Timestamp createdAt) {
         this.roomId = roomId;
         this.processImage = processImage;

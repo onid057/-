@@ -14,7 +14,7 @@ public class ReportCreateRequest {
     private String processContent;
 
     public Report toEntity(Room room) {
-        return Report.builder().roomId(room).processImage(processImage.getBytes())
+        return Report.builder().roomId(room).processImage(processImage)
             .processContent(processContent).build();
     }
 
