@@ -27,7 +27,7 @@ const ContentWrapper = styled.div`
   padding: 22px 17px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   background-color: #ffffff;
   border-radius: 25px;
   font-size: 16px;
@@ -52,7 +52,7 @@ const DetailWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 5px;
 `;
 
 const Bold = styled.div`
