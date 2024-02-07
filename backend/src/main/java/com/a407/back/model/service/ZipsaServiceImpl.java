@@ -188,7 +188,7 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     @Override
     public PublicRoomListResponse getPublicRoomList(int page, int size) {
-        QueryResults<Room> results = zipsaRepository.getPublicRoomList((page - 1) * size, size);
+        QueryResults<Room> results = roomRepository.getPublicRoomList((page - 1) * size, size);
         List<PublicRoom> roomList = results.getResults().stream()
             .map(room ->
                 new PublicRoom(room.getRoomId(),

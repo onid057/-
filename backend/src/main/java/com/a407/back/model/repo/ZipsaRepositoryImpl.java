@@ -96,14 +96,6 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public QueryResults<Room> getPublicRoomList(int page, int size) {
-        QRoom qRoom = QRoom.room;
-        QueryResults<Room> result = query.selectFrom(qRoom).orderBy(qRoom.roomCreatedAt.desc())
-            .offset(page).limit(size).fetchResults();
-        return result;
-    }
-
-    @Override
     public void deleteZipsa(Long zipsaId) {
         QZipsa qZipsa = QZipsa.zipsa;
         query.delete(qZipsa).where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
