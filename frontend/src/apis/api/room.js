@@ -37,19 +37,17 @@ const makeRoom = async (
 };
 
 // 사용자 본인이 생성한 방 목록 구하기
-const getUserRoomList = async userId =>
-  // 데이터 input 기입하기
-  {
-    try {
-      const response = await axios({
-        method: 'get',
-        url: `/users/${userId}/rooms`,
-      });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const getUserRoomList = async userId => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/users/${userId}/rooms`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const getRoomDetailInfo = async roomId => {
   {
@@ -78,20 +76,34 @@ const getZipsaListFromDetailInfo = async roomId => {
 };
 
 // 집사기준, 사용자들이 생성한 모든 방 목록 보여주기
-const getZipsaRoomList = async () =>
-  // 데이터 input 기입하기
-  {
-    try {
-      const response = await axios({
-        method: 'get',
-        url: '/주소입력하기!',
-        data: {},
-      });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
+const getZipsaRoomList = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/helpers/rooms?page=1&size=100`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 집사기준, 공개방 참가신청하기
+const applyForRoom = async (roomId, zipsaId) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `/helpers/participation`,
+      data: {
+        roomId,
+        zipsaId,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export {
   makeRoom,
@@ -99,4 +111,5 @@ export {
   getZipsaRoomList,
   getRoomDetailInfo,
   getZipsaListFromDetailInfo,
+  applyForRoom,
 };
