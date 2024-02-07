@@ -13,6 +13,6 @@ public class BoardListResponse {
 
     private Long totalCount;
     private int nowPage;
-    private List<BoardListDto> publicRoomList;
+    private List<BoardListDto> boardList;
 
 }
