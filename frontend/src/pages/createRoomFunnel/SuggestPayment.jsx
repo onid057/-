@@ -75,6 +75,7 @@ function SuggestPayment({
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(totalPayment)}
+        disabledOnNext={!unitPayment}
       ></NavigationBar>
 
       <Paragraph
