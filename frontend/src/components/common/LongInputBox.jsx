@@ -39,7 +39,7 @@ const TextAreaInput = styled.textarea`
   min-height: 160px;
   padding: 3px;
   font-size: 18px;
-  font-weight: light;
+  font-weight: 300;
   background-color: transparent;
   outline: none;
   border: none;
@@ -67,10 +67,5 @@ function LongInputBox({ title, placeholder, value, onChange }) {
     </LongInputBoxWrapper>
   );
 }
-
-// LongInputBox.defaultProps = {
-//   title: '제목 prop으로 변경하기',
-//   placeholder: '미리보기 prop으로 변경하기',
-// };
 
 export default LongInputBox;

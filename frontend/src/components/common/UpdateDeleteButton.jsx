@@ -31,21 +31,17 @@ const DeleteButton = styled.button`
 `;
 
 function UpdateDeleteButton({
-  updateButton,
-  deleteButton,
+  needUpdateButton,
+  needDeleteButton,
   updateOnClick,
   deleteOnClick,
 }) {
   return (
     <Wrapper>
-      {!updateButton ? (
-        ''
-      ) : (
+      {needUpdateButton && (
         <UpdateButton onClick={updateOnClick}>수정</UpdateButton>
       )}
-      {!deleteButton ? (
-        ''
-      ) : (
+      {needDeleteButton && (
         <DeleteButton onClick={deleteOnClick}>삭제</DeleteButton>
       )}
     </Wrapper>
