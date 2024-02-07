@@ -1,6 +1,6 @@
 package com.a407.back.dto.room;
 
-import com.a407.back.dto.util.PublicRoom;
+import com.a407.back.dto.util.UserPublicRoom;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +13,6 @@ public class PublicRoomListResponse {
 
     private Long totalCount;
     private int nowPage;
-    private List<PublicRoom> publicRoomList;
+    private List<UserPublicRoom> publicRoomList;
+
 }

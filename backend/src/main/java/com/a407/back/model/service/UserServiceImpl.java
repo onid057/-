@@ -24,7 +24,7 @@ import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.user.UserUpdateDto;
 import com.a407.back.dto.user.UserUpdateRequest;
-import com.a407.back.dto.util.PublicRoom;
+import com.a407.back.dto.util.UserPublicRoom;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.ComplainRepository;
@@ -273,12 +273,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public PublicRoomListResponse getUserPublicRoomList(Long userId) {
         User user = userRepository.findByUserId(userId);
-        List<PublicRoom> publicRoomList = roomRepository.getUserPublicRoomList(user).stream()
+        List<UserPublicRoom> publicRoomList = roomRepository.getUserPublicRoomList(user).stream()
             .map(
-                room -> new PublicRoom(room.getRoomId(), room.getSubCategoryId().getSubCategoryId(),
-                    room.getTitle(), room.getContent(), room.getPlace(), room.getEstimateDuration(),
-                    room.getRoomCreatedAt(), room.getExpectationStartedAt(),
-                    room.getExpectationEndedAt(), room.getExpectationPay())).toList();
+                room -> new UserPublicRoom(room.getRoomId(), room.getTitle(),
+                    room.getRoomCreatedAt())).toList();
         return new PublicRoomListResponse((long) publicRoomList.size(), 1, publicRoomList);
     }
 
@@ -339,6 +337,5 @@ public class UserServiceImpl implements UserService {
         zipsaRepository.deleteZipsa(userId);
         userRepository.deleteUser(userId);
     }
-
 
 }
