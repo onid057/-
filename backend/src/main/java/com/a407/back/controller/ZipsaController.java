@@ -4,6 +4,7 @@ import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
+import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
@@ -37,10 +38,11 @@ public class ZipsaController {
 
     @PostMapping("/reports")
     public ResponseEntity<ApiResponse<String>> makeReport(
-        @RequestPart("roomId") Long roomId,
         @RequestPart("image") MultipartFile image,
-        @RequestPart("content") String content) throws IOException {
-        zipsaService.makeReport(roomId, image, content);
+        @RequestPart("request") ReportCreateRequest reportCreateRequest
+    ) throws IOException {
+        zipsaService.makeReport(reportCreateRequest.getRoomId(), image,
+            reportCreateRequest.getContent());
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "정기 보고 생성 성공"));
     }
