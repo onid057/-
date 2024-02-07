@@ -49,6 +49,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("server 이상 무");
     }
 
+
     // 알림 목록
     @GetMapping("/{userId}/notifications")
     public ResponseEntity<ApiResponse<List<NotificationListResponse>>> getNotificationList(

@@ -9,7 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentListDto {
+
+    private Long commentId;
     private String userName;
     private String content;
     private Timestamp updatedAt;
+
 }

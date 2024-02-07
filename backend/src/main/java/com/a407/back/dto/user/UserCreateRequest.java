@@ -20,5 +20,4 @@ public class UserCreateRequest {
     private double latitude;
     private double longitude;
 
-
 }

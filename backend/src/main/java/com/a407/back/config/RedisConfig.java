@@ -23,6 +23,9 @@ public class RedisConfig {
     @Value("${spring.data.redis.association.port}")
     private int associationPort;
 
+    @Value("${spring.data.redis.token.port}")
+    private int tokenPort;
+
     @Primary
     @Bean(name = "certificationRedisConnectionFactory")
     public RedisConnectionFactory certificationRedisConnectionFactory() {
@@ -32,6 +35,11 @@ public class RedisConfig {
     @Bean(name = "associationRedisConnectionFactory")
     public RedisConnectionFactory associationRedisConnectionFactory() {
         return new LettuceConnectionFactory(host, associationPort);
+    }
+
+    @Bean(name = "refreshTokenRedisConnectionFactory")
+    public RedisConnectionFactory refreshTokenRedisConnectionFactory() {
+        return new LettuceConnectionFactory(host, tokenPort);
     }
 
     @Primary
@@ -52,7 +60,16 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-    private static void redisTemplateSetting(RedisConnectionFactory associationRedisConnectionFactory,
+    @Bean(name = "refreshTokenRedisTemplate")
+    public RedisTemplate<String, String> refreshTokenRedisTemplate(
+        @Qualifier(value = "refreshTokenRedisConnectionFactory") RedisConnectionFactory refreshTokenRedisConnectionFactory) {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplateSetting(refreshTokenRedisConnectionFactory, redisTemplate);
+        return redisTemplate;
+    }
+
+    private static void redisTemplateSetting(
+        RedisConnectionFactory associationRedisConnectionFactory,
         RedisTemplate<String, String> redisTemplate) {
         redisTemplate.setConnectionFactory(associationRedisConnectionFactory);
         redisTemplate.setDefaultSerializer(RedisSerializer.string());

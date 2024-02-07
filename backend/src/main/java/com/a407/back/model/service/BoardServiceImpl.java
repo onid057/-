@@ -1,5 +1,6 @@
 package com.a407.back.model.service;
 
+import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Board;
 import com.a407.back.domain.BoardTag;
 import com.a407.back.domain.BoardTagId;
@@ -13,6 +14,7 @@ import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.util.BoardChangeDto;
 import com.a407.back.dto.util.BoardListDto;
 import com.a407.back.dto.util.CommentListDto;
+import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.BoardRepository;
 import com.a407.back.model.repo.CommentRepository;
 import com.a407.back.model.repo.UserRepository;
@@ -59,6 +61,9 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void changeBoard(Long boardId, BoardChangeRequest boardChangeRequest) {
         Board board = boardRepository.findBoard(boardId);
+        if (board.getTitle() == null) {
+            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        }
         String title = board.getTitle();
         String content = board.getContent();
         if (boardChangeRequest.getTitle() != null && !boardChangeRequest.getTitle().isEmpty()) {
@@ -102,6 +107,9 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(Long boardId) {
         // boardTagList 삭제
         Board board = boardRepository.findBoard(boardId);
+        if(board == null) {
+            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        }
         boardRepository.deleteBoardTagList(board);
 
         // comment 삭제
@@ -136,25 +144,25 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardRepository.findBoard(boardId);
         User user = userRepository.findByUserId(board.getUserId().getUserId());
         List<CommentListDto> commentList = commentRepository.findCommentList(board).stream()
-            .map(comment -> {
-                return new CommentListDto(comment.getUserId().getName(), comment.getContent(),
-                    comment.getUpdatedAt());
-            }).toList();
+            .map(comment -> new CommentListDto(comment.getCommentId(), comment.getUserId().getName(), comment.getContent(),
+                comment.getUpdatedAt())
+            ).toList();
 
         String profileImage = "";
-        if(user.getProfileImage() != null) {
+        if (user.getProfileImage() != null) {
             Byte[] byteImage = user.getProfileImage();
             byte[] imageToByte = new byte[byteImage.length];
 
             int count = 0;
-            for(Byte byteImagePiece : byteImage) {
+            for (Byte byteImagePiece : byteImage) {
                 imageToByte[count++] = byteImagePiece;
             }
 
             profileImage = new String(imageToByte);
         }
 
-        return new BoardDetailResponse(user.getName(), user.getAddress(), profileImage, board.getTitle(),
+        return new BoardDetailResponse(user.getName(), user.getAddress(), profileImage,
+            board.getTitle(),
             board.getContent(), board.getUpdatedAt(), commentList);
     }
 }
