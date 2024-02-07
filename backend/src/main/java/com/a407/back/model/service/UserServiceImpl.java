@@ -3,12 +3,16 @@ package com.a407.back.model.service;
 import static java.security.SecureRandom.getInstanceStrong;
 
 import com.a407.back.config.constants.ErrorCode;
+import com.a407.back.domain.Board;
+import com.a407.back.domain.BoardTag;
 import com.a407.back.domain.Complain;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
+import com.a407.back.domain.Tag;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.room.UserPublicRoomListResponse;
@@ -25,14 +29,18 @@ import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.user.UserUpdateDto;
 import com.a407.back.dto.user.UserUpdateRequest;
+import com.a407.back.dto.util.BoardListDto;
 import com.a407.back.dto.util.UserPublicRoom;
 import com.a407.back.exception.CustomException;
+import com.a407.back.model.repo.BoardRepository;
 import com.a407.back.model.repo.CategoryRepository;
+import com.a407.back.model.repo.CommentRepository;
 import com.a407.back.model.repo.ComplainRepository;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -62,6 +70,10 @@ public class UserServiceImpl implements UserService {
     private final RoomRepository roomRepository;
 
     private final ComplainRepository complainRepository;
+
+    private final BoardRepository boardRepository;
+
+    private final CommentRepository commentRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -279,6 +291,19 @@ public class UserServiceImpl implements UserService {
                 room -> new UserPublicRoom(room.getRoomId(), room.getTitle(),
                     room.getRoomCreatedAt())).toList();
         return new UserPublicRoomListResponse((long) userPublicRoomList.size(), 1, userPublicRoomList);
+    }
+
+    @Override
+    public BoardListResponse getUserBoardList(Long userId, int page, int size) {
+        User user = userRepository.findByUserId(userId);
+        QueryResults<Board> boardList = boardRepository.getUserBoardList(user, (page - 1) * size, size);
+        List<BoardListDto> userBoardList = boardList.getResults().stream().map(board -> {
+            int commentCount = commentRepository.getCommentCount(board).intValue();
+            List<BoardTag> tagList = boardRepository.findBoardTagList(board);
+            List<String> tagNameList = tagList.stream().map(tag -> tag.getBoardTagId().tagId.getName()).toList();
+            return new BoardListDto(board.getTitle(), board.getUserId().getName(), commentCount, board.getUpdatedAt(), tagNameList);
+        }).toList();
+        return new BoardListResponse(boardList.getTotal(), page, userBoardList);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.a407.back.model.repo;
 import com.a407.back.domain.Board;
 import com.a407.back.domain.BoardTag;
 import com.a407.back.domain.Tag;
+import com.a407.back.domain.User;
 import com.a407.back.dto.util.BoardChangeDto;
 import com.querydsl.core.QueryResults;
 import java.util.List;
@@ -28,4 +29,6 @@ public interface BoardRepository {
     void deleteBoard(Board board);
 
     QueryResults<Board> findBoardList(int page, int size);
+
+    QueryResults<Board> getUserBoardList(User user, int page, int size);
 }

@@ -4,7 +4,6 @@ import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.notification.NotificationListResponse;
-import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.room.UserPublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
@@ -35,6 +34,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -122,6 +122,13 @@ public class UserController {
         userService.deleteAccount(userId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "결제 정보 삭제"));
+    }
+
+    @GetMapping("/{userId}/boards")
+    public ResponseEntity<ApiResponse<BoardListResponse>> getUserBoardList(
+        @PathVariable("userId") Long userId, @RequestParam("page") int page, @RequestParam("size") int size) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS, userService.getUserBoardList(userId, page, size)));
     }
 
     @PostMapping("/certification/phonenumber")
