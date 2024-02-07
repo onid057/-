@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
@@ -6,6 +6,7 @@ import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import { useNavigate } from 'react-router-dom';
 import calculateRemainingTime from '../../apis/utils/calculateRemainingTime';
+import { getUserRoomList } from '../../apis/api/room';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -65,27 +66,24 @@ const HeadingWrapper = styled.div`
 `;
 
 function RoomList() {
-  const roomList = [
-    {
-      title: '강아지 대신 산책시켜 주실 분',
-      content: '집에서 10분 거리에 있는 미용실을 예약했어요.',
-      place: '약속 장소입니다.',
-      estimateDuration: 2,
-      roomCreatedAt: '2024-02-05T01:01:01',
-      expectationStartedAt: '2024-01-01T01:01:01',
-      expectationEndedAt: '2024-01-01T01:01:01',
-      expectationPay: 20000,
-    },
-  ];
+  const [roomList, setRoomList] = useState([]);
   const navigate = useNavigate();
 
   const onClickButton = () => {
-    navigate('/rooms/2');
+    navigate('/rooms/create');
   };
 
-  const onClickRoom = () => {
-    navigate('/rooms/1');
+  const onClickRoom = roomId => {
+    navigate(`/rooms/${roomId}`);
   };
+
+  const userId = 1;
+
+  useEffect(() => {
+    getUserRoomList(userId).then(response => {
+      setRoomList(response.data.userPublicRoomList);
+    });
+  }, []);
 
   return (
     <Wrapper>
@@ -113,7 +111,7 @@ function RoomList() {
         ></Paragraph>
       )}
       {roomList.map((item, idx) => (
-        <RoomItemWrapper key={idx} onClick={onClickRoom}>
+        <RoomItemWrapper key={idx} onClick={() => onClickRoom(item.roomId)}>
           <BoldText fontSize={'16px'} boldContent={item.title} />
           <RoomInfoWrapper>
             <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
