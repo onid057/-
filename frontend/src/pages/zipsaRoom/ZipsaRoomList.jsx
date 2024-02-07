@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
@@ -51,27 +51,20 @@ const HeadingWrapper = styled.div`
   font-size: 14px;
 `;
 function ZipsaRoomList() {
+  const [roomList, setRoomList] = useState([]);
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
   };
-  const onClickRoom = () => {
-    navigate('/test/2');
+  const onClickRoom = roomId => {
+    navigate(`/rooms/zipsa/detail/${roomId}`);
   };
 
-  const roomList = [
-    {
-      roomId: 3,
-      title: '강아지 대신 산책시켜 주실 분',
-      content: '집에서 10분 거리에 있는 미용실을 예약했어요.',
-      place: '약속 장소입니다.',
-      estimateDuration: 2,
-      roomCreatedAt: '2024-02-07T01:01:01',
-      expectationStartedAt: '2024-01-01T01:01:01',
-      expectationEndedAt: '2024-01-01T01:01:01',
-      expectationPay: 20000,
-    },
-  ];
+  useEffect(() => {
+    getZipsaRoomList().then(response => {
+      setRoomList(response.data.publicRoomList);
+    });
+  }, []);
 
   return (
     <Wrapper>
@@ -100,7 +93,12 @@ function ZipsaRoomList() {
         ></Paragraph>
       )}
       {roomList.map((item, idx) => (
-        <RoomItemWrapper key={idx} onClick={onClickRoom}>
+        <RoomItemWrapper
+          key={idx}
+          onClick={() => {
+            onClickRoom(item.roomId);
+          }}
+        >
           <BoldText fontSize={'16px'} boldContent={item.title} />
           <RoomInfoWrapper>
             <HeadingWrapper>금액</HeadingWrapper>
