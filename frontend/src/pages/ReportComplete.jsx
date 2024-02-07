@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Paragraph from '../components/common/Paragraph';
 import BoldText from '../components/common/BoldText';
 import Image from '../components/common/Image';
+import { getReportData } from '../apis/api/report';
 
 const ReportWrapper = styled.div`
   width: 320px;
@@ -74,6 +75,15 @@ export default function ReportComplete({ name }) {
     '완료했어요!',
   ];
 
+  const onClick = () => {
+    getReportData().then(response => {
+      console.log(response.data[0]);
+      setImageUrl(response.data[0].processImage);
+    });
+  };
+
+  const [imageUrl, setImageUrl] = useState('');
+
   return (
     <ReportWrapper>
       <ContentWrapper>
@@ -89,6 +99,7 @@ export default function ReportComplete({ name }) {
             src={`${process.env.PUBLIC_URL}/images/heart.svg`}
             width={'150px'}
             height={'150px'}
+            onClick={onClick}
           ></Image>
           <LowerContentWrapper>
             <Paragraph
@@ -103,6 +114,8 @@ export default function ReportComplete({ name }) {
             ></Paragraph>
           </LowerContentWrapper>
         </Lower>
+        <Image src={imageUrl} width={'200px'} height={'200px'}></Image>
+        {imageUrl}
       </ContentWrapper>
     </ReportWrapper>
   );
