@@ -20,14 +20,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @RequiredArgsConstructor
-public class ImageUploadUtil {
+public class ImageUtil {
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    @Value("${image.prefix}")
+    private String prefix;
+
     private final AmazonS3Client amazonS3Client;
 
-    public String resizer(MultipartFile originalImage, int size)
+    public String resizeImage(MultipartFile originalImage, int size)
         throws IOException {
 
         String randomFileName =
@@ -61,7 +64,11 @@ public class ImageUploadUtil {
             new PutObjectRequest(bucket, randomFileName, resizedImage.getInputStream(),
                 objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
 
-        return randomFileName;
+        return prefix + randomFileName;
+    }
+
+    public void deleteImage(String key) {
+        amazonS3Client.deleteObject(bucket, key.substring(prefix.length()));
     }
 
 }

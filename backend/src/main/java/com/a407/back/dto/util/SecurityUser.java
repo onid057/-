@@ -4,7 +4,6 @@ import com.a407.back.domain.Association;
 import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import java.sql.Timestamp;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
@@ -45,7 +44,7 @@ public class SecurityUser implements UserDetails {
         this.birth = user.getBirth();
         this.gender = user.getGender();
         this.address = user.getAddress();
-        this.profileImage = Arrays.toString(user.getProfileImage());
+        this.profileImage = user.getProfileImage();
         this.isCertificated = user.getIsCertificated();
         this.latitude = user.getLatitude();
         this.longitude = user.getLongitude();

@@ -9,7 +9,7 @@ import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
-import com.a407.back.dto.util.ImageUploadUtil;
+import com.a407.back.dto.util.ImageUtil;
 import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
@@ -26,10 +26,8 @@ import com.a407.back.model.repo.ZipsaRepository;
 import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,10 +41,7 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     private final NotificationRepository notificationRepository;
 
-    private final ImageUploadUtil imageUploadUtil;
-
-    @Value("${image.prefix}")
-    private String imagePrefix;
+    private final ImageUtil imageUtil;
 
 
     @Override
@@ -54,7 +49,7 @@ public class ZipsaServiceImpl implements ZipsaService {
     public void makeReport(Long roomId, MultipartFile image, String content) throws IOException {
         Room room = roomRepository.findByRoomId(roomId);
 
-        String fileName = imageUploadUtil.resizer(image, 300);
+        String fileName = imageUtil.resizeImage(image, 300);
 
         Report report = Report.builder().roomId(room).processImage(fileName).processContent(content)
             .build();
@@ -66,7 +61,7 @@ public class ZipsaServiceImpl implements ZipsaService {
     public List<ReportSearchResponse> findReportByRoomIdList(Long roomId) {
         List<Report> reports = zipsaRepository.findReportByRoomIdList(roomId);
         return reports.stream().map(
-            report -> new ReportSearchResponse(imagePrefix + report.getProcessImage(),
+            report -> new ReportSearchResponse(report.getProcessImage(),
                 report.getProcessContent(), report.getCreatedAt())).toList();
     }
 
@@ -81,8 +76,8 @@ public class ZipsaServiceImpl implements ZipsaService {
             .birth(zipsa.getZipsaId().getBirth())
             .gender(zipsa.getZipsaId().getGender())
             .address(zipsa.getZipsaId().getAddress())
-            .profileImage(zipsa.getZipsaId().getProfileImage() == null ? null : Arrays.toString(
-                zipsa.getZipsaId().getProfileImage()))
+            .profileImage(zipsa.getZipsaId().getProfileImage() == null ? null :
+                zipsa.getZipsaId().getProfileImage())
             .latitude(zipsa.getZipsaId().getLatitude())
             .longitude(zipsa.getZipsaId().getLongitude())
             .gradeId(zipsa.getGradeId().getGradeId())
@@ -120,7 +115,7 @@ public class ZipsaServiceImpl implements ZipsaService {
         return reviews.stream().map(review -> ZipsaReviewResponse.builder()
             .userName(review.getUserId().getName())
             .profileImage(review.getUserId().getProfileImage() == null ? null
-                : Arrays.toString(review.getUserId().getProfileImage()))
+                : review.getUserId().getProfileImage())
             .content(review.getContent())
             .kindnessScore(review.getKindnessScore())
             .skillScore(review.getSkillScore())
@@ -140,7 +135,7 @@ public class ZipsaServiceImpl implements ZipsaService {
             ZipsaRecordsResponse.builder()
                 .name(room.getUserId().getName())
                 .profileImage(room.getUserId().getProfileImage() == null ? null
-                    : Arrays.toString(room.getUserId().getProfileImage()))
+                    : room.getUserId().getProfileImage())
                 .subCategoryName(room.getSubCategoryId().getName())
                 .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
                 .content(room.getContent())
@@ -167,7 +162,7 @@ public class ZipsaServiceImpl implements ZipsaService {
             ZipsaReservationResponse.builder()
                 .name(room.getUserId().getName())
                 .profileImage(room.getUserId().getProfileImage() == null ? null
-                    : Arrays.toString(room.getUserId().getProfileImage()))
+                    : room.getUserId().getProfileImage())
                 .subCategoryName(room.getSubCategoryId().getName())
                 .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
                 .content(room.getContent())

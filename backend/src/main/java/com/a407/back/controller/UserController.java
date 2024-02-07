@@ -8,6 +8,7 @@ import com.a407.back.dto.room.UserPublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserCertificationRequest;
+import com.a407.back.dto.user.UserChangeRequest;
 import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
@@ -17,11 +18,11 @@ import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
-import com.a407.back.dto.user.UserUpdateRequest;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @RequiredArgsConstructor
@@ -126,9 +129,11 @@ public class UserController {
 
     @GetMapping("/{userId}/boards")
     public ResponseEntity<ApiResponse<BoardListResponse>> getUserBoardList(
-        @PathVariable("userId") Long userId, @RequestParam("page") int page, @RequestParam("size") int size) {
+        @PathVariable("userId") Long userId, @RequestParam("page") int page,
+        @RequestParam("size") int size) {
         return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS, userService.getUserBoardList(userId, page, size)));
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.getUserBoardList(userId, page, size)));
     }
 
     @PostMapping("/certification/phonenumber")
@@ -171,8 +176,9 @@ public class UserController {
 
     @PatchMapping("/{userId}")
     public ResponseEntity<ApiResponse<String>> updateUserInfo(@PathVariable Long userId,
-        @RequestBody UserUpdateRequest userUpdateRequest) {
-        userService.changeUserInfo(userId, userUpdateRequest);
+        @RequestPart(name = "image", required = false) MultipartFile image,
+        @RequestPart(name = "request") UserChangeRequest userChangeRequest) throws IOException {
+        userService.changeUserInfo(userId, userChangeRequest, image);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 정보 수정 성공"));
     }
