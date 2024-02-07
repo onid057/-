@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import NavigationBar from '../components/common/NavigationBar';
-import Image from '../components/common/Image';
-import Paragraph from '../components/common/Paragraph';
-import BoldText from '../components/common/BoldText';
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
+import Paragraph from '../../components/common/Paragraph';
+import BoldText from '../../components/common/BoldText';
+import { useNavigate } from 'react-router-dom';
+import calculateRemainingTime from '../../apis/utils/calculateRemainingTime';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -48,6 +50,7 @@ const RoomItemWrapper = styled.div`
   background-color: white;
   gap: 30px;
   font-size: 14px;
+  cursor: pointer;
 `;
 
 const RoomInfoWrapper = styled.div`
@@ -61,22 +64,27 @@ const HeadingWrapper = styled.div`
   font-size: 14px;
 `;
 
-function CreateRoom() {
+function RoomList() {
   const roomList = [
     {
       title: '강아지 대신 산책시켜 주실 분',
       content: '집에서 10분 거리에 있는 미용실을 예약했어요.',
       place: '약속 장소입니다.',
       estimateDuration: 2,
-      roomCreatedAt: '2024-01-01T01:01:01',
+      roomCreatedAt: '2024-02-05T01:01:01',
       expectationStartedAt: '2024-01-01T01:01:01',
       expectationEndedAt: '2024-01-01T01:01:01',
       expectationPay: 20000,
     },
   ];
+  const navigate = useNavigate();
 
   const onClickButton = () => {
-    console.log('hi');
+    navigate('/rooms/2');
+  };
+
+  const onClickRoom = () => {
+    navigate('/rooms/1');
   };
 
   return (
@@ -104,16 +112,15 @@ function CreateRoom() {
           sentences={['아직 생성된 방이 없어요']}
         ></Paragraph>
       )}
-      <RoomItemWrapper>
-        <BoldText
-          fontSize={'16px'}
-          boldContent={'강아지 대신 산책시켜 주실 분'}
-        />
-        <RoomInfoWrapper>
-          <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
-          <>15시간 47분</>
-        </RoomInfoWrapper>
-      </RoomItemWrapper>
+      {roomList.map((item, idx) => (
+        <RoomItemWrapper key={idx} onClick={onClickRoom}>
+          <BoldText fontSize={'16px'} boldContent={item.title} />
+          <RoomInfoWrapper>
+            <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
+            <>{calculateRemainingTime(item.roomCreatedAt)}</>
+          </RoomInfoWrapper>
+        </RoomItemWrapper>
+      ))}
       <CreateButton onClick={onClickButton}>
         <Image
           src={`${process.env.PUBLIC_URL}/images/plus.svg`}
@@ -126,4 +133,4 @@ function CreateRoom() {
   );
 }
 
-export default CreateRoom;
+export default RoomList;
