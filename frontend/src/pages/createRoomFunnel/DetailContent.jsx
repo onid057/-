@@ -41,6 +41,7 @@ function DetailContent({ onPrevious, onNext, matchTitle, matchContent }) {
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(title, content)}
+        disabledOnNext={!title || !content}
       ></NavigationBar>
 
       <Paragraph
