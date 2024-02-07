@@ -2,6 +2,7 @@ package com.a407.back.controller;
 
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.config.constants.SuccessCode;
+import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.room.UserPublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
