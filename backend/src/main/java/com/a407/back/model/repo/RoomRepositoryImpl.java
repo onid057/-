@@ -92,7 +92,7 @@ public class RoomRepositoryImpl implements RoomRepository {
     @Override
     public List<Room> getUserPublicRoomList(User user) {
         QRoom qRoom = QRoom.room;
-        return query.selectFrom(qRoom).where(qRoom.userId.eq(user)).orderBy(qRoom.roomCreatedAt.desc()).fetch();
+        return query.selectFrom(qRoom).where(qRoom.userId.eq(user)).orderBy(qRoom.roomCreatedAt.asc()).fetch();
     }
 
 

@@ -84,6 +84,5 @@ public class AssociationController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "연동 계정 대표 변경 성공"));
     }
-
-
+    
 }
