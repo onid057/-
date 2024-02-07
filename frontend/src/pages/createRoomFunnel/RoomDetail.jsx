@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Buttton from '../../components/common/Button';
+import BottomSheet from '../../components/common/BottomSheet';
+import { getRoomDetailInfo } from '../../apis/api/room';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -20,6 +22,7 @@ const Wrapper = styled.div`
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
+  position: relative;
 `;
 
 const ContentWrapper = styled.div`
@@ -66,22 +69,47 @@ function RoomDetail() {
     navigate(-1);
   };
 
-  const ZipsaList = ['hi'];
+  const [roomInfo, setRoomInfo] = useState({});
+  const { roomId } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false); // 상세 정보
+  const modalRef = useRef(null);
 
-  const info = {
-    title: '강아지 대신 산책시켜 주실 분',
-    date: '2024년 01월 10일',
-    duration: '13:00 (1시간)',
-    payment: '20,000원',
-    address: '경기도 수원시 장안구 하률로 00번길 00 아파트 000동 00호',
-    content:
-      '집에서 10분 거리에 있는 미용실을 예약했는데, 함께 가서 기다렸다가 돌아왔으면 좋겠어요. 함께 이야기도 나눠요.',
+  useEffect(() => {
+    getRoomDetailInfo(roomId).then(response => {
+      setRoomInfo(response.data);
+    });
+  }, []);
+
+  // bottom sheet 영역 이외의 부분을 클릭 시 모달 isOpen 변경
+  useEffect(() => {
+    const closeBottomSheet = event => {
+      if (
+        isOpen &&
+        modalRef.current &&
+        !modalRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', closeBottomSheet);
+    return () => {
+      document.removeEventListener('mousedown', closeBottomSheet);
+    };
+  }, [isOpen]);
+
+  const onButtonClick = () => {
+    setIsOpen(true);
+    setIsDetailOpen(false);
   };
-  const infoEntries = [
-    ['date', '날짜'],
-    ['duration', '시간'],
-    ['payment', '금액'],
-  ];
+
+  const formattingDate = date => {
+    const serviceDate = new Date(date);
+    const year = serviceDate.getFullYear();
+    const month = String(serviceDate.getMonth() + 1).padStart(2, '0');
+    const day = String(serviceDate.getDate()).padStart(2, '0');
+    return `${year}년 ${month}월 ${day}일`;
+  };
 
   return (
     <Wrapper>
@@ -96,6 +124,7 @@ function RoomDetail() {
         }
         onPrevious={onPrevious}
       ></NavigationBar>
+
       <TitleWrapper>
         <BoldText
           boldContent={'모집'}
@@ -103,39 +132,55 @@ function RoomDetail() {
           fontSize={'20px'}
         ></BoldText>
       </TitleWrapper>
+
       <ContentWrapper>
-        <BoldText boldContent={info.title}></BoldText>
-        {infoEntries.map((value, idx) => (
-          <TextWrapper key={idx}>
-            <>{value[1]}</>
-            <BoldText boldContent={info[value[0]]}></BoldText>
-          </TextWrapper>
-        ))}
+        <BoldText boldContent={roomInfo.title}></BoldText>
+        <TextWrapper>
+          <>날짜</>
+          <BoldText
+            boldContent={formattingDate(roomInfo.expectationStartedAt)}
+          ></BoldText>
+        </TextWrapper>
+        <TextWrapper>
+          <>시간</>
+          <BoldText boldContent={roomInfo.estimateDuration}></BoldText>
+        </TextWrapper>
+        <TextWrapper>
+          <>금액</>
+          <BoldText boldContent={roomInfo.expectationPay}></BoldText>
+        </TextWrapper>
         <DetailWrapper>
           <>장소</>
-          <Bold>{info.address}</Bold>
+          <Bold>{roomInfo.place}</Bold>
         </DetailWrapper>
         <DetailWrapper>
           <>상세 내용</>
-          <Bold>{info.content}</Bold>
+          <Bold>{roomInfo.content}</Bold>
         </DetailWrapper>
       </ContentWrapper>
+
       <TitleWrapper>
-        {ZipsaList.length ? (
-          <>
-            <Paragraph
-              fontSize={'18px'}
-              sentences={['집사의 요청을 확인해보세요']}
-            ></Paragraph>
-            <Buttton mode={'THICK_BLUE'} children={'요청확인'}></Buttton>
-          </>
-        ) : (
-          <Paragraph
-            fontSize={'18px'}
-            sentences={['아직 집사의 요청이 오지 않았어요']}
-          ></Paragraph>
-        )}
+        <Paragraph
+          fontSize={'18px'}
+          sentences={['집사의 요청을 확인해보세요']}
+        ></Paragraph>
+        <Buttton
+          mode={'THICK_BLUE'}
+          children={'요청확인'}
+          onClick={onButtonClick}
+        ></Buttton>
       </TitleWrapper>
+
+      <BottomSheet
+        isOpen={isOpen}
+        isDetailOpen={isDetailOpen}
+        setIsDetailOpen={setIsDetailOpen}
+        ref={modalRef}
+        onClick={() => {
+          setIsOpen(false);
+        }}
+        roomId={roomId}
+      ></BottomSheet>
     </Wrapper>
   );
 }
