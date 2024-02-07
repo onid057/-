@@ -51,7 +51,7 @@ public class CommentServiceImpl implements CommentService {
         if (commentChangeRequest.getContent() != null && !commentChangeRequest.getContent().isEmpty()) {
             content = commentChangeRequest.getContent();
         }
-        CommentChangeDto commentChangeDto = new CommentChangeDto(comment.getUserId().getUserId(), content, Timestamp.valueOf(LocalDateTime.now()));
+        CommentChangeDto commentChangeDto = new CommentChangeDto(commentId, content, Timestamp.valueOf(LocalDateTime.now()));
         commentRepository.changeComment(commentChangeDto);
     }
 }
