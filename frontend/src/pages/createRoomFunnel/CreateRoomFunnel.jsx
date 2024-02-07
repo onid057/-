@@ -8,7 +8,6 @@ import TargetDate from '../filterFunnel/TargetDate';
 import TargetTime from '../filterFunnel/TargetTime';
 import Address from '../filterFunnel/Address';
 import SuggestPayment from './SuggestPayment';
-import CompletedCreationRoom from './CompletedCreationRoom';
 
 function CreateRoomFunnel() {
   const [filterData, setFilterData] = useState({});
@@ -90,7 +89,6 @@ function CreateRoomFunnel() {
             setStep('ADDRESS');
           }}
           onNext={payment => {
-            setStep('COMPLETED');
             const roomData = {
               ...filterData,
               matchPayment: payment,
@@ -121,25 +119,18 @@ function CreateRoomFunnel() {
                 ),
               ).toJSON(),
               roomData.matchPayment,
-            );
+            )
+              .then(response => {
+                console.log(response);
+                navigate('/rooms/complete');
+              })
+              .catch(err => {
+                console.log(err);
+              });
           }}
           matchPayment={filterData.matchPayment}
           matchServiceTime={filterData.matchEndTime - filterData.matchStartTime}
         ></SuggestPayment>
-      </Funnel.Step>
-
-      <Funnel.Step name="COMPLETED">
-        <CompletedCreationRoom
-          onPrevious={() => {
-            setStep('ADDRESS');
-          }}
-          onNext={payment => {
-            setStep('DETAIL');
-            setFilterData({
-              ...filterData,
-            });
-          }}
-        ></CompletedCreationRoom>
       </Funnel.Step>
     </Funnel>
   );
