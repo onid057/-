@@ -1,5 +1,6 @@
 package com.a407.back.model.service;
 
+import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Status;
 import com.a407.back.domain.Notification.Type;
@@ -17,6 +18,8 @@ import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
 import com.a407.back.dto.zipsa.ZipsaReservationResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
+import com.a407.back.dto.zipsa.ZipsaStatusResponse;
+import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.ZipsaRepository;
@@ -199,6 +202,23 @@ public class ZipsaServiceImpl implements ZipsaService {
             ).toList();
         return new PublicRoomListResponse(results.getTotal(), page, roomList);
 
+    }
+
+
+    @Override
+    @Transactional
+    public void changeZipsaStatus(Long zipsaId) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
+        if(zipsa == null) {
+            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        }
+        zipsaRepository.changeZipsaStatus(zipsaId, !Boolean.TRUE.equals(zipsa.getIsWorked()));
+    }
+
+    @Override
+    public ZipsaStatusResponse getZipsaWorkStatus(Long zipsaId) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
+        return new ZipsaStatusResponse(zipsaId, zipsa.getIsWorked());
     }
 
 }

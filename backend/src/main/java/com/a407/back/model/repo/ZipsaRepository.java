@@ -31,4 +31,6 @@ public interface ZipsaRepository {
     void deleteZipsa(Long zipsaId);
 
     void changeZipsaDescription(Long zipsaId, String description);
+
+    void changeZipsaStatus(Long zipsaId, boolean status);
 }
