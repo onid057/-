@@ -107,6 +107,9 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(Long boardId) {
         // boardTagList 삭제
         Board board = boardRepository.findBoard(boardId);
+        if(board == null) {
+            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        }
         boardRepository.deleteBoardTagList(board);
 
         // comment 삭제
