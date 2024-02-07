@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useFunnel } from '../../hooks/useFunnel';
 import {
-  getFilteredHelperData,
+  getFilteredZipsaData,
   makeFilterSuggestion,
 } from '../../apis/api/match';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +19,7 @@ import CATEGORY_ID from '../../constants/categoryId';
 
 function FilterFunnel() {
   const [filterData, setFilterData] = useState({});
-  const [helperData, setHelperData] = useState([]);
+  const [zipsaData, setZipsaData] = useState([]);
   const [Funnel, setStep] = useFunnel('MAIN_CATEGORY');
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ function FilterFunnel() {
       <Funnel.Step name="MAIN_CATEGORY">
         <MainCategory
           onPrevious={() => {
-            setStep('CONDITION');
+            navigate('/');
           }}
           onNext={data => {
             setStep('SUB_CATEGORY');
@@ -69,7 +69,7 @@ function FilterFunnel() {
               scoreCondition: score,
             };
             setFilterData(nextFilterData);
-            getFilteredHelperData(
+            getFilteredZipsaData(
               CATEGORY_ID[nextFilterData.matchMainCategory][0],
               nextFilterData.genderCondition,
               nextFilterData.ageCondition,
@@ -77,7 +77,7 @@ function FilterFunnel() {
               nextFilterData.scoreCondition,
             ).then(response => {
               console.log(response);
-              setHelperData(response.data);
+              setZipsaData(response.data);
             });
           }}
           genderCondition={filterData.genderCondition}
@@ -94,10 +94,10 @@ function FilterFunnel() {
           }}
           onNext={data => {
             setStep('DATE');
-            setFilterData({ ...filterData, helperId: data });
+            setFilterData({ ...filterData, zipsaId: data });
           }}
-          helperData={helperData}
-          savedHelperId={filterData.helperId}
+          zipsaData={zipsaData}
+          savedZipsaId={filterData.zipsaId}
         ></ZipsaList>
       </Funnel.Step>
 
@@ -158,7 +158,6 @@ function FilterFunnel() {
             setStep('ADDRESS');
           }}
           onNext={data => {
-            // setStep('CONDITION');
             const nextMatchDetailData = { ...filterData, matchDetail: data };
             setFilterData(nextMatchDetailData);
             makeFilterSuggestion(
@@ -187,8 +186,8 @@ function FilterFunnel() {
                   0,
                 ),
               ).toJSON(),
-              helperData[0].gradeSalary,
-              filterData.helperId,
+              zipsaData[0].gradeSalary,
+              filterData.zipsaId,
             ).then(response => {
               console.log(response);
             });

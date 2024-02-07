@@ -1,12 +1,11 @@
 import { useState } from 'react';
-
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
-import FilteredHelperInfo from '../../components/filter/FilteredHelperInfo';
+import FilteredZipsaInfo from '../../components/filter/FilteredZipsaInfo';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -22,8 +21,8 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-function ZipsaList({ onPrevious, onNext, helperData, savedHelperId }) {
-  const [selectedHelperId, setSelectedHelperId] = useState(savedHelperId || []);
+function ZipsaList({ onPrevious, onNext, zipsaData, savedZipsaId }) {
+  const [selectedZipsaId, setSelectedZipsaId] = useState(savedZipsaId || []);
 
   return (
     <Wrapper>
@@ -36,9 +35,10 @@ function ZipsaList({ onPrevious, onNext, helperData, savedHelperId }) {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        rightContent={`${selectedHelperId.length}명 선택`}
+        rightContent={`${selectedZipsaId.length}명 선택`}
         onPrevious={onPrevious}
-        onNext={() => onNext(selectedHelperId)}
+        onNext={() => onNext(selectedZipsaId)}
+        disabledOnNext={!selectedZipsaId.length}
       ></NavigationBar>
 
       <Paragraph
@@ -51,67 +51,31 @@ function ZipsaList({ onPrevious, onNext, helperData, savedHelperId }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={44}></ProgressBar>
+      <ProgressBar value={48}></ProgressBar>
 
-      {helperData.length > 0 &&
-        helperData.map((helper, index) => {
+      {zipsaData.length > 0 &&
+        zipsaData.map((zipsa, index) => {
           return (
-            <FilteredHelperInfo
+            <FilteredZipsaInfo
               key={index}
-              zipsaId={helper.zipsaId}
-              profileImage={helper.profileImage}
-              name={helper.name}
-              gradeName={helper.gradeName}
-              scoreAverage={helper.scoreAverage}
-              serviceCount={helper.serviceCount}
-              categories={helper.categories}
+              zipsaId={zipsa.zipsaId}
+              profileImage={zipsa.profileImage}
+              name={zipsa.name}
+              gradeName={zipsa.gradeName}
+              scoreAverage={zipsa.scoreAverage}
+              serviceCount={zipsa.serviceCount}
+              categories={zipsa.categories}
               onClick={() =>
-                selectedHelperId.includes(helper.zipsaId)
-                  ? setSelectedHelperId(
-                      [...selectedHelperId].filter(Id => Id !== helper.zipsaId),
+                selectedZipsaId.includes(zipsa.zipsaId)
+                  ? setSelectedZipsaId(
+                      [...selectedZipsaId].filter(Id => Id !== zipsa.zipsaId),
                     )
-                  : setSelectedHelperId([...selectedHelperId, helper.zipsaId])
+                  : setSelectedZipsaId([...selectedZipsaId, zipsa.zipsaId])
               }
-              isSelected={selectedHelperId.includes(helper.zipsaId)}
-            ></FilteredHelperInfo>
+              isSelected={selectedZipsaId.includes(zipsa.zipsaId)}
+            ></FilteredZipsaInfo>
           );
         })}
-
-      {/* <FilteredHelperInfo
-        zipsaId={3}
-        onClick={() =>
-          selectedHelperId.includes(3)
-            ? setSelectedHelperId([...selectedHelperId].filter(Id => Id !== 3))
-            : setSelectedHelperId([...selectedHelperId, 3])
-        }
-        isSelected={selectedHelperId.includes(3)}
-      ></FilteredHelperInfo>
-      <FilteredHelperInfo
-        zipsaId={4}
-        onClick={() =>
-          selectedHelperId.includes(4)
-            ? setSelectedHelperId([...selectedHelperId].filter(Id => Id !== 4))
-            : setSelectedHelperId([...selectedHelperId, 4])
-        }
-        isSelected={selectedHelperId.includes(4)}
-      ></FilteredHelperInfo>
-      <FilteredHelperInfo
-        zipsaId={5}
-        onClick={() =>
-          selectedHelperId.includes(5)
-            ? setSelectedHelperId([...selectedHelperId].filter(Id => Id !== 5))
-            : setSelectedHelperId([...selectedHelperId, 5])
-        }
-        isSelected={selectedHelperId.includes(5)}
-      ></FilteredHelperInfo> */}
-
-      {/* <ButtonBox>
-        <Button
-          mode={'NORMAL_BLUE'}
-          color={'#629af9'}
-          msg={'2/5명에게 요청 보내기'}
-        ></Button>
-      </ButtonBox> */}
     </Wrapper>
   );
 }

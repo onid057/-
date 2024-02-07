@@ -1,7 +1,6 @@
 import { styled } from 'styled-components';
 
 const ImageWrapper = styled.div`
-  cursor: ${props => (props.onClick ? 'pointer' : 'default')};
   position: relative;
   width: ${props => props.$width};
   height: ${props => props.$height};

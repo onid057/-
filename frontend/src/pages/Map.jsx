@@ -38,10 +38,13 @@ function Map() {
   // bottom sheet 영역 이외의 부분을 클릭 시 모달 isOpen 변경
   useEffect(() => {
     const closeBottomSheet = event => {
-      isOpen &&
+      if (
+        isOpen &&
         modalRef.current &&
-        !modalRef.current.contains(event.target) &&
+        !modalRef.current.contains(event.target)
+      ) {
         setIsOpen(false);
+      }
     };
     document.addEventListener('mousedown', closeBottomSheet);
     return () => {

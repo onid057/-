@@ -29,8 +29,8 @@ const TimeWrapper = styled.div`
 `;
 
 function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
-  const [startTime, setStartTime] = useState(matchStartTime || '9');
-  const [endTime, setEndTime] = useState(matchEndTime || '12');
+  const [startTime, setStartTime] = useState(matchStartTime);
+  const [endTime, setEndTime] = useState(matchEndTime);
 
   return (
     <Wrapper>
@@ -46,6 +46,7 @@ function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(startTime, endTime)}
+        disabledOnNext={!startTime || !endTime}
       ></NavigationBar>
 
       <Paragraph
@@ -57,7 +58,7 @@ function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={68}></ProgressBar>
+      <ProgressBar value={72}></ProgressBar>
 
       <TimeWrapper>
         <Input
@@ -67,6 +68,7 @@ function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
           min={0}
           max={24}
           value={startTime}
+          placeholder={9}
           onChange={event => setStartTime(event.target.value)}
         ></Input>
         <>시부터</>
@@ -77,6 +79,7 @@ function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
           min={0}
           max={24}
           value={endTime}
+          placeholder={12}
           onChange={event => setEndTime(event.target.value)}
         ></Input>
         <>시까지</>

@@ -5,7 +5,6 @@ import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
-
 import { useState } from 'react';
 
 const Wrapper = styled.div`
@@ -17,11 +16,9 @@ const Wrapper = styled.div`
   flex-direction: column;
   gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
-  font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
 const ContentBox = styled.div`
   width: 100%;
   display: grid;
@@ -45,9 +42,10 @@ function MainCategory({ onPrevious, onNext, matchMainCategory }) {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        rightContent="다음"
+        rightContent={'다음'}
         onPrevious={onPrevious}
         onNext={() => onNext(mainCategory)}
+        disabledOnNext={!mainCategory}
       ></NavigationBar>
 
       <Paragraph
@@ -59,7 +57,7 @@ function MainCategory({ onPrevious, onNext, matchMainCategory }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={11}></ProgressBar>
+      <ProgressBar value={12}></ProgressBar>
 
       <ContentBox>
         {[

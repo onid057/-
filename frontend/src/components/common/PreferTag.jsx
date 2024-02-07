@@ -1,7 +1,7 @@
 import Paragraph from './Paragraph';
 
-function PreferTag({ tagString, splitter }) {
-  const tags = tagString.split(splitter);
+function PreferTag({ tagArray, tagString, splitter, fontSize }) {
+  const tags = tagString ? tagString.split(splitter) : tagArray;
   const tagsWithSharp = tags.map(tag => `# ${tag} `);
 
   let upperTags = '',
@@ -12,9 +12,16 @@ function PreferTag({ tagString, splitter }) {
   });
 
   return tags.length >= 3 ? (
-    <Paragraph gap="5px" font-size="16px" sentences={[upperTags]}></Paragraph>
+    <Paragraph
+      gap="5px"
+      fontSize={fontSize}
+      sentences={[upperTags]}
+    ></Paragraph>
   ) : (
-    <Paragraph font-size="16px" sentences={[upperTags, lowerTags]}></Paragraph>
+    <Paragraph
+      fontSize={fontSize}
+      sentences={[upperTags, lowerTags]}
+    ></Paragraph>
   );
 }
 

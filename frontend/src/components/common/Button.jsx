@@ -9,7 +9,7 @@ const ButtonWrapper = styled.button`
   border-radius: 25px;
   outline: none;
   color: #000000;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 400;
   display: flex;
   justify-content: center;
@@ -18,7 +18,7 @@ const ButtonWrapper = styled.button`
 `;
 const ThinButtonWrapper = styled(ButtonWrapper)`
   height: 38px;
-  font-size: 17px;
+  font-size: 15px;
 `;
 const ThickGrayButton = styled(ButtonWrapper)``;
 const ThinGrayButton = styled(ThinButtonWrapper)``;
@@ -109,6 +109,8 @@ function Button({ mode, onClick, children }) {
           {children}
         </DiamondBlueButton>
       );
+    default:
+      return;
   }
 }
 

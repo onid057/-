@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 `;
 
 function Detail({ onPrevious, onNext, matchDetail }) {
-  const [detail, setDetail] = useState(matchDetail || '');
+  const [detail, setDetail] = useState(matchDetail);
 
   return (
     <Wrapper>
@@ -36,9 +36,10 @@ function Detail({ onPrevious, onNext, matchDetail }) {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        rightContent="다음"
+        rightContent="완료"
         onPrevious={onPrevious}
         onNext={() => onNext(detail)}
+        disabledOnNext={!detail}
       ></NavigationBar>
 
       <Paragraph
@@ -50,12 +51,12 @@ function Detail({ onPrevious, onNext, matchDetail }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={85}></ProgressBar>
+      <ProgressBar value={100}></ProgressBar>
 
       <LongInputBox
         value={detail}
         placeholder={
-          '미용실에 함께 갔다가 다시 정문까지 돌아와 주세요. 이야기도 나눠요!'
+          '집사와 함께 했으면 하는 일이나 맡기고 싶은 일을 자세하게 적어주세요!'
         }
         onChange={event => setDetail(event.target.value)}
       ></LongInputBox>

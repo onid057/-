@@ -157,7 +157,7 @@ export default function Home() {
             sentences={['좀 더 꼼꼼하게', '집사님을 찾고 있어요.']}
           ></Paragraph>,
         ]}
-        nextPage="/matchOption"
+        nextPage="/filter"
       ></Notice>
 
       <Notice

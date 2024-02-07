@@ -9,7 +9,6 @@ import GENDER from '../../constants/gender';
 import AGE from '../../constants/age';
 import GRADE from '../../constants/grade';
 import SCORE from '../../constants/score';
-
 import { useState } from 'react';
 
 const Wrapper = styled.div`
@@ -25,7 +24,6 @@ const Wrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
 const ContentBox = styled.div`
   width: 100%;
   display: flex;
@@ -34,19 +32,16 @@ const ContentBox = styled.div`
   align-items: center;
   gap: 10px;
 `;
-
 const ContentTitle = styled.div`
   width: 100%;
   font-size: 16px;
 `;
-
 const FlexBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   gap: 8px;
 `;
-
 const GridBox = styled.div`
   width: 100%;
   display: grid;
@@ -83,6 +78,7 @@ function Condition({
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(gender, age, grade, score)}
+        disabledOnNext={!gender || (age !== 0 && !age) || !grade || !score}
       ></NavigationBar>
 
       <Paragraph
@@ -94,7 +90,7 @@ function Condition({
         ]}
       ></Paragraph>
 
-      <ProgressBar value={33}></ProgressBar>
+      <ProgressBar value={36}></ProgressBar>
 
       <ContentBox>
         <ContentTitle>성별</ContentTitle>

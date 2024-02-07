@@ -12,9 +12,10 @@ const Wrapper = styled.div`
   left: 0;
   bottom: 0;
   width: 320px;
-  height: ${props => (props.$isOpen ? '300px' : '0')};
-  overflow: hidden;
-  transition: height 1s ease;
+  height: ${props =>
+    props.$isOpen ? (props.$isDetailOpen ? '240px' : '270px') : '0'};
+  overflow: scroll;
+  transition: height 0.5s ease;
   display: flex;
   flex-direction: column;
   gap: 11px;
@@ -23,7 +24,6 @@ const Wrapper = styled.div`
   border-radius: 25px 25px 0 0;
   z-index: 9999;
 `;
-
 const Header = styled.div`
   width: 320px;
   padding: 21px 23px;
@@ -31,11 +31,15 @@ const Header = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-
+const NameWrapper = styled.div`
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+`;
 const Name = styled.div`
   cursor: pointer;
   width: 280px;
-  margin: 0 auto;
   padding: 7px 19px;
   display: flex;
   justify-content: flex-start;
@@ -43,7 +47,6 @@ const Name = styled.div`
   background-color: ${({ theme }) => theme.colors.primary};
   border-radius: 25px;
 `;
-
 const Detail = styled.div`
   width: 100%;
   padding: 0 23px;
@@ -51,14 +54,12 @@ const Detail = styled.div`
   flex-direction: column;
   gap: 13px;
 `;
-
 const BadgeWrapper = styled.div`
   width: 280px;
   display: flex;
   align-items: center;
   gap: 12px;
 `;
-
 const Text = styled.div`
   font-size: 14px;
 `;
@@ -78,7 +79,7 @@ const BottomSheet = forwardRef(
     }, [targetCluster]);
 
     return (
-      <Wrapper $isOpen={isOpen} ref={ref}>
+      <Wrapper $isOpen={isOpen} $isDetailOpen={isDetailOpen} ref={ref}>
         <Header>
           <>{isDetailOpen ? `${targetZipsa.name} 집사` : '집사 목록'}</>
           <Image
@@ -90,32 +91,32 @@ const BottomSheet = forwardRef(
         </Header>
 
         {!isDetailOpen ? (
-          zipsaList.map((zipsa, index) => (
-            <Name
-              key={`${zipsa.name}-${index}`}
-              onClick={() => {
-                setIsDetailOpen(true);
-                setTargetZipsa(zipsa);
-              }}
-            >
-              {zipsa.name + ' 집사'}
-            </Name>
-          ))
+          <NameWrapper>
+            {zipsaList.map((zipsa, index) => (
+              <Name
+                key={`${zipsa.name}-${index}`}
+                onClick={() => {
+                  setIsDetailOpen(true);
+                  setTargetZipsa(zipsa);
+                }}
+              >
+                {zipsa.name + ' 집사'}
+              </Name>
+            ))}
+          </NameWrapper>
         ) : (
           <Detail>
             <BadgeWrapper>
               <GenderBadge>{targetZipsa.gender}</GenderBadge>
               <GradeBadge grade={targetZipsa.gradeName}></GradeBadge>
             </BadgeWrapper>
-            {/* <Text>
-              {targetZipsa.preferTag.split(',').map((tag, index) => (
-                <span key={index}>{`#${tag} `}</span>
-              ))}
-            </Text> */}
+
             <PreferTag
               tagString={targetZipsa.preferTag}
               splitter={','}
+              fontSize="14px"
             ></PreferTag>
+
             <Text>{targetZipsa.description}</Text>
             <Button mode="THIN_GRAY">집사에게 제안하기</Button>
           </Detail>
