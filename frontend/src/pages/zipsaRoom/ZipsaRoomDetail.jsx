@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
-import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Buttton from '../../components/common/Button';
+import { getRoomDetailInfo, applyForRoom } from '../../apis/api/room';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -65,23 +65,28 @@ function ZipsaRoomDetail() {
   const onPrevious = () => {
     navigate(-1);
   };
+  const [roomInfo, setRoomInfo] = useState({});
+  const { roomId } = useParams();
 
-  const ZipsaList = ['hi'];
+  useEffect(() => {
+    getRoomDetailInfo(roomId).then(response => {
+      setRoomInfo(response.data);
+    });
+  }, []);
 
-  const info = {
-    title: '강아지 대신 산책시켜 주실 분',
-    date: '2024년 01월 10일',
-    duration: '13:00 (1시간)',
-    payment: '20,000원',
-    address: '경기도 수원시 장안구 하률로 00번길 00 아파트 000동 00호',
-    content:
-      '집에서 10분 거리에 있는 미용실을 예약했는데, 함께 가서 기다렸다가 돌아왔으면 좋겠어요. 함께 이야기도 나눠요.',
+  const formattingDate = date => {
+    const serviceDate = new Date(date);
+    const year = serviceDate.getFullYear();
+    const month = String(serviceDate.getMonth() + 1).padStart(2, '0');
+    const day = String(serviceDate.getDate()).padStart(2, '0');
+    return `${year}년 ${month}월 ${day}일`;
   };
-  const infoEntries = [
-    ['date', '날짜'],
-    ['duration', '시간'],
-    ['payment', '금액'],
-  ];
+
+  const zipsaId = 3;
+
+  const onButtonClick = () => {
+    applyForRoom(roomId, zipsaId).then(response => console.log(response));
+  };
 
   return (
     <Wrapper>
@@ -103,24 +108,38 @@ function ZipsaRoomDetail() {
           fontSize={'20px'}
         ></BoldText>
       </TitleWrapper>
+
       <ContentWrapper>
-        <BoldText boldContent={info.title}></BoldText>
-        {infoEntries.map((value, idx) => (
-          <TextWrapper key={idx}>
-            <>{value[1]}</>
-            <BoldText boldContent={info[value[0]]}></BoldText>
-          </TextWrapper>
-        ))}
+        <BoldText boldContent={roomInfo.title}></BoldText>
+        <TextWrapper>
+          <>날짜</>
+          <BoldText
+            boldContent={formattingDate(roomInfo.expectationStartedAt)}
+          ></BoldText>
+        </TextWrapper>
+        <TextWrapper>
+          <>시간</>
+          <BoldText boldContent={roomInfo.estimateDuration}></BoldText>
+        </TextWrapper>
+        <TextWrapper>
+          <>금액</>
+          <BoldText boldContent={roomInfo.expectationPay}></BoldText>
+        </TextWrapper>
         <DetailWrapper>
           <>장소</>
-          <Bold>{info.address}</Bold>
+          <Bold>{roomInfo.place}</Bold>
         </DetailWrapper>
         <DetailWrapper>
           <>상세 내용</>
-          <Bold>{info.content}</Bold>
+          <Bold>{roomInfo.content}</Bold>
         </DetailWrapper>
       </ContentWrapper>
-      <Buttton mode={'THICK_BLUE'} children={'지원하기'}></Buttton>
+
+      <Buttton
+        mode={'THICK_BLUE'}
+        children={'지원하기'}
+        onClick={onButtonClick}
+      ></Buttton>
     </Wrapper>
   );
 }
