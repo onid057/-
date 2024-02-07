@@ -78,7 +78,7 @@ public class MatchServiceImpl implements MatchService {
         SubCategory subCategory = categoryRepository.findBySubCategoryId(
             roomCreateRequest.getSubCategoryId());
         // 알림 개수만큼 방 만들기
-        int notificationCount = roomCreateRequest.getHelperList().size();
+        int notificationCount = roomCreateRequest.getZipsaList().size();
         Room room = Room.builder().userId(user).subCategoryId(subCategory)
             .title(roomCreateRequest.getTitle())
             .content(roomCreateRequest.getContent())
@@ -93,7 +93,7 @@ public class MatchServiceImpl implements MatchService {
         Long newRoomId = roomRepository.makeRoom(room);
         Room newRoom = roomRepository.findByRoomId(newRoomId);
         // 방 아이디 가지고 알림 보내기
-        for (Long id : roomCreateRequest.getHelperList()) {
+        for (Long id : roomCreateRequest.getZipsaList()) {
             Notification notification = Notification.builder().roomId(newRoom)
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
                     Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
