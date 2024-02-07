@@ -3,6 +3,7 @@ import Image from './Image';
 import Button from './Button';
 import GenderBadge from './GenderBadge';
 import GradeBadge from './GradeBadge';
+import PreferTag from './PreferTag';
 import { getZipsaListFromMap } from '../../apis/api/map';
 import { forwardRef, useState, useEffect } from 'react';
 
@@ -106,11 +107,15 @@ const BottomSheet = forwardRef(
               <GenderBadge>{targetZipsa.gender}</GenderBadge>
               <GradeBadge grade={targetZipsa.gradeName}></GradeBadge>
             </BadgeWrapper>
-            <Text>
+            {/* <Text>
               {targetZipsa.preferTag.split(',').map((tag, index) => (
                 <span key={index}>{`#${tag} `}</span>
               ))}
-            </Text>
+            </Text> */}
+            <PreferTag
+              tagString={targetZipsa.preferTag}
+              splitter={','}
+            ></PreferTag>
             <Text>{targetZipsa.description}</Text>
             <Button mode="THIN_GRAY">집사에게 제안하기</Button>
           </Detail>
