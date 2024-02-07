@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
-import Notice from '../../components/common/Notice';
 import Image from '../../components/common/Image';
-import BoldText from '../../components/common/BoldText';
+import Paragraph from '../../components/common/Paragraph';
 import BoardsTags from '../../components/boards/BoardsTags';
 import { useState } from 'react';
 
@@ -138,6 +137,12 @@ function BoardsMain() {
           ></Image>
         }
       ></NavigationBar>
+
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={['한집사 게시판']}
+      ></Paragraph>
 
       <CreateNewBox>
         <Image
