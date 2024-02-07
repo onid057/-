@@ -82,6 +82,9 @@ public class NotificationServiceImpl implements NotificationService {
         // 방에서 알림 숫자를 줄임
         Notification notification = notificationRepository.findByNotificationId(notificationId);
         Room room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
+        if(room.getNotificationCount() <= 0) {
+            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        }
         int newNotificationCount = roomRepository.changeNotificationCountDecrease(
             room.getNotificationCount(), notification.getRoomId().getRoomId());
 
