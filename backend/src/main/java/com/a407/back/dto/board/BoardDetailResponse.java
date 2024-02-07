@@ -18,4 +18,5 @@ public class BoardDetailResponse {
     private String content;
     private Timestamp updatedAt;
     private List<CommentListDto> commentList;
+    private List<String> tagList;
 }

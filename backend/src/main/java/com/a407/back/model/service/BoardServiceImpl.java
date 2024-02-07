@@ -107,7 +107,7 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(Long boardId) {
         // boardTagList 삭제
         Board board = boardRepository.findBoard(boardId);
-        if(board == null) {
+        if (board == null) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         }
         boardRepository.deleteBoardTagList(board);
@@ -144,8 +144,10 @@ public class BoardServiceImpl implements BoardService {
         Board board = boardRepository.findBoard(boardId);
         User user = userRepository.findByUserId(board.getUserId().getUserId());
         List<CommentListDto> commentList = commentRepository.findCommentList(board).stream()
-            .map(comment -> new CommentListDto(comment.getCommentId(), comment.getUserId().getName(), comment.getContent(),
-                comment.getUpdatedAt())
+            .map(
+                comment -> new CommentListDto(comment.getCommentId(), comment.getUserId().getName(),
+                    comment.getContent(),
+                    comment.getUpdatedAt())
             ).toList();
 
         String profileImage = "";
@@ -161,8 +163,11 @@ public class BoardServiceImpl implements BoardService {
             profileImage = new String(imageToByte);
         }
 
+        List<String> tagList = boardRepository.findBoardTagList(board).stream()
+            .map(boardTag -> boardTag.getBoardTagId().tagId.getName()).toList();
+
         return new BoardDetailResponse(user.getName(), user.getAddress(), profileImage,
             board.getTitle(),
-            board.getContent(), board.getUpdatedAt(), commentList);
+            board.getContent(), board.getUpdatedAt(), commentList, tagList);
     }
 }
