@@ -3,8 +3,10 @@
 import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
-import Home from './pages/Home';
-import Login from './pages/Login';
+import Home from './pages/Home'; // 홈 페이지
+import Login from './pages/Login'; // 로그인 페이지
+import UserMyPage from './pages/UserMyPage'; // 사용자 마이 페이지
+
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
 import MatchOption from './pages/MatchOption';
@@ -171,6 +173,8 @@ function App() {
       <Routes>
         <Route index element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
+        <Route path="/user-my-page" element={<UserMyPage />}></Route>
+
         <Route path="/register" element={<RegisterFunnel />}></Route>
         <Route path="/filter" element={<FilterFunnel />}></Route>
         <Route path="/matchOption" element={<MatchOption />}></Route>
