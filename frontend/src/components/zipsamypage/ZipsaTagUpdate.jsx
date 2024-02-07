@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import Image from '../common/Image';
 
 const Title = styled.div`
@@ -48,23 +48,54 @@ const PencilImg = styled.div`
   right: 12px;
 `;
 
-function ZipsaTagUpdate({ preferTag }) {
+function ZipsaTagUpdate({ preferTag, setPreferTags }) {
   // preferTag를 리스트로 까기
   const preferTags = (preferTag || '').split('#');
+  const numberOfTags = preferTags.length;
 
-  const [isInputMode, setIsInputMode] = useState(false);
-  const [textValue, setTextValue] = useState(false);
+  // preferTags 길이의 빈 배열 만들기 (useState의 초기값으로 사용)
+  const checkMode = Array.from({ length: numberOfTags }, () => false);
 
-  // isInputMode 변수의 값을 토글하는 함수
-  const toggleMode = () => {
-    setIsInputMode(prevMode => !prevMode);
-    console.log('모드 바뀜', isInputMode);
+  // input mode인지 아닌지를 판단할 변수
+  const [checkInputMode, setIsInputMode] = useState(checkMode);
+  // console.log(checkInputMode);
+
+  // isInputMode 변수의 값을 변경(토글)하는 함수
+  const changeMode = idx => {
+    setIsInputMode(array =>
+      [...array].map((element, index) => index === idx && !element),
+    );
+    // console.log(`${idx}번째 태그 모드 ${[checkMode[idx]]}로 바뀜`);
   };
 
-  // 이건 뭐냐;;
-  const handleInputChange = e => {
-    setTextValue(e.target.value);
+  // 입력한 값 추적 위한 reducer 함수 정의
+  const tagReducer = (state, action) => ({
+    ...state, // 기존의 state 객체를 복사하는 부분
+    [action.tag]: action.text,
+  });
+
+  const [tagState, dispatch] = useReducer(tagReducer, {});
+
+  // 이벤트와 태그 값을 인자로 받아 해당 태그의 상태를 업데이트
+  const changeTextValue = (e, tag) => {
+    dispatch({ tag, text: e.target.value });
+
+    // let updatedPreferTags = [...preferTags];
+
+    // 변경된 태그 값을 updatedPreferTags에 할당하기 ★★★★ 여기 하고있음...
+    //   const updatedPreferTags = [...preferTags].map((element, index) =>
+    //     index === idx ? e.target.value : element,
+    //   );
+    //   console.log(updatedPreferTags);
+    // };
   };
+
+  // const updateTagList = idx => {
+  //   let updatedPreferTags = [...preferTags].map((element, index) =>
+  //     index === idx ? e.target.value : element,
+  //   );
+  //   setPreferTags(updatedPreferTags.join('#'));
+  // };
 
   return (
     <>
@@ -72,26 +103,20 @@ function ZipsaTagUpdate({ preferTag }) {
 
       {preferTags.map((tag, idx) => (
         <ButtonWrapper key={idx}>
-          {/* <InsideInput
-          type="text"
-          placeholder="자차보유"
-          maxLength={10}
-        ></InsideInput> */}
-
-          {isInputMode ? (
+          {checkInputMode[idx] ? (
             <InnerInput
               type="text"
-              // value={textValue}
+              // value={textValues}
               placeholder={tag}
-              onChange={handleInputChange}
-              onBlur={toggleMode} // 입력 모드에서 포커스가 빠져나가면 텍스트 모드로 전환
+              onBlur={() => changeMode(idx)} // 입력 모드에서 포커스가 빠져나가면 텍스트 모드로 전환
+              onChangeCapture={e => changeTextValue(e, tag, idx)} // 입력모드에서 변화가 있고 포커스 아웃되었을 때
               autoFocus // 입력 모드 진입 시 자동으로 포커스를 설정
             />
           ) : (
-            <InnerText>{textValue || '태그를 입력해 주세요'}</InnerText>
+            <InnerText>{tagState[tag] || tag}</InnerText>
           )}
 
-          <PencilImg onClick={toggleMode}>
+          <PencilImg onClick={() => changeMode(idx)}>
             <Image
               src={`${process.env.PUBLIC_URL}/images/edit.svg`}
               width={'24px'}

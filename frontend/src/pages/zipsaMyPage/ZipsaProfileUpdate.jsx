@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 100px 16px;
+  padding: 0px 16px 50px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -111,6 +111,10 @@ function ProfileUpdate() {
     navigate(-1);
   };
 
+  // preferTag 업데이트 위한 변수 선언
+  const [preferTags, setPreferTags] = useState(zipsaData.preferTag);
+  // console.log('ProfileUpdate에서 내려준 preferTags: ', preferTags);
+
   return (
     <Wrapper>
       <NavigationBar
@@ -173,7 +177,10 @@ function ProfileUpdate() {
         placeholder={zipsaData.description}
       ></LongInputBox>
 
-      <ZipsaTagUpdate preferTag={zipsaData.preferTag}></ZipsaTagUpdate>
+      <ZipsaTagUpdate
+        preferTag={preferTags}
+        setPreferTags={setPreferTags}
+      ></ZipsaTagUpdate>
     </Wrapper>
   );
 }

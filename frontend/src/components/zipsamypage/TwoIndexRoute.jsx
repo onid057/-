@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import Image from '../common/Image';
 import Paragraph from '../common/Paragraph';
 import BoldText from '../common/BoldText';
@@ -45,7 +44,7 @@ const NameBox = styled.div`
   align-items: center;
   font-weight: 300;
   background-color: ${props =>
-    props.backgroundColor ? props.backgroundColor : '#e3fee8'};
+    props.$backgroundcolor ? props.$backgroundcolor : '#e3fee8'};
   border-radius: 25px;
 `;
 
@@ -88,7 +87,7 @@ function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
           width={'169px'}
           height={'168px'}
         ></Image>
-        <NameBox backgroundColor={nameBoxColor}>
+        <NameBox $backgroundcolor={nameBoxColor}>
           <Paragraph
             gap={'5px'}
             fontSize={'20px'}
@@ -123,7 +122,7 @@ function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
           width={'245px'}
           height={'47px'}
         ></Image>
-        <NameBox backgroundColor={'#DCF0F5'}>
+        <NameBox $backgroundcolor={'#DCF0F5'}>
           <Paragraph
             gap={'5px'}
             fontSize={'20px'}

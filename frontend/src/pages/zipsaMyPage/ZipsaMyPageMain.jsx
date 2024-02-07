@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { getDetailedZipsaInfo } from '../../apis/api/zipsaMyPage';
 import NavigationBar from '../../components/common/NavigationBar';
 import TwoIndex from '../../components/zipsamypage/TwoIndex';
 import Notice from '../../components/common/Notice';
@@ -62,6 +65,19 @@ const zipsaData = {
 };
 
 function ZipsaMyPageMain() {
+  // 집사 상세정보 API 조회해 오기
+  // const { helperId } = useParams();
+  // const [zipsaData, setZipsaData] = useState();
+
+  // useEffect(() => {
+  //   getDetailedZipsaInfo(helperId).then(response => {
+  //     console.log(response);
+  //     console.log(helperId);
+  //     setZipsaData(response.data);
+  //   });
+  // }, []);
+  // ======================================================
+
   const MenuList = ['활동 내역 보기', '정산하기', '작성한 게시물 확인하기'];
   const number =
     (zipsaData.kindnessAverage +
@@ -69,7 +85,6 @@ function ZipsaMyPageMain() {
       zipsaData.rewindAverage) /
     3;
   const avgScore = number.toFixed(2);
-  console.log(avgScore);
 
   return (
     <Wrapper>
