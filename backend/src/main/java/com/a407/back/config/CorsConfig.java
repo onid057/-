@@ -9,7 +9,7 @@ public class CorsConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**").allowedOrigins("http://i10a407.p.ssafy.io:3000").allowedMethods("*")
+        registry.addMapping("/**").allowedOrigins("https://i10a407.p.ssafy.io").allowedMethods("*")
             .allowedHeaders("*").maxAge(3000);
     }
 }
