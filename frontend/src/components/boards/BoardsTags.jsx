@@ -57,7 +57,7 @@ function BoardsTags({ mode, tagname, onClick }) {
     case 'SMALL':
       return (
         <Wrapper
-          $width={'52px'}
+          $width={'49px'}
           $height={'21px'}
           $fontSize={'11px'}
           $fontWeight={'350'}
