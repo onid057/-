@@ -63,7 +63,7 @@ const Bold = styled.div`
   line-height: 1.3;
 `;
 
-function RoomDetail() {
+function UserRoomDetail() {
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
@@ -76,6 +76,7 @@ function RoomDetail() {
   const modalRef = useRef(null);
 
   useEffect(() => {
+    console.log(roomId);
     getRoomDetailInfo(roomId).then(response => {
       setRoomInfo(response.data);
     });
@@ -128,7 +129,7 @@ function RoomDetail() {
       <TitleWrapper>
         <BoldText
           boldContent={'모집'}
-          normalContent={' 정보'}
+          normalContent={' 상세정보'}
           fontSize={'20px'}
         ></BoldText>
       </TitleWrapper>
@@ -185,4 +186,4 @@ function RoomDetail() {
   );
 }
 
-export default RoomDetail;
+export default UserRoomDetail;

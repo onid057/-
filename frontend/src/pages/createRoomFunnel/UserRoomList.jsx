@@ -65,16 +65,18 @@ const HeadingWrapper = styled.div`
   font-size: 14px;
 `;
 
-function RoomList() {
+function UserRoomList() {
   const [roomList, setRoomList] = useState([]);
   const navigate = useNavigate();
-
+  const onPrevious = () => {
+    navigate(-1);
+  };
   const onClickButton = () => {
     navigate('/rooms/create');
   };
 
   const onClickRoom = roomId => {
-    navigate(`/rooms/${roomId}`);
+    navigate(`/rooms/detail/${roomId}`);
   };
 
   const userId = 1;
@@ -96,6 +98,7 @@ function RoomList() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
+        onPrevious={onPrevious}
       ></NavigationBar>
       <TitleWrapper>
         <Paragraph
@@ -131,4 +134,4 @@ function RoomList() {
   );
 }
 
-export default RoomList;
+export default UserRoomList;
