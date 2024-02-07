@@ -11,6 +11,7 @@ import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.room.PublicRoomListResponse;
+import com.a407.back.dto.room.UserPublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserComplainRequest;
@@ -271,13 +272,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PublicRoomListResponse getUserPublicRoomList(Long userId) {
+    public UserPublicRoomListResponse getUserPublicRoomList(Long userId) {
         User user = userRepository.findByUserId(userId);
-        List<UserPublicRoom> publicRoomList = roomRepository.getUserPublicRoomList(user).stream()
+        List<UserPublicRoom> userPublicRoomList = roomRepository.getUserPublicRoomList(user).stream()
             .map(
                 room -> new UserPublicRoom(room.getRoomId(), room.getTitle(),
                     room.getRoomCreatedAt())).toList();
-        return new PublicRoomListResponse((long) publicRoomList.size(), 1, publicRoomList);
+        return new UserPublicRoomListResponse((long) userPublicRoomList.size(), 1, userPublicRoomList);
     }
 
     @Override

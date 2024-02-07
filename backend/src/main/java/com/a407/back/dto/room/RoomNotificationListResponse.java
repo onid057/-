@@ -1,6 +1,6 @@
 package com.a407.back.dto.room;
 
-import com.a407.back.dto.util.PublicRoom;
+import com.a407.back.dto.util.RoomNotification;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +9,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class PublicRoomListResponse {
+public class RoomNotificationListResponse {
 
-    private Long totalCount;
-    private int nowPage;
-    private List<PublicRoom> publicRoomList;
+    List<RoomNotification> roomNotificationList;
 
 }

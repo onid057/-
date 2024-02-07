@@ -5,6 +5,7 @@ import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.room.PublicRoomListResponse;
+import com.a407.back.dto.room.UserPublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
 import com.a407.back.dto.user.UserCertificationRequest;
@@ -154,7 +155,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/rooms")
-    public ResponseEntity<ApiResponse<PublicRoomListResponse>> getUserPublicRoomList(
+    public ResponseEntity<ApiResponse<UserPublicRoomListResponse>> getUserPublicRoomList(
         @PathVariable("userId") Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
