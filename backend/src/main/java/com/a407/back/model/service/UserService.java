@@ -10,6 +10,7 @@ import com.a407.back.dto.user.UserChangeRequest;
 import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
+import com.a407.back.dto.user.UserInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
@@ -22,6 +23,8 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
+
+    UserInfoResponse findUserInfo(Long userId);
 
     Long makeUser(UserCreateRequest userCreateRequest);
 

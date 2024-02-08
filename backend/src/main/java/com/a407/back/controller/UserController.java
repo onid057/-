@@ -12,6 +12,7 @@ import com.a407.back.dto.user.UserChangeRequest;
 import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
+import com.a407.back.dto.user.UserInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
@@ -51,6 +52,14 @@ public class UserController {
     @GetMapping("/")
     public ResponseEntity<String> testServer() {
         return ResponseEntity.status(HttpStatus.OK).body("server 이상 무");
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<ApiResponse<UserInfoResponse>> findUserInfo(
+        @PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.findUserInfo(userId)));
     }
 
     // 알림 목록
@@ -189,7 +198,7 @@ public class UserController {
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 정보 수정 성공"));
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/{userId}/detail")
     public ResponseEntity<ApiResponse<UserDetailInfoResponse>> findUserDetailInfo(
         @PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(
