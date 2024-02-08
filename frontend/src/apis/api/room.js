@@ -51,16 +51,14 @@ const getUserRoomList = async userId => {
 
 // 공개방 상세 페이지 조회
 const getRoomDetailInfo = async roomId => {
-  {
-    try {
-      const response = await axios({
-        method: 'get',
-        url: `/rooms/${roomId}`,
-      });
-      return response.data;
-    } catch (error) {
-      console.log(error);
-    }
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/rooms/${roomId}`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
   }
 };
 
