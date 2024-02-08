@@ -93,7 +93,7 @@ export default function Home() {
             src={process.env.PUBLIC_URL + '/images/lightning.svg'}
             width="30px"
             height="30px"
-            margin="5px 0 0 0"
+            margin="4px 0 0 0"
           ></Image>,
           <BoldText
             fontSize="20px"
@@ -126,7 +126,6 @@ export default function Home() {
             src={process.env.PUBLIC_URL + '/images/location.svg'}
             width="30px"
             height="30px"
-            margin="0"
           ></Image>,
           <Paragraph
             fontSize="16px"
@@ -146,7 +145,7 @@ export default function Home() {
       <Notice
         upper={[
           <Image
-            src={process.env.PUBLIC_URL + '/images/light.svg'}
+            src={process.env.PUBLIC_URL + '/images/condition.svg'}
             width="30px"
             height="30px"
             margin="0"
@@ -163,7 +162,7 @@ export default function Home() {
       <Notice
         upper={[
           <Image
-            src={process.env.PUBLIC_URL + '/images/monitor.svg'}
+            src={process.env.PUBLIC_URL + '/images/wifi.svg'}
             width="30px"
             height="30px"
             margin="0"
@@ -181,7 +180,7 @@ export default function Home() {
         <Notice
           upper={[
             <Image
-              src={process.env.PUBLIC_URL + '/images/message.svg'}
+              src={process.env.PUBLIC_URL + '/images/post.svg'}
               width="30px"
               height="30px"
               margin="0"
@@ -199,7 +198,7 @@ export default function Home() {
         <Notice
           upper={[
             <Image
-              src={process.env.PUBLIC_URL + '/images/monitor.svg'}
+              src={process.env.PUBLIC_URL + '/images/date.svg'}
               width="30px"
               height="30px"
               margin="0"
