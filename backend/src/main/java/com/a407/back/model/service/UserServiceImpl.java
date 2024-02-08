@@ -313,7 +313,7 @@ public class UserServiceImpl implements UserService {
             List<BoardTag> tagList = boardRepository.findBoardTagList(board);
             List<String> tagNameList = tagList.stream()
                 .map(tag -> tag.getBoardTagId().tagId.getName()).toList();
-            return new BoardListDto(board.getTitle(), board.getUserId().getName(), commentCount,
+            return new BoardListDto(board.getBoardId(), board.getTitle(), board.getUserId().getName(), commentCount,
                 board.getUpdatedAt(), tagNameList);
         }).toList();
         return new BoardListResponse(boardList.getTotal(), page, userBoardList);

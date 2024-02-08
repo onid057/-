@@ -133,7 +133,7 @@ public class BoardServiceImpl implements BoardService {
             List<String> tagNameList = tagList.stream()
                 .map(boardTag -> boardTag.getBoardTagId().tagId.getName()).toList();
 
-            return new BoardListDto(board.getTitle(), board.getUserId().getName(), commentCount,
+            return new BoardListDto(board.getBoardId(), board.getTitle(), board.getUserId().getName(), commentCount,
                 board.getUpdatedAt(), tagNameList);
         }).toList();
         return new BoardListResponse(totalBoardList.getTotal(), page, boardList);
