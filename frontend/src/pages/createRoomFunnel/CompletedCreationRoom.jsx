@@ -11,7 +11,6 @@ const Wrapper = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 30px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
