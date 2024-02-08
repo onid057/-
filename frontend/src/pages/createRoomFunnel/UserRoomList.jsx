@@ -113,6 +113,14 @@ function UserRoomList() {
           sentences={['아직 생성된 방이 없어요']}
         ></Paragraph>
       )}
+      <CreateButton onClick={onClickButton}>
+        <Image
+          src={`${process.env.PUBLIC_URL}/images/plus.svg`}
+          width={'33.33px'}
+          height={'33.33px'}
+        ></Image>
+        <Paragraph fontSize={'18px'} sentences={['새 방 만들기']}></Paragraph>
+      </CreateButton>
       {roomList.map((item, idx) => (
         <RoomItemWrapper key={idx} onClick={() => onClickRoom(item.roomId)}>
           <BoldText fontSize={'16px'} boldContent={item.title} />
@@ -122,14 +130,6 @@ function UserRoomList() {
           </RoomInfoWrapper>
         </RoomItemWrapper>
       ))}
-      <CreateButton onClick={onClickButton}>
-        <Image
-          src={`${process.env.PUBLIC_URL}/images/plus.svg`}
-          width={'33.33px'}
-          height={'33.33px'}
-        ></Image>
-        <Paragraph fontSize={'18px'} sentences={['새 방 만들기']}></Paragraph>
-      </CreateButton>
     </Wrapper>
   );
 }
