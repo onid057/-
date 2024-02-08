@@ -53,7 +53,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body("server 이상 무");
     }
 
-
     // 알림 목록
     @GetMapping("/{userId}/notifications")
     public ResponseEntity<ApiResponse<List<NotificationListResponse>>> getNotificationList(
@@ -156,6 +155,13 @@ public class UserController {
         userService.makePhoneNumber(request.getCode(), request.getEmail());
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "전화 번호 저장 성공"));
+    }
+
+    @PatchMapping("/{userId}/promise")
+    public ResponseEntity<ApiResponse<String>> changeUserCertificated(@PathVariable Long userId) {
+        userService.changeUserCertificated(userId);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "서약 결과 저장 성공"));
     }
 
     @PostMapping("/complaint")

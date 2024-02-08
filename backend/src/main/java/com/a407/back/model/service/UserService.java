@@ -51,6 +51,8 @@ public interface UserService {
 
     void makePhoneNumber(String code, String email) throws JsonProcessingException;
 
+    void changeUserCertificated(Long userId);
+
     void changeUserInfo(Long userId, UserChangeRequest request, MultipartFile image)
         throws IOException;
 

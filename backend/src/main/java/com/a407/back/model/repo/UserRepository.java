@@ -53,4 +53,6 @@ public interface UserRepository {
     void changeUserInfo(Long userId, UserChangeDto userUpdateDto);
 
     void deleteUser(Long userId);
+
+    void changeUserCertificated(Long userId);
 }

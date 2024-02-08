@@ -272,6 +272,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void changeUserCertificated(Long userId) {
+        userRepository.changeUserCertificated(userId);
+    }
+
+    @Override
+    @Transactional
     public void makeComplain(UserComplainRequest userComplainRequest) {
         Room room = roomRepository.findByRoomId(userComplainRequest.getRoomId());
         if (room == null || room.getIsComplained() || room.getStatus() != Process.END
