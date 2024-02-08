@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getSimpleUserInfo } from '../apis/api/userMyPage';
 import styled from 'styled-components';
 import Notice from '../components/common/Notice';
 import Image from '../components/common/Image';
@@ -27,15 +30,11 @@ const ContentWrapper = styled.div`
   align-items: center;
 `;
 
-function UserMyPage({ name }) {
-  const MenuList = [
-    '사용 내역 보기',
-    '작성한 게시물 확인하기',
-    '간편 결제 수단 등록하기',
-    '본인 인증하기',
-    '집사 되기',
-    '비밀번호 변경하기',
-  ];
+function UserMyPage() {
+  const { data, isPending, error } = useQuery({
+    queryKey: ['simpleUserInfo'],
+    queryFn: () => getSimpleUserInfo(3),
+  });
 
   return (
     <Wrapper>
@@ -52,7 +51,7 @@ function UserMyPage({ name }) {
             sentences={[
               <BoldText
                 fontSize={'20px'}
-                boldContent={'곽희웅'}
+                boldContent={data?.name}
                 normalContent={' 사용자님'}
               ></BoldText>,
               '내 정보 수정하기',
@@ -67,12 +66,14 @@ function UserMyPage({ name }) {
             src={process.env.PUBLIC_URL + '/images/family.svg'}
             width={'30px'}
             height={'30px'}
-            margin={'2px 0 0 0'}
+            margin={'4px 0 0 0'}
           ></Image>,
           <ContentWrapper>
             <BoldText
               fontSize={'20px'}
-              boldContent={'계정 연동하기'}
+              boldContent={
+                data?.isAffiliated ? '멤버 확인하기' : '계정 연동하기'
+              }
             ></BoldText>
             <Image
               src={process.env.PUBLIC_URL + '/images/right_arrow.svg'}
@@ -83,11 +84,26 @@ function UserMyPage({ name }) {
         ]}
         nextPage={'/connectOption'}
       ></Notice>
-      {MenuList.map((content, idx) => (
-        <NavigateButton key={idx} onClick={() => console.log('페이지 이동')}>
-          {content}
-        </NavigateButton>
-      ))}
+
+      <NavigateButton onClick={() => console.log('페이지 이동')}>
+        사용 내역 보기
+      </NavigateButton>
+      <NavigateButton onClick={() => console.log('페이지 이동')}>
+        작성한 게시물 확인하기
+      </NavigateButton>
+      <NavigateButton onClick={() => console.log('페이지 이동')}>
+        간편 결제 수단 등록하기
+      </NavigateButton>
+      <NavigateButton
+        onClick={() => console.log('페이지 이동')}
+        disabled={data?.isZipsa}
+      >
+        집사 되기
+      </NavigateButton>
+      <NavigateButton onClick={() => console.log('페이지 이동')}>
+        비밀번호 변경하기
+      </NavigateButton>
+
       <MenuBar currentMenu="USER"></MenuBar>
     </Wrapper>
   );
