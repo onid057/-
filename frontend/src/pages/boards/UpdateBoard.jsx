@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
@@ -64,10 +65,26 @@ const tagLength = allTags.length;
 // 이전 페이지에서 '게시판 상세 조회' 내용 prop 받기
 
 function CreateBoard() {
-  // useState 사용 위해 게시판 태그 길이만큼 빈 리스트 만들기
-  const tagCheckList = Array.from({ length: tagLength }, () => false);
+  // 이전 페이지로부터 props 받기
+  const location = useLocation();
+  const title = location.state.title;
+  const content = location.state.content;
+  const updatedAt = location.state.updatedAt;
+  const tagList = location.state.tagList;
+
+  // useState로 변수 선언하기
+  const [newTitle, setNewTitle] = useState(title);
+  const [newcontent, setNewcontent] = useState(content);
+  const [newupdatedAt, setNewupdatedAt] = useState(updatedAt);
+  const [newtagList, setNewtagList] = useState(tagList);
+
+  const onChangeTitle = e => {
+    setNewTitle(e.target.value);
+    console.log(newTitle);
+  };
 
   // tagCheckList의 상태를 관리할 useState 함수
+  const tagCheckList = Array.from({ length: tagLength }, () => false);
   const [isSelected, setIsSelected] = useState(tagCheckList);
 
   // 누르면 check값이 토글되는 함수
@@ -78,6 +95,8 @@ function CreateBoard() {
       ...array.slice(idx + 1),
     ]);
   };
+
+  // 게시판 수정 API 호출
 
   return (
     <Wrapper>
@@ -97,17 +116,18 @@ function CreateBoard() {
         <Paragraph
           gap="5px"
           fontSize="35px"
-          sentences={['게시물 수정하기']}
+          sentences={['게시글 수정하기']}
         ></Paragraph>
       </ParagraphWrapper>
 
       <div>
         <SubTitle>제목</SubTitle>
         <Input
+          onChange={() => onChangeTitle()}
           type={'text'}
           width={'100%'}
           maxlength={50}
-          placeholder={'제목을 입력해 주세요'}
+          defaultValue={title}
         ></Input>
       </div>
 
@@ -125,8 +145,9 @@ function CreateBoard() {
 
       <LongInputBox
         title={'내용'}
-        placeholder={'내용을 입력해 주세요'}
+        // placeholder={content}
         maxlength={300}
+        defaultValue={content}
       ></LongInputBox>
     </Wrapper>
   );

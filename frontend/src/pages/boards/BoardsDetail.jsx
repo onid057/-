@@ -5,6 +5,9 @@ import BoardComment from '../../components/boards/BoardComment';
 import BoardsTags from '../../components/boards/BoardsTags';
 import UpdateDeleteButton from '../../components/common/UpdateDeleteButton';
 import CreateComment from '../../components/boards/CreateComment';
+import { useState, useEffect } from 'react';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
+import { getOneArticle } from '../../apis/api/board';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -106,48 +109,35 @@ const CommentLength = styled.span`
   color: gray;
 `;
 
-// 게시판 상세 조회 API 호출
-const data = {
-  userName: 'user4',
-  address: '서울시 광진구',
-  profileImage: '',
-  title: '안녕하세요.',
-  content: '저는 오늘 생일입니다.',
-  updatedAt: '2024-01-31T07:37:36.000+00:00',
-  commentList: [
-    {
-      commentId: 1,
-      userName: 'user5',
-      content: '축하합니다~',
-      updatedAt: '2024-01-31T07:37:36.000+00:00',
-    },
-    {
-      commentId: 4,
-      userName: 'user4',
-      content: 'comment!!',
-      updatedAt: '2024-02-06T08:15:30.000+00:00',
-    },
-    {
-      commentId: 5,
-      userName: 'user6',
-      content:
-        '저희 아버지도 강아지를 키우시는데 다음에 여행가실 때 맡겨봐야겠어요~',
-      updatedAt: '2024-02-07T01:07:19.000+00:00',
-    },
-    {
-      commentId: 6,
-      userName: 'user4',
-      content: 'comment!!',
-      updatedAt: '2024-02-07T01:08:25.000+00:00',
-    },
-  ],
-  tagList: ['asd', 'asdasd'],
-};
-
 // 현재 로그인 된 유저 구하기
 const getCurrentUser = 'user4';
 
 function BoardsDetail() {
+  // 게시판 상세 조회 API 호출
+  const [data, setData] = useState({});
+  const { boardId } = useParams();
+
+  useEffect(() => {
+    getOneArticle(boardId).then(response => {
+      console.log('게시판 상세 조회 API 성공');
+      console.log(response.data);
+      setData(response.data);
+    });
+  }, []);
+
+  // 게시글 수정 페이지로 이동하는 함수
+  const navigate = useNavigate();
+  const toArticleUpdate = () => {
+    navigate(`/boards/${boardId}/update`, {
+      state: {
+        title: data.title,
+        content: data.content,
+        updatedAt: data.updatedAt,
+        tagList: data.tagList,
+      },
+    });
+  };
+
   return (
     <Wrapper>
       <NavigationBar
@@ -177,7 +167,7 @@ function BoardsDetail() {
         </ProfileWrapper>
 
         <TagsWrapper>
-          {data.tagList.map((tag, idx) => (
+          {data.tagList?.map((tag, idx) => (
             <BoardsTags key={idx} mode={'MEDIUM'} tagname={tag}></BoardsTags>
           ))}
         </TagsWrapper>
@@ -192,7 +182,7 @@ function BoardsDetail() {
           <UpdateDeleteButton
             needUpdateButton
             needDeleteButton
-            updateOnClick={() => console.log('게시글 수정')}
+            updateOnClick={() => toArticleUpdate()}
             deleteOnClick={() => console.log('게시글 삭제')}
           ></UpdateDeleteButton>
         ) : (
@@ -202,7 +192,7 @@ function BoardsDetail() {
 
       {/* 댓글이 하나도 없을 때 분기 */}
       {/* 댓글 작성자와 currentUser가 같으면 수정/삭제 버튼 나오게 */}
-      {data.commentList.length === 0 ? (
+      {!data.commentList ? (
         <p>새 댓글을 작성해 보세요!</p>
       ) : (
         <CommentWrapper>
