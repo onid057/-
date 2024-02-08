@@ -7,7 +7,7 @@ import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Buttton from '../../components/common/Button';
 import BottomSheet from '../../components/common/BottomSheet';
-import { getRoomDetailInfo } from '../../apis/api/room';
+import { getRoomDetailInfo, acceptZipsaRequest } from '../../apis/api/room';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -76,11 +76,10 @@ function UserRoomDetail() {
   const modalRef = useRef(null);
 
   useEffect(() => {
-    console.log(roomId);
     getRoomDetailInfo(roomId).then(response => {
       setRoomInfo(response.data);
     });
-  }, []);
+  }, [roomId]);
 
   // bottom sheet 영역 이외의 부분을 클릭 시 모달 isOpen 변경
   useEffect(() => {
@@ -181,6 +180,8 @@ function UserRoomDetail() {
           setIsOpen(false);
         }}
         roomId={roomId}
+        buttonName={'매칭 수락'}
+        onButtonClick={acceptZipsaRequest}
       ></BottomSheet>
     </Wrapper>
   );
