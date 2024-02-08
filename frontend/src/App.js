@@ -15,6 +15,10 @@ import SuggestByZipsa from './pages/notify/SuggestByZipsa';
 import SuggestByUser from './pages/notify/SuggestByUser';
 import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
 import Map from './pages/Map';
+import BoardsMain from './pages/boards/BoardsMain';
+import BoardsDetail from './pages/boards/BoardsDetail';
+import UpdateBoard from './pages/boards/UpdateBoard';
+import CreateBoard from './pages/boards/CreateBoard';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -182,6 +186,11 @@ function App() {
           path="/suggest-by-user/:notificationId"
           element={<SuggestByUser />}
         ></Route>
+
+        <Route path="/boards/" element={<BoardsMain />}></Route>
+        <Route path="/boards/:boardId" element={<BoardsDetail />}></Route>
+        <Route path="/boards/:boardId/update" element={<UpdateBoard />}></Route>
+        <Route path="/boards/create" element={<CreateBoard />}></Route>
 
         <Route
           path="/experiment"
