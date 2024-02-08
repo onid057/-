@@ -8,7 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserNearZipsaInfoResponse {
 
-    private String name;
+    private String zipsaName;
     private Gender gender;
     private String gradeName;
     private String description;
