@@ -18,7 +18,6 @@ public class MatchSearchResponse {
     private int serviceCount;
     private String filteringCategoryId;
     private Double scoreAverage;
-    // 카테고리 정보(이름)를 리스트로 표현
-    private List<String> categories;
+    private String preferTag;
 
 }
