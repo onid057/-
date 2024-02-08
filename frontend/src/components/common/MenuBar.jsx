@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Image from './Image';
 
@@ -30,6 +31,8 @@ const MenuWrapper = styled.div`
 `;
 
 function MenuBar({ currentMenu }) {
+  const navigate = useNavigate();
+
   const homeImageURL =
     process.env.PUBLIC_URL +
     (currentMenu === 'HOME' ? '/images/selected_home.svg' : '/images/home.svg');
@@ -55,7 +58,13 @@ function MenuBar({ currentMenu }) {
   return (
     <Wrapper>
       <MenuWrapper selected={currentMenu === 'HOME'}>
-        <Image src={homeImageURL} width="28px" height="29px"></Image>홈
+        <Image
+          src={homeImageURL}
+          width="28px"
+          height="29px"
+          onClick={() => navigate('/')}
+        ></Image>
+        홈
       </MenuWrapper>
 
       <MenuWrapper selected={currentMenu === 'POST'}>
@@ -79,7 +88,12 @@ function MenuBar({ currentMenu }) {
       </MenuWrapper>
 
       <MenuWrapper selected={currentMenu === 'USER'}>
-        <Image src={userImageURL} width="24px" height="27px"></Image>
+        <Image
+          src={userImageURL}
+          width="24px"
+          height="27px"
+          onClick={() => navigate('/userMyPage')}
+        ></Image>
         사용자
       </MenuWrapper>
     </Wrapper>

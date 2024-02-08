@@ -49,7 +49,7 @@ function FilteredZipsaInfo({
   gradeName,
   scoreAverage,
   serviceCount,
-  categories,
+  preferTag,
   onClick,
   isSelected,
 }) {
@@ -69,7 +69,11 @@ function FilteredZipsaInfo({
           <ScoreBadge score={scoreAverage} actCount={serviceCount}></ScoreBadge>
         </ZipsaInfos>
 
-        <PreferTag tagArray={categories} fontSize="13px"></PreferTag>
+        <PreferTag
+          tagString={preferTag}
+          splitter={'#'}
+          fontSize="13px"
+        ></PreferTag>
       </ZipsaContent>
 
       <Image

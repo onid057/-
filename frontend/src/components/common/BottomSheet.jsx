@@ -67,7 +67,18 @@ const Text = styled.div`
 // isOpen은 bottom sheet 자체가 열렸는지 확인하는 boolean prop
 // isDetailOpen은 bottom sheet 내에서 상세 정보가 열렸는지 확인하는 boolean prop
 const BottomSheet = forwardRef(
-  ({ isOpen, isDetailOpen, setIsDetailOpen, onClick, targetCluster }, ref) => {
+  (
+    {
+      isOpen,
+      isDetailOpen,
+      setIsDetailOpen,
+      onClick,
+      targetCluster,
+      buttonName,
+      onButtonClick,
+    },
+    ref,
+  ) => {
     const [zipsaList, setZipsaList] = useState([]);
     const [targetZipsa, setTargetZipsa] = useState({}); // 현재 선택된 집사 한 명
 

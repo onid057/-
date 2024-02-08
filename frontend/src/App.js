@@ -7,7 +7,7 @@ import Home from './pages/Home'; // 홈 페이지
 import Login from './pages/Login'; // 로그인 페이지
 import UserMyPage from './pages/UserMyPage'; // 사용자 마이 페이지
 import ConnectOption from './pages/connect/ConnectOption'; // 연동 옵션 고르기 페이지
-import ConnectAsCaptain from './pages/connect/ConnectAsCaptain'; // 대표로 연동하기 페이지
+import ConnectAsLeader from './pages/connect/ConnectAsLeader'; // 대표로 연동하기 페이지
 import ConnectMember from './pages/connect/ConnectMember'; // 연동되어 있는 멤버 조회 페이지
 import ConnectCode from './pages/connect/ConnectCode'; // 연동 코드 보여주는 페이지
 
@@ -179,7 +179,7 @@ function App() {
         <Route path="/login" element={<Login />}></Route>
         <Route path="/userMyPage" element={<UserMyPage />}></Route>
         <Route path="/connectOption" element={<ConnectOption />}></Route>
-        <Route path="/connectAsCaptain" element={<ConnectAsCaptain />}></Route>
+        <Route path="/connectAsLeader" element={<ConnectAsLeader />}></Route>
         <Route path="/connectMember" element={<ConnectMember />}></Route>
         <Route path="/connectCode/:option" element={<ConnectCode />}></Route>
 
