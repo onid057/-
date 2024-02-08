@@ -16,6 +16,8 @@ import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.room.UserPublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
+import com.a407.back.dto.user.UserChangeDto;
+import com.a407.back.dto.user.UserChangeRequest;
 import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
@@ -25,9 +27,8 @@ import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
-import com.a407.back.dto.user.UserUpdateDto;
-import com.a407.back.dto.user.UserUpdateRequest;
 import com.a407.back.dto.util.BoardListDto;
+import com.a407.back.dto.util.ImageUtil;
 import com.a407.back.dto.util.UserPublicRoom;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.BoardRepository;
@@ -40,9 +41,9 @@ import com.a407.back.model.repo.ZipsaRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import net.nurigo.sdk.message.model.Message;
@@ -52,6 +53,7 @@ import net.nurigo.sdk.message.service.DefaultMessageService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -74,6 +76,8 @@ public class UserServiceImpl implements UserService {
     private final CommentRepository commentRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final ImageUtil imageUtil;
 
     @Value("${sms.number}")
     private String senderPhoneNumber;
@@ -164,7 +168,7 @@ public class UserServiceImpl implements UserService {
                     .zipsaId(room.getZipsaId().getZipsaId().getUserId())
                     .name(room.getZipsaId().getZipsaId().getName()).profile(
                         room.getZipsaId().getZipsaId().getProfileImage() == null ? null
-                            : Arrays.toString(room.getZipsaId().getZipsaId().getProfileImage()))
+                            : room.getZipsaId().getZipsaId().getProfileImage())
                     .subCategoryName(room.getSubCategoryId().getName())
                     .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
                     .content(room.getContent()).estimateDuration(room.getEstimateDuration())
@@ -185,7 +189,7 @@ public class UserServiceImpl implements UserService {
                 .zipsaId(room.getZipsaId().getZipsaId().getUserId())
                 .name(room.getZipsaId().getZipsaId().getName()).profile(
                     room.getZipsaId().getZipsaId().getProfileImage() == null ? null
-                        : Arrays.toString(room.getZipsaId().getZipsaId().getProfileImage()))
+                        : room.getZipsaId().getZipsaId().getProfileImage())
                 .subCategoryName(room.getSubCategoryId().getName())
                 .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
                 .content(room.getContent()).estimateDuration(room.getEstimateDuration())
@@ -268,6 +272,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void changeUserCertificated(Long userId) {
+        userRepository.changeUserCertificated(userId);
+    }
+
+    @Override
+    @Transactional
     public void makeComplain(UserComplainRequest userComplainRequest) {
         Room room = roomRepository.findByRoomId(userComplainRequest.getRoomId());
         if (room == null || room.getIsComplained() || room.getStatus() != Process.END
@@ -284,41 +294,45 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserPublicRoomListResponse getUserPublicRoomList(Long userId) {
         User user = userRepository.findByUserId(userId);
-        List<UserPublicRoom> userPublicRoomList = roomRepository.getUserPublicRoomList(user).stream()
+        List<UserPublicRoom> userPublicRoomList = roomRepository.getUserPublicRoomList(user)
+            .stream()
             .map(
                 room -> new UserPublicRoom(room.getRoomId(), room.getTitle(),
                     room.getRoomCreatedAt())).toList();
-        return new UserPublicRoomListResponse((long) userPublicRoomList.size(), 1, userPublicRoomList);
+        return new UserPublicRoomListResponse((long) userPublicRoomList.size(), 1,
+            userPublicRoomList);
     }
 
     @Override
     public BoardListResponse getUserBoardList(Long userId, int page, int size) {
         User user = userRepository.findByUserId(userId);
-        QueryResults<Board> boardList = boardRepository.getUserBoardList(user, (page - 1) * size, size);
+        QueryResults<Board> boardList = boardRepository.getUserBoardList(user, (page - 1) * size,
+            size);
         List<BoardListDto> userBoardList = boardList.getResults().stream().map(board -> {
             int commentCount = commentRepository.getCommentCount(board).intValue();
             List<BoardTag> tagList = boardRepository.findBoardTagList(board);
-            List<String> tagNameList = tagList.stream().map(tag -> tag.getBoardTagId().tagId.getName()).toList();
-            return new BoardListDto(board.getTitle(), board.getUserId().getName(), commentCount, board.getUpdatedAt(), tagNameList);
+            List<String> tagNameList = tagList.stream()
+                .map(tag -> tag.getBoardTagId().tagId.getName()).toList();
+            return new BoardListDto(board.getTitle(), board.getUserId().getName(), commentCount,
+                board.getUpdatedAt(), tagNameList);
         }).toList();
         return new BoardListResponse(boardList.getTotal(), page, userBoardList);
     }
 
     @Override
     @Transactional
-    public void changeUserInfo(Long userId, UserUpdateRequest request) {
-        Byte[] profileImage = null;
-        if (request.getProfileImage() != null) {
-            int length = request.getProfileImage().getBytes().length;
-            profileImage = new Byte[length];
-            byte[] profileImageBefore = request.getProfileImage().getBytes();
-            for (int i = 0; i < length; i++) {
-                profileImage[i] = profileImageBefore[i];
-            }
-        }
+    public void changeUserInfo(Long userId, UserChangeRequest request, MultipartFile image)
+        throws IOException {
         User user = userRepository.findByUserId(userId);
-        UserUpdateDto userUpdateDto = new UserUpdateDto(
-            profileImage == null ? user.getProfileImage() : profileImage,
+        String imageName = null;
+        if (image != null) {
+            if (user.getProfileImage() != null && !user.getProfileImage().isBlank()) {
+                imageUtil.deleteImage(user.getProfileImage());
+            }
+            imageName = imageUtil.resizeImage(image, 100);
+        }
+        UserChangeDto userChangeDto = new UserChangeDto(
+            imageName == null ? user.getProfileImage() : imageName,
             request.getAddress() == null ? user.getAddress() : request.getAddress(),
             request.getLatitude() == null ? user.getLatitude() : request.getLatitude(),
             request.getLongitude() == null ? user.getLongitude() : request.getLongitude(),
@@ -330,7 +344,7 @@ public class UserServiceImpl implements UserService {
                 request.getDescription() == null ? zipsa.getDescription()
                     : request.getDescription());
         }
-        userRepository.changeUserInfo(userId, userUpdateDto);
+        userRepository.changeUserInfo(userId, userChangeDto);
     }
 
     @Override
@@ -339,17 +353,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserId(userId);
         Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
 
-        Byte[] originByte = user.getProfileImage();
-
-        byte[] responseByte = new byte[originByte.length];
-
-        for (int i = 0; i < originByte.length; i++) {
-            responseByte[i] = originByte[i];
-        }
-
-        String profileImage = new String(responseByte);
-
-        return UserDetailInfoResponse.builder().profileImage(profileImage).name(user.getName())
+        return UserDetailInfoResponse.builder().profileImage(user.getProfileImage())
+            .name(user.getName())
             .birth(user.getBirth()).email(user.getEmail()).phoneNumber(user.getPhoneNumber())
             .address(user.getAddress()).description(zipsa != null ? zipsa.getDescription() : null)
             .build();

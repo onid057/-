@@ -57,8 +57,8 @@ public class User {
     private String address;
 
     @Lob
-    @Column(name = "profile_image", columnDefinition = "MEDIUMBLOB")
-    private Byte[] profileImage;
+    @Column(name = "profile_image")
+    private String profileImage;
 
     @ColumnDefault("false")
     @Column(name = "is_certificated", nullable = false)
@@ -92,7 +92,7 @@ public class User {
 
     @Builder(toBuilder = true)
     public User(Association associationId, String email, String password, String name,
-        Timestamp birth, Gender gender, String phoneNumber, String address, Byte[] profileImage,
+        Timestamp birth, Gender gender, String phoneNumber, String address, String profileImage,
         Boolean isCertificated,
         Double latitude, Double longitude, String account, Boolean isBlocked, Boolean isAdmin,
         Boolean isAffiliated, int serviceCount) {

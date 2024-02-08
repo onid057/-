@@ -12,7 +12,7 @@ public class MatchSearchResponse {
 
     private Long zipsaId;
     private String name;
-    private Byte[] profileImage;
+    private String profileImage;
     private String gradeName;
     private int gradeSalary;
     private int serviceCount;

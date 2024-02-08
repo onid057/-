@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserUpdateRequest {
+public class UserChangeRequest {
 
-    private String profileImage;
     private String address;
     private Double latitude;
     private Double longitude;

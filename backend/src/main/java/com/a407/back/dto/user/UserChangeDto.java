@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserUpdateDto {
+public class UserChangeDto {
 
-    private Byte[] profileImage;
+    private String profileImage;
     private String address;
     private Double latitude;
     private Double longitude;

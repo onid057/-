@@ -10,8 +10,8 @@ import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.user.UserChangeDto;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
-import com.a407.back.dto.user.UserUpdateDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -81,9 +81,8 @@ public class UserRepositoryImpl implements UserRepository {
     public List<Zipsa> findNearZipsaInfoList(Double lat, Double lng) {
         QZipsa qZipsa = QZipsa.zipsa;
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
-            createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
-                lat, lng, 0.0045)))).orderBy(
-            qZipsa.serviceCount.desc()).fetch();
+            createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude, lat,
+                lng, 0.0045)))).orderBy(qZipsa.serviceCount.desc()).fetch();
     }
 
     @Override
@@ -163,8 +162,8 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void makePhoneNumber(String phoneNumber, String email) {
         QUser qUser = QUser.user;
-        query.update(qUser).set(qUser.phoneNumber, phoneNumber).set(qUser.isCertificated, true)
-            .where(qUser.email.eq(email)).execute();
+        query.update(qUser).set(qUser.phoneNumber, phoneNumber).where(qUser.email.eq(email))
+            .execute();
     }
 
 
@@ -189,7 +188,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void changeUserInfo(Long userId, UserUpdateDto userUpdateDto) {
+    public void changeUserInfo(Long userId, UserChangeDto userUpdateDto) {
         QUser qUser = QUser.user;
         query.update(qUser).set(qUser.address, userUpdateDto.getAddress())
             .set(qUser.latitude, userUpdateDto.getLatitude())
@@ -204,6 +203,13 @@ public class UserRepositoryImpl implements UserRepository {
     public void deleteUser(Long userId) {
         QUser qUser = QUser.user;
         query.delete(qUser).where(qUser.userId.eq(userId)).execute();
+    }
+
+    @Override
+    public void changeUserCertificated(Long userId) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.isCertificated, true).where(qUser.userId.eq(userId))
+            .execute();
     }
 
 }

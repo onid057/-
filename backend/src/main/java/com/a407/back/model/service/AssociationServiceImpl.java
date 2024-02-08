@@ -3,8 +3,8 @@ package com.a407.back.model.service;
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Association;
 import com.a407.back.domain.User;
-import com.a407.back.dto.user.UserAssociationResponse;
 import com.a407.back.dto.association.AssociationAdditionCodeResponse;
+import com.a407.back.dto.user.UserAssociationResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.AssociationRepository;
 import com.a407.back.model.repo.UserRepository;
@@ -14,7 +14,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +48,7 @@ public class AssociationServiceImpl implements AssociationService {
         Long representativeId = associationRepository.findAssociationRepresentative(associationId);
         return users.stream()
             .map(user -> new UserAssociationResponse(user.getUserId(), user.getName(),
-                user.getProfileImage() == null ? null : Arrays.toString(user.getProfileImage()),
+                user.getProfileImage() == null ? null : user.getProfileImage(),
                 user.getUserId().equals(representativeId))).toList();
     }
 

@@ -6,6 +6,7 @@ import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.dto.room.UserPublicRoomListResponse;
 import com.a407.back.dto.user.UserAccountRequest;
 import com.a407.back.dto.user.UserAccountResponse;
+import com.a407.back.dto.user.UserChangeRequest;
 import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
@@ -14,10 +15,11 @@ import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
-import com.a407.back.dto.user.UserUpdateRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
@@ -49,7 +51,10 @@ public interface UserService {
 
     void makePhoneNumber(String code, String email) throws JsonProcessingException;
 
-    void changeUserInfo(Long userId, UserUpdateRequest request);
+    void changeUserCertificated(Long userId);
+
+    void changeUserInfo(Long userId, UserChangeRequest request, MultipartFile image)
+        throws IOException;
 
     UserDetailInfoResponse findUserDetailInfo(Long userId);
 

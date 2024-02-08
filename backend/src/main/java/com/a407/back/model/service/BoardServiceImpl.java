@@ -150,23 +150,10 @@ public class BoardServiceImpl implements BoardService {
                     comment.getUpdatedAt())
             ).toList();
 
-        String profileImage = "";
-        if (user.getProfileImage() != null) {
-            Byte[] byteImage = user.getProfileImage();
-            byte[] imageToByte = new byte[byteImage.length];
-
-            int count = 0;
-            for (Byte byteImagePiece : byteImage) {
-                imageToByte[count++] = byteImagePiece;
-            }
-
-            profileImage = new String(imageToByte);
-        }
-
         List<String> tagList = boardRepository.findBoardTagList(board).stream()
             .map(boardTag -> boardTag.getBoardTagId().tagId.getName()).toList();
 
-        return new BoardDetailResponse(user.getName(), user.getAddress(), profileImage,
+        return new BoardDetailResponse(user.getName(), user.getAddress(), user.getProfileImage(),
             board.getTitle(),
             board.getContent(), board.getUpdatedAt(), commentList, tagList);
     }
