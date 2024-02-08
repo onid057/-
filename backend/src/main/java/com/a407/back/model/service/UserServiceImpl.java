@@ -21,6 +21,7 @@ import com.a407.back.dto.user.UserChangeRequest;
 import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
+import com.a407.back.dto.user.UserInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
@@ -203,8 +204,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserAccountResponse makeAccount(UserAccountRequest userAccountRequest) {
-        User user = userRepository.findByUserId(userAccountRequest.getUserId());
+    public UserAccountResponse makeAccount(Long userId, UserAccountRequest userAccountRequest) {
+        User user = userRepository.findByUserId(userId);
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }
@@ -365,6 +366,16 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long userId) {
         zipsaRepository.deleteZipsa(userId);
         userRepository.deleteUser(userId);
+    }
+
+    @Override
+    public UserInfoResponse findUserInfo(Long userId) {
+
+        User user = userRepository.findByUserId(userId);
+        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+
+        return new UserInfoResponse(user.getName(), user.getProfileImage(), user.getIsAffiliated(),
+            zipsa != null);
     }
 
 }

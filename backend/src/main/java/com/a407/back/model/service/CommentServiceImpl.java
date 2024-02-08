@@ -27,9 +27,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public Long makeComment(CommentCreateRequest commentCreateRequest) {
+    public Long makeComment(Long userId, CommentCreateRequest commentCreateRequest) {
         Board board = boardRepository.findBoard(commentCreateRequest.getBoardId());
-        User user = userRepository.findByUserId(commentCreateRequest.getUserId());
+        User user = userRepository.findByUserId(userId);
         Comment comment = Comment.builder().boardId(board).userId(user)
             .content(commentCreateRequest.getContent()).updatedAt(
                 Timestamp.valueOf(LocalDateTime.now())).build();

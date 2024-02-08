@@ -6,10 +6,12 @@ import com.a407.back.dto.board.BoardCreateRequest;
 import com.a407.back.dto.board.BoardDetailResponse;
 import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.util.ApiResponse;
+import com.a407.back.dto.util.SecurityUser;
 import com.a407.back.model.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,10 +31,11 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> makeBoard(
+        @AuthenticationPrincipal SecurityUser user,
         @RequestBody BoardCreateRequest boardCreateRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
             new ApiResponse<>(SuccessCode.INSERT_SUCCESS,
-                boardService.makeBoard(boardCreateRequest)));
+                boardService.makeBoard(user.getUserId(), boardCreateRequest)));
     }
 
     @GetMapping
@@ -43,7 +46,8 @@ public class BoardController {
     }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity<ApiResponse<BoardDetailResponse>> findBoardDeatil(@PathVariable("boardId") Long boardId) {
+    public ResponseEntity<ApiResponse<BoardDetailResponse>> findBoardDeatil(
+        @PathVariable("boardId") Long boardId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 boardService.findBoardDetail(boardId)));

@@ -10,6 +10,7 @@ import com.a407.back.dto.user.UserChangeRequest;
 import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
+import com.a407.back.dto.user.UserInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
@@ -40,7 +41,7 @@ public interface UserService {
 
     List<UserReservationResponse> getUserReservationList(Long userId);
 
-    UserAccountResponse makeAccount(UserAccountRequest userAccountRequest);
+    UserAccountResponse makeAccount(Long userId, UserAccountRequest userAccountRequest);
 
     String getMaskedCardNumber(Long userId);
 
@@ -65,4 +66,6 @@ public interface UserService {
     UserPublicRoomListResponse getUserPublicRoomList(Long userId);
 
     BoardListResponse getUserBoardList(Long userId, int page, int size);
+
+    UserInfoResponse findUserInfo(Long userId);
 }

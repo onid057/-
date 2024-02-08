@@ -4,7 +4,8 @@ import com.a407.back.dto.comment.CommentChangeRequest;
 import com.a407.back.dto.comment.CommentCreateRequest;
 
 public interface CommentService {
-    Long makeComment(CommentCreateRequest commentCreateRequest);
+
+    Long makeComment(Long userId, CommentCreateRequest commentCreateRequest);
 
     void deleteComment(Long commentId);
 
