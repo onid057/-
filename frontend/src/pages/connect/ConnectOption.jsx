@@ -43,10 +43,12 @@ function ConnectOption() {
         sentences={['계정', '연동하기']}
       ></Paragraph>
 
-      <NavigateButton onClick={() => navigate('/connectAsCaptain')}>
+      <NavigateButton onClick={() => navigate('/connectAsLeader')}>
         대표로 등록하기
       </NavigateButton>
-      <NavigateButton>구성원으로 참여하기</NavigateButton>
+      <NavigateButton onClick={() => navigate('/connectCode/insert')}>
+        구성원으로 참여하기
+      </NavigateButton>
     </Wrapper>
   );
 }

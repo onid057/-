@@ -1,4 +1,9 @@
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import {
+  createAssociationCode,
+  associateWithCode,
+} from '../../apis/api/associate';
 import styled from 'styled-components';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
@@ -30,7 +35,20 @@ const SubmitWrapper = styled.div`
 
 function ConnectCode() {
   const { option } = useParams();
+  const [code, setCode] = useState('');
+  const [leftTime, setLeftTime] = useState();
+  const [inputValue, setInputValue] = useState('');
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (option === 'show') {
+      createAssociationCode(4, 'user4@ssafy.com', 2).then(response => {
+        setCode(response.data.additionCode);
+        setLeftTime(response.data.leftTime);
+      });
+    }
+  }, []);
 
   return (
     <Wrapper>
@@ -52,7 +70,7 @@ function ConnectCode() {
         fontSize="35px"
         sentences={[
           <BoldText boldContent={'연동 코드'} normalContent={'를'}></BoldText>,
-          '전달해주세요.',
+          option === 'insert' ? '입력해요.' : '지인에게 전달해요.',
         ]}
       ></Paragraph>
 
@@ -61,17 +79,32 @@ function ConnectCode() {
           <Input
             type="text"
             width={'190px'}
-            placeholder="연동 코드를 입력하세요."
+            placeholder="연동 코드 8자리를 입력하세요."
+            onChange={event => setInputValue(event.target.value)}
           ></Input>
-          <Button mode="THIN_BLUE">입력</Button>
+          <Button
+            mode="THIN_BLUE"
+            onClick={() => {
+              associateWithCode(5, inputValue)
+                .then(response => {
+                  if (response.status === 201) alert('연동 성공!');
+                  console.log(response);
+                })
+                .catch(() => alert('연동 코드 틀림!'));
+            }}
+          >
+            입력
+          </Button>
         </SubmitWrapper>
       )}
       {option === 'show' && (
         <SubmitWrapper>
           <Input
             type="text"
-            value={'dcefghij'}
+            value={code}
             width={'190px'}
+            margin={'10px 0 0 0'}
+            commentText={`남은 시간 : ${Math.floor(leftTime / 60)}분 ${leftTime % 60}초`}
             disabled
           ></Input>
           <Button mode="THIN_BLUE">복사</Button>

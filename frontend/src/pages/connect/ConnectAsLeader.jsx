@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { createAssociationAsLeader } from '../../apis/api/associate';
 import styled from 'styled-components';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
@@ -22,7 +23,7 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-function ConnectOption() {
+function ConnectAsLeader() {
   const [isFirstConditionAgreed, setIsFirstConditionAgreed] = useState(false);
   const [isSecondConditionAgreed, setIsSecondConditionAgreed] = useState(false);
   const navigate = useNavigate();
@@ -73,9 +74,14 @@ function ConnectOption() {
             : 'THICK_GRAY'
         }
         onClick={
-          isFirstConditionAgreed &&
-          isSecondConditionAgreed &&
-          (() => navigate('/connectCodeShow'))
+          isFirstConditionAgreed && isSecondConditionAgreed
+            ? () => {
+                createAssociationAsLeader(4).then(response =>
+                  console.log(response),
+                );
+                navigate('/connectCode/show');
+              }
+            : undefined
         }
       >
         가입하기
@@ -84,4 +90,4 @@ function ConnectOption() {
   );
 }
 
-export default ConnectOption;
+export default ConnectAsLeader;

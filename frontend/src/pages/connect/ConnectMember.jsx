@@ -72,7 +72,7 @@ function ConnectCodeShow() {
         ></Image>
         {`${'곽희웅'} (${'멤버'})`}
       </MemberWrapper>
-      <NavigateButton onClick={() => navigate('/connectCodeShow')}>
+      <NavigateButton onClick={() => navigate('/connectCode/show')}>
         멤버 추가하기
       </NavigateButton>
     </Wrapper>
