@@ -64,7 +64,7 @@ function ZipsaList({ onPrevious, onNext, zipsaData, savedZipsaId }) {
               gradeName={zipsa.gradeName}
               scoreAverage={zipsa.scoreAverage}
               serviceCount={zipsa.serviceCount}
-              categories={zipsa.categories}
+              preferTag={zipsa.preferTag}
               onClick={() =>
                 selectedZipsaId.includes(zipsa.zipsaId)
                   ? setSelectedZipsaId(
