@@ -30,14 +30,6 @@ public class AssociationController {
 
     private final AssociationService associationService;
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<String>> makeAssociation(
-        @AuthenticationPrincipal SecurityUser user) {
-        associationService.makeAssociation(user.getUserId());
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "연동 계정 생성 성공"));
-    }
-
 
     @GetMapping
     public ResponseEntity<ApiResponse<List<UserAssociationResponse>>> getAssociationUserList(
@@ -46,6 +38,14 @@ public class AssociationController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 associationService.getAssociationUserList(
                     user.getAssociationId().getAssociationId())));
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<String>> makeAssociation(
+        @AuthenticationPrincipal SecurityUser user) {
+        associationService.makeAssociation(user.getUserId());
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "연동 계정 생성 성공"));
     }
 
     @DeleteMapping
