@@ -14,7 +14,6 @@ const LeftWrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content:;
   gap: 10px;
 `;
 const RightWrppaer = styled.div``;
@@ -32,7 +31,7 @@ function SimpleNotice({ name, majorCategory, createdAt, onClick }) {
           normalContent={` 제안 | ${createdAt}`}
         ></BoldText>
         <Paragraph
-          gap={'3px'}
+          gap={'5px'}
           fontSize={'16px'}
           sentences={[
             <BoldText

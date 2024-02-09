@@ -36,7 +36,7 @@ const SubmitWrapper = styled.div`
 function ConnectCode() {
   const { option } = useParams();
   const [code, setCode] = useState('');
-  const [leftTime, setLeftTime] = useState();
+  const [leftTime, setLeftTime] = useState(0);
   const [inputValue, setInputValue] = useState('');
 
   const navigate = useNavigate();

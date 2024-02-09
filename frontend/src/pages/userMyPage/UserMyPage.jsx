@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { getSimpleUserInfo } from '../apis/api/userMyPage';
+import { getSimpleUserInfo } from '../../apis/api/userMyPage';
 import styled from 'styled-components';
-import Notice from '../components/common/Notice';
-import Image from '../components/common/Image';
-import BoldText from '../components/common/BoldText';
-import Paragraph from '../components/common/Paragraph';
-import NavigateButton from '../components/common/NavigateButton';
-import MenuBar from '../components/common/MenuBar';
+import Notice from '../../components/common/Notice';
+import Image from '../../components/common/Image';
+import BoldText from '../../components/common/BoldText';
+import Paragraph from '../../components/common/Paragraph';
+import NavigateButton from '../../components/common/NavigateButton';
+import MenuBar from '../../components/common/MenuBar';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -33,7 +32,7 @@ const ContentWrapper = styled.div`
 function UserMyPage() {
   const { data, isPending, error } = useQuery({
     queryKey: ['simpleUserInfo'],
-    queryFn: () => getSimpleUserInfo(3),
+    queryFn: () => getSimpleUserInfo(4),
   });
 
   return (
@@ -82,7 +81,7 @@ function UserMyPage() {
             ></Image>
           </ContentWrapper>,
         ]}
-        nextPage={'/connectOption'}
+        nextPage={data?.isAffiliated ? '/connectMember' : '/connectOption'}
       ></Notice>
 
       <NavigateButton onClick={() => console.log('페이지 이동')}>

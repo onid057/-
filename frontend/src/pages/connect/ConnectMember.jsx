@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
+import { getAssociatedUserList } from '../../apis/api/associate';
 import styled from 'styled-components';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
@@ -31,6 +32,11 @@ const MemberWrapper = styled.div`
 `;
 
 function ConnectCodeShow() {
+  const { data, isPending, error } = useQuery({
+    queryKey: ['associatedUserList'],
+    queryFn: () => getAssociatedUserList(2),
+  });
+
   const navigate = useNavigate();
 
   return (
@@ -54,24 +60,22 @@ function ConnectCodeShow() {
         sentences={[<BoldText boldContent={'멤버'}></BoldText>]}
       ></Paragraph>
 
-      <MemberWrapper>
-        <Image
-          width="60px"
-          height="60px"
-          margin="4px 0 0 0"
-          src={process.env.PUBLIC_URL + '/images/profile_img.svg'}
-        ></Image>
-        {`${'장수민'} (${'나, 대표'})`}
-      </MemberWrapper>
-      <MemberWrapper>
-        <Image
-          width="60px"
-          height="60px"
-          margin="4px 0 0 0"
-          src={process.env.PUBLIC_URL + '/images/profile_img.svg'}
-        ></Image>
-        {`${'곽희웅'} (${'멤버'})`}
-      </MemberWrapper>
+      {data?.map((user, index) => {
+        return (
+          <MemberWrapper key={index}>
+            <Image
+              width="60px"
+              height="60px"
+              margin="4px 0 0 0"
+              src={process.env.PUBLIC_URL + '/images/profile_img.svg'}
+            ></Image>
+            {user.isRepresentative
+              ? `${user.name} (${'나, 대표'})`
+              : `${user.name} (멤버)`}
+          </MemberWrapper>
+        );
+      })}
+
       <NavigateButton onClick={() => navigate('/connectCode/show')}>
         멤버 추가하기
       </NavigateButton>

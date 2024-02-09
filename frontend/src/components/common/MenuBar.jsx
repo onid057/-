@@ -83,7 +83,12 @@ function MenuBar({ currentMenu }) {
       </MenuWrapper>
 
       <MenuWrapper selected={currentMenu === 'RESERVE'}>
-        <Image src={reservationImageURL} width="27px" height="27px"></Image>
+        <Image
+          src={reservationImageURL}
+          width="27px"
+          height="27px"
+          onClick={() => navigate('/reserve')}
+        ></Image>
         예약
       </MenuWrapper>
 

@@ -7,6 +7,7 @@ import HorizontalLine from '../../components/common/HorizontalLine';
 import { useState, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getMatchNotificationList } from '../../apis/api/notify';
+import { calculateRemainDate } from '../../utils/time';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -27,28 +28,12 @@ const SimpleNoticesWrapper = styled.div`
   flex-direction: column;
 `;
 
-const temp = [
-  {
-    name: '강태연',
-    majorCategory: '동네 동행',
-    createdAt: '1시간 전',
-    notificationId: 4,
-  },
-  {
-    name: '김세리',
-    majorCategory: '멀리 동행',
-    createdAt: '2시간 전',
-    notificationId: 5,
-  },
-];
-
 function Notify() {
   const navigate = useNavigate();
   const [list, setList] = useState([]);
 
   useEffect(() => {
     getMatchNotificationList(3).then(response => {
-      console.log(response);
       setList(response.data);
     });
   }, []);
@@ -60,8 +45,9 @@ function Notify() {
         fontSize="35px"
         sentences={[
           <BoldText boldContent="알림" normalContent="이"></BoldText>,
-          '도착했어요',
+          '도착했어요!',
         ]}
+        margin="0 0 20px 0"
       ></Paragraph>
 
       <SimpleNoticesWrapper>
@@ -71,7 +57,7 @@ function Notify() {
               <SimpleNotice
                 name={notice.name}
                 majorCategory={notice.majorCategory}
-                createdAt={notice.createdAt}
+                createdAt={calculateRemainDate(notice.createdAt)}
                 onClick={() =>
                   navigate(`/suggest-by-user/${notice.notificationId}`)
                 }

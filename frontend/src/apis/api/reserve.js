@@ -1,16 +1,17 @@
 import axios from '../utils/instance';
 
-// 마이 페이지로
-const getSimpleUserInfo = async userId => {
+// 고객 예약 확인
+const getReservationListByUser = async userId => {
   try {
     const response = await axios({
       method: 'get',
-      url: `/users/${userId}`,
+      url: `users/${userId}/reservations`,
     });
+    console.table(response.data.data);
     return response.data.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export { getSimpleUserInfo };
+export { getReservationListByUser };

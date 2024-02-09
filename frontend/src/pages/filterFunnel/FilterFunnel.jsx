@@ -3,7 +3,7 @@ import { useFunnel } from '../../hooks/useFunnel';
 import {
   getFilteredZipsaData,
   makeFilterSuggestion,
-} from '../../apis/api/match';
+} from '../../apis/api/filter';
 import { useNavigate } from 'react-router-dom';
 
 import MainCategory from './MainCategory';

@@ -5,7 +5,7 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import Home from './pages/Home'; // 홈 페이지
 import Login from './pages/Login'; // 로그인 페이지
-import UserMyPage from './pages/UserMyPage'; // 사용자 마이 페이지
+import UserMyPage from './pages/userMyPage/UserMyPage'; // 사용자 마이 페이지
 import ConnectOption from './pages/connect/ConnectOption'; // 연동 옵션 고르기 페이지
 import ConnectAsLeader from './pages/connect/ConnectAsLeader'; // 대표로 연동하기 페이지
 import ConnectMember from './pages/connect/ConnectMember'; // 연동되어 있는 멤버 조회 페이지
@@ -21,6 +21,8 @@ import SuggestByZipsa from './pages/notify/SuggestByZipsa';
 import SuggestByUser from './pages/notify/SuggestByUser';
 import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
 import Map from './pages/Map';
+import Reserve from './pages/reserve/Reserve';
+import ReserveDetail from './pages/reserve/ReserveDetail';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -200,6 +202,13 @@ function App() {
           element={<ExperimentCommonComponent />}
         ></Route>
         <Route path="/map" element={<Map />}></Route>
+
+        {/* 
+					1. 예약 화면 
+				*/}
+        <Route path="/reserve" element={<Reserve />}></Route>
+        <Route path="/reserveDetail" element={<ReserveDetail />}></Route>
+
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </ThemeProvider>

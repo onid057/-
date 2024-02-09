@@ -16,6 +16,20 @@ const createAssociationAsLeader = async userId => {
   }
 };
 
+// 나와 연결된 연동 고객 리스트 조회
+// useQuery 사용
+const getAssociatedUserList = async associationId => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/associations/${associationId}`,
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // 연동 코드 생성(대표만 가능)
 const createAssociationCode = async (userId, userEmail, associationId) => {
   try {
@@ -51,4 +65,9 @@ const associateWithCode = async (userId, code) => {
   }
 };
 
-export { createAssociationAsLeader, createAssociationCode, associateWithCode };
+export {
+  createAssociationAsLeader,
+  getAssociatedUserList,
+  createAssociationCode,
+  associateWithCode,
+};

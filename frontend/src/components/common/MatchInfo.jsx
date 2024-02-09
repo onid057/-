@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import BoldText from './BoldText';
 import Paragraph from './Paragraph';
+import { convertToHour, converToyyyymmdd } from '../../utils/time';
+import { convertToWon } from '../../utils/money';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -64,23 +66,29 @@ function MatchInfo({
 
       <TextWrapper>
         <>{mode === 'SUGGEST' ? '맡긴 일' : '맡은 일'}</>
-        <BoldText boldContent={'대분류'}></BoldText>
+        <BoldText boldContent={majorCategoryName}></BoldText>
       </TextWrapper>
       <TextWrapper>
         <>날짜</>
-        <BoldText boldContent={'2024.02.02'}></BoldText>
+        <BoldText
+          boldContent={converToyyyymmdd(expectationStartedAt)}
+        ></BoldText>
       </TextWrapper>
       <TextWrapper>
         <>{mode === 'SUGGEST' ? '예상 시작 시간' : '시작 시간'}</>
-        <BoldText boldContent={expectationStartedAt}></BoldText>
+        <BoldText
+          boldContent={`${convertToHour(expectationStartedAt)}시`}
+        ></BoldText>
       </TextWrapper>
       <TextWrapper>
         <>{mode === 'SUGGEST' ? '예상 종료 시간' : '종료 시간'}</>
-        <BoldText boldContent={expectationEndedAt}></BoldText>
+        <BoldText
+          boldContent={`${convertToHour(expectationEndedAt)}시`}
+        ></BoldText>
       </TextWrapper>
       <TextWrapper>
         <>{mode === 'SUGGEST' ? '받을 금액' : '받은 금액'}</>
-        <BoldText boldContent={expectationPay}></BoldText>
+        <BoldText boldContent={convertToWon(expectationPay)}></BoldText>
       </TextWrapper>
 
       {mode === 'SUGGEST' && (
