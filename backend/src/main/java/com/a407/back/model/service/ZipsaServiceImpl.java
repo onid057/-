@@ -157,7 +157,6 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     @Override
     public List<ZipsaReservationResponse> getZipsaReservationList(Long zipsaId) {
-        // 여기에서 적용
         return zipsaRepository.getZipsaReservationList(zipsaId).stream().map(room ->
             ZipsaReservationResponse.builder()
                 .name(room.getUserId().getName())
@@ -177,6 +176,7 @@ public class ZipsaServiceImpl implements ZipsaService {
                 .expectationStartedAt(room.getExpectationStartedAt())
                 .expectationEndedAt(room.getExpectationEndedAt())
                 .expectationPay(room.getExpectationPay())
+                .status(room.getStatus())
                 .build()
         ).toList();
     }
