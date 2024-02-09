@@ -7,7 +7,6 @@ import com.a407.back.dto.association.AssociationChangeRepresentativeRequest;
 import com.a407.back.dto.association.AssociationChangeRequest;
 import com.a407.back.dto.association.AssociationCreateRequest;
 import com.a407.back.dto.association.AssociationDeleteRequest;
-import com.a407.back.dto.association.AssociationSearchRequest;
 import com.a407.back.dto.user.UserAssociationResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.AssociationService;
@@ -20,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,12 +41,12 @@ public class AssociationController {
     }
 
 
-    @GetMapping
+    @GetMapping("/{associationId}")
     public ResponseEntity<ApiResponse<List<UserAssociationResponse>>> getAssociationUserList(
-        @RequestBody AssociationSearchRequest request) {
+        @PathVariable Long associationId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                associationService.getAssociationUserList(request.getAssociationId())));
+                associationService.getAssociationUserList(associationId)));
     }
 
     @DeleteMapping
@@ -84,5 +84,5 @@ public class AssociationController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "연동 계정 대표 변경 성공"));
     }
-    
+
 }
