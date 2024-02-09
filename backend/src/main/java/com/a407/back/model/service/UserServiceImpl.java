@@ -209,7 +209,7 @@ public class UserServiceImpl implements UserService {
                 .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
                 .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
                 .expectationEndedAt(room.getExpectationEndedAt())
-                .expectationPay(room.getExpectationPay()).build()).toList();
+                .expectationPay(room.getExpectationPay()).status(room.getStatus()).build()).toList();
     }
 
     @Override

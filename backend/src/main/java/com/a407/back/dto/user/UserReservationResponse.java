@@ -1,5 +1,6 @@
 package com.a407.back.dto.user;
 
+import com.a407.back.domain.Room.Process;
 import java.sql.Timestamp;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,4 +26,5 @@ public class UserReservationResponse {
     private Timestamp expectationStartedAt;
     private Timestamp expectationEndedAt;
     private int expectationPay;
+    private Process status;
 }
