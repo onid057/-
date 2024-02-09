@@ -36,7 +36,7 @@ const Title = styled.div`
 
 const Content = styled.div`
   width: 288px;
-  margin: 60px 0;
+  margin: 30px 0;
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -48,22 +48,12 @@ const ButtonWrapper = styled.div`
   gap: 10px;
 `;
 
-// const detail = {
-//   userName: '어피치',
-//   expectationStartedAt: '11시',
-//   expectationEndedAt: '13시',
-//   expectationPay: '15,000원',
-//   majorCategoryName: '동네 동행',
-//   content: '이번에 생긴 스타필드에 다녀오고 싶어요!',
-// };
-
 function SuggestByUser() {
   const { notificationId } = useParams();
   const [detail, setDetail] = useState({});
 
   useEffect(() => {
     getMatchNotificationByUser(notificationId).then(response => {
-      console.log(response);
       setDetail(response.data);
     });
   }, []);
@@ -89,6 +79,7 @@ function SuggestByUser() {
       <Content>
         <MatchInfo
           mode={'SUGGEST'}
+          majorCategoryName={detail.majorCategoryName}
           userName={detail.userName}
           expectationStartedAt={detail.expectationStartedAt}
           expectationEndedAt={detail.expectationEndedAt}
