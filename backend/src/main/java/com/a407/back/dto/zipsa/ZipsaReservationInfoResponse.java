@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ZipsaReservationResponse {
+public class ZipsaReservationInfoResponse {
 
     private String name;
     private String profileImage;

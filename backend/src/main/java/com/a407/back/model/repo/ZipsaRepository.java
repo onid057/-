@@ -4,7 +4,6 @@ import com.a407.back.domain.Report;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
-import com.querydsl.core.QueryResults;
 import java.util.List;
 
 public interface ZipsaRepository {
@@ -21,7 +20,13 @@ public interface ZipsaRepository {
 
     List<Room> getZipsaRecordList(Long helperId);
 
+    Room getZipsaReservationInfo(Long roomId);
+
     List<Room> getZipsaReservationList(Long zipsaId);
+
+    Room getZipsaReservationOngoing(Long zipsaId);
+
+    Room getZipsaReservationBefore(Long zipsaId);
 
     void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
         Double rewindAverage);
