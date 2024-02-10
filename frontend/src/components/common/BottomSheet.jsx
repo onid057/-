@@ -74,6 +74,7 @@ const BottomSheet = forwardRef(
       setIsDetailOpen,
       onClick,
       targetCluster,
+      setZipsaId,
       buttonName,
       onButtonClick,
     },
@@ -129,7 +130,12 @@ const BottomSheet = forwardRef(
             ></PreferTag>
 
             <Text>{targetZipsa.description}</Text>
-            <Button mode="THIN_GRAY">집사에게 제안하기</Button>
+            <Button
+              mode="THIN_GRAY"
+              onClick={() => setZipsaId([targetZipsa.zipsaId])}
+            >
+              집사에게 제안하기
+            </Button>
           </Detail>
         )}
       </Wrapper>

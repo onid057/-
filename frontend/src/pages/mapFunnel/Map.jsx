@@ -5,8 +5,10 @@ import {
 } from 'react-kakao-maps-sdk';
 import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import BottomSheet from '../components/common/BottomSheet';
-import { getZipsaPositionWithinTwoKilos } from '../apis/api/map';
+import BottomSheet from '../../components/common/BottomSheet';
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
+import { getZipsaPositionWithinTwoKilos } from '../../apis/api/map';
 
 const Wrapper = styled.div`
   position: relative;
@@ -23,11 +25,12 @@ const Wrapper = styled.div`
 `;
 
 // Map 컴포넌트를 띄울 때, lat값과 lng값이 입력되어야 함.
-function Map() {
+function Map({ onPrevious, onNext }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false); // 상세 정보
   const [positions, setPositions] = useState([]);
   const [targetCluster, setTargetCluster] = useState();
+  const [zipsaId, setZipsaId] = useState([]);
   const modalRef = useRef(null);
 
   // 중심 좌표 기준으로 2km 이내의 집사들의 lat, lng 값을 받아옴
@@ -61,6 +64,21 @@ function Map() {
 
   return (
     <Wrapper>
+      <NavigationBar
+        leftContent={
+          <Image
+            width="40px"
+            height="40px"
+            margin="0 0 0 -12px"
+            src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
+          ></Image>
+        }
+        rightContent="다음"
+        onPrevious={onPrevious}
+        onNext={() => onNext(zipsaId)}
+        disabledOnNext={!zipsaId}
+      ></NavigationBar>
+
       <KakaoMap
         center={{ lat: 37.506320759000715, lng: 127.05368251210247 }}
         style={{
@@ -112,6 +130,7 @@ function Map() {
           setIsOpen(false);
         }}
         targetCluster={targetCluster}
+        setZipsaId={setZipsaId}
       ></BottomSheet>
     </Wrapper>
   );
