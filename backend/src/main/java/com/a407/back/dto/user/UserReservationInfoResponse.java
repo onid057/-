@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class UserReservationResponse {
+public class UserReservationInfoResponse {
 
     private Long zipsaId;
     private String name;

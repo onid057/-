@@ -94,11 +94,35 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Room getUserReservationInfo(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom).where(
+                qRoom.roomId.eq(roomId).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
+            .orderBy(qRoom.expectationStartedAt.asc()).fetchOne();
+    }
+
+    @Override
     public List<Room> getUserReservationList(Long userId) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom).where(
                 qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
             .orderBy(qRoom.expectationStartedAt.asc()).fetch();
+    }
+
+    @Override
+    public Room getUserReservationOngoing(Long userId) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom).where(
+                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.ONGOING)))
+            .orderBy(qRoom.expectationStartedAt.asc()).limit(1).fetchOne();
+    }
+
+    @Override
+    public Room getUserReservationBefore(Long userId) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom).where(
+                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.BEFORE)))
+            .orderBy(qRoom.expectationStartedAt.asc()).limit(1).fetchOne();
     }
 
 

@@ -18,8 +18,9 @@ import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
-import com.a407.back.dto.user.UserReservationResponse;
+import com.a407.back.dto.user.UserReservationInfoResponse;
 import com.a407.back.dto.util.ApiResponse;
+import com.a407.back.dto.util.ReservationResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -105,12 +106,28 @@ public class UserController {
     }
 
 
+    @GetMapping("/reservations/{roomId}")
+    public ResponseEntity<ApiResponse<UserReservationInfoResponse>> getUserReservationInfo(
+        @PathVariable Long roomId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.getUserReservationInfo(roomId)));
+    }
+
     @GetMapping("/{userId}/reservations")
-    public ResponseEntity<ApiResponse<List<UserReservationResponse>>> getUserReservationList(
+    public ResponseEntity<ApiResponse<List<ReservationResponse>>> getUserReservationList(
         @PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 userService.getUserReservationList(userId)));
+    }
+
+    @GetMapping("/{userId}/reservations/first")
+    public ResponseEntity<ApiResponse<ReservationResponse>> getUserReservationFirst(
+        @PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.getUserReservationFirst(userId)));
     }
 
     @PostMapping("/payments")

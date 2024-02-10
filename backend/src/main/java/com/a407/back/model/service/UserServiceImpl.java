@@ -27,9 +27,10 @@ import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.a407.back.dto.user.UserRecordsResponse;
-import com.a407.back.dto.user.UserReservationResponse;
+import com.a407.back.dto.user.UserReservationInfoResponse;
 import com.a407.back.dto.util.BoardListDto;
 import com.a407.back.dto.util.ImageUtil;
+import com.a407.back.dto.util.ReservationResponse;
 import com.a407.back.dto.util.UserPublicRoom;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.BoardRepository;
@@ -194,22 +195,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserReservationResponse> getUserReservationList(Long userId) {
+    public UserReservationInfoResponse getUserReservationInfo(Long roomId) {
+        Room room = userRepository.getUserReservationInfo(roomId);
+        return UserReservationInfoResponse.builder()
+            .zipsaId(room.getZipsaId().getZipsaId().getUserId())
+            .name(room.getZipsaId().getZipsaId().getName()).profile(
+                room.getZipsaId().getZipsaId().getProfileImage() == null ? null
+                    : room.getZipsaId().getZipsaId().getProfileImage())
+            .subCategoryName(room.getSubCategoryId().getName())
+            .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+            .content(room.getContent()).estimateDuration(room.getEstimateDuration())
+            .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
+            .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
+            .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
+            .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
+            .expectationEndedAt(room.getExpectationEndedAt())
+            .expectationPay(room.getExpectationPay()).status(room.getStatus()).build();
+    }
+
+    @Override
+    public List<ReservationResponse> getUserReservationList(Long userId) {
         return userRepository.getUserReservationList(userId).stream().map(
-            room -> UserReservationResponse.builder()
-                .zipsaId(room.getZipsaId().getZipsaId().getUserId())
-                .name(room.getZipsaId().getZipsaId().getName()).profile(
-                    room.getZipsaId().getZipsaId().getProfileImage() == null ? null
-                        : room.getZipsaId().getZipsaId().getProfileImage())
-                .subCategoryName(room.getSubCategoryId().getName())
-                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
-                .content(room.getContent()).estimateDuration(room.getEstimateDuration())
-                .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
-                .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
-                .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
-                .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
-                .expectationEndedAt(room.getExpectationEndedAt())
-                .expectationPay(room.getExpectationPay()).status(room.getStatus()).build()).toList();
+            room -> new ReservationResponse(room.getRoomId(),
+                room.getZipsaId().getZipsaId().getName(),
+                room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
+                room.getExpectationStartedAt())).toList();
+    }
+
+    @Override
+    public ReservationResponse getUserReservationFirst(Long userId) {
+        Room room = userRepository.getUserReservationOngoing(userId);
+
+        if (room == null) {
+            room = userRepository.getUserReservationBefore(userId);
+        }
+
+        if (room == null) {
+            return null;
+        }
+
+        return new ReservationResponse(room.getRoomId(),
+            room.getZipsaId().getZipsaId().getName(),
+            room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
+            room.getExpectationStartedAt());
     }
 
     @Override
@@ -324,7 +352,8 @@ public class UserServiceImpl implements UserService {
             List<BoardTag> tagList = boardRepository.findBoardTagList(board);
             List<String> tagNameList = tagList.stream()
                 .map(tag -> tag.getBoardTagId().tagId.getName()).toList();
-            return new BoardListDto(board.getBoardId(), board.getTitle(), board.getUserId().getName(), commentCount,
+            return new BoardListDto(board.getBoardId(), board.getTitle(),
+                board.getUserId().getName(), commentCount,
                 board.getUpdatedAt(), tagNameList);
         }).toList();
         return new BoardListResponse(boardList.getTotal(), page, userBoardList);
