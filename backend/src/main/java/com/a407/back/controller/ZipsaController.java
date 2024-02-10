@@ -3,6 +3,7 @@ package com.a407.back.controller;
 import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ApiResponse;
+import com.a407.back.dto.util.RecordResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
@@ -80,11 +81,19 @@ public class ZipsaController {
     }
 
     @GetMapping("/{helperId}/records")
-    public ResponseEntity<ApiResponse<List<ZipsaRecordsResponse>>> searchZipsaRecordList(
+    public ResponseEntity<ApiResponse<List<RecordResponse>>> getZipsaRecordList(
         @PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaRecordList(helperId)));
+    }
+
+    @GetMapping("/records/{roomId}")
+    public ResponseEntity<ApiResponse<ZipsaRecordsResponse>> getZipsaRecordInfo(
+        @PathVariable Long roomId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.getZipsaRecordInfo(roomId)));
     }
 
     @GetMapping("/{helperId}/reservations")
