@@ -29,8 +29,8 @@ const TimeWrapper = styled.div`
 `;
 
 function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
-  const [startTime, setStartTime] = useState(matchStartTime);
-  const [endTime, setEndTime] = useState(matchEndTime);
+  const [startTime, setStartTime] = useState(matchStartTime || 0);
+  const [endTime, setEndTime] = useState(matchEndTime || 24);
 
   return (
     <Wrapper>
