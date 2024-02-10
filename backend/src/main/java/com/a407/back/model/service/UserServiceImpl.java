@@ -199,9 +199,8 @@ public class UserServiceImpl implements UserService {
         Room room = userRepository.getUserReservationInfo(roomId);
         return UserReservationInfoResponse.builder()
             .zipsaId(room.getZipsaId().getZipsaId().getUserId())
-            .name(room.getZipsaId().getZipsaId().getName()).profile(
-                room.getZipsaId().getZipsaId().getProfileImage() == null ? null
-                    : room.getZipsaId().getZipsaId().getProfileImage())
+            .name(room.getZipsaId().getZipsaId().getName())
+            .profile(room.getZipsaId().getZipsaId().getProfileImage())
             .subCategoryName(room.getSubCategoryId().getName())
             .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
             .content(room.getContent()).estimateDuration(room.getEstimateDuration())
