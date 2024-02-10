@@ -92,7 +92,7 @@ const BottomSheet = forwardRef(
     return (
       <Wrapper $isOpen={isOpen} $isDetailOpen={isDetailOpen} ref={ref}>
         <Header>
-          <>{isDetailOpen ? `${targetZipsa.name} 집사` : '집사 목록'}</>
+          <>{isDetailOpen ? `${targetZipsa.zipsaName} 집사` : '집사 목록'}</>
           <Image
             src={`${process.env.PUBLIC_URL}/images/x.svg`}
             width="18px"
@@ -105,13 +105,13 @@ const BottomSheet = forwardRef(
           <NameWrapper>
             {zipsaList.map((zipsa, index) => (
               <Name
-                key={`${zipsa.name}-${index}`}
+                key={`${zipsa.zipsaName}-${index}`}
                 onClick={() => {
                   setIsDetailOpen(true);
                   setTargetZipsa(zipsa);
                 }}
               >
-                {zipsa.name + ' 집사'}
+                {zipsa.zipsaName + ' 집사'}
               </Name>
             ))}
           </NameWrapper>

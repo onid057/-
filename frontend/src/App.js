@@ -118,6 +118,10 @@ const GlobalStyle = createGlobalStyle`
 	button,
 	input,
 	textarea {
+		-ms-overflow-style: none;
+  	&::-webkit-scrollbar {
+    	display: none;
+  	}
 		margin: 0;
 		padding: 0;
 		border: 0;
