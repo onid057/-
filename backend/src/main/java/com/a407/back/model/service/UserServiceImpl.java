@@ -30,6 +30,7 @@ import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.BoardListDto;
 import com.a407.back.dto.util.ImageUtil;
+import com.a407.back.dto.util.RecordResponse;
 import com.a407.back.dto.util.UserPublicRoom;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.BoardRepository;
@@ -173,24 +174,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserRecordsResponse> getUserRecordList(Long userId) {
+    public UserRecordsResponse getUserRecordInfo(Long roomId) {
+        Room room = userRepository.getUserRecordInfo(roomId);
+        return UserRecordsResponse.builder().roomId(room.getRoomId())
+            .zipsaId(room.getZipsaId().getZipsaId().getUserId())
+            .name(room.getZipsaId().getZipsaId().getName()).profile(
+                room.getZipsaId().getZipsaId().getProfileImage())
+            .subCategoryName(room.getSubCategoryId().getName())
+            .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+            .content(room.getContent()).estimateDuration(room.getEstimateDuration())
+            .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
+            .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
+            .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
+            .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
+            .expectationEndedAt(room.getExpectationEndedAt())
+            .expectationPay(room.getExpectationPay()).totalPay(room.getTotalPay())
+            .isComplained(room.getIsComplained()).isReviewed(room.getIsReviewed()).build();
+    }
+
+    @Override
+    public List<RecordResponse> getUserRecordList(Long userId) {
         return userRepository.getUserRecordList(userId).stream().map(
-                room -> UserRecordsResponse.builder().roomId(room.getRoomId())
-                    .zipsaId(room.getZipsaId().getZipsaId().getUserId())
-                    .name(room.getZipsaId().getZipsaId().getName()).profile(
-                        room.getZipsaId().getZipsaId().getProfileImage() == null ? null
-                            : room.getZipsaId().getZipsaId().getProfileImage())
-                    .subCategoryName(room.getSubCategoryId().getName())
-                    .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
-                    .content(room.getContent()).estimateDuration(room.getEstimateDuration())
-                    .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
-                    .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
-                    .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
-                    .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
-                    .expectationEndedAt(room.getExpectationEndedAt())
-                    .expectationPay(room.getExpectationPay()).totalPay(room.getTotalPay())
-                    .isComplained(room.getIsComplained()).isReviewed(room.getIsReviewed()).build())
-            .toList();
+            room -> new RecordResponse(room.getRoomId(), room.getZipsaId().getZipsaId().getName(),
+                room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
+                room.getEndedAt())).toList();
     }
 
     @Override
@@ -324,7 +331,8 @@ public class UserServiceImpl implements UserService {
             List<BoardTag> tagList = boardRepository.findBoardTagList(board);
             List<String> tagNameList = tagList.stream()
                 .map(tag -> tag.getBoardTagId().tagId.getName()).toList();
-            return new BoardListDto(board.getBoardId(), board.getTitle(), board.getUserId().getName(), commentCount,
+            return new BoardListDto(board.getBoardId(), board.getTitle(),
+                board.getUserId().getName(), commentCount,
                 board.getUpdatedAt(), tagNameList);
         }).toList();
         return new BoardListResponse(boardList.getTotal(), page, userBoardList);

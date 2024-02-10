@@ -90,7 +90,15 @@ public class UserRepositoryImpl implements UserRepository {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
             .where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(Process.END)))
-            .orderBy(qRoom.expectationStartedAt.asc()).fetch();
+            .orderBy(qRoom.endedAt.desc()).fetch();
+    }
+
+    @Override
+    public Room getUserRecordInfo(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom)
+            .where(qRoom.roomId.eq(roomId).and(qRoom.status.eq(Process.END)))
+            .orderBy(qRoom.endedAt.desc()).limit(1).fetchOne();
     }
 
     @Override

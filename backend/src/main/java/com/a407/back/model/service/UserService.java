@@ -16,6 +16,7 @@ import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
+import com.a407.back.dto.util.RecordResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -39,7 +40,9 @@ public interface UserService {
 
     User findByUserId(Long userId);
 
-    List<UserRecordsResponse> getUserRecordList(Long userId);
+    UserRecordsResponse getUserRecordInfo(Long userId);
+
+    List<RecordResponse> getUserRecordList(Long userId);
 
     List<UserReservationResponse> getUserReservationList(Long userId);
 

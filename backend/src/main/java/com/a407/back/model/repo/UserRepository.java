@@ -25,6 +25,8 @@ public interface UserRepository {
 
     List<Room> getUserRecordList(Long userId);
 
+    Room getUserRecordInfo(Long roomId);
+
     List<Room> getUserReservationList(Long userId);
 
     void makeAccount(Long userId, String account);

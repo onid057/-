@@ -20,6 +20,7 @@ import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.ApiResponse;
+import com.a407.back.dto.util.RecordResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -98,12 +99,18 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/records")
-    public ResponseEntity<ApiResponse<List<UserRecordsResponse>>> getUserRecordList(
+    public ResponseEntity<ApiResponse<List<RecordResponse>>> getUserRecordList(
         @PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS, userService.getUserRecordList(userId)));
     }
 
+    @GetMapping("/records/{roomId}")
+    public ResponseEntity<ApiResponse<UserRecordsResponse>> getUserRecord(
+        @PathVariable Long roomId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS, userService.getUserRecordInfo(roomId)));
+    }
 
     @GetMapping("/{userId}/reservations")
     public ResponseEntity<ApiResponse<List<UserReservationResponse>>> getUserReservationList(
