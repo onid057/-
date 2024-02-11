@@ -5,7 +5,7 @@ const getReportData = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: '/helpers/reports/2',
+      url: '/helpers/reports/1',
     });
     return response.data;
   } catch (error) {
