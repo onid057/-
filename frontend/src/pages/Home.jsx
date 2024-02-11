@@ -6,6 +6,7 @@ import Paragraph from '../components/common/Paragraph.jsx';
 import Notice from '../components/common/Notice.jsx';
 import BoldText from '../components/common/BoldText.jsx';
 import MenuBar from '../components/common/MenuBar.jsx';
+import Toggle from '../components/common/Toggle.jsx';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -26,29 +27,6 @@ const UpperWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-const ToggleWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-  padding: 20px 18px;
-  background-color: #0093e9;
-  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
-  font-weight: 500;
-  color: #ffffff;
-  border-radius: 25px;
-`;
-
-const ToggleButton = styled.div`
-  cursor: pointer;
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  width: 40px;
-  height: 40px;
-  background-color: #ffffff;
-  border-radius: 50%;
 `;
 
 const NoticeWrapper = styled.div`
@@ -82,10 +60,7 @@ export default function Home() {
         ></Image>
       </UpperWrapper>
 
-      <ToggleWrapper>
-        집사 자격으로 전환하기
-        <ToggleButton></ToggleButton>
-      </ToggleWrapper>
+      <Toggle></Toggle>
 
       <Notice
         upper={[
