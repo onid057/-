@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoardListResponse {
 
-    private Long totalCount;
+    private Integer totalCount;
     private int nowPage;
     private List<BoardListDto> boardList;
 
