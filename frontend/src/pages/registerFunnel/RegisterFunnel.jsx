@@ -112,7 +112,9 @@ function RegisterFunnel() {
               nextRegisterData.userName,
               nextRegisterData.userGender,
               nextRegisterData.userBirth,
-              nextRegisterData.userAddress,
+              nextRegisterData.userAddress +
+                ' ' +
+                nextRegisterData.userDetailAddress,
               location.Ma,
               location.La,
               nextRegisterData.userEmail,
