@@ -39,7 +39,7 @@ const TextAreaInput = styled.textarea`
   min-height: 160px;
   padding: 3px;
   font-size: 18px;
-  font-weight: light;
+  font-weight: 300;
   background-color: transparent;
   outline: none;
   border: none;
@@ -47,7 +47,7 @@ const TextAreaInput = styled.textarea`
   overflow: hidden;
 `;
 
-function LongInputBox({ title, placeholder, value, onChange }) {
+function LongInputBox({ title, placeholder, value, onChange, defaultValue }) {
   // title: ${props => (props.$fontSize ? props.$fontSize : 'inherit')};
 
   return (
@@ -62,15 +62,12 @@ function LongInputBox({ title, placeholder, value, onChange }) {
           type="text"
           value={value}
           onChange={onChange}
-        ></TextAreaInput>
+        >
+          {defaultValue}
+        </TextAreaInput>
       </ContentBox>
     </LongInputBoxWrapper>
   );
 }
-
-// LongInputBox.defaultProps = {
-//   title: '제목 prop으로 변경하기',
-//   placeholder: '미리보기 prop으로 변경하기',
-// };
 
 export default LongInputBox;

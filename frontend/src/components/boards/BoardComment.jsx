@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import NavigationBar from './NavigationBar';
-import Image from './Image';
-import UpdateDeleteButton from './UpdateDeleteButton';
+import NavigationBar from '../common/NavigationBar';
+import Image from '../common/Image';
+import UpdateDeleteButton from '../common/UpdateDeleteButton';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 const LeftBox = styled.div`
   width: 100%;
   height: 100%;
-  flex: 3;
+  flex: 2.5;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -22,10 +22,10 @@ const LeftBox = styled.div`
 const RightBox = styled.div`
   width: 100%;
   height: 100%;
-  flex: 7;
+  flex: 7.5;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
   font-size: 14px;
   font-weight: normal;
 `;
@@ -37,7 +37,6 @@ const Name = styled.div`
 const Address = styled.div``;
 
 const Content = styled.div`
-  margin: 3px 0px;
   font-size: 14px;
   font-weight: 350;
 `;
@@ -53,8 +52,10 @@ function BoardComment({
   address,
   content,
   updatedAt,
-  updateButton,
-  deleteButton,
+  needUpdateButton,
+  needDeleteButton,
+  updateOnClick,
+  deleteOnClick,
 }) {
   return (
     <Wrapper>
@@ -75,8 +76,10 @@ function BoardComment({
 
         {/* 수정, 삭제 버튼 넣을 곳 */}
         <UpdateDeleteButton
-          updateButton={updateButton}
-          deleteButton={deleteButton}
+          needUpdateButton={needUpdateButton}
+          needDeleteButton={needDeleteButton}
+          updateOnClick={updateOnClick}
+          deleteOnClick={deleteOnClick}
         ></UpdateDeleteButton>
       </RightBox>
     </Wrapper>

@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
-import Notice from '../../components/common/Notice';
 import Image from '../../components/common/Image';
-import BoldText from '../../components/common/BoldText';
+import Paragraph from '../../components/common/Paragraph';
 import BoardsTags from '../../components/boards/BoardsTags';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getAllArticles } from '../../apis/api/board';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -39,7 +40,7 @@ const CreateNewBox = styled.div`
   cursor: pointer;
   width: 100%;
   height: 70px;
-  margin-bottom: 20px;
+  margin: 20px 0;
   padding: 0 15px;
   display: flex;
   justify-content: space-between;
@@ -82,14 +83,11 @@ const ArticleTitle = styled.div`
   font-weight: 600;
 `;
 
-const ArticleText = styled.div`
+const ArticleInfo = styled.div`
   font-size: 15px;
   font-weight: 300;
   text-align: end;
 `;
-
-// 전체 리스트 조회 API
-// API 나오면 더 봐야 할듯여
 
 // 게시판 태그 목록과 길이
 const allTags = [
@@ -97,18 +95,32 @@ const allTags = [
   '맛집 추천',
   '동네 소식',
   '집사 후기',
-  '모임 모집',
-  '생활정보',
-  '일상',
-  '공공소식',
+  '동네 모임',
+  '생활 꿀팁',
+  '일상 공유',
 ];
 const tagLength = allTags.length;
 
 function BoardsMain() {
-  // useState 사용 위해 게시판 태그 길이만큼 빈 리스트 만들기
-  const tagCheckList = Array.from({ length: tagLength }, () => false);
+  // NavigationBAr 사용 위한 변수 선언
+  const navigate = useNavigate();
+  const onPrevious = () => {
+    navigate(`/`);
+  };
+
+  // 게시판 리스트 조회 API 호출
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    getAllArticles().then(response => {
+      console.log('게시판 리스트 조회 API 성공');
+      // console.log(response.data);
+      setList(response.data.boardList);
+    });
+  }, []);
 
   // tagCheckList의 상태를 관리할 useState 함수
+  const tagCheckList = Array.from({ length: tagLength }, () => false);
   const [isSelected, setIsSelected] = useState(tagCheckList);
 
   // 누르면 check값이 토글되는 함수
@@ -137,9 +149,16 @@ function BoardsMain() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
+        onPrevious={onPrevious}
       ></NavigationBar>
 
-      <CreateNewBox>
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={['한집사 게시판']}
+      ></Paragraph>
+
+      <CreateNewBox onClick={() => navigate(`/boards/create`)}>
         <Image
           src={process.env.PUBLIC_URL + '/images/pencil.svg'}
           width={'40px'}
@@ -175,33 +194,24 @@ function BoardsMain() {
       </SelectedTag>
 
       {/* API 받아서 map 돌기 */}
-      <Article>
-        <InsideTags>
-          <BoardsTags mode={'SMALL'} tagname={'집사 후기'}></BoardsTags>
-          <BoardsTags mode={'SMALL'} tagname={'동네 소식'}></BoardsTags>
-          <BoardsTags mode={'SMALL'} tagname={'집사 추천'}></BoardsTags>
-        </InsideTags>
-        <ArticleTitle>이 서비스 진짜 짱이예요~!</ArticleTitle>
-        <ArticleText>김세리 1일전 조회수</ArticleText>
-      </Article>
+      {list?.map((article, idx) => (
+        <Article
+          key={idx}
+          onClick={() => navigate(`/boards/${article.boardId}`)}
+        >
+          <InsideTags>
+            {article.tagNameList.map((tag, idx) => (
+              <BoardsTags key={idx} mode={'SMALL'} tagname={tag}></BoardsTags>
+            ))}
+          </InsideTags>
 
-      <Article>
-        <InsideTags>
-          <BoardsTags mode={'SMALL'} tagname={'모임 모집'}></BoardsTags>
-          <BoardsTags mode={'SMALL'} tagname={'생활정보'}></BoardsTags>
-        </InsideTags>
-        <ArticleTitle>이 서비스 진짜 짱이예요~!</ArticleTitle>
-        <ArticleText>김세리 1일전 조회수</ArticleText>
-      </Article>
-
-      <Article>
-        <InsideTags>
-          <BoardsTags mode={'SMALL'} tagname={'일상'}></BoardsTags>
-          <BoardsTags mode={'SMALL'} tagname={'공공소식'}></BoardsTags>
-        </InsideTags>
-        <ArticleTitle>이 서비스 진짜 짱이예요~!</ArticleTitle>
-        <ArticleText>김세리 1일전 조회수</ArticleText>
-      </Article>
+          <ArticleTitle>{article.title}</ArticleTitle>
+          <ArticleInfo>
+            {article.userName} | {article.updatedAt} | 댓글{' '}
+            {article.commentCount}
+          </ArticleInfo>
+        </Article>
+      ))}
     </Wrapper>
   );
 }

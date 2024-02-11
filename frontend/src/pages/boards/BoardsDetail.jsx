@@ -1,10 +1,14 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getOneArticle } from '../../apis/api/board';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
-import BoardComment from '../../components/common/BoardComment';
+import BoardComment from '../../components/boards/BoardComment';
 import BoardsTags from '../../components/boards/BoardsTags';
 import UpdateDeleteButton from '../../components/common/UpdateDeleteButton';
-import HorizontalLine from '../../components/common/HorizontalLine';
+import CreateComment from '../../components/boards/CreateComment';
+import DeleteBoardModal from '../../components/boards/DeleteBoardModal';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -96,6 +100,7 @@ const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 3px;
+  gap: 23px;
   font-size: 18px;
   font-weight: 500;
 `;
@@ -105,47 +110,49 @@ const CommentLength = styled.span`
   color: gray;
 `;
 
-// 게시판 상세 조회 API 호출
-const data = {
-  userName: 'user4',
-  address: '서울시 광진구',
-  profileImage: '',
-  tags: ['맛집 추천', '생활정보', '집사 추천'],
-  title: '안녕하세요.',
-  content: '저는 오늘 생일입니다.',
-  updatedAt: '2024-01-31T07:37:36.000+00:00',
-  commentList: [
-    {
-      commentId: 1,
-      userName: 'user5',
-      content: '축하합니다~',
-      updatedAt: '2024-01-31T07:37:36.000+00:00',
-    },
-    {
-      commentId: 4,
-      userName: 'user3',
-      content: 'comment!!',
-      updatedAt: '2024-02-06T08:15:28.000+00:00',
-    },
-    {
-      commentId: 5,
-      userName: 'user4',
-      content: 'comment!!',
-      updatedAt: '2024-02-06T08:15:30.000+00:00',
-    },
-  ],
-};
-
-// 나중에 지워용
-const getCurrentUser = '사과먹는 어피치';
+// 현재 로그인 된 유저 구하기
+const getCurrentUser = 'admin';
 
 function BoardsDetail() {
-  const userName = '피치피치어피치이십자까지닉네임이된다니이';
-  const updatedAt = '3일 전';
-  const content =
-    '저희 아버지도 강아지를 키우시는데 다음에 여행가실 때 맡겨봐야겠어요~';
-  const userName2 = '곽두식';
-  const address = '마포구 염리동';
+  // NavigationBAr 사용 위한 변수 선언
+  const navigate = useNavigate();
+  const onPrevious = () => {
+    navigate(-1);
+  };
+
+  // 게시판 상세 조회 API 호출
+  const [data, setData] = useState({});
+  const { boardId } = useParams();
+
+  useEffect(() => {
+    getOneArticle(boardId).then(response => {
+      // console.log('게시판 상세 조회 API 성공');
+      // console.log(response.data);
+      setData(response.data);
+    });
+  }, []);
+
+  // 게시글 수정 페이지로 이동하는 함수
+  const toArticleUpdate = () => {
+    navigate(`/boards/${boardId}/update`, {
+      state: {
+        title: data.title,
+        content: data.content,
+        updatedAt: data.updatedAt,
+        tagList: data.tagList,
+      },
+    });
+  };
+
+  // 게시글 삭제 버튼을 누르면 모달이 열리는 함수
+  const [isOpen, setIsOpen] = useState(false);
+  const toAtricleDelete = () => {
+    setIsOpen(() => true);
+    console.log(isOpen);
+  };
+
+  // 새 댓글 작성하는 함수
+  const [newComment, setNewComment] = useState('');
 
   return (
     <Wrapper>
@@ -158,7 +165,18 @@ function BoardsDetail() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
+        onPrevious={onPrevious}
       ></NavigationBar>
+
+      {/* <DeleteBoardModal></DeleteBoardModal> */}
+      {isOpen === true ? (
+        <DeleteBoardModal
+          boardId={boardId}
+          onClick={() => {
+            setIsOpen(() => false);
+          }}
+        ></DeleteBoardModal>
+      ) : null}
 
       <ArticleWrapper>
         <ProfileWrapper>
@@ -176,7 +194,7 @@ function BoardsDetail() {
         </ProfileWrapper>
 
         <TagsWrapper>
-          {data.tags.map((tag, idx) => (
+          {data.tagList?.map((tag, idx) => (
             <BoardsTags key={idx} mode={'MEDIUM'} tagname={tag}></BoardsTags>
           ))}
         </TagsWrapper>
@@ -189,38 +207,42 @@ function BoardsDetail() {
 
         {getCurrentUser === data.userName ? (
           <UpdateDeleteButton
-            updateButton
-            deleteButton
-            updateOnClick={''}
-            deleteOnClick={''}
+            needUpdateButton
+            needDeleteButton
+            updateOnClick={() => toArticleUpdate()}
+            deleteOnClick={() => toAtricleDelete()}
           ></UpdateDeleteButton>
         ) : (
           ''
         )}
       </ArticleWrapper>
 
-      <CommentWrapper>
-        <p>
-          댓글 <CommentLength>{data.commentList.length}</CommentLength>
-        </p>
+      {/* 댓글이 하나도 없을 때 분기 */}
+      {/* 댓글 작성자와 currentUser가 같으면 수정/삭제 버튼 나오게 */}
+      {!data.commentList ? (
+        <p>새 댓글을 작성해 보세요!</p>
+      ) : (
+        <CommentWrapper>
+          <p>
+            댓글 <CommentLength>{data.commentList.length}</CommentLength>
+          </p>
 
-        {data.commentList.map((comment, idx) => (
-          <BoardComment
-            key={idx}
-            userName={comment.userName}
-            content={comment.content}
-            updatedAt={comment.updatedAt}
-            updateButton
-            deleteButton
-          ></BoardComment>
-        ))}
-      </CommentWrapper>
-      {/* <HorizontalLine
-        marginTop={'2px'}
-        marginBottom={'2px'}
-        height={'2px'}
-        color={'#d9d9d9'}
-      ></HorizontalLine> */}
+          {data.commentList.map((comment, idx) => (
+            <BoardComment
+              key={idx}
+              userName={comment.userName}
+              content={comment.content}
+              updatedAt={comment.updatedAt}
+              needUpdateButton={getCurrentUser === comment.userName}
+              needDeleteButton={getCurrentUser === comment.userName}
+              updateOnClick={() => console.log('댓글 수정')}
+              deleteOnClick={() => console.log('댓글 삭제')}
+            ></BoardComment>
+          ))}
+        </CommentWrapper>
+      )}
+
+      <CreateComment></CreateComment>
     </Wrapper>
   );
 }
