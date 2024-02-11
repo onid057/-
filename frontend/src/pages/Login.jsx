@@ -1,5 +1,7 @@
-import { styled } from 'styled-components';
+import { doLogIn } from '../apis/api/login';
+import { useState } from 'react';
 
+import styled from 'styled-components';
 import Paragraph from '../components/common/Paragraph';
 import BoldText from '../components/common/BoldText';
 import Input from '../components/common/Input';
@@ -29,6 +31,9 @@ const QuestionWrapper = styled.span`
 `;
 
 function Login() {
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+
   return (
     <Wrapper>
       <Paragraph
@@ -47,6 +52,7 @@ function Login() {
         labelText="이메일"
         commentText="이메일 형식이 올바르지 않습니다."
         placeholder="hanzipsa@naver.com"
+        onChange={event => setEmail(event.target.value)}
       ></Input>
 
       <Input
@@ -55,9 +61,19 @@ function Login() {
         labelText="비밀번호"
         commentText="8자 이상이어야 합니다."
         placeholder="********"
+        onChange={event => setPassword(event.target.value)}
       ></Input>
 
-      <Button msg="로그인" color="#629af9" mode="NORMAL_BLUE"></Button>
+      <Button
+        mode="THICK_BLUE"
+        onClick={() => {
+          doLogIn(email, password).then(response => {
+            console.log(response);
+          });
+        }}
+      >
+        로그인
+      </Button>
 
       <QuestionWrapper>
         <span>비밀번호를 잊으셨나요?</span>
