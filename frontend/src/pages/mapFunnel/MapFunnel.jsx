@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import { makeFilterSuggestion } from '../../apis/api/filter';
 
 import Map from '../mapFunnel/Map';
-import Detail from '../filterFunnel/Detail';
-import TargetDate from '../filterFunnel/TargetDate';
-import TargetTime from '../filterFunnel/TargetTime';
-import Address from '../filterFunnel/Address';
+import Detail from './Detail';
+import TargetDate from './TargetDate';
+import TargetTime from './TargetTime';
+import Address from './Address';
 import SuggestPayment from './SuggestPayment';
 
 function MapFunnel() {

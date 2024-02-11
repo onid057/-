@@ -10,6 +10,7 @@ import ConnectOption from './pages/connect/ConnectOption'; // 연동 옵션 고�
 import ConnectAsLeader from './pages/connect/ConnectAsLeader'; // 대표로 연동하기 페이지
 import ConnectMember from './pages/connect/ConnectMember'; // 연동되어 있는 멤버 조회 페이지
 import ConnectCode from './pages/connect/ConnectCode'; // 연동 코드 보여주는 페이지
+import MapFunnel from './pages/mapFunnel/MapFunnel';
 
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
@@ -20,8 +21,6 @@ import Notify from './pages/notify/Notify';
 import SuggestByZipsa from './pages/notify/SuggestByZipsa';
 import SuggestByUser from './pages/notify/SuggestByUser';
 import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
-import Map from './pages/mapFunnel/Map';
-import MapFunnel from './pages/mapFunnel/MapFunnel';
 import Reserve from './pages/reserve/Reserve';
 // import ReserveDetail from './pages/reserve/ReserveDetail';
 
@@ -208,11 +207,9 @@ function App() {
         ></Route>
 
         {/* 
-					1. 고객이 등록한 주소의 위도, 경도 기준 2km 반경의 대기 중인 집사를 보여주는 페이지
-					2. 한 명의 집사와의 매칭을 위해 정보 입력 Funnel
+					1. 한 명의 집사와의 매칭을 위해 정보 입력 Funnel
 				*/}
-        <Route path="/map" element={<Map />}></Route>
-        <Route path="/mapFunnel" element={<MapFunnel />}></Route>
+        <Route path="/map" element={<MapFunnel />}></Route>
 
         {/* 
 					1. 예약 화면 

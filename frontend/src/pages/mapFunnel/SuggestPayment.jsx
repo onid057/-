@@ -72,7 +72,7 @@ function SuggestPayment({
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        rightContent="다음"
+        rightContent="완료"
         onPrevious={onPrevious}
         onNext={() => onNext(totalPayment)}
         disabledOnNext={!unitPayment}
