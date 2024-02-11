@@ -31,7 +31,7 @@ public class TokenProvider {
     private String secretKey;
 
     @Value("${cookie.age}")
-    private String cookieMaxAge;
+    private Integer cookieMaxAge;
 
     private final AuthRepository authRepository;
 
@@ -82,7 +82,7 @@ public class TokenProvider {
 
                 authRepository.makeRefreshToken(newRefreshToken, email);
                 CookieUtil.saveCookie(newAccessToken, newRefreshToken, response,
-                    Integer.parseInt(cookieMaxAge));
+                    cookieMaxAge);
 
                 return email;
             } catch (Exception error) {

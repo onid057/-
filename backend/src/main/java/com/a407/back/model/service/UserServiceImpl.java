@@ -85,13 +85,13 @@ public class UserServiceImpl implements UserService {
     private String senderPhoneNumber;
 
     @Value("${image.size.profile}")
-    private String profileSize;
+    private Integer profileSize;
 
     @Value("${code.phone.start}")
-    private String codeStart;
+    private Integer codeStart;
 
     @Value("${code.phone.end}")
-    private String codeEnd;
+    private Integer codeEnd;
 
     @Override
     public UserInfoResponse findUserInfo(Long userId) {
@@ -286,11 +286,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void makeSendMessage(String phoneNumber, String email)
         throws JsonProcessingException, NoSuchAlgorithmException {
-        int code = getInstanceStrong().nextInt(Integer.parseInt(codeStart),
-            Integer.parseInt(codeEnd));
+        int code = getInstanceStrong().nextInt(codeStart,
+            codeEnd);
         while (userRepository.findCode(String.valueOf(code)) != null) {
-            code = getInstanceStrong().nextInt(Integer.parseInt(codeStart),
-                Integer.parseInt(codeEnd));
+            code = getInstanceStrong().nextInt(codeStart,
+                codeEnd);
         }
         Message message = new Message();
         message.setFrom(senderPhoneNumber);
@@ -387,7 +387,7 @@ public class UserServiceImpl implements UserService {
             if (user.getProfileImage() != null && !user.getProfileImage().isBlank()) {
                 imageUtil.deleteImage(user.getProfileImage());
             }
-            imageName = imageUtil.resizeImage(image, Integer.parseInt(profileSize));
+            imageName = imageUtil.resizeImage(image, profileSize);
         }
         UserChangeDto userChangeDto = new UserChangeDto(
             imageName == null ? user.getProfileImage() : imageName,

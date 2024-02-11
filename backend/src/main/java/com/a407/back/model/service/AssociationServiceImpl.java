@@ -29,13 +29,13 @@ public class AssociationServiceImpl implements AssociationService {
     private final UserRepository userRepository;
 
     @Value("${code.association.start}")
-    private String codeStart;
+    private Integer codeStart;
 
     @Value("${code.association.end}")
-    private String codeEnd;
+    private Integer codeEnd;
 
     @Value("${code.association.time}")
-    private String codeTime;
+    private Integer codeTime;
 
     @Override
     @Transactional
@@ -100,11 +100,11 @@ public class AssociationServiceImpl implements AssociationService {
         }
 
         int newCode = SecureRandom.getInstanceStrong()
-            .nextInt(Integer.parseInt(codeStart), Integer.parseInt(codeEnd));
+            .nextInt(codeStart, codeEnd);
         // 이제 생성한 코드가 중복이 되는지를 체크하고 아닐때 까지 반복을 시켜야 한다
         while (associationRepository.findAssociationId(String.valueOf(newCode)) != null) {
             newCode = SecureRandom.getInstanceStrong()
-                .nextInt(Integer.parseInt(codeStart), Integer.parseInt(codeEnd));
+                .nextInt(codeStart, codeEnd);
         }
         // 이제 코드와 연동 계정의 번호를 저장
         associationRepository.saveAssociationId(String.valueOf(newCode),
@@ -112,7 +112,7 @@ public class AssociationServiceImpl implements AssociationService {
         // 그리고 대표의 이메일과 코드를 저장
         associationRepository.saveCode(email, String.valueOf(newCode));
         return new AssociationAdditionCodeResponse(String.valueOf(newCode),
-            Integer.parseInt(codeTime));
+            codeTime);
     }
 
     @Override

@@ -45,7 +45,7 @@ public class ZipsaServiceImpl implements ZipsaService {
     private final ImageUtil imageUtil;
 
     @Value("${image.size.report}")
-    private String repostSize;
+    private Integer repostSize;
 
 
     @Override
@@ -53,7 +53,7 @@ public class ZipsaServiceImpl implements ZipsaService {
     public void makeReport(Long roomId, MultipartFile image, String content) throws IOException {
         Room room = roomRepository.findByRoomId(roomId);
 
-        String fileName = imageUtil.resizeImage(image, Integer.parseInt(repostSize));
+        String fileName = imageUtil.resizeImage(image, repostSize);
 
         Report report = Report.builder().roomId(room).processImage(fileName).processContent(content)
             .build();
