@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import Input from '../../components/common/Input';
 import LongInputBox from '../../components/common/LongInputBox';
 import BoardsTags from '../../components/boards/BoardsTags';
+import { updateArticle } from '../../apis/api/board';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -55,48 +56,59 @@ const allTags = [
   '맛집 추천',
   '동네 소식',
   '집사 후기',
-  '모임 모집',
-  '생활정보',
-  '일상',
-  '공공소식',
+  '동네 모임',
+  '생활 꿀팁',
+  '일상 공유',
 ];
 const tagLength = allTags.length;
 
-// 이전 페이지에서 '게시판 상세 조회' 내용 prop 받기
-
 function CreateBoard() {
-  // 이전 페이지로부터 props 받기
+  // NavigationBAr 사용 위한 변수 선언
+  const navigate = useNavigate();
+  const onPrevious = () => {
+    navigate(-1);
+  };
+  const onNext = () => {
+    updateArticle(boardId, newTitle, newcontent, newtagList);
+    navigate(`/boards/${boardId}`);
+  };
+
+  // tagList를 숫자 배열로 반환하는 함수
+  const tagChanger = (allTags, tempTagList) => {
+    const tagList = [];
+    allTags.forEach((tag, index) => {
+      if (tempTagList.includes(tag)) {
+        tagList.push(index + 1);
+      }
+    });
+    return tagList;
+  };
+
+  // 이전 페이지로부터 props 받기(tagList는 숫자로 변환해야 함)
+  const { boardId } = useParams();
   const location = useLocation();
   const title = location.state.title;
   const content = location.state.content;
-  const updatedAt = location.state.updatedAt;
-  const tagList = location.state.tagList;
+  const tempTagList = location.state.tagList;
+  const tagList = tagChanger(allTags, tempTagList);
 
   // useState로 변수 선언하기
   const [newTitle, setNewTitle] = useState(title);
-  const [newcontent, setNewcontent] = useState(content);
-  const [newupdatedAt, setNewupdatedAt] = useState(updatedAt);
   const [newtagList, setNewtagList] = useState(tagList);
+  const [newcontent, setNewcontent] = useState(content);
 
-  const onChangeTitle = e => {
-    setNewTitle(e.target.value);
-    console.log(newTitle);
-  };
+  // // tagCheckList의 상태를 관리할 useState 함수
+  // const tagCheckList = Array.from({ length: tagLength }, () => false);
+  // const [isSelected, setIsSelected] = useState(tagCheckList);
 
-  // tagCheckList의 상태를 관리할 useState 함수
-  const tagCheckList = Array.from({ length: tagLength }, () => false);
-  const [isSelected, setIsSelected] = useState(tagCheckList);
-
-  // 누르면 check값이 토글되는 함수
-  const toggleSelected = idx => {
-    setIsSelected(array => [
-      ...array.slice(0, idx),
-      !array[idx],
-      ...array.slice(idx + 1),
-    ]);
-  };
-
-  // 게시판 수정 API 호출
+  // // 누르면 check값이 토글되는 함수
+  // const toggleSelected = idx => {
+  //   setIsSelected(array => [
+  //     ...array.slice(0, idx),
+  //     !array[idx],
+  //     ...array.slice(idx + 1),
+  //   ]);
+  // };
 
   return (
     <Wrapper>
@@ -109,7 +121,9 @@ function CreateBoard() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
+        onPrevious={onPrevious}
         rightContent="수정"
+        onNext={onNext}
       ></NavigationBar>
 
       <ParagraphWrapper>
@@ -123,11 +137,11 @@ function CreateBoard() {
       <div>
         <SubTitle>제목</SubTitle>
         <Input
-          onChange={() => onChangeTitle()}
           type={'text'}
           width={'100%'}
-          maxlength={50}
-          defaultValue={title}
+          maxLength={50}
+          defaultValue={newTitle}
+          onChange={e => setNewTitle(e.target.value)}
         ></Input>
       </div>
 
@@ -136,18 +150,18 @@ function CreateBoard() {
         {allTags.map((tag, idx) => (
           <BoardsTags
             key={idx}
-            mode={isSelected[idx] ? 'LARGE_SELECTED' : 'LARGE'}
+            mode={tagList.includes(tag) ? 'LARGE_SELECTED' : 'LARGE'}
             tagname={tag}
-            onClick={() => toggleSelected(idx)}
+            // onClick={() => toggleSelected(idx)}
           ></BoardsTags>
         ))}
       </TagWrapper>
 
       <LongInputBox
         title={'내용'}
-        // placeholder={content}
-        maxlength={300}
-        defaultValue={content}
+        maxLength={300}
+        defaultValue={newcontent}
+        onChange={e => setNewcontent(e.target.value)}
       ></LongInputBox>
     </Wrapper>
   );

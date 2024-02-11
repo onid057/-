@@ -1,13 +1,14 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { getOneArticle } from '../../apis/api/board';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoardComment from '../../components/boards/BoardComment';
 import BoardsTags from '../../components/boards/BoardsTags';
 import UpdateDeleteButton from '../../components/common/UpdateDeleteButton';
 import CreateComment from '../../components/boards/CreateComment';
-import { useState, useEffect } from 'react';
-import { Navigate, useNavigate, useParams } from 'react-router-dom';
-import { getOneArticle } from '../../apis/api/board';
+import DeleteBoardModal from '../../components/boards/DeleteBoardModal';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -110,23 +111,28 @@ const CommentLength = styled.span`
 `;
 
 // 현재 로그인 된 유저 구하기
-const getCurrentUser = 'user4';
+const getCurrentUser = 'admin';
 
 function BoardsDetail() {
+  // NavigationBAr 사용 위한 변수 선언
+  const navigate = useNavigate();
+  const onPrevious = () => {
+    navigate(-1);
+  };
+
   // 게시판 상세 조회 API 호출
   const [data, setData] = useState({});
   const { boardId } = useParams();
 
   useEffect(() => {
     getOneArticle(boardId).then(response => {
-      console.log('게시판 상세 조회 API 성공');
-      console.log(response.data);
+      // console.log('게시판 상세 조회 API 성공');
+      // console.log(response.data);
       setData(response.data);
     });
   }, []);
 
   // 게시글 수정 페이지로 이동하는 함수
-  const navigate = useNavigate();
   const toArticleUpdate = () => {
     navigate(`/boards/${boardId}/update`, {
       state: {
@@ -137,6 +143,16 @@ function BoardsDetail() {
       },
     });
   };
+
+  // 게시글 삭제 버튼을 누르면 모달이 열리는 함수
+  const [isOpen, setIsOpen] = useState(false);
+  const toAtricleDelete = () => {
+    setIsOpen(() => true);
+    console.log(isOpen);
+  };
+
+  // 새 댓글 작성하는 함수
+  const [newComment, setNewComment] = useState('');
 
   return (
     <Wrapper>
@@ -149,7 +165,18 @@ function BoardsDetail() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
+        onPrevious={onPrevious}
       ></NavigationBar>
+
+      {/* <DeleteBoardModal></DeleteBoardModal> */}
+      {isOpen === true ? (
+        <DeleteBoardModal
+          boardId={boardId}
+          onClick={() => {
+            setIsOpen(() => false);
+          }}
+        ></DeleteBoardModal>
+      ) : null}
 
       <ArticleWrapper>
         <ProfileWrapper>
@@ -183,7 +210,7 @@ function BoardsDetail() {
             needUpdateButton
             needDeleteButton
             updateOnClick={() => toArticleUpdate()}
-            deleteOnClick={() => console.log('게시글 삭제')}
+            deleteOnClick={() => toAtricleDelete()}
           ></UpdateDeleteButton>
         ) : (
           ''

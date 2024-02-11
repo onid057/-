@@ -1,5 +1,7 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createArticle } from '../../apis/api/board';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
@@ -36,7 +38,7 @@ const SubTitle = styled.div`
 
 const TagWrapper = styled.div`
   width: 100%;
-  height: 30px;
+  height: 50px;
   display: flex;
   align-content: center;
   gap: 8px;
@@ -61,10 +63,25 @@ const allTags = [
 const tagLength = allTags.length;
 
 function CreateBoard() {
-  // useState 사용 위해 게시판 태그 길이만큼 빈 리스트 만들기
-  const tagCheckList = Array.from({ length: tagLength }, () => false);
+  // NavigationBAr 사용 위한 변수 선언
+  const navigate = useNavigate();
+  const onPrevious = () => {
+    navigate(-1);
+  };
+  const onNext = () => {
+    navigate(`/boards/`);
+    // console.log('새 게시글 생성 완료')
+    // console.log(userId)
+    // console.log(title)
+    // console.log(content)
+    // console.log(tagList)
+    createArticle(userId, title, content, tagList).then(response => {
+      console.log(response);
+    });
+  };
 
   // tagCheckList의 상태를 관리할 useState 함수
+  const tagCheckList = Array.from({ length: tagLength }, () => false);
   const [isSelected, setIsSelected] = useState(tagCheckList);
 
   // 누르면 check값이 토글되는 함수
@@ -75,6 +92,24 @@ function CreateBoard() {
       ...array.slice(idx + 1),
     ]);
   };
+
+  // POST 요청 보낼 data 선언하기
+  const userId = 6;
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const [tagList, setTagList] = useState([]);
+
+  // 선택된 태그만 받기
+  useEffect(() => {
+    const tagIndex = [1, 2, 3, 4, 5, 6];
+    const filtered = tagIndex.filter((element, index) => {
+      if (isSelected[index]) {
+        return element;
+      }
+    });
+    setTagList(filtered);
+  }, [isSelected]);
+  // console.log(`태그에 변화 발생 : ${tagList}`)
 
   return (
     <Wrapper>
@@ -87,7 +122,9 @@ function CreateBoard() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
+        onPrevious={onPrevious}
         rightContent="등록"
+        onNext={onNext}
       ></NavigationBar>
 
       <ParagraphWrapper>
@@ -103,8 +140,10 @@ function CreateBoard() {
         <Input
           type={'text'}
           width={'100%'}
-          maxlength={50}
+          maxLength={50}
           placeholder={'제목을 입력해 주세요'}
+          value={title}
+          onChange={event => setTitle(event.target.value)}
         ></Input>
       </div>
 
@@ -116,6 +155,7 @@ function CreateBoard() {
             mode={isSelected[idx] ? 'LARGE_SELECTED' : 'LARGE'}
             tagname={tag}
             onClick={() => toggleSelected(idx)}
+            // onChange={()=> addSelectedTags(idx)}
           ></BoardsTags>
         ))}
       </TagWrapper>
@@ -123,7 +163,9 @@ function CreateBoard() {
       <LongInputBox
         title={'내용'}
         placeholder={'내용을 입력해 주세요'}
-        maxlength={300}
+        maxLength={300}
+        value={content}
+        onChange={event => setContent(event.target.value)}
       ></LongInputBox>
     </Wrapper>
   );

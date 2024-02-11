@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   color: ${props => (props.color ? props.color : '#000000')};
 `;
 
-function BoardsTags({ mode, tagname, onClick }) {
+function BoardsTags({ mode, tagname, onClick, onChange }) {
   switch (mode) {
     case 'LARGE':
       return (
@@ -31,6 +31,7 @@ function BoardsTags({ mode, tagname, onClick }) {
           $borderRadius={'25px'}
           $border={'solid 0.5px #1c2064'}
           onClick={onClick}
+          onChange={onChange}
         >
           {tagname}
         </Wrapper>
@@ -48,6 +49,7 @@ function BoardsTags({ mode, tagname, onClick }) {
           $fontWeight={'400'}
           color={'#FFFFFF'}
           onClick={onClick}
+          onChange={onChange}
         >
           {tagname}
         </Wrapper>
@@ -62,10 +64,13 @@ function BoardsTags({ mode, tagname, onClick }) {
           $fontSize={'11px'}
           $fontWeight={'350'}
           onClick={onClick}
+          onChange={onChange}
         >
           {tagname}
         </Wrapper>
       );
+    default:
+      return;
   }
 }
 

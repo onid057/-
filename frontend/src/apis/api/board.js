@@ -26,14 +26,27 @@ const getOneArticle = async boardId => {
   }
 };
 
+// 새 게시글 작성
+const createArticle = async (userId, title, content, tagList) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `boards`,
+      data: {
+        userId: userId,
+        title: title,
+        content: content,
+        tagList: tagList,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // 게시글 수정
-const updateArticle = async (
-  boardId,
-  newTitle,
-  newContent,
-  newUpdatedAt,
-  newTagList,
-) => {
+const updateArticle = async (boardId, newTitle, newContent, newTagList) => {
   try {
     const response = await axios({
       method: 'patch',
@@ -41,7 +54,6 @@ const updateArticle = async (
       data: {
         title: newTitle,
         content: newContent,
-        updatedAt: newUpdatedAt,
         tagList: newTagList,
       },
     });
@@ -51,4 +63,42 @@ const updateArticle = async (
   }
 };
 
-export { getAllArticles, getOneArticle, updateArticle };
+// 게시글 삭제
+const deleteOneArticle = async boardId => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: `boards/${boardId}`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 새 댓글 작성
+const createComment = async (boardId, userId, content) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `comments`,
+      data: {
+        boardId: boardId,
+        userId: userId,
+        content: content,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export {
+  getAllArticles,
+  getOneArticle,
+  createArticle,
+  updateArticle,
+  deleteOneArticle,
+  createComment,
+};

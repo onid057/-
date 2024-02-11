@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { createComment } from '../../apis/api/board';
 import Image from '../../components/common/Image';
 
 const Wrapper = styled.div`
@@ -44,7 +47,18 @@ const SubmitImg = styled.div`
   justify-content: center;
 `;
 
-function CreateComment() {
+function CreateComment({ onClick, value }) {
+  // 현재 게시글의 boardId와 userId 구하기
+  const { boardId } = useParams();
+  const userId = 6;
+
+  // 댓글 생성 요청 보내는 함수
+  const [comment, setComment] = useState('');
+  const toCreateComment = () => {
+    createComment(boardId, userId, comment);
+    console.log('새 댓글 생성 완료');
+  };
+
   return (
     <Wrapper>
       <InputBox>
@@ -52,12 +66,13 @@ function CreateComment() {
           cols={20}
           maxLength={100}
           placeholder={'댓글을 남겨보세요!'}
+          value={comment}
+          onChange={e => setComment(e.target.value)}
         ></TextArea>
       </InputBox>
 
-      <SubmitImg>
+      <SubmitImg onClick={() => toCreateComment()}>
         <Image
-          onClick={() => console.log('댓글남기기!')}
           src={`${process.env.PUBLIC_URL}/images/send_arrow.svg`}
           width={'26px'}
           height={'21px'}

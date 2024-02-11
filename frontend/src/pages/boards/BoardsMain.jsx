@@ -40,7 +40,7 @@ const CreateNewBox = styled.div`
   cursor: pointer;
   width: 100%;
   height: 70px;
-  margin-bottom: 20px;
+  margin: 20px 0;
   padding: 0 15px;
   display: flex;
   justify-content: space-between;
@@ -102,7 +102,11 @@ const allTags = [
 const tagLength = allTags.length;
 
 function BoardsMain() {
+  // NavigationBAr 사용 위한 변수 선언
   const navigate = useNavigate();
+  const onPrevious = () => {
+    navigate(`/`);
+  };
 
   // 게시판 리스트 조회 API 호출
   const [list, setList] = useState([]);
@@ -110,7 +114,7 @@ function BoardsMain() {
   useEffect(() => {
     getAllArticles().then(response => {
       console.log('게시판 리스트 조회 API 성공');
-      console.log(response.data);
+      // console.log(response.data);
       setList(response.data.boardList);
     });
   }, []);
@@ -145,6 +149,7 @@ function BoardsMain() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
+        onPrevious={onPrevious}
       ></NavigationBar>
 
       <Paragraph
