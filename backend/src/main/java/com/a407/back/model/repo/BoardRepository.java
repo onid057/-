@@ -28,7 +28,7 @@ public interface BoardRepository {
 
     void deleteBoard(Board board);
 
-    QueryResults<Board> findBoardList(int page, int size);
+    List<BoardTag> findBoardList(int page, int size, List<Long> tagList);
 
-    QueryResults<Board> getUserBoardList(User user, int page, int size);
+    List<Board> getUserBoardList(User user, int page, int size);
 }

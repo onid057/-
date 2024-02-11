@@ -351,9 +351,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public BoardListResponse getUserBoardList(Long userId, int page, int size) {
         User user = userRepository.findByUserId(userId);
-        QueryResults<Board> boardList = boardRepository.getUserBoardList(user, (page - 1) * size,
+        List<Board> boardList = boardRepository.getUserBoardList(user, (page - 1) * size,
             size);
-        List<BoardListDto> userBoardList = boardList.getResults().stream().map(board -> {
+        List<BoardListDto> userBoardList = boardList.stream().map(board -> {
             int commentCount = commentRepository.getCommentCount(board).intValue();
             List<BoardTag> tagList = boardRepository.findBoardTagList(board);
             List<String> tagNameList = tagList.stream()
@@ -362,7 +362,7 @@ public class UserServiceImpl implements UserService {
                 board.getUserId().getName(), commentCount,
                 board.getUpdatedAt(), tagNameList);
         }).toList();
-        return new BoardListResponse(boardList.getTotal(), page, userBoardList);
+        return new BoardListResponse(userBoardList.size(), page, userBoardList);
     }
 
     @Override

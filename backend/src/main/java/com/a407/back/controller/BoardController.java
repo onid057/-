@@ -4,6 +4,7 @@ import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.board.BoardChangeRequest;
 import com.a407.back.dto.board.BoardCreateRequest;
 import com.a407.back.dto.board.BoardDetailResponse;
+import com.a407.back.dto.board.BoardListRequest;
 import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.model.service.BoardService;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,10 +38,9 @@ public class BoardController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<BoardListResponse>> findBoardList(
-        @RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity<ApiResponse<BoardListResponse>> findBoardList(@ModelAttribute BoardListRequest boardListRequest) {
         return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS, boardService.findBoardList(page, size)));
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS, boardService.findBoardList(boardListRequest)));
     }
 
     @GetMapping("/{boardId}")

@@ -11,6 +11,7 @@ import com.a407.back.domain.User.Gender;
 import com.a407.back.dto.board.BoardChangeRequest;
 import com.a407.back.dto.board.BoardCreateRequest;
 import com.a407.back.dto.board.BoardDetailResponse;
+import com.a407.back.dto.board.BoardListRequest;
 import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.comment.CommentChangeRequest;
 import com.a407.back.dto.comment.CommentCreateRequest;
@@ -94,7 +95,7 @@ class BoardControllerTest {
         int page = 1;
         int size = 2;
 
-        BoardListResponse boardListResponse = boardService.findBoardList(page, size);
+        BoardListResponse boardListResponse = boardService.findBoardList(new BoardListRequest(page, size, tagList));
         assertThat(boardListResponse.getBoardList().size(), is(equalTo(2)));
 
     }
