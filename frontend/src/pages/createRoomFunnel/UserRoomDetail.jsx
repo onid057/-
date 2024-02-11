@@ -6,7 +6,7 @@ import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Buttton from '../../components/common/Button';
-import BottomSheet from '../../components/common/BottomSheet';
+import BottomSheet from './BottomSheet';
 import { getRoomDetailInfo, acceptZipsaRequest } from '../../apis/api/room';
 
 const Wrapper = styled.div`

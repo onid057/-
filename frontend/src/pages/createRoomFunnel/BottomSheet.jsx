@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import Image from './Image';
-import Button from './Button';
-import GenderBadge from './GenderBadge';
-import GradeBadge from './GradeBadge';
-import PreferTag from './PreferTag';
+import Image from '../../components/common/Image';
+import Button from '../../components/common/Button';
+import GenderBadge from '../../components/common/GenderBadge';
+import GradeBadge from '../../components/common/GradeBadge';
+import PreferTag from '../../components/common/PreferTag';
 import { getZipsaListFromMap } from '../../apis/api/map';
 import { getZipsaListFromDetailInfo } from '../../apis/api/room';
 import { forwardRef, useState, useEffect } from 'react';
@@ -75,7 +75,9 @@ const BottomSheet = forwardRef(
       setIsDetailOpen,
       onClick,
       targetCluster,
-      setZipsaId,
+      roomId,
+      buttonName,
+      onButtonClick,
     },
     ref,
   ) => {
@@ -88,12 +90,18 @@ const BottomSheet = forwardRef(
           response => setZipsaList(response),
         );
       }
-    }, [targetCluster]);
+      if (roomId) {
+        getZipsaListFromDetailInfo(roomId).then(response => {
+          setZipsaList(response);
+          console.log(response);
+        });
+      }
+    }, [targetCluster, roomId]);
 
     return (
       <Wrapper $isOpen={isOpen} $isDetailOpen={isDetailOpen} ref={ref}>
         <Header>
-          <>{isDetailOpen ? `${targetZipsa.zipsaName} 집사` : '집사 목록'}</>
+          <>{isDetailOpen ? `${targetZipsa.name} 집사` : '집사 목록'}</>
           <Image
             src={`${process.env.PUBLIC_URL}/images/x.svg`}
             width="18px"
@@ -106,13 +114,13 @@ const BottomSheet = forwardRef(
           <NameWrapper>
             {zipsaList.map((zipsa, index) => (
               <Name
-                key={`${zipsa.zipsaName}-${index}`}
+                key={`${zipsa.name}-${index}`}
                 onClick={() => {
                   setIsDetailOpen(true);
                   setTargetZipsa(zipsa);
                 }}
               >
-                {zipsa.zipsaName + ' 집사'}
+                {zipsa.name + ' 집사'}
               </Name>
             ))}
           </NameWrapper>
@@ -132,9 +140,13 @@ const BottomSheet = forwardRef(
             <Text>{targetZipsa.description}</Text>
             <Button
               mode="THIN_GRAY"
-              onClick={() => setZipsaId([targetZipsa.zipsaId])}
+              onClick={() =>
+                onButtonClick(targetZipsa.notificationId).then(resp =>
+                  console.log(resp),
+                )
+              }
             >
-              집사에게 제안하기
+              {buttonName}
             </Button>
           </Detail>
         )}
