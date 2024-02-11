@@ -23,17 +23,17 @@ public interface UserRepository {
 
     List<Zipsa> findNearZipsaInfoList(Double lat, Double lng);
 
-    List<Room> getUserRecordList(Long userId);
+    List<Room> getUserRecordList(Long userId, Boolean isZipsa);
 
     Room getUserRecordInfo(Long roomId);
 
     Room getUserReservationInfo(Long roomId);
 
-    List<Room> getUserReservationList(Long userId);
+    List<Room> getUserReservationList(Long userId, Boolean isZipsa);
 
-    Room getUserReservationOngoing(Long userId);
+    Room getUserReservationOngoing(Long userId, Boolean isZipsa);
 
-    Room getUserReservationBefore(Long userId);
+    Room getUserReservationBefore(Long userId, Boolean isZipsa);
 
     void makeAccount(Long userId, String account);
 

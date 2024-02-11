@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -34,6 +35,9 @@ public class UserRepositoryImpl implements UserRepository {
     private final EntityManager em;
 
     private final RedisTemplate<String, String> redisTemplate;
+
+    @Value("${map.range}")
+    private String range;
 
 
     @Override
@@ -73,7 +77,7 @@ public class UserRepositoryImpl implements UserRepository {
         User user = em.find(User.class, userId);
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
-                user.getLatitude(), user.getLongitude(), 0.018)))).orderBy(
+                user.getLatitude(), user.getLongitude(), Double.parseDouble(range) * 4)))).orderBy(
             qZipsa.serviceCount.desc()).fetch();
     }
 
@@ -82,14 +86,14 @@ public class UserRepositoryImpl implements UserRepository {
         QZipsa qZipsa = QZipsa.zipsa;
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude, lat,
-                lng, 0.0045)))).orderBy(qZipsa.serviceCount.desc()).fetch();
+                lng, Long.parseLong(range))))).orderBy(qZipsa.serviceCount.desc()).fetch();
     }
 
     @Override
-    public List<Room> getUserRecordList(Long userId) {
+    public List<Room> getUserRecordList(Long userId, Boolean isZipsa) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
-            .where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(Process.END)))
+            .where(isZipsa(userId, isZipsa).and(qRoom.status.eq(Process.END)))
             .orderBy(qRoom.endedAt.desc()).fetch();
     }
 
@@ -110,31 +114,41 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Room> getUserReservationList(Long userId) {
+    public List<Room> getUserReservationList(Long userId, Boolean isZipsa) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom).where(
-                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
+                isZipsa(userId, isZipsa).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
             .orderBy(qRoom.expectationStartedAt.asc()).fetch();
     }
 
     @Override
-    public Room getUserReservationOngoing(Long userId) {
+    public Room getUserReservationOngoing(Long userId, Boolean isZipsa) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom).where(
-                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.ONGOING)))
+                isZipsa(userId, isZipsa).and(qRoom.status.in(Process.ONGOING)))
             .orderBy(qRoom.expectationStartedAt.asc()).limit(1).fetchOne();
     }
+
 
     @Override
-    public Room getUserReservationBefore(Long userId) {
+    public Room getUserReservationBefore(Long userId, Boolean isZipsa) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom).where(
-                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.BEFORE)))
+                isZipsa(userId, isZipsa).and(qRoom.status.in(Process.BEFORE)))
             .orderBy(qRoom.expectationStartedAt.asc()).limit(1).fetchOne();
     }
 
 
-    public static BooleanExpression createLatitudeLongitudeBetween(NumberPath<Double> latitudePath,
+    private BooleanExpression isZipsa(Long userId, Boolean isZipsa) {
+        QRoom qRoom = QRoom.room;
+        if (Boolean.TRUE.equals(isZipsa)) {
+            return qRoom.zipsaId.zipsaId.userId.eq(userId);
+        } else {
+            return qRoom.userId.userId.eq(userId);
+        }
+    }
+
+    private BooleanExpression createLatitudeLongitudeBetween(NumberPath<Double> latitudePath,
         NumberPath<Double> longitudePath, double latitude, double longitude, double range) {
         return latitudePath.between(latitude - range, latitude + range)
             .and(longitudePath.between(longitude - range, longitude + range));
@@ -160,14 +174,12 @@ public class UserRepositoryImpl implements UserRepository {
             .set(qUser.isAffiliated, true).where(qUser.userId.eq(userId)).execute();
     }
 
-
     @Override
     public List<User> searchAssociationUserList(Long associationId) {
         QUser qUser = QUser.user;
         return query.selectFrom(qUser).where(qUser.associationId.associationId.eq(associationId))
             .fetch();
     }
-
 
     @Override
     public void deleteAssociation(Long userId) {
