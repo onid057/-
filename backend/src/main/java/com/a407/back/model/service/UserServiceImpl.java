@@ -52,6 +52,8 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -60,6 +62,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final UserRepository userRepository;
 
@@ -107,11 +111,19 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Long makeUser(UserCreateRequest request) {
         // 에러 처리
-        if (userRepository.findByUserEmail(request.getEmail()) != null) {
+        User user = userRepository.findByUserEmail(request.getEmail());
+        if (user != null) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
-
-        User user = User.builder()
+        logger.info("email: {}", request.getEmail());
+        logger.info("address: {}", request.getAddress());
+        logger.info("name: {}", request.getName());
+        logger.info("birth: {}", request.getBirth());
+        logger.info("gender: {}", request.getGender());
+        logger.info("latitude: {}", request.getLatitude());
+        logger.info("longitude: {}", request.getLongitude());
+        logger.info("password: {}", request.getPassword());
+        User newUser = User.builder()
             .email(request.getEmail())
             .password(bCryptPasswordEncoder.encode(request.getPassword()))
             .name(request.getName())
@@ -126,7 +138,7 @@ public class UserServiceImpl implements UserService {
             .isAffiliated(false)
             .build();
 
-        return userRepository.makeUser(user).getUserId();
+        return userRepository.makeUser(newUser).getUserId();
     }
 
     @Override

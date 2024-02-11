@@ -234,13 +234,13 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void changeUserInfo(Long userId, UserChangeDto userUpdateDto) {
         QUser qUser = QUser.user;
-        query.update(qUser).set(qUser.address, userUpdateDto.getAddress())
-            .set(qUser.latitude, userUpdateDto.getLatitude())
-            .set(qUser.longitude, userUpdateDto.getLongitude())
-            .set(qUser.password, userUpdateDto.getPassword())
-            .set(qUser.profileImage, userUpdateDto.getProfileImage())
-            .where(qUser.userId.eq(userId))
-            .execute();
+//        query.update(qUser).set(qUser.address, userUpdateDto.getAddress())
+//            .set(qUser.latitude, userUpdateDto.getLatitude())
+//            .set(qUser.longitude, userUpdateDto.getLongitude())
+//            .set(qUser.password, userUpdateDto.getPassword())
+//            .set(qUser.profileImage, userUpdateDto.getProfileImage())
+//            .where(qUser.userId.eq(userId))
+//            .execute();
     }
 
     @Override
