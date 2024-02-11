@@ -22,7 +22,13 @@ public interface ZipsaRepository {
 
     Room getZipsaRecordInfo(Long roomId);
 
+    Room getZipsaReservationInfo(Long roomId);
+
     List<Room> getZipsaReservationList(Long zipsaId);
+
+    Room getZipsaReservationOngoing(Long zipsaId);
+
+    Room getZipsaReservationBefore(Long zipsaId);
 
     void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
         Double rewindAverage);

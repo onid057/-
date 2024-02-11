@@ -3,12 +3,13 @@ package com.a407.back.model.service;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.RecordResponse;
+import com.a407.back.dto.util.ReservationResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
-import com.a407.back.dto.zipsa.ZipsaReservationResponse;
+import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
 import java.io.IOException;
@@ -33,7 +34,11 @@ public interface ZipsaService {
 
     ZipsaRecordsResponse getZipsaRecordInfo(Long roomId);
 
-    List<ZipsaReservationResponse> getZipsaReservationList(Long zipsaId);
+    ZipsaReservationInfoResponse getZipsaReservationInfo(Long roomId);
+
+    List<ReservationResponse> getZipsaReservationList(Long zipsaId);
+
+    ReservationResponse getZipsaReservationFirst(Long zipsaId);
 
     void makePublicRoomNotification(PublicRoomNotificationRequest publicRoomNotificationRequest);
 

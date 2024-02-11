@@ -12,12 +12,13 @@ import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ImageUtil;
 import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.dto.util.RecordResponse;
+import com.a407.back.dto.util.ReservationResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
-import com.a407.back.dto.zipsa.ZipsaReservationResponse;
+import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
 import com.a407.back.exception.CustomException;
@@ -165,30 +166,57 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public List<ZipsaReservationResponse> getZipsaReservationList(Long zipsaId) {
-        // 여기에서 적용
-        return zipsaRepository.getZipsaReservationList(zipsaId).stream().map(room ->
-            ZipsaReservationResponse.builder()
-                .name(room.getUserId().getName())
-                .profileImage(room.getUserId().getProfileImage() == null ? null
-                    : room.getUserId().getProfileImage())
-                .subCategoryName(room.getSubCategoryId().getName())
-                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
-                .content(room.getContent())
-                .estimateDuration(room.getEstimateDuration())
-                .roomCreatedAt(room.getRoomCreatedAt())
-                .matchCreatedAt(room.getMatchCreatedAt())
-                .isReported(room.getIsReported())
-                .reportCycle(room.getReportCycle())
-                .isPublic(room.getIsPublic())
-                .startedAt(room.getStartedAt())
-                .endedAt(room.getEndedAt())
-                .expectationStartedAt(room.getExpectationStartedAt())
-                .expectationEndedAt(room.getExpectationEndedAt())
-                .expectationPay(room.getExpectationPay())
-                .build()
-        ).toList();
+    public ZipsaReservationInfoResponse getZipsaReservationInfo(Long roomId) {
+        Room room = zipsaRepository.getZipsaReservationInfo(roomId);
+        return ZipsaReservationInfoResponse.builder()
+            .name(room.getUserId().getName())
+            .profileImage(room.getUserId().getProfileImage())
+            .subCategoryName(room.getSubCategoryId().getName())
+            .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+            .content(room.getContent())
+            .estimateDuration(room.getEstimateDuration())
+            .roomCreatedAt(room.getRoomCreatedAt())
+            .matchCreatedAt(room.getMatchCreatedAt())
+            .isReported(room.getIsReported())
+            .reportCycle(room.getReportCycle())
+            .isPublic(room.getIsPublic())
+            .startedAt(room.getStartedAt())
+            .endedAt(room.getEndedAt())
+            .expectationStartedAt(room.getExpectationStartedAt())
+            .expectationEndedAt(room.getExpectationEndedAt())
+            .expectationPay(room.getExpectationPay())
+            .status(room.getStatus())
+            .build();
     }
+
+    @Override
+    public List<ReservationResponse> getZipsaReservationList(Long zipsaId) {
+        return zipsaRepository.getZipsaReservationList(zipsaId).stream()
+            .map(room -> new ReservationResponse(room.getRoomId(),
+                room.getUserId().getName(),
+                room.getSubCategoryId().getMajorCategoryId().getName(),
+                room.getStatus(), room.getExpectationStartedAt()
+            )).toList();
+    }
+
+    @Override
+    public ReservationResponse getZipsaReservationFirst(Long zipsaId) {
+        Room room = zipsaRepository.getZipsaReservationOngoing(zipsaId);
+
+        if (room == null) {
+            room = zipsaRepository.getZipsaReservationBefore(zipsaId);
+        }
+
+        if (room == null) {
+            return null;
+        }
+
+        return new ReservationResponse(room.getRoomId(),
+            room.getUserId().getName(),
+            room.getSubCategoryId().getMajorCategoryId().getName(),
+            room.getStatus(), room.getExpectationStartedAt());
+    }
+
 
     @Override
     @Transactional

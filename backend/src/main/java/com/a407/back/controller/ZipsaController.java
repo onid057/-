@@ -4,13 +4,14 @@ import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.dto.util.RecordResponse;
+import com.a407.back.dto.util.ReservationResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
-import com.a407.back.dto.zipsa.ZipsaReservationResponse;
+import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
 import com.a407.back.model.service.ZipsaServiceImpl;
@@ -96,12 +97,28 @@ public class ZipsaController {
                 zipsaService.getZipsaRecordInfo(roomId)));
     }
 
+    @GetMapping("/reservations/{roomId}")
+    public ResponseEntity<ApiResponse<ZipsaReservationInfoResponse>> getZipsaReservationInfo(
+        @PathVariable Long roomId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.getZipsaReservationInfo(roomId)));
+    }
+
     @GetMapping("/{helperId}/reservations")
-    public ResponseEntity<ApiResponse<List<ZipsaReservationResponse>>> getZipsaReservationList(
+    public ResponseEntity<ApiResponse<List<ReservationResponse>>> getZipsaReservationList(
         @PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaReservationList(helperId)));
+    }
+
+    @GetMapping("/{helperId}/reservations/first")
+    public ResponseEntity<ApiResponse<ReservationResponse>> getZipsaReservationFirst(
+        @PathVariable Long helperId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.getZipsaReservationFirst(helperId)));
     }
 
 
