@@ -14,4 +14,17 @@ const getReservationListByUser = async userId => {
   }
 };
 
-export { getReservationListByUser };
+// 고객 예약 상세정보 확인
+const getReservationDetailInfoByUser = async roomId => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/users/reservations/${roomId}`,
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getReservationListByUser, getReservationDetailInfoByUser };
