@@ -9,7 +9,6 @@ import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.Zipsa;
-import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -64,7 +63,15 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
             .where(qRoom.zipsaId.zipsaId.userId.eq(helperId).and(qRoom.status.eq(
-                Process.END))).orderBy(qRoom.expectationStartedAt.asc()).fetch();
+                Process.END))).orderBy(qRoom.endedAt.desc()).fetch();
+    }
+
+    @Override
+    public Room getZipsaRecordInfo(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom)
+            .where(qRoom.roomId.eq(roomId).and(qRoom.status.eq(
+                Process.END))).orderBy(qRoom.endedAt.desc()).limit(1).fetchOne();
     }
 
     @Override

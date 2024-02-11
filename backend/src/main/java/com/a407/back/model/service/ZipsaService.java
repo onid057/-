@@ -2,6 +2,7 @@ package com.a407.back.model.service;
 
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
+import com.a407.back.dto.util.RecordResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
@@ -28,7 +29,9 @@ public interface ZipsaService {
 
     Zipsa findByZipsaId(Long zipsaId);
 
-    List<ZipsaRecordsResponse> getZipsaRecordList(Long helperId);
+    List<RecordResponse> getZipsaRecordList(Long helperId);
+
+    ZipsaRecordsResponse getZipsaRecordInfo(Long roomId);
 
     List<ZipsaReservationResponse> getZipsaReservationList(Long zipsaId);
 

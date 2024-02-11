@@ -11,6 +11,7 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ImageUtil;
 import com.a407.back.dto.util.PublicRoom;
+import com.a407.back.dto.util.RecordResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
@@ -130,29 +131,37 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public List<ZipsaRecordsResponse> getZipsaRecordList(Long helperId) {
+    public List<RecordResponse> getZipsaRecordList(Long helperId) {
         return zipsaRepository.getZipsaRecordList(helperId).stream().map(room ->
-            ZipsaRecordsResponse.builder()
-                .name(room.getUserId().getName())
-                .profileImage(room.getUserId().getProfileImage() == null ? null
-                    : room.getUserId().getProfileImage())
-                .subCategoryName(room.getSubCategoryId().getName())
-                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
-                .content(room.getContent())
-                .estimateDuration(room.getEstimateDuration())
-                .roomCreatedAt(room.getRoomCreatedAt())
-                .matchCreatedAt(room.getMatchCreatedAt())
-                .isReported(room.getIsReported())
-                .reportCycle(room.getReportCycle())
-                .isPublic(room.getIsPublic())
-                .startedAt(room.getStartedAt())
-                .endedAt(room.getEndedAt())
-                .expectationStartedAt(room.getExpectationStartedAt())
-                .expectationEndedAt(room.getExpectationEndedAt())
-                .expectationPay(room.getExpectationPay())
-                .totalPay(room.getTotalPay())
-                .build()
-        ).toList();
+            new RecordResponse(
+                room.getRoomId(),
+                room.getUserId().getName(),
+                room.getSubCategoryId().getMajorCategoryId().getName(),
+                room.getStatus(),
+                room.getEndedAt()
+            )).toList();
+    }
+
+    @Override
+    public ZipsaRecordsResponse getZipsaRecordInfo(Long roomId) {
+        Room room = zipsaRepository.getZipsaRecordInfo(roomId);
+        return ZipsaRecordsResponse.builder().name(room.getUserId().getName())
+            .profileImage(room.getUserId().getProfileImage())
+            .subCategoryName(room.getSubCategoryId().getName())
+            .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+            .content(room.getContent())
+            .estimateDuration(room.getEstimateDuration())
+            .roomCreatedAt(room.getRoomCreatedAt())
+            .matchCreatedAt(room.getMatchCreatedAt())
+            .isReported(room.getIsReported())
+            .reportCycle(room.getReportCycle())
+            .isPublic(room.getIsPublic())
+            .startedAt(room.getStartedAt())
+            .endedAt(room.getEndedAt())
+            .expectationStartedAt(room.getExpectationStartedAt())
+            .expectationEndedAt(room.getExpectationEndedAt())
+            .expectationPay(room.getExpectationPay())
+            .totalPay(room.getTotalPay()).build();
     }
 
     @Override
