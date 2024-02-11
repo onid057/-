@@ -4,9 +4,9 @@ import { makeRoom } from '../../apis/api/room';
 import { useNavigate } from 'react-router-dom';
 
 import DetailContent from './DetailContent';
-import TargetDate from '../filterFunnel/TargetDate';
-import TargetTime from '../filterFunnel/TargetTime';
-import Address from '../filterFunnel/Address';
+import TargetDate from './TargetDate';
+import TargetTime from './TargetTime';
+import Address from './Address';
 import SuggestPayment from './SuggestPayment';
 
 function CreateRoomFunnel() {
