@@ -7,7 +7,6 @@ import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
 import Input from '../../components/common/Input';
-import LongInputBox from '../../components/common/LongInputBox';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -16,16 +15,22 @@ const Wrapper = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
 
-function DetailContent({ onPrevious, onNext, matchTitle, matchContent }) {
-  const [title, setTitle] = useState(matchTitle || '');
-  const [content, setContent] = useState(matchContent || '');
+const TimeWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
+  const [startTime, setStartTime] = useState(matchStartTime);
+  const [endTime, setEndTime] = useState(matchEndTime);
 
   return (
     <Wrapper>
@@ -40,38 +45,47 @@ function DetailContent({ onPrevious, onNext, matchTitle, matchContent }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={() => onNext(title, content)}
-        disabledOnNext={!title || !content}
+        onNext={() => onNext(startTime, endTime)}
+        disabledOnNext={!startTime || !endTime}
       ></NavigationBar>
 
       <Paragraph
         gap="5px"
         fontSize="35px"
         sentences={[
-          <BoldText
-            boldContent="구체적으로 할 일"
-            normalContent="을"
-          ></BoldText>,
-          '설명해주세요',
+          <BoldText boldContent="시간" normalContent="을"></BoldText>,
+          '정해주세요',
         ]}
       ></Paragraph>
 
-      <ProgressBar value={20}></ProgressBar>
-      <Input
-        type={'text'}
-        width={'100%'}
-        labelText={'방 제목'}
-        placeholder={'ex. 강아지 대신 산책시켜 주실 분'}
-        value={title}
-        onChange={event => setTitle(event.target.value)}
-      ></Input>
-      <LongInputBox
-        title={'세부 내용'}
-        value={content}
-        onChange={event => setContent(event.target.value)}
-      ></LongInputBox>
+      <ProgressBar value={60}></ProgressBar>
+
+      <TimeWrapper>
+        <Input
+          type="number"
+          width="80px"
+          step="1"
+          min={0}
+          max={24}
+          value={startTime}
+          placeholder={9}
+          onChange={event => setStartTime(event.target.value)}
+        ></Input>
+        <>시부터</>
+        <Input
+          type="number"
+          width="80px"
+          step="1"
+          min={0}
+          max={24}
+          value={endTime}
+          placeholder={12}
+          onChange={event => setEndTime(event.target.value)}
+        ></Input>
+        <>시까지</>
+      </TimeWrapper>
     </Wrapper>
   );
 }
 
-export default DetailContent;
+export default TargetTime;

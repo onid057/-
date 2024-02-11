@@ -11,7 +11,6 @@ const Wrapper = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-  align-items: center;
   gap: 30px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
@@ -55,10 +54,11 @@ function CompletedCreationRoom() {
       </ContentWrapper>
       <ContentWrapper>
         <NavigateText
-          nextPage={'/test'}
+          nextPage={'/rooms'}
           children={<TextWrapper>집사모집 목록 확인하기</TextWrapper>}
         ></NavigateText>
       </ContentWrapper>
+      <MenuBar></MenuBar>
     </Wrapper>
   );
 }

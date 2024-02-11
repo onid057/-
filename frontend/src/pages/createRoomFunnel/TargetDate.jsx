@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
-
+import Calendar from 'react-calendar';
+import '../../assets/styles/Calendar.css';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
-import Input from '../../components/common/Input';
-import LongInputBox from '../../components/common/LongInputBox';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -16,16 +15,15 @@ const Wrapper = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
 
-function DetailContent({ onPrevious, onNext, matchTitle, matchContent }) {
-  const [title, setTitle] = useState(matchTitle || '');
-  const [content, setContent] = useState(matchContent || '');
+function TargetDate({ onPrevious, onNext, matchDate }) {
+  const [date, setDate] = useState(matchDate);
 
   return (
     <Wrapper>
@@ -40,38 +38,33 @@ function DetailContent({ onPrevious, onNext, matchTitle, matchContent }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={() => onNext(title, content)}
-        disabledOnNext={!title || !content}
+        onNext={() => onNext(new Date(date))}
+        disabledOnNext={!date}
       ></NavigationBar>
 
       <Paragraph
         gap="5px"
         fontSize="35px"
         sentences={[
-          <BoldText
-            boldContent="구체적으로 할 일"
-            normalContent="을"
-          ></BoldText>,
-          '설명해주세요',
+          <BoldText boldContent="날짜" normalContent="를"></BoldText>,
+          '정해주세요',
         ]}
       ></Paragraph>
 
-      <ProgressBar value={20}></ProgressBar>
-      <Input
-        type={'text'}
-        width={'100%'}
-        labelText={'방 제목'}
-        placeholder={'ex. 강아지 대신 산책시켜 주실 분'}
-        value={title}
-        onChange={event => setTitle(event.target.value)}
-      ></Input>
-      <LongInputBox
-        title={'세부 내용'}
-        value={content}
-        onChange={event => setContent(event.target.value)}
-      ></LongInputBox>
+      <ProgressBar value={40}></ProgressBar>
+
+      <Calendar
+        value={date}
+        onChange={setDate}
+        view={'month'}
+        minDate={new Date()}
+        maxDate={new Date('2024-12-31')}
+        next2Label={null}
+        prev2Label={null}
+        formatDay={(_, date) => date.toLocaleString('en', { day: 'numeric' })}
+      ></Calendar>
     </Wrapper>
   );
 }
 
-export default DetailContent;
+export default TargetDate;

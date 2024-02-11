@@ -5,6 +5,7 @@ import GenderBadge from './GenderBadge';
 import GradeBadge from './GradeBadge';
 import PreferTag from './PreferTag';
 import { getZipsaListFromMap } from '../../apis/api/map';
+import { getZipsaListFromDetailInfo } from '../../apis/api/room';
 import { forwardRef, useState, useEffect } from 'react';
 
 const Wrapper = styled.div`
@@ -75,8 +76,6 @@ const BottomSheet = forwardRef(
       onClick,
       targetCluster,
       setZipsaId,
-      buttonName,
-      onButtonClick,
     },
     ref,
   ) => {
@@ -84,11 +83,18 @@ const BottomSheet = forwardRef(
     const [targetZipsa, setTargetZipsa] = useState({}); // 현재 선택된 집사 한 명
 
     useEffect(() => {
-      if (targetCluster)
+      if (targetCluster) {
         getZipsaListFromMap(targetCluster.lat, targetCluster.lng).then(
           response => setZipsaList(response),
         );
-    }, [targetCluster]);
+      }
+      if (roomId) {
+        getZipsaListFromDetailInfo(roomId).then(response => {
+          setZipsaList(response);
+          console.log(response);
+        });
+      }
+    }, [targetCluster, roomId]);
 
     return (
       <Wrapper $isOpen={isOpen} $isDetailOpen={isDetailOpen} ref={ref}>

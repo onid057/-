@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
+import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Buttton from '../../components/common/Button';
-import { getRoomDetailInfo, applyForRoom } from '../../apis/api/room';
+import BottomSheet from '../../components/common/BottomSheet';
+import { getRoomDetailInfo, acceptZipsaRequest } from '../../apis/api/room';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -20,6 +22,7 @@ const Wrapper = styled.div`
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
+  position: relative;
 `;
 
 const ContentWrapper = styled.div`
@@ -60,19 +63,45 @@ const Bold = styled.div`
   line-height: 1.3;
 `;
 
-function ZipsaRoomDetail() {
+function UserRoomDetail() {
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
   };
+
   const [roomInfo, setRoomInfo] = useState({});
   const { roomId } = useParams();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false); // 상세 정보
+  const modalRef = useRef(null);
 
   useEffect(() => {
     getRoomDetailInfo(roomId).then(response => {
       setRoomInfo(response.data);
     });
-  }, []);
+  }, [roomId]);
+
+  // bottom sheet 영역 이외의 부분을 클릭 시 모달 isOpen 변경
+  useEffect(() => {
+    const closeBottomSheet = event => {
+      if (
+        isOpen &&
+        modalRef.current &&
+        !modalRef.current.contains(event.target)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', closeBottomSheet);
+    return () => {
+      document.removeEventListener('mousedown', closeBottomSheet);
+    };
+  }, [isOpen]);
+
+  const onButtonClick = () => {
+    setIsOpen(true);
+    setIsDetailOpen(false);
+  };
 
   const formattingDate = date => {
     const serviceDate = new Date(date);
@@ -80,12 +109,6 @@ function ZipsaRoomDetail() {
     const month = String(serviceDate.getMonth() + 1).padStart(2, '0');
     const day = String(serviceDate.getDate()).padStart(2, '0');
     return `${year}년 ${month}월 ${day}일`;
-  };
-
-  const zipsaId = 3;
-
-  const onButtonClick = () => {
-    applyForRoom(roomId, zipsaId).then(response => console.log(response));
   };
 
   return (
@@ -101,6 +124,7 @@ function ZipsaRoomDetail() {
         }
         onPrevious={onPrevious}
       ></NavigationBar>
+
       <TitleWrapper>
         <BoldText
           boldContent={'모집'}
@@ -135,12 +159,32 @@ function ZipsaRoomDetail() {
         </DetailWrapper>
       </ContentWrapper>
 
-      <Buttton
-        mode={'THICK_BLUE'}
-        children={'지원하기'}
-        onClick={onButtonClick}
-      ></Buttton>
+      <TitleWrapper>
+        <Paragraph
+          fontSize={'18px'}
+          sentences={['집사의 요청을 확인해보세요']}
+        ></Paragraph>
+        <Buttton
+          mode={'THICK_BLUE'}
+          children={'요청확인'}
+          onClick={onButtonClick}
+        ></Buttton>
+      </TitleWrapper>
+
+      <BottomSheet
+        isOpen={isOpen}
+        isDetailOpen={isDetailOpen}
+        setIsDetailOpen={setIsDetailOpen}
+        ref={modalRef}
+        onClick={() => {
+          setIsOpen(false);
+        }}
+        roomId={roomId}
+        buttonName={'매칭 수락'}
+        onButtonClick={acceptZipsaRequest}
+      ></BottomSheet>
     </Wrapper>
   );
 }
-export default ZipsaRoomDetail;
+
+export default UserRoomDetail;

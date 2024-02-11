@@ -23,6 +23,12 @@ import SuggestByUser from './pages/notify/SuggestByUser';
 import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
 import Reserve from './pages/reserve/Reserve';
 // import ReserveDetail from './pages/reserve/ReserveDetail';
+import UserRoomList from './pages/createRoomFunnel/UserRoomList';
+import UserRoomDetail from './pages/createRoomFunnel/UserRoomDetail';
+import CreateRoomFunnel from './pages/createRoomFunnel/CreateRoomFunnel';
+import CompletedCreationRoom from './pages/createRoomFunnel/CompletedCreationRoom';
+import ZipsaRoomList from './pages/zipsaRoom/ZipsaRoomList';
+import ZipsaRoomDetail from './pages/zipsaRoom/ZipsaRoomDetail';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -218,6 +224,22 @@ function App() {
         {/* <Route path="/reserveDetail" element={<ReserveDetail />}></Route> */}
 
         <Route path="*" element={<NotFound />}></Route>
+
+        <Route path="/rooms" element={<UserRoomList />}></Route>
+        <Route path="/rooms/create" element={<CreateRoomFunnel />}></Route>
+        <Route
+          path="/rooms/detail/:roomId"
+          element={<UserRoomDetail />}
+        ></Route>
+        <Route path="/rooms/zipsa" element={<ZipsaRoomList />}></Route>
+        <Route
+          path="/rooms/zipsa/detail/:roomId"
+          element={<ZipsaRoomDetail />}
+        ></Route>
+        <Route
+          path="/rooms/complete"
+          element={<CompletedCreationRoom />}
+        ></Route>
       </Routes>
     </ThemeProvider>
   );
