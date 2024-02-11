@@ -27,7 +27,13 @@ public interface UserRepository {
 
     Room getUserRecordInfo(Long roomId);
 
+    Room getUserReservationInfo(Long roomId);
+
     List<Room> getUserReservationList(Long userId);
+
+    Room getUserReservationOngoing(Long userId);
+
+    Room getUserReservationBefore(Long userId);
 
     void makeAccount(Long userId, String account);
 
