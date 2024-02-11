@@ -111,19 +111,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Long makeUser(UserCreateRequest request) {
         // 에러 처리
-        User user = userRepository.findByUserEmail(request.getEmail());
-        if (user != null) {
+        if (userRepository.findByUserEmail(request.getEmail()) != null) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
-        logger.info("email: {}", request.getEmail());
-        logger.info("address: {}", request.getAddress());
-        logger.info("name: {}", request.getName());
-        logger.info("birth: {}", request.getBirth());
-        logger.info("gender: {}", request.getGender());
-        logger.info("latitude: {}", request.getLatitude());
-        logger.info("longitude: {}", request.getLongitude());
-        logger.info("password: {}", request.getPassword());
-        User newUser = User.builder()
+
+        User user = User.builder()
             .email(request.getEmail())
             .password(bCryptPasswordEncoder.encode(request.getPassword()))
             .name(request.getName())
@@ -138,19 +130,7 @@ public class UserServiceImpl implements UserService {
             .isAffiliated(false)
             .build();
 
-        Long userId = userRepository.makeUser(newUser);
-        logger.info("userId: {}", userId);
-        User findUser = userRepository.findByUserId(userId);
-        logger.info("userId: {}", findUser.getUserId());
-        logger.info("email: {}", findUser.getEmail());
-        logger.info("address: {}", findUser.getAddress());
-        logger.info("name: {}", findUser.getName());
-        logger.info("birth: {}", findUser.getBirth());
-        logger.info("gender: {}", findUser.getGender());
-        logger.info("latitude: {}", findUser.getLatitude());
-        logger.info("longitude: {}", findUser.getLongitude());
-        logger.info("password: {}", findUser.getPassword());
-        return findUser.getUserId();
+        return userRepository.makeUser(user).getUserId();
     }
 
     @Override

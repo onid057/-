@@ -49,9 +49,9 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Long makeUser(User user) {
+    public User makeUser(User user) {
         em.persist(user);
-        return user.getUserId();
+        return user;
     }
 
     @Override
