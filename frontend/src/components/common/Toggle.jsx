@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { changeUserState } from '../../apis/api/toggle';
 import styled from 'styled-components';
 
 const ToggleWrapper = styled.div`
@@ -56,23 +57,25 @@ const ToggleWrapper = styled.div`
   }
 `;
 
-function Toggle() {
-  const [isOn, setIsOn] = useState(false);
-
+function Toggle({ isWorked, setIsWorked }) {
   const toggleHandler = () => {
-    setIsOn(!isOn);
+    changeUserState(3).then(response => {
+      setIsWorked(!isWorked);
+    });
   };
 
   return (
     <ToggleWrapper onClick={toggleHandler}>
       <div
-        className={`toggle-wrapper ${isOn ? 'toggle--checked' : null}`}
+        className={`toggle-wrapper ${isWorked ? 'toggle--checked' : null}`}
       ></div>
-      <div className={`toggle-circle ${isOn ? 'toggle--checked' : null}`}></div>
-      <div className={`user-text-wrapper ${isOn ? 'text--blind' : null}`}>
+      <div
+        className={`toggle-circle ${isWorked ? 'toggle--checked' : null}`}
+      ></div>
+      <div className={`user-text-wrapper ${isWorked ? 'text--blind' : null}`}>
         집사로 전환하기
       </div>
-      <div className={`zipsa-text-wrapper ${!isOn ? 'text--blind' : null}`}>
+      <div className={`zipsa-text-wrapper ${!isWorked ? 'text--blind' : null}`}>
         고객으로 전환하기
       </div>
     </ToggleWrapper>

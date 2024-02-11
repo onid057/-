@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { getUserState } from '../apis/api/toggle.js';
 
 import Image from '../components/common/Image.jsx';
 import Paragraph from '../components/common/Paragraph.jsx';
@@ -45,7 +47,15 @@ const LoginRegisterWrapper = styled.div`
 `;
 
 export default function Home() {
+  const [isWorked, setIsWorked] = useState();
   const navigate = useNavigate('/notify');
+
+  useEffect(() => {
+    getUserState(3).then(response => {
+      console.log(response);
+      setIsWorked(response.data.isWorked);
+    });
+  }, [isWorked]);
 
   return (
     <Wrapper>
@@ -60,7 +70,7 @@ export default function Home() {
         ></Image>
       </UpperWrapper>
 
-      <Toggle></Toggle>
+      <Toggle isWorked={isWorked} setIsWorked={setIsWorked}></Toggle>
 
       <Notice
         upper={[
