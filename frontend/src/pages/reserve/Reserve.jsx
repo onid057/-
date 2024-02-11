@@ -82,7 +82,7 @@ function Reserve() {
                 ]}
               ></Paragraph>,
             ]}
-            nextPage="/reserveDetail"
+            nextPage={`/reserveDetail/${reservation.roomId}`}
           ></Notice>
         );
       })}
