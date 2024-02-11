@@ -13,11 +13,11 @@ import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.time.Duration;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,6 +27,15 @@ public class AssociationServiceImpl implements AssociationService {
 
     private final AssociationRepository associationRepository;
     private final UserRepository userRepository;
+
+    @Value("${code.association.start}")
+    private String codeStart;
+
+    @Value("${code.association.end}")
+    private String codeEnd;
+
+    @Value("${code.association.time}")
+    private String codeTime;
 
     @Override
     @Transactional
@@ -48,7 +57,7 @@ public class AssociationServiceImpl implements AssociationService {
         Long representativeId = associationRepository.findAssociationRepresentative(associationId);
         return users.stream()
             .map(user -> new UserAssociationResponse(user.getUserId(), user.getName(),
-                user.getProfileImage() == null ? null : user.getProfileImage(),
+                user.getProfileImage(),
                 user.getUserId().equals(representativeId))).toList();
     }
 
@@ -90,10 +99,12 @@ public class AssociationServiceImpl implements AssociationService {
                 associationRepository.findTtl(code).intValue());
         }
 
-        int newCode = SecureRandom.getInstanceStrong().nextInt(10000000, 99999999);
+        int newCode = SecureRandom.getInstanceStrong()
+            .nextInt(Integer.parseInt(codeStart), Integer.parseInt(codeEnd));
         // 이제 생성한 코드가 중복이 되는지를 체크하고 아닐때 까지 반복을 시켜야 한다
         while (associationRepository.findAssociationId(String.valueOf(newCode)) != null) {
-            newCode = SecureRandom.getInstanceStrong().nextInt(10000000, 99999999);
+            newCode = SecureRandom.getInstanceStrong()
+                .nextInt(Integer.parseInt(codeStart), Integer.parseInt(codeEnd));
         }
         // 이제 코드와 연동 계정의 번호를 저장
         associationRepository.saveAssociationId(String.valueOf(newCode),
@@ -101,7 +112,7 @@ public class AssociationServiceImpl implements AssociationService {
         // 그리고 대표의 이메일과 코드를 저장
         associationRepository.saveCode(email, String.valueOf(newCode));
         return new AssociationAdditionCodeResponse(String.valueOf(newCode),
-            (int) (Duration.ofMinutes(30).toMillis() / 1000));
+            Integer.parseInt(codeTime));
     }
 
     @Override

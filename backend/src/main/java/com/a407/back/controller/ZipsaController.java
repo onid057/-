@@ -3,8 +3,6 @@ package com.a407.back.controller;
 import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ApiResponse;
-import com.a407.back.dto.util.RecordResponse;
-import com.a407.back.dto.util.ReservationResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
@@ -81,14 +79,6 @@ public class ZipsaController {
                 zipsaService.findsZipsaReviewFindByZipsaId(helperId)));
     }
 
-    @GetMapping("/{helperId}/records")
-    public ResponseEntity<ApiResponse<List<RecordResponse>>> getZipsaRecordList(
-        @PathVariable Long helperId) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.getZipsaRecordList(helperId)));
-    }
-
     @GetMapping("/records/{roomId}")
     public ResponseEntity<ApiResponse<ZipsaRecordsResponse>> getZipsaRecordInfo(
         @PathVariable Long roomId) {
@@ -104,23 +94,6 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaReservationInfo(roomId)));
     }
-
-    @GetMapping("/{helperId}/reservations")
-    public ResponseEntity<ApiResponse<List<ReservationResponse>>> getZipsaReservationList(
-        @PathVariable Long helperId) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.getZipsaReservationList(helperId)));
-    }
-
-    @GetMapping("/{helperId}/reservations/first")
-    public ResponseEntity<ApiResponse<ReservationResponse>> getZipsaReservationFirst(
-        @PathVariable Long helperId) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.getZipsaReservationFirst(helperId)));
-    }
-
 
     @PatchMapping("/{helperId}/reversal")
     public ResponseEntity<ApiResponse<String>> changeZipsaStatus(
