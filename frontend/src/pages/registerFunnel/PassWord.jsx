@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
-import { styled } from 'styled-components';
-
+import { useState } from 'react';
+import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
@@ -21,12 +20,9 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-function Name({ onPrevious, onNext, userName }) {
-  const [name, setName] = useState('');
-
-  useEffect(() => {
-    if (userName) setName(userName);
-  }, [userName]);
+function PassWord({ onPrevious, onNext }) {
+  const [password, setPassword] = useState();
+  const [confirmPassword, setConfirmPassword] = useState();
 
   return (
     <Wrapper>
@@ -41,31 +37,46 @@ function Name({ onPrevious, onNext, userName }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={() => onNext(name)}
-        disabledOnNext={!name}
+        onNext={() => onNext(password)}
+        disabledOnNext={
+          !password || !confirmPassword || password !== confirmPassword
+        }
       ></NavigationBar>
 
       <Paragraph
         gap="5px"
         fontSize="35px"
         sentences={[
-          <BoldText boldContent="이름" normalContent="을"></BoldText>,
+          <BoldText boldContent="비밀번호" normalContent="를"></BoldText>,
           '입력해주세요',
         ]}
       ></Paragraph>
 
       <Input
+        labelText="비밀번호 입력"
+        type="password"
         width="288px"
-        margin="50px 0"
-        commentText="이름은 4자 이상 입력할 수 없어요."
-        placeholder="홍길동"
+        margin="50px 0 0 0"
+        commentText="비밀번호는 8자리 이상이어야 합니다."
+        placeholder="********"
         onInput={event => {
-          setName(event.target.value);
+          setPassword(event.target.value);
         }}
-        data={userName}
+      ></Input>
+
+      <Input
+        labelText="비밀번호 확인"
+        type="password"
+        width="288px"
+        margin="20px 0 0 0"
+        commentText="비밀번호가 일치하지 않습니다."
+        placeholder="********"
+        onInput={event => {
+          setConfirmPassword(event.target.value);
+        }}
       ></Input>
     </Wrapper>
   );
 }
 
-export default Name;
+export default PassWord;

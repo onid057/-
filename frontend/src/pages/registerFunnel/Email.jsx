@@ -42,6 +42,7 @@ function Email({ onPrevious, onNext, userEmail }) {
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(email)}
+        disabledOnNext={!email}
       ></NavigationBar>
 
       <Paragraph

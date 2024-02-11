@@ -1,15 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFunnel } from '../../hooks/useFunnel';
+import { getLngLatFromAddress } from '../../apis/api/addressToLngLat';
+import { createAccount } from '../../apis/api/register';
 
 import Name from './Name';
 import Gender from './Gender';
+import Birth from './Birth';
 import Email from './Email';
+import PassWord from './PassWord';
+import Address from './Address';
 
 function RegisterFunnel() {
   const [registerData, setRegisterData] = useState({});
   const [Funnel, setStep] = useFunnel('NAME');
+  const [location, setLocation] = useState();
+
+  const navigate = useNavigate();
 
   console.log(registerData);
+
+  useEffect(() => {
+    const asyncFunction = async data => {
+      const latlng = await getLngLatFromAddress(data);
+      console.log(latlng);
+      setLocation(latlng);
+    };
+    if (registerData.userAddress) asyncFunction(registerData.userAddress);
+  }, [registerData.userAddress]);
 
   return (
     <Funnel>
@@ -32,24 +50,77 @@ function RegisterFunnel() {
             setStep('NAME');
           }}
           onNext={data => {
-            setStep('EMAIL');
+            setStep('BIRTH');
             setRegisterData({ ...registerData, userGender: data });
           }}
           userGender={registerData.userGender}
         ></Gender>
       </Funnel.Step>
 
-      <Funnel.Step name="EMAIL">
-        <Email
+      <Funnel.Step name="BIRTH">
+        <Birth
           onPrevious={() => {
             setStep('GENDER');
           }}
           onNext={data => {
-            setStep('NAME');
+            setStep('ADDRESS');
+            setRegisterData({ ...registerData, userBirth: data });
+          }}
+          userBirth={registerData.userBirth}
+        ></Birth>
+      </Funnel.Step>
+
+      <Funnel.Step name="ADDRESS">
+        <Address
+          onPrevious={() => {
+            setStep('BIRTH');
+          }}
+          onNext={(address, detailAddress) => {
+            setStep('EMAIL');
+            setRegisterData({
+              ...registerData,
+              userAddress: address,
+              userDetailAddress: detailAddress,
+            });
+          }}
+          userAddress={registerData.userAddress}
+          userDetailAddress={registerData.userDetailAddress}
+        ></Address>
+      </Funnel.Step>
+
+      <Funnel.Step name="EMAIL">
+        <Email
+          onPrevious={() => {
+            setStep('ADDRESS');
+          }}
+          onNext={data => {
+            setStep('PASSWORD');
             setRegisterData({ ...registerData, userEmail: data });
           }}
           userEmail={registerData.userEmail}
         ></Email>
+      </Funnel.Step>
+
+      <Funnel.Step name="PASSWORD">
+        <PassWord
+          onPrevious={() => {
+            setStep('EMAIL');
+          }}
+          onNext={data => {
+            const nextRegisterData = { ...registerData, userPassword: data };
+            createAccount(
+              nextRegisterData.userName,
+              nextRegisterData.userGender,
+              nextRegisterData.userBirth,
+              nextRegisterData.userAddress,
+              location.Ma,
+              location.La,
+              nextRegisterData.userEmail,
+              nextRegisterData.userPassword,
+            );
+            navigate('/startMatch');
+          }}
+        ></PassWord>
       </Funnel.Step>
     </Funnel>
   );

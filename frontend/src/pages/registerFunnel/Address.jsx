@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { styled } from 'styled-components';
-
+import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
-import Button from '../../components/common/Button';
+import ProgressBar from '../../components/common/ProgressBar';
+import AddressInput from '../../components/common/AddressInput';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -14,22 +14,16 @@ const Wrapper = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
 
-const ButtonWrapper = styled.div`
-  margin: 60px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-function Gender({ onPrevious, onNext }) {
-  const [gender, setGender] = useState('');
+function Address({ onPrevious, onNext, userAddress, userDetailAddress }) {
+  const [address, setAddress] = useState(userAddress);
+  const [detailAddress, setDetailAddress] = useState(userDetailAddress);
 
   return (
     <Wrapper>
@@ -44,37 +38,29 @@ function Gender({ onPrevious, onNext }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={() => onNext(gender)}
-        disabledOnNext={!gender}
+        onNext={() => onNext(address, detailAddress)}
+        disabledOnNext={!address || !detailAddress}
       ></NavigationBar>
 
       <Paragraph
         gap="5px"
         fontSize="35px"
         sentences={[
-          <BoldText boldContent="성별" normalContent="을"></BoldText>,
-          '선택해주세요',
+          <BoldText boldContent="거주지" normalContent="를"></BoldText>,
+          '입력해주세요',
         ]}
       ></Paragraph>
 
-      <ButtonWrapper>
-        <Button
-          color="#ffffff"
-          mode={gender === 'MAN' ? 'THICK_BLUE' : 'THICK_WHITE'}
-          onClick={() => setGender('MAN')}
-        >
-          남성
-        </Button>
-        <Button
-          color="#ffffff"
-          mode={gender === 'WOMAN' ? 'THICK_BLUE' : 'THICK_WHITE'}
-          onClick={() => setGender('WOMAN')}
-        >
-          여성
-        </Button>
-      </ButtonWrapper>
+      <ProgressBar value={84}></ProgressBar>
+
+      <AddressInput
+        defaultAddress={address}
+        defaultDetailAddress={detailAddress}
+        setAddress={setAddress}
+        setDetailAddress={setDetailAddress}
+      ></AddressInput>
     </Wrapper>
   );
 }
 
-export default Gender;
+export default Address;

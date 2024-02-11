@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
-
+import Calendar from 'react-calendar';
+import '../../assets/styles/Calendar.css';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
-import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
-import Button from '../../components/common/Button';
+import Paragraph from '../../components/common/Paragraph';
+import ProgressBar from '../../components/common/ProgressBar';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -14,22 +15,15 @@ const Wrapper = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
 
-const ButtonWrapper = styled.div`
-  margin: 60px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`;
-
-function Gender({ onPrevious, onNext }) {
-  const [gender, setGender] = useState('');
+function Birth({ onPrevious, onNext, userBirth }) {
+  const [date, setDate] = useState(userBirth);
 
   return (
     <Wrapper>
@@ -44,37 +38,32 @@ function Gender({ onPrevious, onNext }) {
         }
         rightContent="다음"
         onPrevious={onPrevious}
-        onNext={() => onNext(gender)}
-        disabledOnNext={!gender}
+        onNext={() => onNext(new Date(date))}
+        disabledOnNext={!date}
       ></NavigationBar>
 
       <Paragraph
         gap="5px"
         fontSize="35px"
         sentences={[
-          <BoldText boldContent="성별" normalContent="을"></BoldText>,
-          '선택해주세요',
+          <BoldText boldContent="생년월일" normalContent="을"></BoldText>,
+          '알려주세요',
         ]}
       ></Paragraph>
 
-      <ButtonWrapper>
-        <Button
-          color="#ffffff"
-          mode={gender === 'MAN' ? 'THICK_BLUE' : 'THICK_WHITE'}
-          onClick={() => setGender('MAN')}
-        >
-          남성
-        </Button>
-        <Button
-          color="#ffffff"
-          mode={gender === 'WOMAN' ? 'THICK_BLUE' : 'THICK_WHITE'}
-          onClick={() => setGender('WOMAN')}
-        >
-          여성
-        </Button>
-      </ButtonWrapper>
+      <ProgressBar value={60}></ProgressBar>
+
+      <Calendar
+        value={date}
+        onChange={setDate}
+        minDate={new Date('1900-01-01')}
+        maxDate={new Date()}
+        next2Label={null}
+        prev2Label={null}
+        formatDay={(_, date) => date.toLocaleString('en', { day: 'numeric' })}
+      ></Calendar>
     </Wrapper>
   );
 }
 
-export default Gender;
+export default Birth;
