@@ -43,7 +43,6 @@ public class MatchServiceImpl implements MatchService {
     public List<MatchSearchResponse> getFilteredZipsaList(MatchSearchRequest matchSearchRequest) {
         List<Zipsa> zipsaList = matchRepository.findByConditions(matchSearchRequest);
         return zipsaList.stream().map(zipsa -> {
-            List<String> categories = getCategoryNamesForZipsa(zipsa);
             String gradeName = zipsa.getGradeId().getName();
             int gradeSalary = zipsa.getGradeId().getSalary();
             double scoreAverage =
@@ -58,7 +57,7 @@ public class MatchServiceImpl implements MatchService {
                 zipsa.getServiceCount(),
                 String.valueOf(matchSearchRequest.getMajorCategoryId()),
                 scoreAverage,
-                categories
+                zipsa.getPreferTag()
             );
         }).toList();
     }

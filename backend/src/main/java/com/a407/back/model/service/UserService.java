@@ -14,7 +14,9 @@ import com.a407.back.dto.user.UserInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
-import com.a407.back.dto.user.UserRecordsResponse;
+import com.a407.back.dto.user.UserRecordResponse;
+import com.a407.back.dto.user.UserRecordInfoResponse;
+import com.a407.back.dto.user.UserReservationInfoResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
@@ -37,11 +39,16 @@ public interface UserService {
 
     User findByUserId(Long userId);
 
-    List<UserRecordsResponse> getUserRecordList(Long userId);
+    UserRecordInfoResponse getUserRecordInfo(Long roomId);
+
+    List<UserRecordResponse> getUserRecordList(Long userId);
+
+    UserReservationInfoResponse getUserReservationInfo(Long roomId);
 
     List<UserReservationResponse> getUserReservationList(Long userId);
 
     UserAccountResponse makeAccount(Long userId, UserAccountRequest userAccountRequest);
+    UserReservationResponse getUserReservationFirst(Long userId);
 
     String getMaskedCardNumber(Long userId);
 

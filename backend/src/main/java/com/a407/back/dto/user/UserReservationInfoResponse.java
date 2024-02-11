@@ -1,15 +1,17 @@
-package com.a407.back.dto.zipsa;
+package com.a407.back.dto.user;
 
+import com.a407.back.domain.Room.Process;
 import java.sql.Timestamp;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class ZipsaReservationResponse {
+public class UserReservationInfoResponse {
 
+    private Long zipsaId;
     private String name;
-    private String profileImage;
+    private String profile;
     private String subCategoryName;
     private String majorCategoryName;
     private String content;
@@ -24,5 +26,5 @@ public class ZipsaReservationResponse {
     private Timestamp expectationStartedAt;
     private Timestamp expectationEndedAt;
     private int expectationPay;
-
+    private Process status;
 }

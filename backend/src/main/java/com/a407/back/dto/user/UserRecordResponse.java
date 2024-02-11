@@ -7,12 +7,12 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserReservationResponse {
+public class UserRecordResponse {
 
     private Long roomId;
     private String name;
     private String majorCategoryName;
     private Process status;
-    private Timestamp expectationStartedAt;
+    private Timestamp endedAt;
 
 }

@@ -9,7 +9,6 @@ import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.Zipsa;
-import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -60,20 +59,20 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public List<Room> getZipsaRecordList(Long helperId) {
+    public Room getZipsaRecordInfo(Long roomId) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
-            .where(qRoom.zipsaId.zipsaId.userId.eq(helperId).and(qRoom.status.eq(
-                Process.END))).orderBy(qRoom.expectationStartedAt.asc()).fetch();
+            .where(qRoom.roomId.eq(roomId).and(qRoom.status.eq(
+                Process.END))).orderBy(qRoom.endedAt.desc()).limit(1).fetchOne();
     }
 
     @Override
-    public List<Room> getZipsaReservationList(Long zipsaId) {
+    public Room getZipsaReservationInfo(Long roomId) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
-            .where(qRoom.zipsaId.zipsaId.userId.eq(zipsaId).and(qRoom.status.in(
+            .where(qRoom.roomId.eq(roomId).and(qRoom.status.in(
                 Process.BEFORE, Process.ONGOING))).orderBy(qRoom.expectationStartedAt.asc())
-            .fetch();
+            .fetchOne();
     }
 
     @Override

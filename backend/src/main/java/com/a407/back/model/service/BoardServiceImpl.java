@@ -10,6 +10,7 @@ import com.a407.back.domain.User;
 import com.a407.back.dto.board.BoardChangeRequest;
 import com.a407.back.dto.board.BoardCreateRequest;
 import com.a407.back.dto.board.BoardDetailResponse;
+import com.a407.back.dto.board.BoardListRequest;
 import com.a407.back.dto.board.BoardListResponse;
 import com.a407.back.dto.util.BoardChangeDto;
 import com.a407.back.dto.util.BoardListDto;
@@ -18,10 +19,10 @@ import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.BoardRepository;
 import com.a407.back.model.repo.CommentRepository;
 import com.a407.back.model.repo.UserRepository;
-import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,20 +124,31 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardListResponse findBoardList(int page, int size) {
-        QueryResults<Board> totalBoardList = boardRepository.findBoardList((page - 1) * size, size);
-        List<BoardListDto> boardList = totalBoardList.getResults().stream().map(board -> {
+    public BoardListResponse findBoardList(BoardListRequest boardListRequest) {
+        List<BoardTag> totalBoardList = boardRepository.findBoardList(
+            (boardListRequest.getPage() - 1) * boardListRequest.getSize(),
+            boardListRequest.getSize(), boardListRequest.getTagList());
+        List<Long> countBoard = new ArrayList<>();
+        List<BoardListDto> boardList = new ArrayList<>();
+        for (BoardTag boardTag : totalBoardList) {
+            if (countBoard.contains(boardTag.getBoardTagId().boardId.getBoardId())) {
+                continue;
+            }
+            countBoard.add(boardTag.getBoardTagId().boardId.getBoardId());
             // 게시판의 댓글 개수 계산하기
-            int commentCount = commentRepository.getCommentCount(board).intValue();
+            int commentCount = commentRepository.getCommentCount(boardTag.getBoardTagId().boardId)
+                .intValue();
             // 게시판의 태그 이름들 리스트로 변환하여 전송
-            List<BoardTag> tagList = boardRepository.findBoardTagList(board);
+            List<BoardTag> tagList = boardRepository.findBoardTagList(
+                boardTag.getBoardTagId().boardId);
             List<String> tagNameList = tagList.stream()
-                .map(boardTag -> boardTag.getBoardTagId().tagId.getName()).toList();
-
-            return new BoardListDto(board.getTitle(), board.getUserId().getName(), commentCount,
-                board.getUpdatedAt(), tagNameList);
-        }).toList();
-        return new BoardListResponse(totalBoardList.getTotal(), page, boardList);
+                .map(boardTagList -> boardTagList.getBoardTagId().tagId.getName()).toList();
+            boardList.add(new BoardListDto(boardTag.getBoardTagId().boardId.getBoardId(),
+                boardTag.getBoardTagId().boardId.getTitle(),
+                boardTag.getBoardTagId().boardId.getUserId().getName(), commentCount,
+                boardTag.getBoardTagId().boardId.getUpdatedAt(), tagNameList));
+        }
+        return new BoardListResponse(countBoard.size(), boardListRequest.getPage(), boardList);
     }
 
     @Override

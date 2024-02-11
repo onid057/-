@@ -17,7 +17,9 @@ import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
-import com.a407.back.dto.user.UserRecordsResponse;
+import com.a407.back.dto.user.UserRecordInfoResponse;
+import com.a407.back.dto.user.UserRecordResponse;
+import com.a407.back.dto.user.UserReservationInfoResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.dto.util.SecurityUser;
@@ -34,6 +36,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -126,19 +129,11 @@ public class UserController {
     }
 
     @GetMapping("/records")
-    public ResponseEntity<ApiResponse<List<UserRecordsResponse>>> getUserRecordList(
+    public ResponseEntity<ApiResponse<List<UserRecordResponse>>> getUserRecordList(
         @AuthenticationPrincipal SecurityUser user) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 userService.getUserRecordList(user.getUserId())));
-    }
-
-    @GetMapping("/reservations")
-    public ResponseEntity<ApiResponse<List<UserReservationResponse>>> getUserReservationList(
-        @AuthenticationPrincipal SecurityUser user) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                userService.getUserReservationList(user.getUserId())));
     }
 
     @GetMapping("/rooms")
@@ -157,6 +152,23 @@ public class UserController {
                 userService.findNearZipsaLocationList(user.getUserId())));
     }
 
+    @GetMapping("/reservations")
+    public ResponseEntity<ApiResponse<List<UserReservationResponse>>> getUserReservationList(
+        @AuthenticationPrincipal SecurityUser user) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.getUserReservationList(user.getUserId())));
+    }
+
+    @PostMapping("/payments")
+    public ResponseEntity<ApiResponse<UserAccountResponse>> makeAccount(
+        @AuthenticationPrincipal SecurityUser user,
+        @RequestBody UserAccountRequest request) {
+        UserAccountResponse response = userService.makeAccount(user.getUserId(), request);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, response));
+    }
+
     @PostMapping("/helpers-map")
     public ResponseEntity<ApiResponse<List<UserNearZipsaInfoResponse>>> getNearUserInfoList(
         @RequestBody UserNearZipsaRequest userNearZipsaRequest) {
@@ -173,14 +185,6 @@ public class UserController {
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "신고 성공"));
     }
 
-    @PostMapping("/payments")
-    public ResponseEntity<ApiResponse<UserAccountResponse>> makeAccount(
-        @AuthenticationPrincipal SecurityUser user,
-        @RequestBody UserAccountRequest request) {
-        UserAccountResponse response = userService.makeAccount(user.getUserId(), request);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, response));
-    }
 
     @PatchMapping("/promise")
     public ResponseEntity<ApiResponse<String>> changeUserCertificated(
@@ -196,6 +200,29 @@ public class UserController {
         userService.deleteAccount(user.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "결제 정보 삭제"));
+    }
+
+    @GetMapping("/records/{roomId}")
+    public ResponseEntity<ApiResponse<UserRecordInfoResponse>> getUserRecordInfo(
+        @PathVariable Long roomId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS, userService.getUserRecordInfo(roomId)));
+    }
+
+    @GetMapping("/reservations/{roomId}")
+    public ResponseEntity<ApiResponse<UserReservationInfoResponse>> getUserReservationInfo(
+        @PathVariable Long roomId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.getUserReservationInfo(roomId)));
+    }
+
+    @GetMapping("/reservations/first")
+    public ResponseEntity<ApiResponse<UserReservationResponse>> getUserReservationFirst(
+        @AuthenticationPrincipal SecurityUser user) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.getUserReservationFirst(user.getUserId())));
     }
 
     @PostMapping("/certification/code")

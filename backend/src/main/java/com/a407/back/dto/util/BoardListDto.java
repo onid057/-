@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoardListDto {
 
+    private Long boardId;
     private String title;
     private String userName;
     private int commentCount;

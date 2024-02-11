@@ -10,7 +10,7 @@ import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
-import com.a407.back.dto.zipsa.ZipsaReservationResponse;
+import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
 import com.a407.back.model.service.ZipsaServiceImpl;
@@ -45,22 +45,6 @@ public class ZipsaController {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.findZipsaFindByZipsaId(helperId)));
-    }
-
-    @GetMapping("/records")
-    public ResponseEntity<ApiResponse<List<ZipsaRecordsResponse>>> searchZipsaRecordList(
-        @AuthenticationPrincipal SecurityUser user) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.getZipsaRecordList(user.getUserId())));
-    }
-
-    @GetMapping("/reservations")
-    public ResponseEntity<ApiResponse<List<ZipsaReservationResponse>>> getZipsaReservationList(
-        @AuthenticationPrincipal SecurityUser user) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.getZipsaReservationList(user.getUserId())));
     }
 
     @GetMapping("/rooms")
@@ -128,6 +112,21 @@ public class ZipsaController {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.findsZipsaReviewFindByZipsaId(helperId)));
+    }
+
+    @GetMapping("/records/{roomId}")
+    public ResponseEntity<ApiResponse<ZipsaRecordsResponse>> getZipsaRecordInfo(
+        @PathVariable Long roomId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.getZipsaRecordInfo(roomId)));
+    }
+    @GetMapping("/reservations/{roomId}")
+    public ResponseEntity<ApiResponse<ZipsaReservationInfoResponse>> getZipsaReservationInfo(
+        @PathVariable Long roomId) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.getZipsaReservationInfo(roomId)));
     }
 
 }

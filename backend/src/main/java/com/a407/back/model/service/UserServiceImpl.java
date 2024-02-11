@@ -26,7 +26,9 @@ import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
-import com.a407.back.dto.user.UserRecordsResponse;
+import com.a407.back.dto.user.UserRecordResponse;
+import com.a407.back.dto.user.UserRecordInfoResponse;
+import com.a407.back.dto.user.UserReservationInfoResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.BoardListDto;
 import com.a407.back.dto.util.ImageUtil;
@@ -40,7 +42,6 @@ import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -51,6 +52,8 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -83,12 +86,33 @@ public class UserServiceImpl implements UserService {
     @Value("${sms.number}")
     private String senderPhoneNumber;
 
+    @Value("${image.size.profile}")
+    private String profileSize;
 
+    @Value("${code.phone.start}")
+    private String codeStart;
+
+    @Value("${code.phone.end}")
+    private String codeEnd;
+
+    @Override
+    public UserInfoResponse findUserInfo(Long userId) {
+
+        User user = userRepository.findByUserId(userId);
+        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+
+        return new UserInfoResponse(user.getName(), user.getProfileImage(), user.getIsAffiliated(),
+            zipsa != null);
+    }
+
+    private final Logger logger= LoggerFactory.getLogger(this.getClass());
+    
     @Override
     @Transactional
     public Long makeUser(UserCreateRequest request) {
         // 에러 처리
         if (userRepository.findByUserEmail(request.getEmail()) != null) {
+            logger.info("어떤 값이 등장하나{}",userRepository.findByUserEmail(request.getEmail()));
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 
@@ -148,7 +172,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserNearZipsaInfoResponse> findNearZipsaInfoList(
         UserNearZipsaRequest userNearZipsaRequest) {
-
         return userRepository.findNearZipsaInfoList(userNearZipsaRequest.getLat(),
                 userNearZipsaRequest.getLng()).stream().map(
                 zipsa -> new UserNearZipsaInfoResponse(zipsa.getZipsaId().getName(),
@@ -162,45 +185,81 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserId(userId);
     }
 
+
     @Override
-    public List<UserRecordsResponse> getUserRecordList(Long userId) {
-        return userRepository.getUserRecordList(userId).stream().map(
-                room -> UserRecordsResponse.builder().roomId(room.getRoomId())
-                    .zipsaId(room.getZipsaId().getZipsaId().getUserId())
-                    .name(room.getZipsaId().getZipsaId().getName()).profile(
-                        room.getZipsaId().getZipsaId().getProfileImage() == null ? null
-                            : room.getZipsaId().getZipsaId().getProfileImage())
-                    .subCategoryName(room.getSubCategoryId().getName())
-                    .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
-                    .content(room.getContent()).estimateDuration(room.getEstimateDuration())
-                    .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
-                    .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
-                    .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
-                    .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
-                    .expectationEndedAt(room.getExpectationEndedAt())
-                    .expectationPay(room.getExpectationPay()).totalPay(room.getTotalPay())
-                    .isComplained(room.getIsComplained()).isReviewed(room.getIsReviewed()).build())
-            .toList();
+    public UserRecordInfoResponse getUserRecordInfo(Long roomId) {
+        Room room = userRepository.getUserRecordInfo(roomId);
+        return UserRecordInfoResponse.builder().roomId(room.getRoomId())
+            .zipsaId(room.getZipsaId().getZipsaId().getUserId())
+            .name(room.getZipsaId().getZipsaId().getName()).profile(
+                room.getZipsaId().getZipsaId().getProfileImage())
+            .subCategoryName(room.getSubCategoryId().getName())
+            .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+            .content(room.getContent()).estimateDuration(room.getEstimateDuration())
+            .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
+            .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
+            .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
+            .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
+            .expectationEndedAt(room.getExpectationEndedAt())
+            .expectationPay(room.getExpectationPay()).totalPay(room.getTotalPay())
+            .isComplained(room.getIsComplained()).isReviewed(room.getIsReviewed()).build();
+    }
+
+    @Override
+    public List<UserRecordResponse> getUserRecordList(Long userId) {
+        boolean isZipsa = isWorkedDistinction(userId);
+        return userRepository.getUserRecordList(userId, isZipsa).stream().map(
+            room -> new UserRecordResponse(room.getRoomId(),
+                isZipsa ? room.getUserId().getName() : room.getZipsaId().getZipsaId().getName(),
+                room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
+                room.getEndedAt())).toList();
+    }
+
+    @Override
+    public UserReservationInfoResponse getUserReservationInfo(Long roomId) {
+        Room room = userRepository.getUserReservationInfo(roomId);
+        return UserReservationInfoResponse.builder()
+            .zipsaId(room.getZipsaId().getZipsaId().getUserId())
+            .name(room.getZipsaId().getZipsaId().getName())
+            .profile(room.getZipsaId().getZipsaId().getProfileImage())
+            .subCategoryName(room.getSubCategoryId().getName())
+            .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+            .content(room.getContent()).estimateDuration(room.getEstimateDuration())
+            .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
+            .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
+            .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
+            .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
+            .expectationEndedAt(room.getExpectationEndedAt())
+            .expectationPay(room.getExpectationPay()).status(room.getStatus()).build();
     }
 
     @Override
     public List<UserReservationResponse> getUserReservationList(Long userId) {
-        return userRepository.getUserReservationList(userId).stream().map(
-            room -> UserReservationResponse.builder()
-                .zipsaId(room.getZipsaId().getZipsaId().getUserId())
-                .name(room.getZipsaId().getZipsaId().getName()).profile(
-                    room.getZipsaId().getZipsaId().getProfileImage() == null ? null
-                        : room.getZipsaId().getZipsaId().getProfileImage())
-                .subCategoryName(room.getSubCategoryId().getName())
-                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
-                .content(room.getContent()).estimateDuration(room.getEstimateDuration())
-                .roomCreatedAt(room.getRoomCreatedAt()).matchCreatedAt(room.getMatchCreatedAt())
-                .isReported(room.getIsReported()).reportCycle(room.getReportCycle())
-                .isPublic(room.getIsPublic()).startedAt(room.getStartedAt())
-                .endedAt(room.getEndedAt()).expectationStartedAt(room.getExpectationStartedAt())
-                .expectationEndedAt(room.getExpectationEndedAt())
-                .expectationPay(room.getExpectationPay()).build()).toList();
+        boolean isZipsa = isWorkedDistinction(userId);
+        return userRepository.getUserReservationList(userId, isZipsa).stream().map(
+            room -> new UserReservationResponse(room.getRoomId(),
+                isZipsa ? room.getUserId().getName() : room.getZipsaId().getZipsaId().getName(),
+                room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
+                room.getExpectationStartedAt())).toList();
     }
+
+    @Override
+    public UserReservationResponse getUserReservationFirst(Long userId) {
+        boolean isZipsa = isWorkedDistinction(userId);
+        Room room = userRepository.getUserReservationOngoing(userId, isZipsa);
+        if (room == null) {
+            room = userRepository.getUserReservationBefore(userId, isZipsa);
+        }
+        if (room == null) {
+            return null;
+        }
+        return new UserReservationResponse(room.getRoomId(),
+            isZipsa ? room.getUserId().getName() :
+                room.getZipsaId().getZipsaId().getName(),
+            room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
+            room.getExpectationStartedAt());
+    }
+
 
     @Override
     @Transactional
@@ -232,9 +291,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void makeSendMessage(String phoneNumber, String email)
         throws JsonProcessingException, NoSuchAlgorithmException {
-        int code = getInstanceStrong().nextInt(1000, 9999);
+        int code = getInstanceStrong().nextInt(Integer.parseInt(codeStart),
+            Integer.parseInt(codeEnd));
         while (userRepository.findCode(String.valueOf(code)) != null) {
-            code = getInstanceStrong().nextInt(1000, 9999);
+            code = getInstanceStrong().nextInt(Integer.parseInt(codeStart),
+                Integer.parseInt(codeEnd));
         }
         Message message = new Message();
         message.setFrom(senderPhoneNumber);
@@ -307,17 +368,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public BoardListResponse getUserBoardList(Long userId, int page, int size) {
         User user = userRepository.findByUserId(userId);
-        QueryResults<Board> boardList = boardRepository.getUserBoardList(user, (page - 1) * size,
+        List<Board> boardList = boardRepository.getUserBoardList(user, (page - 1) * size,
             size);
-        List<BoardListDto> userBoardList = boardList.getResults().stream().map(board -> {
+        List<BoardListDto> userBoardList = boardList.stream().map(board -> {
             int commentCount = commentRepository.getCommentCount(board).intValue();
             List<BoardTag> tagList = boardRepository.findBoardTagList(board);
             List<String> tagNameList = tagList.stream()
                 .map(tag -> tag.getBoardTagId().tagId.getName()).toList();
-            return new BoardListDto(board.getTitle(), board.getUserId().getName(), commentCount,
+            return new BoardListDto(board.getBoardId(), board.getTitle(),
+                board.getUserId().getName(), commentCount,
                 board.getUpdatedAt(), tagNameList);
         }).toList();
-        return new BoardListResponse(boardList.getTotal(), page, userBoardList);
+        return new BoardListResponse(userBoardList.size(), page, userBoardList);
     }
 
     @Override
@@ -330,7 +392,7 @@ public class UserServiceImpl implements UserService {
             if (user.getProfileImage() != null && !user.getProfileImage().isBlank()) {
                 imageUtil.deleteImage(user.getProfileImage());
             }
-            imageName = imageUtil.resizeImage(image, 100);
+            imageName = imageUtil.resizeImage(image, Integer.parseInt(profileSize));
         }
         UserChangeDto userChangeDto = new UserChangeDto(
             imageName == null ? user.getProfileImage() : imageName,
@@ -366,16 +428,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long userId) {
         zipsaRepository.deleteZipsa(userId);
         userRepository.deleteUser(userId);
-    }
-
-    @Override
-    public UserInfoResponse findUserInfo(Long userId) {
-
-        User user = userRepository.findByUserId(userId);
-        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
-
-        return new UserInfoResponse(user.getName(), user.getProfileImage(), user.getIsAffiliated(),
-            zipsa != null);
     }
 
 }

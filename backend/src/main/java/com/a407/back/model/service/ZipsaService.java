@@ -7,7 +7,7 @@ import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
-import com.a407.back.dto.zipsa.ZipsaReservationResponse;
+import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
 import java.io.IOException;
@@ -28,9 +28,9 @@ public interface ZipsaService {
 
     Zipsa findByZipsaId(Long zipsaId);
 
-    List<ZipsaRecordsResponse> getZipsaRecordList(Long helperId);
+    ZipsaRecordsResponse getZipsaRecordInfo(Long roomId);
 
-    List<ZipsaReservationResponse> getZipsaReservationList(Long zipsaId);
+    ZipsaReservationInfoResponse getZipsaReservationInfo(Long roomId);
 
     void makePublicRoomNotification(PublicRoomNotificationRequest publicRoomNotificationRequest);
 
