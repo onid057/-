@@ -138,7 +138,19 @@ public class UserServiceImpl implements UserService {
             .isAffiliated(false)
             .build();
 
-        return userRepository.makeUser(newUser);
+        Long userId = userRepository.makeUser(newUser);
+        logger.info("userId: {}", userId);
+        User findUser = userRepository.findByUserId(userId);
+        logger.info("userId: {}", findUser.getUserId());
+        logger.info("email: {}", findUser.getEmail());
+        logger.info("address: {}", findUser.getAddress());
+        logger.info("name: {}", findUser.getName());
+        logger.info("birth: {}", findUser.getBirth());
+        logger.info("gender: {}", findUser.getGender());
+        logger.info("latitude: {}", findUser.getLatitude());
+        logger.info("longitude: {}", findUser.getLongitude());
+        logger.info("password: {}", findUser.getPassword());
+        return findUser.getUserId();
     }
 
     @Override
