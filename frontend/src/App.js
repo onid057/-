@@ -22,7 +22,7 @@ import SuggestByZipsa from './pages/notify/SuggestByZipsa';
 import SuggestByUser from './pages/notify/SuggestByUser';
 import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
 import Reserve from './pages/reserve/Reserve';
-// import ReserveDetail from './pages/reserve/ReserveDetail';
+import ReserveDetail from './pages/reserve/ReserveDetail';
 import UserRoomList from './pages/createRoomFunnel/UserRoomList';
 import UserRoomDetail from './pages/createRoomFunnel/UserRoomDetail';
 import CreateRoomFunnel from './pages/createRoomFunnel/CreateRoomFunnel';
@@ -33,6 +33,7 @@ import BoardsMain from './pages/boards/BoardsMain';
 import BoardsDetail from './pages/boards/BoardsDetail';
 import UpdateBoard from './pages/boards/UpdateBoard';
 import CreateBoard from './pages/boards/CreateBoard';
+import ReportDetail from './pages/report/ReportDetail';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -230,7 +231,10 @@ function App() {
 					1. 예약 화면 
 				*/}
         <Route path="/reserve" element={<Reserve />}></Route>
-        {/* <Route path="/reserveDetail" element={<ReserveDetail />}></Route> */}
+        <Route
+          path="/reserveDetail/:roomId"
+          element={<ReserveDetail />}
+        ></Route>
 
         <Route path="*" element={<NotFound />}></Route>
 
@@ -249,6 +253,7 @@ function App() {
           path="/rooms/complete"
           element={<CompletedCreationRoom />}
         ></Route>
+        <Route path="/reportDetail" element={<ReportDetail />}></Route>
       </Routes>
     </ThemeProvider>
   );
