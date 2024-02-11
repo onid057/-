@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
             .isAffiliated(false)
             .build();
 
-        return userRepository.makeUser(newUser).getUserId();
+        return userRepository.makeUser(newUser);
     }
 
     @Override

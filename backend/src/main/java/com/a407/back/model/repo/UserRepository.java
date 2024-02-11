@@ -13,7 +13,7 @@ public interface UserRepository {
 
     User findByUserEmail(String email);
 
-    User makeUser(User user);
+    Long makeUser(User user);
 
     List<Notification> findNotificationByUserIdList(Long userId, String type);
 
