@@ -18,7 +18,6 @@ import MatchOption from './pages/MatchOption';
 import NotFound from './pages/NotFound';
 import StartMatch from './pages/StartMatch';
 import Notify from './pages/notify/Notify';
-import SuggestByZipsa from './pages/notify/SuggestByZipsa';
 import SuggestByUser from './pages/notify/SuggestByUser';
 import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
 import Reserve from './pages/reserve/Reserve';
@@ -37,6 +36,7 @@ import CreateBoard from './pages/boards/CreateBoard';
 import TestLee from './pages/TestLee';
 import ReportWriting from './pages/report/ReportWriting';
 import ReportDetail from './pages/report/ReportDetail';
+import ReportComplete from './pages/report/ReportComplete';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -211,10 +211,6 @@ function App() {
         <Route path="/startMatch" element={<StartMatch />}></Route>
         <Route path="/notify" element={<Notify />}></Route>
         <Route
-          path="/suggest-by-zipsa/:notificationId"
-          element={<SuggestByZipsa />}
-        ></Route>
-        <Route
           path="/suggest-by-user/:notificationId"
           element={<SuggestByUser />}
         ></Route>
@@ -262,8 +258,9 @@ function App() {
         ></Route>
 
         <Route path="/test/sumin" element={<TestLee />}></Route>
-        <Route path="/report" element={<ReportWriting />}></Route>
+        <Route path="/report/:roomId" element={<ReportWriting />}></Route>
         <Route path="/reportDetail/:roomId" element={<ReportDetail />}></Route>
+        <Route path="/reportComplete" element={<ReportComplete />}></Route>
       </Routes>
     </ThemeProvider>
   );

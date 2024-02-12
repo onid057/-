@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 25px 13px;
+  padding: 25px 16px;
   display: flex;
   flex-direction: column;
   gap: 11px;
@@ -59,6 +59,7 @@ function Notify() {
             <Fragment key={index}>
               <SimpleNotice
                 mode={userInfo}
+                status={notice.status}
                 name={notice.name}
                 majorCategory={notice.majorCategory}
                 createdAt={calculateRemainDate(notice.createdAt)}

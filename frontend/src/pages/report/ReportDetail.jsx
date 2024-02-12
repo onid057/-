@@ -7,7 +7,7 @@ import HorizontalLine from '../../components/common/HorizontalLine';
 import Paragraph from '../../components/common/Paragraph';
 import LongInputBox from '../../components/common/LongInputBox';
 
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getReportData } from '../../apis/api/report';
 import { calculateReportWritingTime } from '../../utils/time';
 
@@ -43,10 +43,10 @@ function ReportDetail() {
   };
 
   const [reportInfos, setReportInfos] = useState([]);
-  // const { roomId } = useParams();
+  const { roomId } = useParams();
 
   useEffect(() => {
-    getReportData().then(response => {
+    getReportData(roomId).then(response => {
       console.log(response);
       setReportInfos(response.data);
     });

@@ -2,7 +2,7 @@ import { Fragment } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { getReservationListByUser } from '../../apis/api/reserve';
-import { convertToHour, calculateRemainDate } from '../../utils/time';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 import styled from 'styled-components';
 import Image from '../../components/common/Image';
@@ -16,7 +16,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 25px 16px 0;
+  padding: 25px 16px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -34,8 +34,10 @@ const SimpleReservesWrapper = styled.div`
 function Reserve() {
   const { data } = useQuery({
     queryKey: ['reservationListByUser'],
-    queryFn: () => getReservationListByUser(1),
+    queryFn: () => getReservationListByUser(3),
   });
+
+  const userInfo = useUserInfo(state => state.userInfo);
 
   const navigate = useNavigate();
 
@@ -58,12 +60,12 @@ function Reserve() {
           return (
             <Fragment key={index}>
               <SimpleReserve
+                mode={userInfo}
                 status={reservation.status}
+                roomId={reservation.roomId}
                 name={reservation.name}
                 majorCategory={reservation.majorCategoryName}
-                createdAt={calculateRemainDate(
-                  reservation.expectationStartedAt,
-                )}
+                createdAt={reservation.expectationStartedAt}
                 onClick={() => navigate(`/reserveDetail/${reservation.roomId}`)}
               ></SimpleReserve>
 

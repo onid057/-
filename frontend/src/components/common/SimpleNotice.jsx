@@ -21,15 +21,30 @@ const BlueTextWrapper = styled.span`
   color: #629af9;
 `;
 
-function SimpleNotice({ mode, name, majorCategory, createdAt, onClick }) {
+function SimpleNotice({
+  mode,
+  status,
+  name,
+  majorCategory,
+  createdAt,
+  onClick,
+}) {
   return (
     <Wrapper>
       <LeftWrapper>
         <BoldText
           fontSize={'13px'}
-          boldContent={<BlueTextWrapper>#</BlueTextWrapper>}
+          boldContent={
+            <BlueTextWrapper>
+              {status === 'CONFIRM' || status === 'REPORT' ? '@' : '#'}
+            </BlueTextWrapper>
+          }
           normalContent={
-            (mode === 'ZIPSA' ? ' 제안' : ' 지원') + ` | ${createdAt}`
+            (status === 'CONFIRM' || status === 'REPORT'
+              ? ' 정기 보고'
+              : mode === 'ZIPSA'
+                ? ' 제안'
+                : ' 지원') + ` | ${createdAt}`
           }
         ></BoldText>
         <Paragraph
@@ -40,10 +55,21 @@ function SimpleNotice({ mode, name, majorCategory, createdAt, onClick }) {
               boldContent={name}
               normalContent={mode === 'ZIPSA' ? ' 고객님이' : ' 집사님이'}
             ></BoldText>,
+
             <BoldText
-              boldContent={majorCategory}
+              boldContent={
+                status === 'CONFIRM' || status === 'REPORT'
+                  ? '정기 보고서'
+                  : majorCategory
+              }
               normalContent={
-                mode === 'ZIPSA' ? ' 을 제안하셨어요.' : ' 을 지원하셨어요.'
+                status === 'CONFIRM'
+                  ? ' 를 작성하셨어요.'
+                  : status === 'REPORT'
+                    ? ' 를 볼 수 있게 작성해주세요.'
+                    : mode === 'ZIPSA'
+                      ? ' 을 제안하셨어요.'
+                      : ' 을 지원하셨어요.'
               }
             ></BoldText>,
           ]}

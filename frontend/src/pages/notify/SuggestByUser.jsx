@@ -54,6 +54,7 @@ function SuggestByUser() {
 
   useEffect(() => {
     getMatchNotificationByUser(notificationId).then(response => {
+      console.log(response);
       setDetail(response.data);
     });
   }, []);

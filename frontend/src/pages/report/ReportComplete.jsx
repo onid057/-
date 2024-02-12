@@ -1,63 +1,32 @@
-import React, { useState } from 'react';
 import styled from 'styled-components';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Image from '../../components/common/Image';
-import { getReportData } from '../../apis/api/report';
+import NavigateText from '../../components/common/NavigateText';
 
-const ReportWrapper = styled.div`
+const Wrapper = styled.div`
   width: 320px;
-  height: 568px;
+  min-height: 568px;
   margin: 0 auto;
+  padding: 40px 16px 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   background-color: ${({ theme }) => theme.colors.primary};
-  line-height: 1.3;
+  font-size: 18px;
+  font-weight: 300;
+  white-space: pre-wrap;
 `;
 
-const ContentWrapper = styled.div`
-  box-sizing: border-box;
+const HeartWrapper = styled.div`
   width: 100%;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px 0 0;
-  gap: 40px;
-`;
-
-const Upper = styled.div`
-  width: 260px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: flex-start;
-`;
-const Lower = styled.div`
-  width: 294px;
-  height: 294px;
+  height: 288px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-radius: 25px;
-  background-color: white;
-`;
-
-// 아래 content가 가운데 정렬이 되지 않아서 하나씩 넣어주었다.
-const LowerContent = [
-  '오늘도 당신의 노고에',
-  <BoldText
-    fontSize={'18px'}
-    BoldContent={'감사'}
-    NormalContent={'드립니다.'}
-  />,
-];
-
-const LowerContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
+  background-color: #ffffff;
 `;
 
 export default function ReportComplete({ name }) {
@@ -75,48 +44,35 @@ export default function ReportComplete({ name }) {
     '완료했어요!',
   ];
 
-  const onClick = () => {
-    getReportData().then(response => {
-      console.log(response.data[0]);
-      setImageUrl(response.data[0].processImage);
-    });
-  };
-
-  const [imageUrl, setImageUrl] = useState('');
-
   return (
-    <ReportWrapper>
-      <ContentWrapper>
-        <Upper>
-          <Paragraph
-            gap={'10px'}
-            fontSize={'35px'}
-            sentences={UpperContent}
-          ></Paragraph>
-        </Upper>
-        <Lower>
-          <Image
-            src={`${process.env.PUBLIC_URL}/images/heart.svg`}
-            width={'150px'}
-            height={'150px'}
-            onClick={onClick}
-          ></Image>
-          <LowerContentWrapper>
-            <Paragraph
-              gap={''}
-              fontSize={'18px'}
-              sentences={[LowerContent[0]]}
-            ></Paragraph>
-            <Paragraph
-              gap={''}
-              fontSize={'18px'}
-              sentences={[LowerContent[1]]}
-            ></Paragraph>
-          </LowerContentWrapper>
-        </Lower>
-        <Image src={imageUrl} width={'200px'} height={'200px'}></Image>
-        {imageUrl}
-      </ContentWrapper>
-    </ReportWrapper>
+    <Wrapper>
+      <Paragraph
+        gap={'5px'}
+        fontSize={'35px'}
+        sentences={[
+          <BoldText
+            boldContent={'보고서 작성'}
+            normalContent={'을'}
+          ></BoldText>,
+          '완료했어요!',
+        ]}
+      ></Paragraph>
+
+      <HeartWrapper>
+        <Image
+          src={`${process.env.PUBLIC_URL}/images/heart.svg`}
+          width={'150px'}
+          height={'150px'}
+        ></Image>
+        <Paragraph
+          gap={'5px'}
+          fontSize={'15px'}
+          sentences={['고객님이 집사님을', '더욱 믿고 맡기실 수 있어요!']}
+          textAlign={'center'}
+        ></Paragraph>
+      </HeartWrapper>
+
+      <NavigateText nextPage="/">홈 화면으로 이동하기</NavigateText>
+    </Wrapper>
   );
 }

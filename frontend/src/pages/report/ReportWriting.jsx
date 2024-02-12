@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 16px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,15 +59,17 @@ function ReportWriting() {
   const PlaceholderContent =
     '서비스의 현재 진행 상황을\n상세하게 알려주세요.\n특이사항이 있다면 알려주세요.';
 
+  const { roomId } = useParams();
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
   };
 
   const onClickButton = () => {
-    sendReportData(imageFile, 1, content).then(response =>
+    sendReportData(imageFile, roomId, content).then(response =>
       console.log(response),
     );
+    navigate('/reportComplete');
   };
 
   return (
@@ -120,11 +122,9 @@ function ReportWriting() {
           value={content}
           onChange={event => setContent(event.target.value)}
         ></LongInputBox>
-        <Button
-          mode={'THICK_BLUE'}
-          children={'작성 완료'}
-          onClick={onClickButton}
-        ></Button>
+        <Button mode={'THICK_BLUE'} onClick={onClickButton}>
+          작성 완료
+        </Button>
       </ContentWrapper>
     </Wrapper>
   );
