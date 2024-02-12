@@ -22,7 +22,7 @@ import SuggestByZipsa from './pages/notify/SuggestByZipsa';
 import SuggestByUser from './pages/notify/SuggestByUser';
 import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
 import Reserve from './pages/reserve/Reserve';
-// import ReserveDetail from './pages/reserve/ReserveDetail';
+import ReserveDetail from './pages/reserve/ReserveDetail';
 import UserRoomList from './pages/createRoomFunnel/UserRoomList';
 import UserRoomDetail from './pages/createRoomFunnel/UserRoomDetail';
 import CreateRoomFunnel from './pages/createRoomFunnel/CreateRoomFunnel';
@@ -235,7 +235,10 @@ function App() {
 					1. 예약 화면 
 				*/}
         <Route path="/reserve" element={<Reserve />}></Route>
-        {/* <Route path="/reserveDetail" element={<ReserveDetail />}></Route> */}
+        <Route
+          path="/reserveDetail/:roomId"
+          element={<ReserveDetail />}
+        ></Route>
 
         <Route path="*" element={<NotFound />}></Route>
 
@@ -256,6 +259,7 @@ function App() {
         ></Route>
 
         <Route path="/test/sumin" element={<TestLee />}></Route>
+        <Route path="/reportDetail/:roomId" element={<ReportDetail />}></Route>
       </Routes>
     </ThemeProvider>
   );

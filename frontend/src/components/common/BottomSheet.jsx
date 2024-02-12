@@ -5,7 +5,6 @@ import GenderBadge from './GenderBadge';
 import GradeBadge from './GradeBadge';
 import PreferTag from './PreferTag';
 import { getZipsaListFromMap } from '../../apis/api/map';
-import { getZipsaListFromDetailInfo } from '../../apis/api/room';
 import { forwardRef, useState, useEffect } from 'react';
 
 const Wrapper = styled.div`

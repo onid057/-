@@ -1,9 +1,9 @@
 import React, { useRef, useState } from 'react';
-import Button from '../components/common/Button';
+import Button from '../../components/common/Button';
 import styled from 'styled-components';
-import NavigationBar from '../components/common/NavigationBar';
-import ImageUploader from '../components/common/ImageUploader';
-import LongInputBox from '../components/common/LongInputBox';
+import NavigationBar from '../../components/common/NavigationBar';
+import ImageUploader from '../../components/common/ImageUploader';
+import LongInputBox from '../../components/common/LongInputBox';
 
 const ReportWritingWrapper = styled.div`
   width: 320px;

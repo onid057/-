@@ -35,4 +35,22 @@ const converToyyyymmdd = data => {
   );
 };
 
-export { convertToHour, calculateRemainDate, converToyyyymmdd };
+const calculateReportWritingTime = createdAt => {
+  const convertedCreatedAt = new Date(createdAt);
+  const currentTime = new Date();
+  const diff = currentTime - convertedCreatedAt;
+  const elapsedHours = Math.floor(diff / (1000 * 60 * 60));
+  const elapsedMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  if (elapsedHours === 0) {
+    return `${elapsedMinutes}분 전`;
+  } else {
+    return `${elapsedHours}시간 전`;
+  }
+};
+
+export {
+  convertToHour,
+  calculateRemainDate,
+  converToyyyymmdd,
+  calculateReportWritingTime,
+};

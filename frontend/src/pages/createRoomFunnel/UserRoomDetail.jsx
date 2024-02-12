@@ -70,7 +70,7 @@ function UserRoomDetail() {
   };
 
   const [roomInfo, setRoomInfo] = useState({});
-  const { roomId } = useParams();
+  const { roomId } = useParams(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false); // 상세 정보
   const modalRef = useRef(null);

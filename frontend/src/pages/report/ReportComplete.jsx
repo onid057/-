@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Paragraph from '../components/common/Paragraph';
-import BoldText from '../components/common/BoldText';
-import Image from '../components/common/Image';
-import { getReportData } from '../apis/api/report';
+import Paragraph from '../../components/common/Paragraph';
+import BoldText from '../../components/common/BoldText';
+import Image from '../../components/common/Image';
+import { getReportData } from '../../apis/api/report';
 
 const ReportWrapper = styled.div`
   width: 320px;
