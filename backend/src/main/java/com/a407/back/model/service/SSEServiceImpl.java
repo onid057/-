@@ -46,7 +46,8 @@ public class SSEServiceImpl implements SSEService {
                         notification.getCreatedAt());
                 }).toList();
                 sseEmitter.send(
-                    SseEmitter.event().id(userId.toString()).name(userId.toString()).data(notificationList));
+                    SseEmitter.event().id(userId.toString()).name("sse").data(notificationList));
+                log.error("이벤트가 성공적으로 진행되었습니다. {}", userId);
             } catch (IOException e) {
                 sseRepository.delete(userId);
                 log.error(String.valueOf(e));
@@ -65,7 +66,7 @@ public class SSEServiceImpl implements SSEService {
             // 연결된 후 하나의 데이터도 전송되지 않는다면 SseEmitter의 유효시간이 끝났을 경우,
             // 503 응답이 발생하므로 연결시 바로 더미 데이터를 한 번 보내준다.
             sseEmitter.send(
-                SseEmitter.event().id("id").name(userId.toString()).data("connect complete"));
+                SseEmitter.event().id("id").name("sse").data("connect complete"));
         } catch (IOException e) {
             log.error(String.valueOf(e));
         }
