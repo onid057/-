@@ -6,6 +6,7 @@ import HorizontalLine from '../../components/common/HorizontalLine';
 
 import { useState, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUserInfo } from '../../hooks/useUserInfo';
 import { getMatchNotificationList } from '../../apis/api/notify';
 import { calculateRemainDate } from '../../utils/time';
 
@@ -31,6 +32,7 @@ const SimpleNoticesWrapper = styled.div`
 function Notify() {
   const navigate = useNavigate();
   const [list, setList] = useState([]);
+  const userInfo = useUserInfo(state => state.userInfo);
 
   useEffect(() => {
     getMatchNotificationList(3).then(response => {
@@ -55,11 +57,16 @@ function Notify() {
           return (
             <Fragment key={index}>
               <SimpleNotice
+                mode={userInfo}
                 name={notice.name}
                 majorCategory={notice.majorCategory}
                 createdAt={calculateRemainDate(notice.createdAt)}
                 onClick={() =>
-                  navigate(`/suggest-by-user/${notice.notificationId}`)
+                  navigate(
+                    userInfo === 'ZIPSA'
+                      ? `/suggest-by-user/${notice.notificationId}`
+                      : `/rooms/detail/${notice.roomId}`,
+                  )
                 }
               ></SimpleNotice>
 

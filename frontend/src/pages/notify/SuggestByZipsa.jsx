@@ -3,7 +3,10 @@ import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import Image from '../../components/common/Image';
 import NavigateText from '../../components/common/NavigateText';
-import Button from '../../components/common/Button';
+
+import { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { getMatchNotificationByZipsa } from '../../apis/api/notify';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -34,13 +37,17 @@ const Content = styled.div`
   gap: 32px;
 `;
 
-const ButtonWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  gap: 10px;
-`;
-
 function SuggestByZipsa() {
+  const { notificationId } = useParams();
+  const [detail, setDetail] = useState({});
+
+  useEffect(() => {
+    getMatchNotificationByZipsa(notificationId).then(response => {
+      console.log(response);
+      setDetail(response.data);
+    });
+  }, []);
+
   return (
     <Wrapper>
       <Title>
@@ -48,8 +55,8 @@ function SuggestByZipsa() {
           gap="5px"
           fontSize="30px"
           sentences={[
-            <BoldText boldContent="{ 곽희웅 }"></BoldText>,
-            '집사님의 제안',
+            <BoldText boldContent={`{ ${detail.zipsaName} }`}></BoldText>,
+            '집사님의 지원',
           ]}
         ></Paragraph>
         <Image
@@ -63,21 +70,13 @@ function SuggestByZipsa() {
         <Paragraph
           gap="5px"
           fontSize="18px"
-          sentences={['집사님의 프로필을', '보고 꼼꼼하게 선택하세요!']}
+          sentences={[
+            `공개방에서 ${detail.zipsaName} 님의 정보를`,
+            '보고 꼼꼼하게 선택하세요!',
+          ]}
         ></Paragraph>
 
-        <NavigateText nextPage={-1}>{'곽희웅'} 집사님 프로필 보기</NavigateText>
-
-        <Paragraph
-          gap="5px"
-          fontSize="18px"
-          sentences={['충분히 검토하셨다면', '결정을 내려주세요!']}
-        ></Paragraph>
-
-        <ButtonWrapper>
-          <Button mode={'THICK_BLUE'}>수락</Button>
-          <Button mode={'THICK_GRAY'}>거절</Button>
-        </ButtonWrapper>
+        <NavigateText nextPage={-1}>공개방으로 이동하기</NavigateText>
       </Content>
     </Wrapper>
   );

@@ -13,6 +13,19 @@ const getMatchNotificationList = async userId => {
   }
 };
 
+// 고객이 확인하는 매칭 제안 알림 상세
+const getMatchNotificationByZipsa = async notificationId => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/notifications/${notificationId}/user`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // 집사가 확인하는 매칭 제안 알림 상세
 const getMatchNotificationByUser = async notificationId => {
   try {
@@ -54,6 +67,7 @@ const allowSuggestionByUser = async notificationId => {
 
 export {
   getMatchNotificationList,
+  getMatchNotificationByZipsa,
   getMatchNotificationByUser,
   rejectSuggestionByUser,
   allowSuggestionByUser,

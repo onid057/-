@@ -10,6 +10,7 @@ const doLogIn = async (email, password) => {
         email,
         password,
       },
+      withCredentials: true,
     });
     console.log(response);
     return response.data;

@@ -21,14 +21,16 @@ const BlueTextWrapper = styled.span`
   color: #629af9;
 `;
 
-function SimpleNotice({ name, majorCategory, createdAt, onClick }) {
+function SimpleNotice({ mode, name, majorCategory, createdAt, onClick }) {
   return (
     <Wrapper>
       <LeftWrapper>
         <BoldText
           fontSize={'13px'}
           boldContent={<BlueTextWrapper>#</BlueTextWrapper>}
-          normalContent={` 제안 | ${createdAt}`}
+          normalContent={
+            (mode === 'ZIPSA' ? ' 제안' : ' 지원') + ` | ${createdAt}`
+          }
         ></BoldText>
         <Paragraph
           gap={'5px'}
@@ -36,11 +38,13 @@ function SimpleNotice({ name, majorCategory, createdAt, onClick }) {
           sentences={[
             <BoldText
               boldContent={name}
-              normalContent={' 고객님이'}
+              normalContent={mode === 'ZIPSA' ? ' 고객님이' : ' 집사님이'}
             ></BoldText>,
             <BoldText
               boldContent={majorCategory}
-              normalContent={' 을 제안하셨어요.'}
+              normalContent={
+                mode === 'ZIPSA' ? ' 을 제안하셨어요.' : ' 을 지원하셨어요.'
+              }
             ></BoldText>,
           ]}
         ></Paragraph>

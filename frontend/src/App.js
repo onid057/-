@@ -205,7 +205,10 @@ function App() {
 
         <Route path="/startMatch" element={<StartMatch />}></Route>
         <Route path="/notify" element={<Notify />}></Route>
-        <Route path="/suggest-by-zipsa" element={<SuggestByZipsa />}></Route>
+        <Route
+          path="/suggest-by-zipsa/:notificationId"
+          element={<SuggestByZipsa />}
+        ></Route>
         <Route
           path="/suggest-by-user/:notificationId"
           element={<SuggestByUser />}

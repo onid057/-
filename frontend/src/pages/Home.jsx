@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getUserState } from '../apis/api/toggle.js';
+import { getComplaintList } from '../apis/api/admin.js';
+import { useUserInfo } from '../hooks/useUserInfo.js';
 
 import Image from '../components/common/Image.jsx';
 import Paragraph from '../components/common/Paragraph.jsx';
@@ -48,12 +50,16 @@ const LoginRegisterWrapper = styled.div`
 
 export default function Home() {
   const [isWorked, setIsWorked] = useState();
+  const { setUserInfo } = useUserInfo();
   const navigate = useNavigate('/notify');
+
+  // const userInfo = useUserInfo(state => state.userInfo);
 
   useEffect(() => {
     getUserState(3).then(response => {
       console.log(response);
       setIsWorked(response.data.isWorked);
+      setUserInfo(response.data.isWorked ? 'ZIPSA' : 'USER');
     });
   }, [isWorked]);
 
@@ -67,6 +73,9 @@ export default function Home() {
           width="30px"
           height="34px"
           onClick={() => navigate('/notify')}
+          // onClick={() =>
+          //   getComplaintList().then(response => console.log(response))
+          // }
         ></Image>
       </UpperWrapper>
 
