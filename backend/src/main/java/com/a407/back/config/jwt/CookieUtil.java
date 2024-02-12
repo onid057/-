@@ -43,22 +43,20 @@ public class CookieUtil {
 //        response.addCookie(refreshCookie);
 
         ResponseCookie accessCookie = ResponseCookie.from("Authorization", accessToken)
-            .sameSite("None")
+            .sameSite("None").httpOnly(false).secure(false)
             .maxAge(age).build();
 
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
-            .sameSite("None")
+            .sameSite("None").httpOnly(false).secure(false)
             .maxAge(age).build();
 
 //        response.setHeader("Set-Cookie",accessCookie.toString());
 //        response.addHeader("Set-Cookie",refreshCookie.toString());
 
-        headers.addAll("Set-Cookie", List.of(accessCookie.toString(),refreshCookie.toString()));
+        headers.addAll("Set-Cookie", List.of(accessCookie.toString(), refreshCookie.toString()));
 
 //        headers.add("Set-Cooike", accessCookie.toString());
 //        headers.add("Set-Cookie", refreshCookie.toString());
-
-
 
     }
 
