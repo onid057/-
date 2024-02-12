@@ -13,4 +13,25 @@ const getReportData = async () => {
   }
 };
 
-export { getReportData };
+// 작성된 정기 보고서 보내기
+const sendReportData = async (image, roomId, content) => {
+  const userForm = new FormData();
+  const datas = { roomId, content };
+  userForm.append('image', image);
+  userForm.append(
+    'request',
+    new Blob([JSON.stringify(datas)], { type: 'application/json' }),
+  );
+  try {
+    const response = await axios({
+      method: 'post',
+      url: '/helpers/reports',
+      data: userForm,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getReportData, sendReportData };
