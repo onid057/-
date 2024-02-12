@@ -47,7 +47,14 @@ const TextAreaInput = styled.textarea`
   overflow: hidden;
 `;
 
-function LongInputBox({ title, placeholder, value, onChange, defaultValue }) {
+function LongInputBox({
+  title,
+  placeholder,
+  value,
+  onChange,
+  defaultValue,
+  disabled,
+}) {
   // title: ${props => (props.$fontSize ? props.$fontSize : 'inherit')};
 
   return (
@@ -63,6 +70,7 @@ function LongInputBox({ title, placeholder, value, onChange, defaultValue }) {
           value={value}
           defaultValue={defaultValue}
           onChange={onChange}
+          disabled={disabled}
         >
           {/* {defaultValue} */}
         </TextAreaInput>
