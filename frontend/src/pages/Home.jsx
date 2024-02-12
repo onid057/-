@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getUserState } from '../apis/api/toggle.js';
+import { subscribeSSE } from '../apis/api/subscribe.js';
 import { getComplaintList } from '../apis/api/admin.js';
 import { useUserInfo } from '../hooks/useUserInfo.js';
 
@@ -52,6 +53,7 @@ export default function Home() {
   const [isWorked, setIsWorked] = useState();
   const { setUserInfo } = useUserInfo();
   const navigate = useNavigate('/notify');
+  const eventSourceRef = useRef();
 
   // const userInfo = useUserInfo(state => state.userInfo);
 
@@ -61,6 +63,29 @@ export default function Home() {
       setIsWorked(response.data.isWorked);
       setUserInfo(response.data.isWorked ? 'ZIPSA' : 'USER');
     });
+
+    // eventSourceRef.current = new EventSource(
+    //   'https://i10a407.p.ssafy.io/api' + `/sse/3`,
+    //   { withCredentials: true },
+    // );
+
+    // console.log({ eventSourceRef });
+
+    // eventSourceRef.current.onopen = () => {
+    //   console.log('Server와 연결');
+    // };
+
+    // eventSourceRef.current.onerror = error => {
+    //   console.log(error);
+    // };
+
+    // eventSourceRef.current.onmessage = event => {
+    //   console.log(event);
+    // };
+
+    // eventSource.addEventListener('sse', event => {
+    //   console.log(event);
+    // })
   }, [isWorked]);
 
   return (
