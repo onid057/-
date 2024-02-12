@@ -1,5 +1,7 @@
 package com.a407.back.model.service;
 
+import com.a407.back.config.SSEConfig;
+import com.a407.back.config.SSEConfigListener;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Status;
 import com.a407.back.domain.Notification.Type;
@@ -37,6 +39,8 @@ public class MatchServiceImpl implements MatchService {
     private final RoomRepository roomRepository;
 
     private final ZipsaRepository zipsaRepository;
+
+    private final SSEConfigListener sseConfigListener;
 
     @Override
     @Transactional
@@ -97,7 +101,10 @@ public class MatchServiceImpl implements MatchService {
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
                     Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
+            SSEConfig sseConfig = new SSEConfig(id);
+            sseConfigListener.onApplicationEvent(sseConfig);
         }
+
 
         return newRoomId;
     }

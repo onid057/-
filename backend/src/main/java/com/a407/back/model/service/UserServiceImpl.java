@@ -42,7 +42,6 @@ import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
