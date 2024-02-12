@@ -11,8 +11,6 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ImageUtil;
 import com.a407.back.dto.util.PublicRoom;
-import com.a407.back.dto.util.RecordResponse;
-import com.a407.back.dto.util.ReservationResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
@@ -30,6 +28,7 @@ import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,13 +44,16 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     private final ImageUtil imageUtil;
 
+    @Value("${image.size.report}")
+    private Integer repostSize;
+
 
     @Override
     @Transactional
     public void makeReport(Long roomId, MultipartFile image, String content) throws IOException {
         Room room = roomRepository.findByRoomId(roomId);
 
-        String fileName = imageUtil.resizeImage(image, 300);
+        String fileName = imageUtil.resizeImage(image, repostSize);
 
         Report report = Report.builder().roomId(room).processImage(fileName).processContent(content)
             .build();
@@ -78,8 +80,7 @@ public class ZipsaServiceImpl implements ZipsaService {
             .birth(zipsa.getZipsaId().getBirth())
             .gender(zipsa.getZipsaId().getGender())
             .address(zipsa.getZipsaId().getAddress())
-            .profileImage(zipsa.getZipsaId().getProfileImage() == null ? null :
-                zipsa.getZipsaId().getProfileImage())
+            .profileImage(zipsa.getZipsaId().getProfileImage())
             .latitude(zipsa.getZipsaId().getLatitude())
             .longitude(zipsa.getZipsaId().getLongitude())
             .gradeId(zipsa.getGradeId().getGradeId())
@@ -116,8 +117,7 @@ public class ZipsaServiceImpl implements ZipsaService {
         List<Review> reviews = zipsaRepository.searchReviewList(zipsaId);
         return reviews.stream().map(review -> ZipsaReviewResponse.builder()
             .userName(review.getUserId().getName())
-            .profileImage(review.getUserId().getProfileImage() == null ? null
-                : review.getUserId().getProfileImage())
+            .profileImage(review.getUserId().getProfileImage())
             .content(review.getContent())
             .kindnessScore(review.getKindnessScore())
             .skillScore(review.getSkillScore())
@@ -131,17 +131,6 @@ public class ZipsaServiceImpl implements ZipsaService {
         return zipsaRepository.findByZipsaId(zipsaId);
     }
 
-    @Override
-    public List<RecordResponse> getZipsaRecordList(Long helperId) {
-        return zipsaRepository.getZipsaRecordList(helperId).stream().map(room ->
-            new RecordResponse(
-                room.getRoomId(),
-                room.getUserId().getName(),
-                room.getSubCategoryId().getMajorCategoryId().getName(),
-                room.getStatus(),
-                room.getEndedAt()
-            )).toList();
-    }
 
     @Override
     public ZipsaRecordsResponse getZipsaRecordInfo(Long roomId) {
@@ -188,35 +177,6 @@ public class ZipsaServiceImpl implements ZipsaService {
             .status(room.getStatus())
             .build();
     }
-
-    @Override
-    public List<ReservationResponse> getZipsaReservationList(Long zipsaId) {
-        return zipsaRepository.getZipsaReservationList(zipsaId).stream()
-            .map(room -> new ReservationResponse(room.getRoomId(),
-                room.getUserId().getName(),
-                room.getSubCategoryId().getMajorCategoryId().getName(),
-                room.getStatus(), room.getExpectationStartedAt()
-            )).toList();
-    }
-
-    @Override
-    public ReservationResponse getZipsaReservationFirst(Long zipsaId) {
-        Room room = zipsaRepository.getZipsaReservationOngoing(zipsaId);
-
-        if (room == null) {
-            room = zipsaRepository.getZipsaReservationBefore(zipsaId);
-        }
-
-        if (room == null) {
-            return null;
-        }
-
-        return new ReservationResponse(room.getRoomId(),
-            room.getUserId().getName(),
-            room.getSubCategoryId().getMajorCategoryId().getName(),
-            room.getStatus(), room.getExpectationStartedAt());
-    }
-
 
     @Override
     @Transactional

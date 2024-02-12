@@ -26,12 +26,12 @@ import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
+import com.a407.back.dto.user.UserRecordResponse;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationInfoResponse;
+import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.BoardListDto;
 import com.a407.back.dto.util.ImageUtil;
-import com.a407.back.dto.util.RecordResponse;
-import com.a407.back.dto.util.ReservationResponse;
 import com.a407.back.dto.util.UserPublicRoom;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.BoardRepository;
@@ -84,6 +84,14 @@ public class UserServiceImpl implements UserService {
     @Value("${sms.number}")
     private String senderPhoneNumber;
 
+    @Value("${image.size.profile}")
+    private Integer profileSize;
+
+    @Value("${code.phone.start}")
+    private Integer codeStart;
+
+    @Value("${code.phone.end}")
+    private Integer codeEnd;
 
     @Override
     public UserInfoResponse findUserInfo(Long userId) {
@@ -159,7 +167,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserNearZipsaInfoResponse> findNearZipsaInfoList(
         UserNearZipsaRequest userNearZipsaRequest) {
-
         return userRepository.findNearZipsaInfoList(userNearZipsaRequest.getLat(),
                 userNearZipsaRequest.getLng()).stream().map(
                 zipsa -> new UserNearZipsaInfoResponse(zipsa.getZipsaId().getName(),
@@ -193,9 +200,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<RecordResponse> getUserRecordList(Long userId) {
-        return userRepository.getUserRecordList(userId).stream().map(
-            room -> new RecordResponse(room.getRoomId(), room.getZipsaId().getZipsaId().getName(),
+    public List<UserRecordResponse> getUserRecordList(Long userId) {
+        boolean isZipsa = isWorkedDistinction(userId);
+        return userRepository.getUserRecordList(userId, isZipsa).stream().map(
+            room -> new UserRecordResponse(room.getRoomId(),
+                isZipsa ? room.getUserId().getName() : room.getZipsaId().getZipsaId().getName(),
                 room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
                 room.getEndedAt())).toList();
     }
@@ -219,28 +228,28 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<ReservationResponse> getUserReservationList(Long userId) {
-        return userRepository.getUserReservationList(userId).stream().map(
-            room -> new ReservationResponse(room.getRoomId(),
-                room.getZipsaId().getZipsaId().getName(),
+    public List<UserReservationResponse> getUserReservationList(Long userId) {
+        boolean isZipsa = isWorkedDistinction(userId);
+        return userRepository.getUserReservationList(userId, isZipsa).stream().map(
+            room -> new UserReservationResponse(room.getRoomId(),
+                isZipsa ? room.getUserId().getName() : room.getZipsaId().getZipsaId().getName(),
                 room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
                 room.getExpectationStartedAt())).toList();
     }
 
     @Override
-    public ReservationResponse getUserReservationFirst(Long userId) {
-        Room room = userRepository.getUserReservationOngoing(userId);
-
+    public UserReservationResponse getUserReservationFirst(Long userId) {
+        boolean isZipsa = isWorkedDistinction(userId);
+        Room room = userRepository.getUserReservationOngoing(userId, isZipsa);
         if (room == null) {
-            room = userRepository.getUserReservationBefore(userId);
+            room = userRepository.getUserReservationBefore(userId, isZipsa);
         }
-
         if (room == null) {
             return null;
         }
-
-        return new ReservationResponse(room.getRoomId(),
-            room.getZipsaId().getZipsaId().getName(),
+        return new UserReservationResponse(room.getRoomId(),
+            isZipsa ? room.getUserId().getName() :
+                room.getZipsaId().getZipsaId().getName(),
             room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
             room.getExpectationStartedAt());
     }
@@ -275,9 +284,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void makeSendMessage(String phoneNumber, String email)
         throws JsonProcessingException, NoSuchAlgorithmException {
-        int code = getInstanceStrong().nextInt(1000, 9999);
+        int code = getInstanceStrong().nextInt(codeStart,
+            codeEnd);
         while (userRepository.findCode(String.valueOf(code)) != null) {
-            code = getInstanceStrong().nextInt(1000, 9999);
+            code = getInstanceStrong().nextInt(codeStart,
+                codeEnd);
         }
         Message message = new Message();
         message.setFrom(senderPhoneNumber);
@@ -374,7 +385,7 @@ public class UserServiceImpl implements UserService {
             if (user.getProfileImage() != null && !user.getProfileImage().isBlank()) {
                 imageUtil.deleteImage(user.getProfileImage());
             }
-            imageName = imageUtil.resizeImage(image, 100);
+            imageName = imageUtil.resizeImage(image, profileSize);
         }
         UserChangeDto userChangeDto = new UserChangeDto(
             imageName == null ? user.getProfileImage() : imageName,

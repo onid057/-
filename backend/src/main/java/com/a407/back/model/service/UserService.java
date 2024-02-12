@@ -14,10 +14,10 @@ import com.a407.back.dto.user.UserInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
+import com.a407.back.dto.user.UserRecordResponse;
 import com.a407.back.dto.user.UserRecordsResponse;
 import com.a407.back.dto.user.UserReservationInfoResponse;
-import com.a407.back.dto.util.RecordResponse;
-import com.a407.back.dto.util.ReservationResponse;
+import com.a407.back.dto.user.UserReservationResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -41,15 +41,15 @@ public interface UserService {
 
     User findByUserId(Long userId);
 
-    UserRecordsResponse getUserRecordInfo(Long userId);
+    UserRecordsResponse getUserRecordInfo(Long roomId);
 
-    List<RecordResponse> getUserRecordList(Long userId);
+    List<UserRecordResponse> getUserRecordList(Long userId);
 
     UserReservationInfoResponse getUserReservationInfo(Long roomId);
 
-    List<ReservationResponse> getUserReservationList(Long userId);
+    List<UserReservationResponse> getUserReservationList(Long userId);
 
-    ReservationResponse getUserReservationFirst(Long userId);
+    UserReservationResponse getUserReservationFirst(Long userId);
 
     UserAccountResponse makeAccount(UserAccountRequest userAccountRequest);
 

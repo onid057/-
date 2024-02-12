@@ -18,17 +18,10 @@ public interface ZipsaRepository {
 
     List<Review> searchReviewList(Long zipsaId);
 
-    List<Room> getZipsaRecordList(Long helperId);
 
     Room getZipsaRecordInfo(Long roomId);
 
     Room getZipsaReservationInfo(Long roomId);
-
-    List<Room> getZipsaReservationList(Long zipsaId);
-
-    Room getZipsaReservationOngoing(Long zipsaId);
-
-    Room getZipsaReservationBefore(Long zipsaId);
 
     void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
         Double rewindAverage);

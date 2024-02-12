@@ -59,14 +59,6 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public List<Room> getZipsaRecordList(Long helperId) {
-        QRoom qRoom = QRoom.room;
-        return query.selectFrom(qRoom)
-            .where(qRoom.zipsaId.zipsaId.userId.eq(helperId).and(qRoom.status.eq(
-                Process.END))).orderBy(qRoom.endedAt.desc()).fetch();
-    }
-
-    @Override
     public Room getZipsaRecordInfo(Long roomId) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
@@ -82,34 +74,6 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
                 Process.BEFORE, Process.ONGOING))).orderBy(qRoom.expectationStartedAt.asc())
             .fetchOne();
     }
-
-    @Override
-    public List<Room> getZipsaReservationList(Long zipsaId) {
-        QRoom qRoom = QRoom.room;
-        return query.selectFrom(qRoom)
-            .where(qRoom.zipsaId.zipsaId.userId.eq(zipsaId).and(qRoom.status.in(
-                Process.BEFORE, Process.ONGOING))).orderBy(qRoom.expectationStartedAt.asc())
-            .fetch();
-    }
-
-    @Override
-    public Room getZipsaReservationOngoing(Long zipsaId) {
-        QRoom qRoom = QRoom.room;
-        return query.selectFrom(qRoom)
-            .where(qRoom.zipsaId.zipsaId.userId.eq(zipsaId).and(qRoom.status.in(
-                Process.ONGOING))).orderBy(qRoom.expectationStartedAt.asc()).limit(1)
-            .fetchOne();
-    }
-
-    @Override
-    public Room getZipsaReservationBefore(Long zipsaId) {
-        QRoom qRoom = QRoom.room;
-        return query.selectFrom(qRoom)
-            .where(qRoom.zipsaId.zipsaId.userId.eq(zipsaId).and(qRoom.status.in(
-                Process.BEFORE))).orderBy(qRoom.expectationStartedAt.asc()).limit(1)
-            .fetchOne();
-    }
-
 
     @Override
     public void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
