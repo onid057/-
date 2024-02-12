@@ -12,7 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +36,7 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody AuthRequest authRequest,
-        HttpServletRequest request) {
+        HttpServletRequest request, HttpServletResponse response) {
 
         if (CookieUtil.getCookieValue(request.getCookies(), refreshTokenName) != null) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
@@ -45,14 +44,10 @@ public class AuthController {
 
         Tokens tokens = authService.login(authRequest.getEmail(), authRequest.getPassword());
 
-
-        HttpHeaders headers=new HttpHeaders();
-
-
-        CookieUtil.saveCookie(tokens.getAccessToken(), tokens.getRefreshToken(), headers,
+        CookieUtil.saveCookie(tokens.getAccessToken(), tokens.getRefreshToken(), response,
             cookieMaxAge);
 
-        return ResponseEntity.status(HttpStatus.OK).headers(headers)
+        return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "로그인 성공"));
     }
 
@@ -66,7 +61,7 @@ public class AuthController {
             authService.deleteRefreshToken(refreshToken);
         }
 
-//        CookieUtil.saveCookie("", "", response, 0);
+        CookieUtil.saveCookie("", "", response, 0);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "로그아웃 성공"));
