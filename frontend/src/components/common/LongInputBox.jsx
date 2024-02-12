@@ -61,9 +61,10 @@ function LongInputBox({ title, placeholder, value, onChange, defaultValue }) {
           placeholder={placeholder}
           type="text"
           value={value}
+          defaultValue={defaultValue}
           onChange={onChange}
         >
-          {defaultValue}
+          {/* {defaultValue} */}
         </TextAreaInput>
       </ContentBox>
     </LongInputBoxWrapper>

@@ -21,6 +21,7 @@ const UpdateButton = styled.button`
   background-color: #7d7d7d;
   color: white;
 `;
+
 const DeleteButton = styled.button`
   cursor: pointer;
   width: 51px;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState } from 'react';
 import NavigationBar from '../common/NavigationBar';
 import Image from '../common/Image';
 import UpdateDeleteButton from '../common/UpdateDeleteButton';
@@ -41,9 +42,35 @@ const Content = styled.div`
   font-weight: 350;
 `;
 
+const UpdateInput = styled.textarea`
+  width: 100%;
+  min-height: 80px;
+  margin-bottom: 5px;
+  padding: 8px;
+  font-size: 14px;
+  font-weight: 300;
+  color: black;
+  line-height: 20px;
+  /* background-color: #ecf4fa; */
+  &::placeholder {
+    color: darkgray;
+    font-weight: 300;
+    line-height: 20px;
+  }
+`;
+
 const Date = styled.div`
   font-size: 14px;
   font-weight: 200;
+`;
+
+const SubmitButton = styled.button`
+  cursor: pointer;
+  width: 51px;
+  height: 23px;
+  border-radius: 5px;
+  background-color: #629af9;
+  color: white;
 `;
 
 function BoardComment({
@@ -52,11 +79,17 @@ function BoardComment({
   address,
   content,
   updatedAt,
+  defaultValue,
+  submitOnClick,
   needUpdateButton,
   needDeleteButton,
   updateOnClick,
   deleteOnClick,
+  update,
 }) {
+  // 댓글 수정 버튼의 상태를 관리할 변수
+  // const [isCommentUpdate, setIsCommentUpdate] = useState(false);
+
   return (
     <Wrapper>
       <LeftBox>
@@ -71,16 +104,26 @@ function BoardComment({
       <RightBox>
         <Name>{userName}</Name>
         <Address>{address}</Address>
-        <Content>{content}</Content>
-        <Date>{updatedAt}</Date>
 
-        {/* 수정, 삭제 버튼 넣을 곳 */}
-        <UpdateDeleteButton
-          needUpdateButton={needUpdateButton}
-          needDeleteButton={needDeleteButton}
-          updateOnClick={updateOnClick}
-          deleteOnClick={deleteOnClick}
-        ></UpdateDeleteButton>
+        {/* isCommentUpdate 상태에 따라서 수정 textarea를 보여주는 부분 */}
+        {update ? (
+          <>
+            <UpdateInput defaultValue={defaultValue}></UpdateInput>
+            <SubmitButton onClick={submitOnClick}>완료</SubmitButton>
+          </>
+        ) : (
+          <>
+            <Content>{content}</Content>
+            <Date>{updatedAt}</Date>
+            {/* 수정, 삭제 버튼 넣을 곳 */}
+            <UpdateDeleteButton
+              needUpdateButton={needUpdateButton}
+              needDeleteButton={needDeleteButton}
+              updateOnClick={updateOnClick}
+              deleteOnClick={deleteOnClick}
+            ></UpdateDeleteButton>
+          </>
+        )}
       </RightBox>
     </Wrapper>
   );

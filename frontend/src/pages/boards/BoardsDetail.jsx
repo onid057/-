@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getOneArticle } from '../../apis/api/board';
+import {
+  getOneArticle,
+  updateOneComment,
+  deleteOneComment,
+} from '../../apis/api/board';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoardComment from '../../components/boards/BoardComment';
@@ -9,6 +13,7 @@ import BoardsTags from '../../components/boards/BoardsTags';
 import UpdateDeleteButton from '../../components/common/UpdateDeleteButton';
 import CreateComment from '../../components/boards/CreateComment';
 import DeleteBoardModal from '../../components/boards/DeleteBoardModal';
+import UpdateCommentModal from '../../components/boards/UpdateCommentModal';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -114,7 +119,7 @@ const CommentLength = styled.span`
 const getCurrentUser = 'admin';
 
 function BoardsDetail() {
-  // NavigationBAr 사용 위한 변수 선언
+  // NavigationBar 사용 위한 변수 선언
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
@@ -145,14 +150,35 @@ function BoardsDetail() {
   };
 
   // 게시글 삭제 버튼을 누르면 모달이 열리는 함수
-  const [isOpen, setIsOpen] = useState(false);
+  const [isArticleDelete, setIsArticleDelete] = useState(false);
   const toAtricleDelete = () => {
-    setIsOpen(() => true);
-    console.log(isOpen);
+    setIsArticleDelete(() => true);
   };
 
-  // 새 댓글 작성하는 함수
-  const [newComment, setNewComment] = useState('');
+  // 댓글 수정 버튼을 누르면 수정 칸이 나오는 함수
+
+  const [isCommentUpdate, setIsCommentUpdate] = useState(false);
+  const toUpdateOneComment = () => {
+    setIsCommentUpdate(() => true);
+    // <UpdateCommentModal
+    //   boardId={boardId}
+    //   defaultValue={content}
+    //   onClick={() => {
+    //     setIsCommentUpdate(() => false);
+    //   }}
+    // ></UpdateCommentModal>;
+  };
+
+  // 댓글 수정 완료 버튼을 누르면 닫히는 함수
+  const toFinishCommentUpdate = () => {
+    setIsCommentUpdate(() => false);
+  };
+
+  // 댓글 삭제하는 함수
+  const toDeleteOneComment = commentId => {
+    deleteOneComment(commentId);
+    console.log('댓글 삭제 완료');
+  };
 
   return (
     <Wrapper>
@@ -168,15 +194,15 @@ function BoardsDetail() {
         onPrevious={onPrevious}
       ></NavigationBar>
 
-      {/* <DeleteBoardModal></DeleteBoardModal> */}
-      {isOpen === true ? (
+      {/* 게시글 삭제 모달을 띄우는 부분 */}
+      {isArticleDelete === true && (
         <DeleteBoardModal
           boardId={boardId}
           onClick={() => {
-            setIsOpen(() => false);
+            setIsArticleDelete(() => false);
           }}
         ></DeleteBoardModal>
-      ) : null}
+      )}
 
       <ArticleWrapper>
         <ProfileWrapper>
@@ -228,16 +254,31 @@ function BoardsDetail() {
           </p>
 
           {data.commentList.map((comment, idx) => (
-            <BoardComment
-              key={idx}
-              userName={comment.userName}
-              content={comment.content}
-              updatedAt={comment.updatedAt}
-              needUpdateButton={getCurrentUser === comment.userName}
-              needDeleteButton={getCurrentUser === comment.userName}
-              updateOnClick={() => console.log('댓글 수정')}
-              deleteOnClick={() => console.log('댓글 삭제')}
-            ></BoardComment>
+            <div key={idx}>
+              <BoardComment
+                userName={comment.userName}
+                content={comment.content}
+                updatedAt={comment.updatedAt}
+                defaultValue={comment.content}
+                submitOnClick={() => toFinishCommentUpdate()}
+                needUpdateButton={getCurrentUser === comment.userName}
+                needDeleteButton={getCurrentUser === comment.userName}
+                updateOnClick={() => toUpdateOneComment()}
+                deleteOnClick={() => toDeleteOneComment(comment.commentId)}
+                update={isCommentUpdate}
+              ></BoardComment>
+
+              {/* {isCommentUpdate === true && (
+                <UpdateCommentModal
+                  boardId={boardId}
+                  defaultValue={comment.content}
+                  commentId={comment.commentId}
+                  onClick={() => {
+                    setIsCommentUpdate(() => false);
+                  }}
+                ></UpdateCommentModal>
+              )} */}
+            </div>
           ))}
         </CommentWrapper>
       )}

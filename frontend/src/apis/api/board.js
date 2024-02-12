@@ -94,6 +94,35 @@ const createComment = async (boardId, userId, content) => {
   }
 };
 
+// 댓글 수정
+const updateOneComment = async (commentId, content) => {
+  try {
+    const response = await axios({
+      method: 'patch',
+      url: `comments/${commentId}`,
+      data: {
+        content: content,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 댓글 삭제
+const deleteOneComment = async commentId => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: `comments/${commentId}`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   getAllArticles,
   getOneArticle,
@@ -101,4 +130,6 @@ export {
   updateArticle,
   deleteOneArticle,
   createComment,
+  updateOneComment,
+  deleteOneComment,
 };
