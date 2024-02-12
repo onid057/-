@@ -6,6 +6,7 @@ import BoardsTags from '../../components/boards/BoardsTags';
 import { useState, useEffect } from 'react';
 import { getAllArticles } from '../../apis/api/board';
 import { useNavigate } from 'react-router-dom';
+import { element } from 'prop-types';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -108,20 +109,46 @@ function BoardsMain() {
     navigate(`/`);
   };
 
-  // 게시판 리스트 조회 API 호출
-  const [list, setList] = useState([]);
-
-  useEffect(() => {
-    getAllArticles().then(response => {
-      console.log('게시판 리스트 조회 API 성공');
-      // console.log(response.data);
-      setList(response.data.boardList);
-    });
-  }, []);
-
   // tagCheckList의 상태를 관리할 useState 함수
   const tagCheckList = Array.from({ length: tagLength }, () => false);
   const [isSelected, setIsSelected] = useState(tagCheckList);
+
+  // 게시판 리스트 조회 API 호출
+  // isSelected 값에 따라서 다른 API를 호출
+
+  const page = 1;
+  const size = 10;
+  const [tempTagList, setTempTagList] = useState([1, 2, 3, 4, 5, 6]);
+  let tagList = tempTagList.join(',');
+  // console.log('tagList :', tagList);
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    // setTempTagList([]);
+    console.log('tempTagList 바꾸기!!!');
+    console.log('tempTagList :', tempTagList);
+    console.log('isSelected :', isSelected);
+    console.log('요청 보낼 str', tagList);
+
+    // isSelected 값에 따라서 tempTagList를 변환하기
+    isSelected.map((element, idx) => {
+      if (idx === 0 && element) {
+        setTempTagList([1, 2, 3, 4, 5, 6]);
+      } else if (idx != 0 && element && !tempTagList.includes(idx)) {
+        setTempTagList(prevList => [...prevList, idx]);
+      } else if (idx != 0 && !element && tempTagList.includes(idx)) {
+        setTempTagList(prevList => prevList.filter(item => item !== idx));
+      }
+    });
+  }, [isSelected]);
+
+  useEffect(() => {
+    getAllArticles(page, size, tagList).then(response => {
+      // console.log('게시판 리스트 조회 API 성공');
+      // console.log(response.data);
+      setList(response.data.boardList);
+    });
+  }, [isSelected]);
 
   // 누르면 check값이 토글되는 함수
   const toggleSelected = idx => {

@@ -44,7 +44,7 @@ function TestLee() {
         <hr style={{ marginBottom: '30px' }}></hr>
 
         {/* <DeleteBoardModal></DeleteBoardModal> */}
-        <UpdateCommentModal></UpdateCommentModal>
+        {/* <UpdateCommentModal></UpdateCommentModal> */}
       </ComponentWrapper>
 
       {/* 페이지 확인 부분 */}
@@ -55,7 +55,7 @@ function TestLee() {
       {/* <ZipsaMyPageMain></ZipsaMyPageMain> */}
 
       <H2title>ZipsaProfileUpdate 만들기</H2title>
-      {/* <ZipsaProfileUpdate></ZipsaProfileUpdate> */}
+      <ZipsaProfileUpdate></ZipsaProfileUpdate>
 
       <H2title>BoardsMain 만들기</H2title>
       <BoardsMain></BoardsMain>

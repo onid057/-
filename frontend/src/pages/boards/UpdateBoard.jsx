@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams, Link } from 'react-router-dom';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
@@ -71,6 +71,9 @@ function CreateBoard() {
   const onNext = () => {
     updateArticle(boardId, newTitle, newcontent, newtagList);
     navigate(`/boards/${boardId}`);
+    window.location.reload();
+    // window.location.replace(`/boards/${boardId}`);
+    console.log('게시글 수정 완료');
   };
 
   // tagList를 숫자 배열로 반환하는 함수

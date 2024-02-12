@@ -69,15 +69,13 @@ function CreateBoard() {
     navigate(-1);
   };
   const onNext = () => {
-    navigate(`/boards/`);
-    // console.log('새 게시글 생성 완료')
-    // console.log(userId)
-    // console.log(title)
-    // console.log(content)
-    // console.log(tagList)
     createArticle(userId, title, content, tagList).then(response => {
       console.log(response);
     });
+    navigate(`/boards/`);
+    window.location.reload();
+    console.log('새 게시글 생성 완료');
+    // window.location.replace(`/boards/`);
   };
 
   // tagCheckList의 상태를 관리할 useState 함수

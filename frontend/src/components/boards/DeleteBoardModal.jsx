@@ -41,7 +41,10 @@ function DeleteBoardModal({ boardId, onClick }) {
   const navigate = useNavigate();
   const deleteThisArticle = () => {
     deleteOneArticle(boardId);
+    // window.location.replace(`/boards`);
     navigate(`/boards/`);
+    window.location.reload();
+    console.log('게시글 삭제 성공');
   };
 
   return (
