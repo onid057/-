@@ -140,7 +140,9 @@ public class MatchServiceImpl implements MatchService {
         matchRepository.changeMatchStatus(roomId, status);
     }
 
-    private void makeReportNotification(Long roomId) {
+    @Override
+    @Transactional
+    public void makeReportNotification(Long roomId) {
         Room room = roomRepository.findByRoomId(roomId);
         Notification notification = Notification.builder().roomId(room)
             .sendId(room.getUserId().getUserId())

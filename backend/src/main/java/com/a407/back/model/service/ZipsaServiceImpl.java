@@ -220,7 +220,9 @@ public class ZipsaServiceImpl implements ZipsaService {
         return new ZipsaStatusResponse(zipsaId, zipsa.getIsWorked());
     }
 
-    private void makeConfirmNotification(Long roomId) {
+    @Override
+    @Transactional
+    public void makeConfirmNotification(Long roomId) {
         Room room = roomRepository.findByRoomId(roomId);
         Notification notification = Notification.builder().roomId(room)
             .sendId(room.getZipsaId().getZipsaId().getUserId())
