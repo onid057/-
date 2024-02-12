@@ -10,7 +10,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedOrigins("https://i10a407.p.ssafy.io", "http://localhost:3000").allowedMethods("*")
-            .allowedHeaders("*").maxAge(3000).allowCredentials(true);
+            .allowedHeaders("*").maxAge(3000).allowCredentials(true).exposedHeaders("Set-Cookie");
     }
     
 }

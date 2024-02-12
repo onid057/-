@@ -49,8 +49,9 @@ public class CookieUtil {
             .sameSite("None")
             .maxAge(age).build();
 
-        response.addHeader("Set-Cookie",accessCookie.toString());
+        response.setHeader("Set-Cookie",accessCookie.toString());
         response.addHeader("Set-Cookie",refreshCookie.toString());
+
 
     }
 
