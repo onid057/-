@@ -28,11 +28,11 @@ public class CookieUtil {
 //        accessCookie.setHttpOnly(true);
 //        refreshCookie.setHttpOnly(true);
 
-        accessCookie.setSecure(true);
-        refreshCookie.setSecure(true);
+//        accessCookie.setSecure(true);
+//        refreshCookie.setSecure(true);
 
-        accessCookie.setPath("/");
-        refreshCookie.setPath("/");
+//        accessCookie.setPath("/");
+//        refreshCookie.setPath("/");
 
         accessCookie.setMaxAge(age);
         refreshCookie.setMaxAge(age);
