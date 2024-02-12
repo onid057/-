@@ -25,8 +25,8 @@ public class CookieUtil {
         Cookie accessCookie = new Cookie("Authorization", accessToken);
         Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
 
-        accessCookie.setHttpOnly(true);
-        refreshCookie.setHttpOnly(true);
+//        accessCookie.setHttpOnly(true);
+//        refreshCookie.setHttpOnly(true);
 
         accessCookie.setSecure(true);
         refreshCookie.setSecure(true);
