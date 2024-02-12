@@ -17,9 +17,12 @@ import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.MatchRepository;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
+import com.a407.back.model.repo.SSERepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,6 +44,8 @@ public class MatchServiceImpl implements MatchService {
     private final ZipsaRepository zipsaRepository;
 
     private final SSEConfigListener sseConfigListener;
+
+    private final SSERepository sseRepository;
 
     @Override
     @Transactional
@@ -101,10 +106,12 @@ public class MatchServiceImpl implements MatchService {
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
                     Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
-            SSEConfig sseConfig = new SSEConfig(id);
-            sseConfigListener.onApplicationEvent(sseConfig);
-        }
 
+            if(sseRepository.get(id).isPresent()) {
+                SSEConfig sseConfig = new SSEConfig(id);
+                sseConfigListener.onApplicationEvent(sseConfig);
+            }
+        }
 
         return newRoomId;
     }
@@ -114,6 +121,7 @@ public class MatchServiceImpl implements MatchService {
     public Long changeMatchStartedAt(Long roomId) {
         matchRepository.changeMatchStartedAt(roomId);
         changeMatchStatus(roomId, "ONGOING");
+        makeReportNotification(roomId);
         return roomId;
     }
 
@@ -126,11 +134,25 @@ public class MatchServiceImpl implements MatchService {
         Room room = roomRepository.findByRoomId(roomId);
         Zipsa zipsa = zipsaRepository.findByZipsaId(room.getZipsaId().getZipsaId().getUserId());
         zipsaRepository.changeServiceCountIncrease(zipsa);
+        makeReportNotification(roomId);
         return roomId;
     }
 
     @Override
     public void changeMatchStatus(Long roomId, String status) {
         matchRepository.changeMatchStatus(roomId, status);
+    }
+
+    private void makeReportNotification(Long roomId) {
+        Room room = roomRepository.findByRoomId(roomId);
+        Notification notification = Notification.builder().roomId(room)
+            .sendId(room.getUserId().getUserId())
+            .receiveId(room.getZipsaId().getZipsaId().getUserId()).status(Status.REPORT)
+            .type(Type.ZIPSA)
+            .isRead(false).createdAt(
+                Timestamp.valueOf(LocalDateTime.now())).build();
+        notificationRepository.makeNotification(notification);
+        SSEConfig sseConfig = new SSEConfig(room.getZipsaId().getZipsaId().getUserId());
+        sseConfigListener.onApplicationEvent(sseConfig);
     }
 }

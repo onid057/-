@@ -1,5 +1,6 @@
 package com.a407.back.model.repo;
 
+import com.a407.back.config.SSEConfig;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,13 +20,16 @@ public class SSERepositoryImpl implements SSERepository{
     }
 
     @Override
-    public SseEmitter save(Long userId, SseEmitter sseEmitter) {
+    public void save(Long userId, SseEmitter sseEmitter) {
         emitterMap.put(userId, sseEmitter);
-        return sseEmitter;
     }
 
     public void delete(Long userId) {
         emitterMap.remove(userId);
+    }
+
+    public SseEmitter getSseEmitter(Long userId) {
+        return emitterMap.get(userId);
     }
 
 }

@@ -15,7 +15,7 @@ import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserRecordResponse;
-import com.a407.back.dto.user.UserRecordsResponse;
+import com.a407.back.dto.user.UserRecordInfoResponse;
 import com.a407.back.dto.user.UserReservationInfoResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,7 +41,7 @@ public interface UserService {
 
     User findByUserId(Long userId);
 
-    UserRecordsResponse getUserRecordInfo(Long roomId);
+    UserRecordInfoResponse getUserRecordInfo(Long userId);
 
     List<UserRecordResponse> getUserRecordList(Long userId);
 

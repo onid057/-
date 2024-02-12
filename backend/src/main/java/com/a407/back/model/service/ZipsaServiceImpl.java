@@ -1,5 +1,7 @@
 package com.a407.back.model.service;
 
+import com.a407.back.config.SSEConfig;
+import com.a407.back.config.SSEConfigListener;
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Status;
@@ -26,6 +28,8 @@ import com.a407.back.model.repo.ZipsaRepository;
 import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,28 +41,22 @@ import org.springframework.web.multipart.MultipartFile;
 public class ZipsaServiceImpl implements ZipsaService {
 
     private final ZipsaRepository zipsaRepository;
-
     private final RoomRepository roomRepository;
-
     private final NotificationRepository notificationRepository;
-
     private final ImageUtil imageUtil;
-
+    private final SSEConfigListener sseConfigListener;
     @Value("${image.size.report}")
     private Integer repostSize;
-
 
     @Override
     @Transactional
     public void makeReport(Long roomId, MultipartFile image, String content) throws IOException {
         Room room = roomRepository.findByRoomId(roomId);
-
         String fileName = imageUtil.resizeImage(image, repostSize);
-
         Report report = Report.builder().roomId(room).processImage(fileName).processContent(content)
             .build();
-
         zipsaRepository.makeReport(report);
+        makeConfirmNotification(roomId);
     }
 
     @Override
@@ -111,7 +109,6 @@ public class ZipsaServiceImpl implements ZipsaService {
             .build();
     }
 
-
     @Override
     public List<ZipsaReviewResponse> findsZipsaReviewFindByZipsaId(Long zipsaId) {
         List<Review> reviews = zipsaRepository.searchReviewList(zipsaId);
@@ -130,7 +127,6 @@ public class ZipsaServiceImpl implements ZipsaService {
     public Zipsa findByZipsaId(Long zipsaId) {
         return zipsaRepository.findByZipsaId(zipsaId);
     }
-
 
     @Override
     public ZipsaRecordsResponse getZipsaRecordInfo(Long roomId) {
@@ -206,9 +202,7 @@ public class ZipsaServiceImpl implements ZipsaService {
                     room.getExpectationPay())
             ).toList();
         return new PublicRoomListResponse(results.getTotal(), page, roomList);
-
     }
-
 
     @Override
     @Transactional
@@ -226,4 +220,16 @@ public class ZipsaServiceImpl implements ZipsaService {
         return new ZipsaStatusResponse(zipsaId, zipsa.getIsWorked());
     }
 
+    private void makeConfirmNotification(Long roomId) {
+        Room room = roomRepository.findByRoomId(roomId);
+        Notification notification = Notification.builder().roomId(room)
+            .sendId(room.getZipsaId().getZipsaId().getUserId())
+            .receiveId(room.getUserId().getUserId()).status(Status.CONFIRM)
+            .type(Type.USER)
+            .isRead(false).createdAt(
+                Timestamp.valueOf(LocalDateTime.now())).build();
+        notificationRepository.makeNotification(notification);
+        SSEConfig sseConfig = new SSEConfig(room.getUserId().getUserId());
+        sseConfigListener.onApplicationEvent(sseConfig);
+    }
 }

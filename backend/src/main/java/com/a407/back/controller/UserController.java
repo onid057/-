@@ -18,7 +18,7 @@ import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberRequest;
 import com.a407.back.dto.user.UserRecordResponse;
-import com.a407.back.dto.user.UserRecordsResponse;
+import com.a407.back.dto.user.UserRecordInfoResponse;
 import com.a407.back.dto.user.UserReservationInfoResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.ApiResponse;
@@ -108,7 +108,7 @@ public class UserController {
     }
 
     @GetMapping("/records/{roomId}")
-    public ResponseEntity<ApiResponse<UserRecordsResponse>> getUserRecordInfo(
+    public ResponseEntity<ApiResponse<UserRecordInfoResponse>> getUserRecordInfo(
         @PathVariable Long roomId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS, userService.getUserRecordInfo(roomId)));
