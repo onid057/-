@@ -1,4 +1,4 @@
-package com.a407.back.config;
+package com.a407.back.config.redis;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
@@ -25,6 +27,14 @@ public class RedisConfig {
 
     @Value("${spring.data.redis.token.port}")
     private int tokenPort;
+
+    @Value("${spring.data.redis.sse.port}")
+    private int ssePort;
+
+    @Bean(name = "sseRedisConnectionFactory")
+    public RedisConnectionFactory sseRedisConnectionFactory() {
+        return new LettuceConnectionFactory(host, ssePort);
+    }
 
     @Primary
     @Bean(name = "certificationRedisConnectionFactory")
@@ -68,13 +78,34 @@ public class RedisConfig {
         return redisTemplate;
     }
 
+    @Bean(name = "sseRedisTemplate")
+    public RedisTemplate<String, Object> sseRedisTemplate(
+        @Qualifier(value = "sseRedisConnectionFactory") RedisConnectionFactory sseRedisConnectionFactory) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        sseRedisTemplateSetting(sseRedisConnectionFactory, redisTemplate);
+        return redisTemplate;
+    }
+
+    @Bean
+    public RedisMessageListenerContainer redisMessageListener(
+        RedisConnectionFactory connectionFactory) {
+        RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+        container.setConnectionFactory(connectionFactory);
+        return container;
+    }
+
     private static void redisTemplateSetting(
-        RedisConnectionFactory associationRedisConnectionFactory,
+        RedisConnectionFactory redisConnectionFactory,
         RedisTemplate<String, String> redisTemplate) {
-        redisTemplate.setConnectionFactory(associationRedisConnectionFactory);
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setDefaultSerializer(RedisSerializer.string());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new StringRedisSerializer());
     }
 
+    private static void sseRedisTemplateSetting(RedisConnectionFactory redisConnectionFactory, RedisTemplate<String, Object> redisTemplate) {
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<Object>(Object.class));
+    }
 }

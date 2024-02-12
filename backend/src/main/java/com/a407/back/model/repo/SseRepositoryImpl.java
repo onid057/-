@@ -8,7 +8,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Repository
 @RequiredArgsConstructor
-public class SSERepositoryImpl implements SSERepository{
+public class SseRepositoryImpl implements SseRepository {
 
     private final Map<Long, SseEmitter> emitterMap = new ConcurrentHashMap<>();
 
