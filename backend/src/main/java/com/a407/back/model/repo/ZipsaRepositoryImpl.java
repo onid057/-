@@ -26,6 +26,9 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     @Override
     public void makeReport(Report report) {
         em.persist(report);
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.isReported, true)
+            .where(qRoom.roomId.eq(report.getRoomId().getRoomId())).execute();
     }
 
     @Override
