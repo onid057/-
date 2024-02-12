@@ -55,8 +55,9 @@ function CreateComment({ onClick, value }) {
   // 댓글 생성 요청 보내는 함수
   const [comment, setComment] = useState('');
   const toCreateComment = () => {
-    createComment(boardId, userId, comment);
     console.log('새 댓글 생성 완료');
+    createComment(boardId, userId, comment);
+    window.location.replace(`/boards/${boardId}`);
   };
 
   return (

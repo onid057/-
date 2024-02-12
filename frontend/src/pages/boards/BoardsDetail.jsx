@@ -122,20 +122,26 @@ function BoardsDetail() {
   // NavigationBar 사용 위한 변수 선언
   const navigate = useNavigate();
   const onPrevious = () => {
-    navigate(-1);
+    navigate(`/boards`);
   };
 
   // 게시판 상세 조회 API 호출
   const [data, setData] = useState({});
+  const [commentLength, setcommentLength] = useState();
   const { boardId } = useParams();
 
   useEffect(() => {
     getOneArticle(boardId).then(response => {
       // console.log('게시판 상세 조회 API 성공');
-      // console.log(response.data);
       setData(response.data);
+      setcommentLength(response.data.commentList.length);
     });
   }, []);
+
+  // 게시글 수정, 게시글 삭제, 댓글 수정, 댓글 삭제 시 페이지 새로 렌더링하는 함수
+  // useEffect(() => {
+  //   console.log('변경됨');
+  // }, [ArticleWrapper]);
 
   // 게시글 수정 페이지로 이동하는 함수
   const toArticleUpdate = () => {
@@ -156,10 +162,22 @@ function BoardsDetail() {
   };
 
   // 댓글 수정 버튼을 누르면 수정 칸이 나오는 함수
+  const checkMode = Array.from({ length: commentLength }, () => false);
+  const [isCommentUpdate, setIsCommentUpdate] = useState(checkMode);
 
-  const [isCommentUpdate, setIsCommentUpdate] = useState(false);
-  const toUpdateOneComment = () => {
-    setIsCommentUpdate(() => true);
+  useEffect(() => {
+    setIsCommentUpdate(checkMode);
+    console.log('isCommentUpdate', isCommentUpdate);
+    console.log(typeof isCommentUpdate);
+    console.log(isCommentUpdate.length);
+  }, [commentLength]);
+
+  const toUpdateOneComment = idx => {
+    console.log('버튼은 눌림');
+    setIsCommentUpdate(arr =>
+      [...arr].map((element, index) => (index === idx ? true : element)),
+    );
+    // console.log(`${idx}번 isCommentUpdate : ${isCommentUpdate}`);
     // <UpdateCommentModal
     //   boardId={boardId}
     //   defaultValue={content}
@@ -263,9 +281,9 @@ function BoardsDetail() {
                 submitOnClick={() => toFinishCommentUpdate()}
                 needUpdateButton={getCurrentUser === comment.userName}
                 needDeleteButton={getCurrentUser === comment.userName}
-                updateOnClick={() => toUpdateOneComment()}
+                updateOnClick={() => toUpdateOneComment(idx)}
                 deleteOnClick={() => toDeleteOneComment(comment.commentId)}
-                update={isCommentUpdate}
+                update={isCommentUpdate[idx]}
               ></BoardComment>
 
               {/* {isCommentUpdate === true && (

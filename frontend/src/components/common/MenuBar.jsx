@@ -73,6 +73,7 @@ function MenuBar({ currentMenu }) {
           width="32px"
           height="24px"
           margin="2px 0 0 0"
+          onClick={() => navigate('/boards')}
         ></Image>
         게시판
       </MenuWrapper>

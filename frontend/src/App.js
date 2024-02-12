@@ -35,6 +35,7 @@ import UpdateBoard from './pages/boards/UpdateBoard';
 import CreateBoard from './pages/boards/CreateBoard';
 
 import TestLee from './pages/TestLee';
+import ReportDetail from './pages/report/ReportDetail';
 
 const GlobalStyle = createGlobalStyle`
 	*,
