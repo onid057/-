@@ -81,8 +81,8 @@ public class TokenProvider {
                 String newRefreshToken = makeRefreshToken(email);
 
                 authRepository.makeRefreshToken(newRefreshToken, email);
-                CookieUtil.saveCookie(newAccessToken, newRefreshToken, response,
-                    cookieMaxAge);
+//                CookieUtil.saveCookie(newAccessToken, newRefreshToken, response,
+//                    cookieMaxAge);
 
                 return email;
             } catch (Exception error) {
