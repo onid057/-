@@ -5,7 +5,9 @@ import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import HorizontalLine from '../../components/common/HorizontalLine';
 import Paragraph from '../../components/common/Paragraph';
-import { useNavigate, useParams } from 'react-router';
+import LongInputBox from '../../components/common/LongInputBox';
+
+import { useNavigate } from 'react-router';
 import { getReportData } from '../../apis/api/report';
 import { calculateReportWritingTime } from '../../utils/time';
 
@@ -13,47 +15,25 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 16px 20px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 25px;
   background-color: ${({ theme }) => theme.colors.primary};
-  font-size: 18px;
+  font-size: 15px;
   font-weight: 300;
   white-space: pre-wrap;
-`;
-
-const Blank = styled.div`
-  width: 28px;
 `;
 
 const ReportWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
-`;
-
-const TitleWrapper = styled.div`
-  display: flex;
-  justify-content: start;
-  font-size: 20px;
+  gap: 15px;
 `;
 
 const TextWrapper = styled.div`
   display: flex;
   justify-content: end;
-`;
-
-const ContentWrapper = styled.div`
-  background-color: white;
-  border-radius: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px 10px;
-  font-size: 18px;
-  width: 288px;
-  height: 150px;
 `;
 
 function ReportDetail() {
@@ -67,6 +47,7 @@ function ReportDetail() {
 
   useEffect(() => {
     getReportData().then(response => {
+      console.log(response);
       setReportInfos(response.data);
     });
   }, []);
@@ -82,40 +63,42 @@ function ReportDetail() {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        centerContent={'정기 보고서'}
-        rightContent={<Blank></Blank>}
         onPrevious={onPrevious}
       ></NavigationBar>
       <Paragraph
-        gap={'20px'}
+        gap={'5px'}
         fontSize={'35px'}
         sentences={[
-          <BoldText fontSize={'35px'} boldContent={'{ 장수민 }'}></BoldText>,
-          '사용자님',
+          <BoldText boldContent={'집사'} normalContent={'가'}></BoldText>,
+          '보낸 리포트',
         ]}
       ></Paragraph>
-      <BoldText
-        fontSize={'20px'}
-        boldContent={'[ 작성자 ]'}
-        normalContent={' 곽희웅 집사님'}
-      ></BoldText>
+
+      <Paragraph
+        gap={'5px'}
+        fontSize={'15px'}
+        sentences={[
+          `보낸 사람 : ${'곽희웅'} 집사`,
+          `받는 사람 : ${'장수민'} 고객`,
+        ]}
+      ></Paragraph>
+
       {reportInfos.map((info, idx) => (
         <ReportWrapper key={idx}>
-          <HorizontalLine height={'7px'} color={'#D9D9D9'}></HorizontalLine>
-          <TextWrapper>
-            <BoldText
-              fontSize={'18px'}
-              boldContent={'작성시간 '}
-              normalContent={calculateReportWritingTime(info.createdAt)}
-            ></BoldText>
-          </TextWrapper>
+          <HorizontalLine height={'2px'}></HorizontalLine>
           <Image
             src={info.processImage}
             width={'288px'}
             height={'288px'}
           ></Image>
-          <TitleWrapper>내용</TitleWrapper>
-          <ContentWrapper>{info.processContent}</ContentWrapper>
+          <LongInputBox
+            value={info.processContent}
+            disabled={true}
+          ></LongInputBox>
+
+          <TextWrapper>
+            {calculateReportWritingTime(info.createdAt)}
+          </TextWrapper>
         </ReportWrapper>
       ))}
     </Wrapper>

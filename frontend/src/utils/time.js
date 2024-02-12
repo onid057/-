@@ -27,24 +27,30 @@ const converToyyyymmdd = data => {
   return (
     date.getFullYear() +
     '-' +
-    (date.getMonth() + 1 < 9
+    (date.getMonth() + 1 <= 9
       ? '0' + (date.getMonth() + 1)
       : date.getMonth() + 1) +
     '-' +
-    (date.getDate() < 9 ? '0' + date.getDate() : date.getDate())
+    (date.getDate() <= 9 ? '0' + date.getDate() : date.getDate())
   );
 };
 
 const calculateReportWritingTime = createdAt => {
-  const convertedCreatedAt = new Date(createdAt);
   const currentTime = new Date();
-  const diff = currentTime - convertedCreatedAt;
+  const convertedCreatedAt = new Date(createdAt);
+  const diff = currentTime.getTime() - convertedCreatedAt.getTime();
+
+  const elapsedDays = Math.floor(diff / (1000 * 60 * 60 * 24));
   const elapsedHours = Math.floor(diff / (1000 * 60 * 60));
   const elapsedMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-  if (elapsedHours === 0) {
-    return `${elapsedMinutes}분 전`;
+
+  if (elapsedDays >= 7) {
+    return converToyyyymmdd(createdAt);
+  } else if (elapsedDays === 0) {
+    if (elapsedHours === 0) return `${elapsedMinutes}분 전`;
+    else return `${elapsedHours}시간 전`;
   } else {
-    return `${elapsedHours}시간 전`;
+    return `${elapsedDays}일 전`;
   }
 };
 

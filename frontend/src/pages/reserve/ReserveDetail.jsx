@@ -7,7 +7,7 @@ import BoldText from '../../components/common/BoldText';
 import Notice from '../../components/common/Notice';
 import Paragraph from '../../components/common/Paragraph';
 import HorizontalLine from '../../components/common/HorizontalLine';
-import { convertToHour, converToyyyymmdd } from '../../utils/time';
+import { converToyyyymmdd } from '../../utils/time';
 import { convertToWon } from '../../utils/money';
 import { getReservationDetailInfoByUser } from '../../apis/api/reserve';
 
@@ -72,10 +72,6 @@ const ReportWrapper = styled.div`
   margin: 18px 0;
 `;
 
-const Blank = styled.div`
-  width: 28px;
-`;
-
 function ReserveDetail() {
   const navigate = useNavigate();
 
@@ -104,10 +100,9 @@ function ReserveDetail() {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        centerContent={'진행 중인 내역'}
-        rightContent={<Blank></Blank>}
         onPrevious={onPrevious}
       ></NavigationBar>
+
       <ContentWrapper>
         <BoldText
           fontSize={'18px'}
@@ -144,6 +139,7 @@ function ReserveDetail() {
           nextPage={'/'}
         ></Notice>
       </ContentWrapper>
+
       <ContentWrapper>
         <BoldText
           fontSize={'18px'}
@@ -167,7 +163,9 @@ function ReserveDetail() {
           </TextWrapper>
           <TextWrapper>
             <>지불한 금액</>
-            <BoldText boldContent={reservationInfo.expectationPay}></BoldText>
+            <BoldText
+              boldContent={convertToWon(reservationInfo.expectationPay)}
+            ></BoldText>
           </TextWrapper>
           <DetailWrapper>
             <>상세 내용</>
@@ -178,12 +176,13 @@ function ReserveDetail() {
 
       {reservationInfo.isReported && (
         <>
-          <HorizontalLine height={'7px'} color={'#D9D9D9'}></HorizontalLine>
+          <HorizontalLine height={'2px'}></HorizontalLine>
+
           <ContentWrapper>
             <BoldText
               fontSize={'18px'}
-              boldContent={'집사'}
-              normalContent={'님이 작성한 리포트'}
+              boldContent={reservationInfo.name}
+              normalContent={' 님이 작성한 리포트'}
             ></BoldText>
             <Notice
               upper={[

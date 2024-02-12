@@ -36,6 +36,7 @@ function Notify() {
 
   useEffect(() => {
     getMatchNotificationList(3).then(response => {
+      console.log(response);
       setList(response.data);
     });
   }, []);
