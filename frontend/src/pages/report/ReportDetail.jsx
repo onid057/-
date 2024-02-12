@@ -3,10 +3,11 @@ import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
-import Notice from '../../components/common/Notice';
+import HorizontalLine from '../../components/common/HorizontalLine';
 import Paragraph from '../../components/common/Paragraph';
 import { useNavigate, useParams } from 'react-router';
 import { getReportData } from '../../apis/api/report';
+import { calculateReportWritingTime } from '../../utils/time';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -26,20 +27,50 @@ const Blank = styled.div`
   width: 28px;
 `;
 
+const ReportWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  justify-content: start;
+  font-size: 20px;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  justify-content: end;
+`;
+
+const ContentWrapper = styled.div`
+  background-color: white;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 10px;
+  font-size: 18px;
+  width: 288px;
+  height: 150px;
+`;
+
 function ReportDetail() {
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
   };
 
-  const [reportInfos, setReportInfos] = useState({});
+  const [reportInfos, setReportInfos] = useState([]);
   // const { roomId } = useParams();
 
   useEffect(() => {
     getReportData().then(response => {
-      console.log(response);
+      setReportInfos(response.data);
     });
-  });
+  }, []);
+
   return (
     <Wrapper>
       <NavigationBar
@@ -68,6 +99,25 @@ function ReportDetail() {
         boldContent={'[ 작성자 ]'}
         normalContent={' 곽희웅 집사님'}
       ></BoldText>
+      {reportInfos.map((info, idx) => (
+        <ReportWrapper key={idx}>
+          <HorizontalLine height={'7px'} color={'#D9D9D9'}></HorizontalLine>
+          <TextWrapper>
+            <BoldText
+              fontSize={'18px'}
+              boldContent={'작성시간 '}
+              normalContent={calculateReportWritingTime(info.createdAt)}
+            ></BoldText>
+          </TextWrapper>
+          <Image
+            src={info.processImage}
+            width={'288px'}
+            height={'288px'}
+          ></Image>
+          <TitleWrapper>내용</TitleWrapper>
+          <ContentWrapper>{info.processContent}</ContentWrapper>
+        </ReportWrapper>
+      ))}
     </Wrapper>
   );
 }
