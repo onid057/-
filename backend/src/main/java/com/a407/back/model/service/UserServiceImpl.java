@@ -87,13 +87,13 @@ public class UserServiceImpl implements UserService {
     private String senderPhoneNumber;
 
     @Value("${image.size.profile}")
-    private String profileSize;
+    private Integer profileSize;
 
     @Value("${code.phone.start}")
-    private String codeStart;
+    private Integer codeStart;
 
     @Value("${code.phone.end}")
-    private String codeEnd;
+    private Integer codeEnd;
 
     @Override
     public UserInfoResponse findUserInfo(Long userId) {
@@ -145,10 +145,12 @@ public class UserServiceImpl implements UserService {
         } else {
             notificationList = userRepository.findNotificationByUserIdList(userId, "USER");
         }
+
         for (Notification n : notificationList) {
+            Room room = roomRepository.findByRoomId(n.getRoomId().getRoomId());
             notificationResponseList.add(
-                new NotificationListResponse(userRepository.findByUserId(userId).getName(),
-                    n.getType(), n.getStatus(), categoryRepository.findMajorCategoryName(
+                new NotificationListResponse(userRepository.findByUserId(n.getSendId()).getName(),
+                    n.getType(), room.getStatus(), n.getStatus(), categoryRepository.findMajorCategoryName(
                     n.getRoomId().getSubCategoryId().getMajorCategoryId().getMajorCategoryId()),
                     n.getRoomId().getRoomId(), n.getNotificationId(), n.getCreatedAt()));
         }
@@ -184,7 +186,6 @@ public class UserServiceImpl implements UserService {
     public User findByUserId(Long userId) {
         return userRepository.findByUserId(userId);
     }
-
 
     @Override
     public UserRecordInfoResponse getUserRecordInfo(Long roomId) {
@@ -260,7 +261,6 @@ public class UserServiceImpl implements UserService {
             room.getExpectationStartedAt());
     }
 
-
     @Override
     @Transactional
     public UserAccountResponse makeAccount(Long userId, UserAccountRequest userAccountRequest) {
@@ -291,11 +291,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void makeSendMessage(String phoneNumber, String email)
         throws JsonProcessingException, NoSuchAlgorithmException {
-        int code = getInstanceStrong().nextInt(Integer.parseInt(codeStart),
-            Integer.parseInt(codeEnd));
+        int code = getInstanceStrong().nextInt(codeStart,
+            codeEnd);
         while (userRepository.findCode(String.valueOf(code)) != null) {
-            code = getInstanceStrong().nextInt(Integer.parseInt(codeStart),
-                Integer.parseInt(codeEnd));
+            code = getInstanceStrong().nextInt(codeStart,
+                codeEnd);
         }
         Message message = new Message();
         message.setFrom(senderPhoneNumber);
@@ -392,7 +392,7 @@ public class UserServiceImpl implements UserService {
             if (user.getProfileImage() != null && !user.getProfileImage().isBlank()) {
                 imageUtil.deleteImage(user.getProfileImage());
             }
-            imageName = imageUtil.resizeImage(image, Integer.parseInt(profileSize));
+            imageName = imageUtil.resizeImage(image, profileSize);
         }
         UserChangeDto userChangeDto = new UserChangeDto(
             imageName == null ? user.getProfileImage() : imageName,

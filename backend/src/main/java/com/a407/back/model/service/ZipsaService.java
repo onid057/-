@@ -39,4 +39,6 @@ public interface ZipsaService {
     void changeZipsaStatus(Long zipsaId);
 
     ZipsaStatusResponse getZipsaWorkStatus(Long zipsaId);
+
+    void makeConfirmNotification(Long roomId);
 }

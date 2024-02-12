@@ -121,6 +121,7 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaRecordInfo(roomId)));
     }
+
     @GetMapping("/reservations/{roomId}")
     public ResponseEntity<ApiResponse<ZipsaReservationInfoResponse>> getZipsaReservationInfo(
         @PathVariable Long roomId) {

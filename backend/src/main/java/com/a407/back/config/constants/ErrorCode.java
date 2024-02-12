@@ -20,7 +20,10 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "존재하지 않는 고객 ID입니다."),
 
     // 500
-    INTERNAL_SERVER_ERROR(500, "서버 측 에러입니다.");
+    INTERNAL_SERVER_ERROR(500, "서버 측 에러입니다."),
+
+    // 503
+    CONNECT_ERROR(503, "SSE 구독에 실패했습니다.");
 
     private final int status;
     private final String message;

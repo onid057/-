@@ -31,7 +31,7 @@ public class AuthController {
 
 
     @Value("${cookie.age}")
-    private String cookieMaxAge;
+    private Integer cookieMaxAge;
 
 
     @PostMapping("/sign-in")
@@ -45,7 +45,7 @@ public class AuthController {
         Tokens tokens = authService.login(authRequest.getEmail(), authRequest.getPassword());
 
         CookieUtil.saveCookie(tokens.getAccessToken(), tokens.getRefreshToken(), response,
-            Integer.parseInt(cookieMaxAge));
+            cookieMaxAge);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "로그인 성공"));

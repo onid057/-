@@ -4,6 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.http.ResponseCookie;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CookieUtil {
@@ -22,23 +23,17 @@ public class CookieUtil {
 
     public static void saveCookie(String accessToken, String refreshToken,
         HttpServletResponse response, int age) {
-        Cookie accessCookie = new Cookie("Authorization", accessToken);
-        Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
 
-        accessCookie.setHttpOnly(true);
-        refreshCookie.setHttpOnly(true);
+        ResponseCookie accessCookie = ResponseCookie.from("Authorization", accessToken)
+            .sameSite("None").httpOnly(false).secure(true).path("/")
+            .maxAge(age).build();
 
-        accessCookie.setSecure(true);
-        refreshCookie.setSecure(true);
+        ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
+            .sameSite("None").httpOnly(false).secure(true).path("/")
+            .maxAge(age).build();
 
-        accessCookie.setPath("/");
-        refreshCookie.setPath("/");
-
-        accessCookie.setMaxAge(age);
-        refreshCookie.setMaxAge(age);
-
-        response.addCookie(accessCookie);
-        response.addCookie(refreshCookie);
+        response.addHeader("Set-Cookie", accessCookie.toString());
+        response.addHeader("Set-Cookie", refreshCookie.toString());
     }
 
 }
