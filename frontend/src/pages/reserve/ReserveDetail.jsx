@@ -197,7 +197,7 @@ function ReserveDetail() {
                 </ReportWrapper>,
               ]}
               padding={'10px 15px'}
-              nextPage={'/'}
+              nextPage={`/reportDetail/${roomId}`}
             ></Notice>
           </ContentWrapper>
         </>
