@@ -35,6 +35,7 @@ import UpdateBoard from './pages/boards/UpdateBoard';
 import CreateBoard from './pages/boards/CreateBoard';
 
 import TestLee from './pages/TestLee';
+import ReportWriting from './pages/report/ReportWriting';
 import ReportDetail from './pages/report/ReportDetail';
 
 const GlobalStyle = createGlobalStyle`
@@ -261,6 +262,7 @@ function App() {
         ></Route>
 
         <Route path="/test/sumin" element={<TestLee />}></Route>
+        <Route path="/report" element={<ReportWriting />}></Route>
         <Route path="/reportDetail/:roomId" element={<ReportDetail />}></Route>
       </Routes>
     </ThemeProvider>
