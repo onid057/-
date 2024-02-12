@@ -34,6 +34,8 @@ import BoardsDetail from './pages/boards/BoardsDetail';
 import UpdateBoard from './pages/boards/UpdateBoard';
 import CreateBoard from './pages/boards/CreateBoard';
 
+import TestLee from './pages/TestLee';
+
 const GlobalStyle = createGlobalStyle`
 	*,
 	*::before,
@@ -252,6 +254,8 @@ function App() {
           path="/rooms/complete"
           element={<CompletedCreationRoom />}
         ></Route>
+
+        <Route path="/test/sumin" element={<TestLee />}></Route>
       </Routes>
     </ThemeProvider>
   );
