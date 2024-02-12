@@ -39,10 +39,7 @@ public class SSEServiceImpl implements SSEService {
 
     private final CategoryRepository categoryRepository;
 
-    private final ObjectMapper objectMapper;
-
     // SseEmitter를 사용해서 알림을 보낼 때 사용
-    @Transactional
     public void send(Long userId) {
         // 로그인 한 유저의 SseEmitter 가져오기
         SseEmitter sseEmitter = sseRepository.get(userId);
@@ -54,7 +51,7 @@ public class SSEServiceImpl implements SSEService {
                     userId, type).stream().map(notification -> {
                     Room room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
                     return new NotificationListResponse(
-                        userRepository.findByUserId(userId).getName(),
+                        userRepository.findByUserId(notification.getSendId()).getName(),
                         notification.getType(), room.getStatus(), notification.getStatus(),
                         categoryRepository.findMajorCategoryName(
                             notification.getRoomId().getSubCategoryId().getMajorCategoryId()
@@ -63,9 +60,8 @@ public class SSEServiceImpl implements SSEService {
                         notification.getCreatedAt());
                 }).toList();
 
-                String jsonData = objectMapper.writeValueAsString(notificationList);
                 sseEmitter.send(
-                    SseEmitter.event().id(userId.toString()).name("sse").data(jsonData));
+                    SseEmitter.event().id(userId.toString()).name("sse").data(notificationList));
                 log.info("이벤트가 성공적으로 진행되었습니다. {}", userId);
             } catch(IOException e) {
                 sseRepository.delete(userId);
