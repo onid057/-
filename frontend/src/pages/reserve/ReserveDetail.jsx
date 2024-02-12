@@ -7,8 +7,7 @@ import BoldText from '../../components/common/BoldText';
 import Notice from '../../components/common/Notice';
 import Paragraph from '../../components/common/Paragraph';
 import HorizontalLine from '../../components/common/HorizontalLine';
-import { convertToHour, converToyyyymmdd } from '../../utils/time';
-import { convertToWon } from '../../utils/money';
+import { converToyyyymmdd } from '../../utils/time';
 import { getReservationDetailInfoByUser } from '../../apis/api/reserve';
 
 const Wrapper = styled.div`
