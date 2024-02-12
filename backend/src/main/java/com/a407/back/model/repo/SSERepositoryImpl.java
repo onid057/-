@@ -18,10 +18,12 @@ public class SSERepositoryImpl implements SSERepository{
     }
 
     @Override
-    public void save(Long userId, SseEmitter sseEmitter) {
+    public SseEmitter save(Long userId, SseEmitter sseEmitter) {
         emitterMap.put(userId, sseEmitter);
+        return sseEmitter;
     }
 
+    @Override
     public void delete(Long userId) {
         emitterMap.remove(userId);
     }

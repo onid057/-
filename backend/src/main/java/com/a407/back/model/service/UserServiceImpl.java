@@ -140,10 +140,11 @@ public class UserServiceImpl implements UserService {
         } else {
             notificationList = userRepository.findNotificationByUserIdList(userId, "USER");
         }
+
         for (Notification n : notificationList) {
             Room room = roomRepository.findByRoomId(n.getRoomId().getRoomId());
             notificationResponseList.add(
-                new NotificationListResponse(userRepository.findByUserId(userId).getName(),
+                new NotificationListResponse(userRepository.findByUserId(n.getSendId()).getName(),
                     n.getType(), room.getStatus(), n.getStatus(), categoryRepository.findMajorCategoryName(
                     n.getRoomId().getSubCategoryId().getMajorCategoryId().getMajorCategoryId()),
                     n.getRoomId().getRoomId(), n.getNotificationId(), n.getCreatedAt()));

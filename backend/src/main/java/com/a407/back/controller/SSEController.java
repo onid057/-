@@ -1,6 +1,7 @@
 package com.a407.back.controller;
 
 import com.a407.back.model.service.SSEService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +17,7 @@ public class SSEController {
     private final SSEService sseService;
 
     @GetMapping(value = "/sse/{userId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> subscribeToNotificationList(@PathVariable("userId") Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(sseService.connect(userId));
+    public ResponseEntity<SseEmitter> subscribeToNotificationList(@PathVariable("userId") Long userId, HttpServletResponse response) {
+        return ResponseEntity.status(HttpStatus.OK).body(sseService.connect(userId, response));
     }
 }

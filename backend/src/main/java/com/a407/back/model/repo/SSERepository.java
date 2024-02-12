@@ -6,7 +6,7 @@ public interface SSERepository {
 
     SseEmitter get(Long userId);
 
-    void save(Long userId, SseEmitter sseEmitter);
+    SseEmitter save(Long userId, SseEmitter sseEmitter);
 
     void delete(Long userId);
 }
