@@ -8,7 +8,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @Repository
 @RequiredArgsConstructor
-public class SSERepositoryImpl implements SSERepository{
+public class SseRepositoryImpl implements SseRepository {
 
     private final Map<Long, SseEmitter> emitterMap = new ConcurrentHashMap<>();
 
@@ -18,10 +18,12 @@ public class SSERepositoryImpl implements SSERepository{
     }
 
     @Override
-    public void save(Long userId, SseEmitter sseEmitter) {
+    public SseEmitter save(Long userId, SseEmitter sseEmitter) {
         emitterMap.put(userId, sseEmitter);
+        return sseEmitter;
     }
 
+    @Override
     public void delete(Long userId) {
         emitterMap.remove(userId);
     }

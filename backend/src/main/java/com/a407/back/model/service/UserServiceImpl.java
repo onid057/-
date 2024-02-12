@@ -26,8 +26,8 @@ import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
-import com.a407.back.dto.user.UserRecordResponse;
 import com.a407.back.dto.user.UserRecordInfoResponse;
+import com.a407.back.dto.user.UserRecordResponse;
 import com.a407.back.dto.user.UserReservationInfoResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.BoardListDto;
@@ -140,12 +140,14 @@ public class UserServiceImpl implements UserService {
         } else {
             notificationList = userRepository.findNotificationByUserIdList(userId, "USER");
         }
+
         for (Notification n : notificationList) {
             Room room = roomRepository.findByRoomId(n.getRoomId().getRoomId());
             notificationResponseList.add(
-                new NotificationListResponse(userRepository.findByUserId(userId).getName(),
-                    n.getType(), room.getStatus(), n.getStatus(), categoryRepository.findMajorCategoryName(
-                    n.getRoomId().getSubCategoryId().getMajorCategoryId().getMajorCategoryId()),
+                new NotificationListResponse(userRepository.findByUserId(n.getSendId()).getName(),
+                    n.getType(), room.getStatus(), n.getStatus(),
+                    categoryRepository.findMajorCategoryName(
+                        n.getRoomId().getSubCategoryId().getMajorCategoryId().getMajorCategoryId()),
                     n.getRoomId().getRoomId(), n.getNotificationId(), n.getCreatedAt()));
         }
         return notificationResponseList;

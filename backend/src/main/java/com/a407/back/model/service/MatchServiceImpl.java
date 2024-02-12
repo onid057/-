@@ -1,7 +1,6 @@
 package com.a407.back.model.service;
 
-import com.a407.back.config.SSEConfig;
-import com.a407.back.config.SSEConfigListener;
+import com.a407.back.config.redis.RedisPublisher;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Status;
 import com.a407.back.domain.Notification.Type;
@@ -17,7 +16,6 @@ import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.MatchRepository;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
-import com.a407.back.model.repo.SSERepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
@@ -43,9 +41,7 @@ public class MatchServiceImpl implements MatchService {
 
     private final ZipsaRepository zipsaRepository;
 
-    private final SSEConfigListener sseConfigListener;
-
-    private final SSERepository sseRepository;
+    private final RedisPublisher redisPublisher;
 
     @Override
     @Transactional
@@ -106,8 +102,9 @@ public class MatchServiceImpl implements MatchService {
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
                     Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
-            SSEConfig sseConfig = new SSEConfig(id);
-            sseConfigListener.onApplicationEvent(sseConfig);
+        }
+        for (Long id : roomCreateRequest.getZipsaList()) {
+            redisPublisher.send(id);
         }
 
         return newRoomId;
@@ -140,7 +137,9 @@ public class MatchServiceImpl implements MatchService {
         matchRepository.changeMatchStatus(roomId, status);
     }
 
-    private void makeReportNotification(Long roomId) {
+    @Override
+    @Transactional
+    public void makeReportNotification(Long roomId) {
         Room room = roomRepository.findByRoomId(roomId);
         Notification notification = Notification.builder().roomId(room)
             .sendId(room.getUserId().getUserId())
@@ -149,7 +148,6 @@ public class MatchServiceImpl implements MatchService {
             .isRead(false).createdAt(
                 Timestamp.valueOf(LocalDateTime.now())).build();
         notificationRepository.makeNotification(notification);
-        SSEConfig sseConfig = new SSEConfig(room.getZipsaId().getZipsaId().getUserId());
-        sseConfigListener.onApplicationEvent(sseConfig);
+        redisPublisher.send(room.getZipsaId().getZipsaId().getUserId());
     }
 }

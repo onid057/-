@@ -19,4 +19,6 @@ public interface MatchService {
     void changeMatchStatus(Long roomId, String status);
 
     Long makeFilterRoom(RoomCreateRequest roomCreateRequest);
+
+    void makeReportNotification(Long roomId);
 }

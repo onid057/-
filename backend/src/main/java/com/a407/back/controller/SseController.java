@@ -1,6 +1,7 @@
 package com.a407.back.controller;
 
-import com.a407.back.model.service.SSEService;
+import com.a407.back.config.redis.RedisPublisher;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,11 +13,12 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 @RestController
 @RequiredArgsConstructor
-public class SSEController {
-    private final SSEService sseService;
+public class SseController {
+
+    private final RedisPublisher redisPublisher;
 
     @GetMapping(value = "/sse/{userId}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> subscribeToNotificationList(@PathVariable("userId") Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(sseService.connect(userId));
+    public ResponseEntity<SseEmitter> pubSub(@PathVariable("userId") Long userId, HttpServletResponse response) {
+        return ResponseEntity.status(HttpStatus.OK).body(redisPublisher.createTopic(userId, response));
     }
 }
