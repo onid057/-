@@ -52,8 +52,6 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -62,8 +60,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final UserRepository userRepository;
 
@@ -89,13 +85,13 @@ public class UserServiceImpl implements UserService {
     private String senderPhoneNumber;
 
     @Value("${image.size.profile}")
-    private String profileSize;
+    private Integer profileSize;
 
     @Value("${code.phone.start}")
-    private String codeStart;
+    private Integer codeStart;
 
     @Value("${code.phone.end}")
-    private String codeEnd;
+    private Integer codeEnd;
 
     @Override
     public UserInfoResponse findUserInfo(Long userId) {
@@ -184,7 +180,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUserId(userId);
     }
 
-
     @Override
     public UserRecordsResponse getUserRecordInfo(Long roomId) {
         Room room = userRepository.getUserRecordInfo(roomId);
@@ -259,7 +254,6 @@ public class UserServiceImpl implements UserService {
             room.getExpectationStartedAt());
     }
 
-
     @Override
     @Transactional
     public UserAccountResponse makeAccount(UserAccountRequest userAccountRequest) {
@@ -290,11 +284,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void makeSendMessage(String phoneNumber, String email)
         throws JsonProcessingException, NoSuchAlgorithmException {
-        int code = getInstanceStrong().nextInt(Integer.parseInt(codeStart),
-            Integer.parseInt(codeEnd));
+        int code = getInstanceStrong().nextInt(codeStart,
+            codeEnd);
         while (userRepository.findCode(String.valueOf(code)) != null) {
-            code = getInstanceStrong().nextInt(Integer.parseInt(codeStart),
-                Integer.parseInt(codeEnd));
+            code = getInstanceStrong().nextInt(codeStart,
+                codeEnd);
         }
         Message message = new Message();
         message.setFrom(senderPhoneNumber);
@@ -391,7 +385,7 @@ public class UserServiceImpl implements UserService {
             if (user.getProfileImage() != null && !user.getProfileImage().isBlank()) {
                 imageUtil.deleteImage(user.getProfileImage());
             }
-            imageName = imageUtil.resizeImage(image, Integer.parseInt(profileSize));
+            imageName = imageUtil.resizeImage(image, profileSize);
         }
         UserChangeDto userChangeDto = new UserChangeDto(
             imageName == null ? user.getProfileImage() : imageName,

@@ -37,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${map.range}")
-    private String range;
+    private Double range;
 
 
     @Override
@@ -77,7 +77,7 @@ public class UserRepositoryImpl implements UserRepository {
         User user = em.find(User.class, userId);
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
-                user.getLatitude(), user.getLongitude(), Double.parseDouble(range) * 4)))).orderBy(
+                user.getLatitude(), user.getLongitude(), range * 4)))).orderBy(
             qZipsa.serviceCount.desc()).fetch();
     }
 
@@ -86,7 +86,7 @@ public class UserRepositoryImpl implements UserRepository {
         QZipsa qZipsa = QZipsa.zipsa;
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude, lat,
-                lng, Long.parseLong(range))))).orderBy(qZipsa.serviceCount.desc()).fetch();
+                lng, range)))).orderBy(qZipsa.serviceCount.desc()).fetch();
     }
 
     @Override
@@ -128,7 +128,6 @@ public class UserRepositoryImpl implements UserRepository {
                 isZipsa(userId, isZipsa).and(qRoom.status.in(Process.ONGOING)))
             .orderBy(qRoom.expectationStartedAt.asc()).limit(1).fetchOne();
     }
-
 
     @Override
     public Room getUserReservationBefore(Long userId, Boolean isZipsa) {
