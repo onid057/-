@@ -44,6 +44,7 @@ public class RedisPublisher {
         }
     }
 
+    @Transactional
     public void publish(ChannelTopic topic, Object obj) {
         redisTemplate.convertAndSend(topic.getTopic(), obj);
     }

@@ -2,6 +2,7 @@ package com.a407.back.config.redis;
 
 import com.a407.back.model.service.SseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +21,7 @@ public class RedisSubscriber implements MessageListener {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
+    @Transactional
     public void onMessage(Message message, byte[] pattern) {
         try {
             Long publishMessage = objectMapper.readValue(message.getBody(), Long.class);
