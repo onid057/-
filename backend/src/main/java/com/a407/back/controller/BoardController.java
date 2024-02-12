@@ -30,6 +30,14 @@ public class BoardController {
 
     private final BoardService boardService;
 
+    @GetMapping
+    public ResponseEntity<ApiResponse<BoardListResponse>> findBoardList(
+        @ModelAttribute BoardListRequest boardListRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                boardService.findBoardList(boardListRequest)));
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> makeBoard(
         @AuthenticationPrincipal SecurityUser user,
@@ -39,16 +47,9 @@ public class BoardController {
                 boardService.makeBoard(user.getUserId(), boardCreateRequest)));
     }
 
-    @GetMapping
-    public ResponseEntity<ApiResponse<BoardListResponse>> findBoardList(
-        @ModelAttribute BoardListRequest boardListRequest) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                boardService.findBoardList(boardListRequest)));
-    }
 
     @GetMapping("/{boardId}")
-    public ResponseEntity<ApiResponse<BoardDetailResponse>> findBoardDeatil(
+    public ResponseEntity<ApiResponse<BoardDetailResponse>> findBoardDetail(
         @PathVariable("boardId") Long boardId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
