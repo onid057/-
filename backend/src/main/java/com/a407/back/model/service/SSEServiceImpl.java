@@ -1,4 +1,5 @@
 package com.a407.back.model.service;
+
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.notification.NotificationListResponse;
@@ -7,6 +8,7 @@ import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.SSERepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,9 +17,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+
 @Service
 @RequiredArgsConstructor
 public class SSEServiceImpl implements SSEService {
+
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     @Value("${default.timeout}")
     private Long defaultTimeout;
@@ -26,10 +30,13 @@ public class SSEServiceImpl implements SSEService {
     private final ZipsaRepository zipsaRepository;
     private final RoomRepository roomRepository;
     private final CategoryRepository categoryRepository;
+    private final ObjectMapper objectMapper;
+
     // SseEmitter를 사용해서 알림을 보낼 때 사용
     public void send(Long userId) {
         // 로그인 한 유저의 SseEmitter 가져오기
-        sseRepository.get(userId).ifPresentOrElse(sseEmitter -> {
+        SseEmitter sseEmitter = sseRepository.get(userId);
+        if(sseEmitter != null) {
             try {
                 Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
                 String type = zipsa != null && zipsa.getIsWorked() ? "ZIPSA" : "USER";
@@ -45,15 +52,19 @@ public class SSEServiceImpl implements SSEService {
                         notification.getRoomId().getRoomId(), notification.getNotificationId(),
                         notification.getCreatedAt());
                 }).toList();
+
+                String jsonData = objectMapper.writeValueAsString(notificationList);
                 sseEmitter.send(
-                    SseEmitter.event().id(userId.toString()).name("sse").data(notificationList));
-                log.error("이벤트가 성공적으로 진행되었습니다. {}", userId);
-            } catch (IOException e) {
+                    SseEmitter.event().id(userId.toString()).name("sse").data(jsonData));
+                log.info("이벤트가 성공적으로 진행되었습니다. {}", userId);
+            } catch(IOException e) {
                 sseRepository.delete(userId);
+                sseEmitter.completeWithError(e);
                 log.error(String.valueOf(e));
             }
-        }, () -> log.error("No Emitter found"));
+        }
     }
+
     @Override
     public SseEmitter connect(Long userId) {
         SseEmitter sseEmitter = new SseEmitter(defaultTimeout);

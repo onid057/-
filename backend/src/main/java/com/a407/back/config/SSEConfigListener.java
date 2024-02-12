@@ -17,7 +17,7 @@ public class SSEConfigListener implements ApplicationListener<SSEConfig> {
 
     @Override
     public void onApplicationEvent(SSEConfig sseConfig) {
-        sseService.send(sseConfig.getUserId());
         log.info("이벤트가 발생합니다. {}", sseConfig.getUserId());
+        sseService.send(sseConfig.getUserId());
     }
 }

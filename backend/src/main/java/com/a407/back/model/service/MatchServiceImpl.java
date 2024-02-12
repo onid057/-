@@ -106,11 +106,8 @@ public class MatchServiceImpl implements MatchService {
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
                     Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
-
-            if(sseRepository.get(id).isPresent()) {
-                SSEConfig sseConfig = new SSEConfig(id);
-                sseConfigListener.onApplicationEvent(sseConfig);
-            }
+            SSEConfig sseConfig = new SSEConfig(id);
+            sseConfigListener.onApplicationEvent(sseConfig);
         }
 
         return newRoomId;
