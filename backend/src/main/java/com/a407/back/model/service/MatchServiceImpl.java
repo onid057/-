@@ -23,6 +23,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -42,6 +45,8 @@ public class MatchServiceImpl implements MatchService {
     private final ZipsaRepository zipsaRepository;
 
     private final RedisPublisher redisPublisher;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     @Transactional
@@ -107,6 +112,8 @@ public class MatchServiceImpl implements MatchService {
             Zipsa zipsa = zipsaRepository.findByZipsaId(id);
             if(zipsa != null && zipsa.getIsWorked()) {
                 redisPublisher.send(id);
+            } else {
+                logger.warn("집사 상태가 아닙니다. {}", id);
             }
         }
         return newRoomId;
