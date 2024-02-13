@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import NavigationBar from '../../components/common/NavigationBar';
-import Image from '../../components/common/Image';
-import Paragraph from '../../components/common/Paragraph';
-import Input from '../../components/common/Input';
+import NavigationBar from '../components/common/NavigationBar';
+import Image from '../components/common/Image';
+import Paragraph from '../components/common/Paragraph';
+import Input from '../components/common/Input';
 import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`

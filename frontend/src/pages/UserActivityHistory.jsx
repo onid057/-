@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import NavigationBar from '../../components/common/NavigationBar';
-import Image from '../../components/common/Image';
-import BoldText from '../../components/common/BoldText';
-import Paragraph from '../../components/common/Paragraph';
-import Accordian from '../../components/common/Accordian';
+import NavigationBar from '../components/common/NavigationBar';
+import Image from '../components/common/Image';
+import BoldText from '../components/common/BoldText';
+import Paragraph from '../components/common/Paragraph';
+import Accordian from '../components/common/Accordian';
 
 const Wrapper = styled.div`
   width: 320px;

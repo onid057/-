@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import NavigationBar from '../../components/common/NavigationBar';
-import Image from '../../components/common/Image';
-import Paragraph from '../../components/common/Paragraph';
-import CenterModeSlider from '../../components/common/CenterModeSlider';
+import NavigationBar from '../components/common/NavigationBar';
+import Image from '../components/common/Image';
+import Paragraph from '../components/common/Paragraph';
+import CenterModeSlider from '../components/common/CenterModeSlider';
 
 const Wrapper = styled.div`
   width: 320px;

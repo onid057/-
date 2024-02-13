@@ -1,15 +1,14 @@
 import styled from 'styled-components';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavigationBar from '../../components/common/NavigationBar';
-import Paragraph from '../../components/common/Paragraph';
-import BoldText from '../../components/common/BoldText';
-import Image from '../../components/common/Image';
-import ImageUploader from '../../components/common/ImageUploader';
-import LongInputBox from '../../components/common/LongInputBox';
-import HorizontalLine from '../../components/common/HorizontalLine';
-import { converToyyyymmdd } from '../../utils/time';
-import { getDetailUserInfo } from '../../apis/api/userMyPage';
+import NavigationBar from '../components/common/NavigationBar';
+import Paragraph from '../components/common/Paragraph';
+import BoldText from '../components/common/BoldText';
+import Image from '../components/common/Image';
+import ImageUploader from '../components/common/ImageUploader';
+import LongInputBox from '../components/common/LongInputBox';
+import HorizontalLine from '../components/common/HorizontalLine';
+import ZipsaTagUpdate from '../components/zipsamypage/ZipsaTagUpdate';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -63,17 +62,31 @@ const InfoWrapper = styled.div`
   gap: 15px;
 `;
 
-const Bold = styled.div`
-  font-size: 17px;
-  font-weight: 500;
-  word-break: break-all;
-  line-height: 1.3;
-`;
+// 회원 상세 정보조회 API 호출
+const UserData = {
+  name: 'user3',
+  email: 'user3@ssafy.com',
+  phoneNumber: null,
+  birth: '1980-01-30T02:09:41.000+00:00',
+  gender: 'MAN',
+  address: '서울시 강서구',
+  profileImage: null,
+  description: '열심히 하겠습니다.',
+};
+
+const userInfo = [
+  ['이름', UserData.name],
+  ['생년월일', UserData.birth],
+  ['이메일 주소', UserData.email],
+  ['휴대폰 번호', UserData.phoneNumber],
+  ['집 주소', UserData.address],
+];
 
 function ProfileUpdate() {
   const fileInputRef = useRef(null);
 
   const handleImageClick = e => {
+    // input 태그 클릭
     e.stopPropagation();
     fileInputRef.current.click();
   };
@@ -84,14 +97,6 @@ function ProfileUpdate() {
   const onPrevious = () => {
     navigate(-1);
   };
-  const userId = 1;
-  const [userInfo, setUserInfo] = useState({});
-
-  useEffect(() => {
-    getDetailUserInfo(userId).then(response => {
-      setUserInfo(response);
-    });
-  }, []);
 
   return (
     <Wrapper>
@@ -115,6 +120,7 @@ function ProfileUpdate() {
       ></Paragraph>
 
       <ImageUploader
+        showImages={showImages}
         setShowImages={setShowImages}
         fileInputRef={fileInputRef}
         children={
@@ -122,7 +128,7 @@ function ProfileUpdate() {
             <ImageWrapper>
               <Image
                 src={
-                  userInfo.profileImage ||
+                  UserData.profileImage ||
                   showImages[0] ||
                   `${process.env.PUBLIC_URL}/images/profile_img.svg`
                 }
@@ -136,26 +142,23 @@ function ProfileUpdate() {
         }
       ></ImageUploader>
 
-      <InfoWrapper>
-        <>이름</>
-        <Bold>{userInfo.name}</Bold>
-      </InfoWrapper>
-      <InfoWrapper>
-        <>생년월일</>
-        <Bold>{converToyyyymmdd(userInfo.birth)}</Bold>
-      </InfoWrapper>
-      <InfoWrapper>
-        <>이메일 주소</>
-        <Bold>{userInfo.email}</Bold>
-      </InfoWrapper>
-      <InfoWrapper>
-        <>휴대폰 번호</>
-        <Bold> {userInfo.phoneNumber}</Bold>
-      </InfoWrapper>
-      <InfoWrapper>
-        <>집주소</>
-        <Bold>{userInfo.address}</Bold>
-      </InfoWrapper>
+      {userInfo.map((content, idx) => (
+        <InfoWrapper key={idx}>
+          <BoldText fontSize={'17px'} normalContent={content[0]}></BoldText>
+          <BoldText fontSize={'17px'} boldContent={content[1]}></BoldText>
+        </InfoWrapper>
+      ))}
+
+      <HorizontalLine
+        marginTop={'10PX'}
+        marginBottom={'8PX'}
+        height={'1px'}
+      ></HorizontalLine>
+
+      <LongInputBox
+        title={'자기소개'}
+        placeholder={UserData.description}
+      ></LongInputBox>
     </Wrapper>
   );
 }
