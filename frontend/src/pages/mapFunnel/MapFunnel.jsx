@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useFunnel } from '../../hooks/useFunnel';
 import { useNavigate } from 'react-router-dom';
 import { makeFilterSuggestion } from '../../apis/api/filter';
-import { getMyLocation } from '../../apis/api/map';
 
 import Map from '../mapFunnel/Map';
 import Detail from './Detail';
@@ -13,16 +12,8 @@ import SuggestPayment from './SuggestPayment';
 
 function MapFunnel() {
   const [mapData, setMapData] = useState({});
-  const [myLocation, setMyLocation] = useState();
   const [Funnel, setStep] = useFunnel('MAP');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    getMyLocation().then(response => {
-      console.log(response);
-      setMyLocation(response);
-    });
-  }, []);
 
   console.log(mapData);
 
@@ -40,7 +31,6 @@ function MapFunnel() {
               zipsaId: data,
             });
           }}
-          myLocation={myLocation}
         ></Map>
       </Funnel.Step>
 

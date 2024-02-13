@@ -8,7 +8,10 @@ import styled from 'styled-components';
 import BottomSheet from '../../components/common/BottomSheet';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
-import { getZipsaPositionWithinTwoKilos } from '../../apis/api/map';
+import {
+  getZipsaPositionWithinTwoKilos,
+  getMyLocation,
+} from '../../apis/api/map';
 
 const Wrapper = styled.div`
   position: relative;
@@ -36,12 +39,18 @@ function Map({ onPrevious, onNext, myLocation }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false); // 상세 정보
   const [positions, setPositions] = useState([]);
+  const [myPosition, setMyPosition] = useState({});
   const [targetCluster, setTargetCluster] = useState();
   const [zipsaId, setZipsaId] = useState();
   const modalRef = useRef(null);
 
   // 중심 좌표 기준으로 2km 이내의 집사들의 lat, lng 값을 받아옴
   useEffect(() => {
+    getMyLocation().then(response => {
+      console.log(response);
+      setMyPosition(response.data);
+    });
+
     getZipsaPositionWithinTwoKilos().then(response => {
       console.log(response);
       setPositions(response);
