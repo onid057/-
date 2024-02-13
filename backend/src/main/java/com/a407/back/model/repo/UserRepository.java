@@ -23,7 +23,7 @@ public interface UserRepository {
 
     List<Zipsa> findNearZipsaInfoList(Double lat, Double lng);
 
-    List<Room> getUserRecordList(Long userId, Boolean isZipsa);
+    List<Room> getUserRecordList(Long userId);
 
     Room getUserRecordInfo(Long roomId);
 
