@@ -47,7 +47,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(
             requests -> requests.requestMatchers("/admin/**").hasAuthority("ADMIN"));
         http.authorizeHttpRequests(
-            requests -> requests.requestMatchers("/**").permitAll().anyRequest());
+            requests -> requests.requestMatchers("/**").permitAll().anyRequest().permitAll());
 //        http.authorizeHttpRequests(
 //            requests -> requests.requestMatchers("/auth/sign-in", "/users", "/boards",
 //                    "/actuator/health").permitAll().anyRequest()
