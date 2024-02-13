@@ -37,7 +37,7 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody AuthRequest authRequest,
-        HttpServletRequest request) {
+        HttpServletRequest request,HttpServletResponse response) {
 
         if (CookieUtil.getCookieValue(request.getCookies(), refreshTokenName) != null) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
@@ -49,7 +49,7 @@ public class AuthController {
         HttpHeaders headers=new HttpHeaders();
 
 
-        CookieUtil.saveCookie(tokens.getAccessToken(), tokens.getRefreshToken(), headers,
+        CookieUtil.saveCookie(tokens.getAccessToken(), tokens.getRefreshToken(), response,
             cookieMaxAge);
 
         return ResponseEntity.status(HttpStatus.OK).headers(headers)
@@ -66,7 +66,7 @@ public class AuthController {
             authService.deleteRefreshToken(refreshToken);
         }
 
-//        CookieUtil.saveCookie("", "", response, 0);
+        CookieUtil.saveCookie("", "", response, 0);
 
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "로그아웃 성공"));
