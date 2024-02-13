@@ -4,6 +4,7 @@ import com.a407.back.domain.Report;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.zipsa.ZipsaChangeDto;
 import java.util.List;
 
 public interface ZipsaRepository {
@@ -29,7 +30,7 @@ public interface ZipsaRepository {
 
     void deleteZipsa(Long zipsaId);
 
-    void changeZipsaDescription(Long zipsaId, String description);
+    void changeZipsaInfo(Long zipsaId, ZipsaChangeDto zipsaChangeDto);
 
     void changeZipsaStatus(Long zipsaId, boolean status);
 

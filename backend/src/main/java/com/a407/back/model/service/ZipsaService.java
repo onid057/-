@@ -4,6 +4,7 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportResponse;
+import com.a407.back.dto.zipsa.ZipsaChangeRequest;
 import com.a407.back.dto.zipsa.ZipsaCreateRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
@@ -44,4 +45,6 @@ public interface ZipsaService {
     void makeConfirmNotification(Long roomId);
 
     Long makeZipsa(ZipsaCreateRequest zipsaCreateRequest);
+
+    void changeZipsaInfo(Long zipsaId, ZipsaChangeRequest request);
 }

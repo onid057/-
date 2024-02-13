@@ -17,6 +17,8 @@ import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.dto.util.ReportListDto;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportResponse;
+import com.a407.back.dto.zipsa.ZipsaChangeDto;
+import com.a407.back.dto.zipsa.ZipsaChangeRequest;
 import com.a407.back.dto.zipsa.ZipsaCreateRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
@@ -289,5 +291,15 @@ public class ZipsaServiceImpl implements ZipsaService {
 
         // 대분류 카테고리 수가 다른 경우
         throw new CustomException(ErrorCode.MISSING_REQUEST_PARAMETER_ERROR);
+    }
+
+    @Override
+    @Transactional
+    public void changeZipsaInfo(Long zipsaId, ZipsaChangeRequest request) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
+        ZipsaChangeDto zipsaChangeDto = new ZipsaChangeDto(
+            request.getDescription() == null ? zipsa.getDescription() : request.getDescription(),
+            request.getPreferTag() == null ? zipsa.getPreferTag() : request.getPreferTag());
+        zipsaRepository.changeZipsaInfo(zipsaId, zipsaChangeDto);
     }
 }

@@ -6,6 +6,7 @@ import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportResponse;
+import com.a407.back.dto.zipsa.ZipsaChangeRequest;
 import com.a407.back.dto.zipsa.ZipsaCreateRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
@@ -135,4 +136,13 @@ public class ZipsaController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
     }
+
+    @PatchMapping("/{helperId}")
+    public ResponseEntity<ApiResponse<String>> changeZipsaInfo(@PathVariable Long helperId,
+        @RequestBody ZipsaChangeRequest request) {
+        zipsaService.changeZipsaInfo(helperId, request);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "집사 정보 수정 성공"));
+    }
+
 }

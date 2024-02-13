@@ -9,6 +9,7 @@ import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.zipsa.ZipsaChangeDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -103,9 +104,10 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public void changeZipsaDescription(Long zipsaId, String description) {
+    public void changeZipsaInfo(Long zipsaId, ZipsaChangeDto zipsaChangeDto) {
         QZipsa qZipsa = QZipsa.zipsa;
-        query.update(qZipsa).set(qZipsa.description, description)
+        query.update(qZipsa).set(qZipsa.description, zipsaChangeDto.getDescription())
+            .set(qZipsa.preferTag, zipsaChangeDto.getPreferTag())
             .where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
     }
 
