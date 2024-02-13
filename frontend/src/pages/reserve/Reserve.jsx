@@ -14,19 +14,9 @@ import HorizontalLine from '../../components/common/HorizontalLine';
 
 const Wrapper = styled.div`
   width: 320px;
+  min-height: 568px;
   margin: 0 auto;
-  padding: 25px 16px 0px;
-  display: flex;
-  flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.primary};
-  font-size: 18px;
-  font-weight: 300;
-  white-space: pre-wrap;
-`;
-
-const HeadWrapper = styled.div`
-  width: 100%;
-  min-height: 509px;
+  padding: 25px 16px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -55,40 +45,37 @@ function Reserve() {
 
   return (
     <Wrapper>
-      <HeadWrapper>
-        <Paragraph
-          gap="5px"
-          fontSize="35px"
-          sentences={[
-            <BoldText boldContent="예약" normalContent="한"></BoldText>,
-            '목록이에요.',
-          ]}
-          margin="0 0 20px 0"
-        ></Paragraph>
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={[
+          <BoldText boldContent="예약" normalContent="한"></BoldText>,
+          '목록이에요.',
+        ]}
+        margin="0 0 20px 0"
+      ></Paragraph>
 
-        <SimpleReservesWrapper>
-          {data?.map((reservation, index) => {
-            return (
-              <Fragment key={index}>
-                <SimpleReserve
-                  mode={userInfo}
-                  status={reservation.status}
-                  roomId={reservation.roomId}
-                  name={reservation.name}
-                  majorCategory={reservation.majorCategoryName}
-                  createdAt={reservation.expectationStartedAt}
-                  onClick={() =>
-                    navigate(`/reserveDetail/${reservation.roomId}`)
-                  }
-                ></SimpleReserve>
+      <SimpleReservesWrapper>
+        {data?.map((reservation, index) => {
+          return (
+            <Fragment key={index}>
+              <SimpleReserve
+                mode={userInfo}
+                status={reservation.status}
+                roomId={reservation.roomId}
+                name={reservation.name}
+                majorCategory={reservation.majorCategoryName}
+                createdAt={reservation.expectationStartedAt}
+                onClick={() => navigate(`/reserveDetail/${reservation.roomId}`)}
+              ></SimpleReserve>
 
-                <HorizontalLine height={'2px'}></HorizontalLine>
-              </Fragment>
-            );
-          })}
-        </SimpleReservesWrapper>
-      </HeadWrapper>
-      <MenuBar currentMenu="RESERVE"></MenuBar>
+              <HorizontalLine height={'2px'}></HorizontalLine>
+            </Fragment>
+          );
+        })}
+      </SimpleReservesWrapper>
+
+      {/* <MenuBar currentMenu="RESERVE"></MenuBar> */}
     </Wrapper>
   );
 }

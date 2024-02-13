@@ -15,19 +15,9 @@ import Toggle from '../components/common/Toggle.jsx';
 
 const Wrapper = styled.div`
   width: 320px;
+  min-height: 568px;
   margin: 0 auto;
   padding: 20px 16px 0;
-  display: flex;
-  flex-direction: column;
-  background-color: ${({ theme }) => theme.colors.primary};
-  font-size: 16px;
-  font-weight: 300;
-  white-space: pre-wrap;
-`;
-
-const HeadWrapper = styled.div`
-  width: 100%;
-  min-height: 509px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -100,158 +90,156 @@ export default function Home() {
 
   return (
     <Wrapper>
-      <HeadWrapper>
-        <UpperWrapper>
-          <BoldText fontSize="30px" boldContent="한집사"></BoldText>
+      <UpperWrapper>
+        <BoldText fontSize="30px" boldContent="한집사"></BoldText>
 
+        <Image
+          src={process.env.PUBLIC_URL + '/images/alarm.svg'}
+          width="30px"
+          height="34px"
+          onClick={() => navigate('/notify')}
+          // onClick={() =>
+          //   getComplaintList().then(response => console.log(response))
+          // }
+        ></Image>
+      </UpperWrapper>
+
+      <Toggle isWorked={isWorked} setIsWorked={setIsWorked}></Toggle>
+
+      <Notice
+        upper={[
           <Image
-            src={process.env.PUBLIC_URL + '/images/alarm.svg'}
+            src={process.env.PUBLIC_URL + '/images/lightning.svg'}
             width="30px"
-            height="34px"
-            onClick={() => navigate('/notify')}
-            // onClick={() =>
-            //   getComplaintList().then(response => console.log(response))
-            // }
-          ></Image>
-        </UpperWrapper>
+            height="30px"
+            margin="4px 0 0 0"
+          ></Image>,
+          <BoldText
+            fontSize="20px"
+            boldContent="{ 곽희웅 }"
+            normalContent=" 고객님"
+          ></BoldText>,
+        ]}
+        lower={[
+          <Paragraph
+            fontSize="16px"
+            gap="10px"
+            sentences={[
+              <BoldText
+                boldContent="오늘 15:00"
+                normalContent=" 시에"
+              ></BoldText>,
+              <BoldText
+                boldContent="강아지 산책"
+                normalContent=" 을 맡겼어요!"
+              ></BoldText>,
+            ]}
+          ></Paragraph>,
+        ]}
+        nextPage="/"
+      ></Notice>
 
-        <Toggle isWorked={isWorked} setIsWorked={setIsWorked}></Toggle>
+      <Notice
+        upper={[
+          <Image
+            src={process.env.PUBLIC_URL + '/images/location.svg'}
+            width="30px"
+            height="30px"
+          ></Image>,
+          <Paragraph
+            fontSize="16px"
+            gap="5px"
+            sentences={[
+              <BoldText
+                boldContent="14"
+                normalContent=" 명의 집사가"
+              ></BoldText>,
+              '주변에 기다리고 있어요.',
+            ]}
+          ></Paragraph>,
+        ]}
+        nextPage="/map"
+      ></Notice>
 
+      <Notice
+        upper={[
+          <Image
+            src={process.env.PUBLIC_URL + '/images/condition.svg'}
+            width="30px"
+            height="30px"
+            margin="0"
+          ></Image>,
+          <Paragraph
+            fontSize="16px"
+            gap="5px"
+            sentences={['좀 더 꼼꼼하게', '집사님을 찾고 있어요.']}
+          ></Paragraph>,
+        ]}
+        nextPage="/filter"
+      ></Notice>
+
+      <Notice
+        upper={[
+          <Image
+            src={process.env.PUBLIC_URL + '/images/wifi.svg'}
+            width="30px"
+            height="30px"
+            margin="0"
+          ></Image>,
+          <Paragraph
+            fontSize="16px"
+            gap="5px"
+            sentences={['직접 집사님을', '모집해보고 싶어요.']}
+          ></Paragraph>,
+        ]}
+        nextPage="/matchOption"
+      ></Notice>
+
+      <NoticeWrapper>
         <Notice
           upper={[
             <Image
-              src={process.env.PUBLIC_URL + '/images/lightning.svg'}
+              src={process.env.PUBLIC_URL + '/images/post.svg'}
               width="30px"
               height="30px"
-              margin="4px 0 0 0"
+              margin="0"
             ></Image>,
-            <BoldText
-              fontSize="20px"
-              boldContent="{ 곽희웅 }"
-              normalContent=" 고객님"
-            ></BoldText>,
           ]}
           lower={[
             <Paragraph
-              fontSize="16px"
-              gap="10px"
-              sentences={[
-                <BoldText
-                  boldContent="오늘 15:00"
-                  normalContent=" 시에"
-                ></BoldText>,
-                <BoldText
-                  boldContent="강아지 산책"
-                  normalContent=" 을 맡겼어요!"
-                ></BoldText>,
-              ]}
-            ></Paragraph>,
-          ]}
-          nextPage="/"
-        ></Notice>
-
-        <Notice
-          upper={[
-            <Image
-              src={process.env.PUBLIC_URL + '/images/location.svg'}
-              width="30px"
-              height="30px"
-            ></Image>,
-            <Paragraph
-              fontSize="16px"
+              fontSize="14px"
               gap="5px"
-              sentences={[
-                <BoldText
-                  boldContent="14"
-                  normalContent=" 명의 집사가"
-                ></BoldText>,
-                '주변에 기다리고 있어요.',
-              ]}
+              sentences={['다른 사용자들과', '소통하고 싶어요.']}
             ></Paragraph>,
           ]}
-          nextPage="/map"
         ></Notice>
 
         <Notice
           upper={[
             <Image
-              src={process.env.PUBLIC_URL + '/images/condition.svg'}
+              src={process.env.PUBLIC_URL + '/images/date.svg'}
               width="30px"
               height="30px"
               margin="0"
             ></Image>,
+          ]}
+          lower={[
             <Paragraph
-              fontSize="16px"
+              fontSize="14px"
               gap="5px"
-              sentences={['좀 더 꼼꼼하게', '집사님을 찾고 있어요.']}
+              sentences={['예약 내역을', '보고 싶어요.']}
             ></Paragraph>,
           ]}
-          nextPage="/filter"
         ></Notice>
+      </NoticeWrapper>
 
-        <Notice
-          upper={[
-            <Image
-              src={process.env.PUBLIC_URL + '/images/wifi.svg'}
-              width="30px"
-              height="30px"
-              margin="0"
-            ></Image>,
-            <Paragraph
-              fontSize="16px"
-              gap="5px"
-              sentences={['직접 집사님을', '모집해보고 싶어요.']}
-            ></Paragraph>,
-          ]}
-          nextPage="/matchOption"
-        ></Notice>
+      <LoginRegisterWrapper>
+        <div>로그인</div>
+        <div>|</div>
+        <div>회원가입</div>
+      </LoginRegisterWrapper>
 
-        <NoticeWrapper>
-          <Notice
-            upper={[
-              <Image
-                src={process.env.PUBLIC_URL + '/images/post.svg'}
-                width="30px"
-                height="30px"
-                margin="0"
-              ></Image>,
-            ]}
-            lower={[
-              <Paragraph
-                fontSize="14px"
-                gap="5px"
-                sentences={['다른 사용자들과', '소통하고 싶어요.']}
-              ></Paragraph>,
-            ]}
-          ></Notice>
-
-          <Notice
-            upper={[
-              <Image
-                src={process.env.PUBLIC_URL + '/images/date.svg'}
-                width="30px"
-                height="30px"
-                margin="0"
-              ></Image>,
-            ]}
-            lower={[
-              <Paragraph
-                fontSize="14px"
-                gap="5px"
-                sentences={['예약 내역을', '보고 싶어요.']}
-              ></Paragraph>,
-            ]}
-          ></Notice>
-        </NoticeWrapper>
-
-        <LoginRegisterWrapper>
-          <div>로그인</div>
-          <div>|</div>
-          <div>회원가입</div>
-        </LoginRegisterWrapper>
-
-        <MenuBar currentMenu="HOME"></MenuBar>
-      </HeadWrapper>
+      <MenuBar currentMenu="HOME"></MenuBar>
     </Wrapper>
   );
 }

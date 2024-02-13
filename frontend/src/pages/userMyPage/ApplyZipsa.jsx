@@ -137,7 +137,9 @@ function ApplyZipsa() {
   ];
 
   const navigate = useNavigate();
-
+  const onPrevious = () => {
+    navigate(-1);
+  };
   const onButtonClick = () => {
     // 필수교육 및 서약서 제출 페이지 이동
     navigate('/education');
@@ -154,7 +156,7 @@ function ApplyZipsa() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
-        onPrevious={() => navigate(-1)}
+        onPrevious={onPrevious}
       ></NavigationBar>
       <TitleWrapper>
         <TitleUpperWrapper>

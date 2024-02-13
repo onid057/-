@@ -4,8 +4,6 @@ import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import CenterModeSlider from '../../components/common/CenterModeSlider';
-import HorizontalLine from '../../components/common/HorizontalLine';
-import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -22,7 +20,7 @@ const Wrapper = styled.div`
 `;
 
 const RegistWrapper = styled.div`
-  width: 260px;
+  width: 288px;
   height: 226px;
   border-style: dashed;
   border-width: 1px;
@@ -32,6 +30,12 @@ const RegistWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Hr = styled.div`
+  width: 100%;
+  height: 7px;
+  background-color: #d9d9d9;
 `;
 
 const PaymentListWrapper = styled.div`
@@ -44,9 +48,6 @@ function PaymentRegistration() {
     `${process.env.PUBLIC_URL}/images/creditcard.svg`,
     `${process.env.PUBLIC_URL}/images/creditcard.svg`,
   ];
-
-  const navigate = useNavigate();
-
   return (
     <Wrapper>
       <NavigationBar
@@ -58,7 +59,6 @@ function PaymentRegistration() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
-        onPrevious={() => navigate(-1)}
       ></NavigationBar>
       <Paragraph
         gap={'10px'}
@@ -72,7 +72,7 @@ function PaymentRegistration() {
           height={'40px'}
         ></Image>
       </RegistWrapper>
-      <HorizontalLine height={'2px'}></HorizontalLine>
+      <Hr></Hr>
       <PaymentListWrapper>
         <>간편 결제 수단 목록</>
         <CenterModeSlider showImages={cardImageUrl}></CenterModeSlider>
