@@ -39,7 +39,10 @@ function Map({ onPrevious, onNext }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false); // 상세 정보
   const [positions, setPositions] = useState([]);
-  const [myPosition, setMyPosition] = useState({});
+  const [myPosition, setMyPosition] = useState({
+    latitude: 37.506320759000715,
+    longitude: 127.05368251210247,
+  });
   const [targetCluster, setTargetCluster] = useState();
   const [zipsaId, setZipsaId] = useState();
   const modalRef = useRef(null);
