@@ -39,7 +39,6 @@ public class SseServiceImpl implements SseService {
     private final CategoryRepository categoryRepository;
 
     // SseEmitter를 사용해서 알림을 보낼 때 사용
-    @Transactional
     public void send(Long userId) {
         // 로그인 한 유저의 SseEmitter 가져오기
         SseEmitter sseEmitter = sseRepository.get(userId);

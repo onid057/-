@@ -21,7 +21,6 @@ public class RedisSubscriber implements MessageListener {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
-    @Transactional
     public void onMessage(Message message, byte[] pattern) {
         try {
             Long publishMessage = objectMapper.readValue(message.getBody(), Long.class);
