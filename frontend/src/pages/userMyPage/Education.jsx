@@ -93,9 +93,6 @@ function Education() {
     applyZipsaRequest(userId);
   };
   const navigate = useNavigate();
-  const onPrevious = () => {
-    navigate(-1);
-  };
 
   const userId = 1;
 
@@ -110,7 +107,7 @@ function Education() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
-        onPrevious={onPrevious}
+        onPrevious={() => navigate(-1)}
       ></NavigationBar>
       <TitleWrapper>
         <Paragraph

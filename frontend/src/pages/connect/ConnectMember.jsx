@@ -50,7 +50,7 @@ function ConnectCodeShow() {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        onPrevious={() => navigate('/')}
+        onPrevious={() => navigate(-1)}
       ></NavigationBar>
 
       <Paragraph

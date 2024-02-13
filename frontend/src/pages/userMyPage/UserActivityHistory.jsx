@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import Accordian from '../../components/common/Accordian';
+
+import { useNavigate } from 'react-router-dom';
+import { getUserActivityHistory } from '../../apis/api/userMyPage';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -36,6 +39,8 @@ const DetailContentWrapper = styled.div`
   font-size: 16px;
 `;
 
+const userId = 1;
+
 function UserActivityHistory() {
   const userList = [
     { name: '곽희웅', date: '2024.01.10', job: '영어 과외', pay: '20000' },
@@ -48,6 +53,14 @@ function UserActivityHistory() {
     { label: '지불한 금액', key: 'pay' },
   ];
 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getUserActivityHistory(userId).then(resp => {
+      console.log(resp);
+    });
+  }, []);
+
   return (
     <Wrapper>
       <NavigationBar
@@ -59,6 +72,7 @@ function UserActivityHistory() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
+        onPrevious={() => navigate(-1)}
       ></NavigationBar>
       <BoldText fontSize={'35px'} normalContent={'나의 사용 내역'}></BoldText>
       {userList.map((user, idx) => (
