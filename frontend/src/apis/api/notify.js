@@ -1,11 +1,11 @@
 import axios from '../utils/instance';
 
 // 고객이나 집사로부터 온 알림 리스트
-const getMatchNotificationList = async userId => {
+const getMatchNotificationList = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: `/users/${userId}/notifications`,
+      url: `/users/notifications`,
     });
     return response.data;
   } catch (error) {

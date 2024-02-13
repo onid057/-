@@ -35,7 +35,7 @@ function Notify() {
   const userInfo = useUserInfo(state => state.userInfo);
 
   useEffect(() => {
-    getMatchNotificationList(3).then(response => {
+    getMatchNotificationList().then(response => {
       console.log(response);
       setList(response.data);
     });
