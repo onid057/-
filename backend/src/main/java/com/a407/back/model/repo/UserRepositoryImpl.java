@@ -90,10 +90,10 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<Room> getUserRecordList(Long userId) {
+    public List<Room> getUserRecordList(Long userId, Boolean isZipsa) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
-            .where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(Process.END)))
+            .where(isZipsa(userId, isZipsa).and(qRoom.status.eq(Process.END)))
             .orderBy(qRoom.endedAt.desc()).fetch();
     }
 
