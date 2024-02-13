@@ -12,8 +12,9 @@ import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ImageUtil;
 import com.a407.back.dto.util.PublicRoom;
+import com.a407.back.dto.util.ReportListDto;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
-import com.a407.back.dto.zipsa.ReportSearchResponse;
+import com.a407.back.dto.zipsa.ReportResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
@@ -64,11 +65,14 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public List<ReportSearchResponse> findReportByRoomIdList(Long roomId) {
-        List<Report> reports = zipsaRepository.findReportByRoomIdList(roomId);
-        return reports.stream().map(
-            report -> new ReportSearchResponse(report.getProcessImage(),
-                report.getProcessContent(), report.getCreatedAt())).toList();
+    public ReportResponse findReportByRoomIdList(Long roomId) {
+        List<ReportListDto> reports = zipsaRepository.findReportByRoomIdList(roomId).stream().map(
+            report -> new ReportListDto(report.getProcessImage(), report.getProcessContent(),
+                report.getCreatedAt())).toList();
+        Room room = roomRepository.findByRoomId(roomId);
+
+        return new ReportResponse(room.getUserId().getName(),
+            room.getZipsaId().getZipsaId().getName(), reports);
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.a407.back.model.service;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
-import com.a407.back.dto.zipsa.ReportSearchResponse;
+import com.a407.back.dto.zipsa.ReportResponse;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
@@ -18,7 +18,7 @@ public interface ZipsaService {
 
     void makeReport(Long roomId, MultipartFile image, String content) throws IOException;
 
-    List<ReportSearchResponse> findReportByRoomIdList(Long roomId);
+    ReportResponse findReportByRoomIdList(Long roomId);
 
     ZipsaDetailInfoResponse findZipsaDetailFindByZipsaId(Long zipsaId);
 
