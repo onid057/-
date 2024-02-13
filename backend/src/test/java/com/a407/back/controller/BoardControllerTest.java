@@ -24,6 +24,7 @@ import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,7 +57,7 @@ class BoardControllerTest {
     @BeforeEach
     void setup() {
         userId = userService.makeUser(new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5));
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5));
 
         Tag tempFirstTag = Tag.builder().name("first").build();
         em.persist(tempFirstTag);
@@ -73,7 +74,7 @@ class BoardControllerTest {
     void makeBoard() {
         List<Long> tagList = new ArrayList<>();
         tagList.add(firstTag.getTagId());
-        Long boardId = boardService.makeBoard(new BoardCreateRequest(userId, "title", "content", tagList));
+        Long boardId = boardService.makeBoard(userId, new BoardCreateRequest("title", "content", tagList));
         Board board = em.find(Board.class, boardId);
 
         assertThat(board.getUserId().getUserId(), is(equalTo(userId)));
@@ -87,9 +88,9 @@ class BoardControllerTest {
     void findBoardList() {
         List<Long> tagList = new ArrayList<>();
         tagList.add(firstTag.getTagId());
-        boardService.makeBoard(new BoardCreateRequest(userId, "title1", "content1", tagList));
+        boardService.makeBoard(userId, new BoardCreateRequest("title1", "content1", tagList));
         tagList.add(secondTag.getTagId());
-        boardService.makeBoard(new BoardCreateRequest(userId, "title2", "content2", tagList));
+        boardService.makeBoard(userId, new BoardCreateRequest("title2", "content2", tagList));
 
         int page = 1;
         int size = 2;
@@ -105,9 +106,9 @@ class BoardControllerTest {
     void findBoardDeatil() {
         List<Long> tagList = new ArrayList<>();
         tagList.add(firstTag.getTagId());
-        Long boardId = boardService.makeBoard(new BoardCreateRequest(userId, "title1", "content1", tagList));
-        commentService.makeComment(new CommentCreateRequest(boardId, userId, "commentContent"));
-        BoardDetailResponse boardDetailResponse = boardService.findBoardDetail(boardId);
+        Long boardId = boardService.makeBoard(userId, new BoardCreateRequest("title1", "content1", tagList));
+        commentService.makeComment(userId, new CommentCreateRequest(boardId, "commentContent"));
+        BoardDetailResponse boardDetailResponse = boardService.findBoardDetail(boardId, userId);
 
         assertThat(boardDetailResponse.getTitle(), is(equalTo("title1")));
         assertThat(boardDetailResponse.getContent(), is(equalTo("content1")));
@@ -120,9 +121,9 @@ class BoardControllerTest {
     void changeBoard() {
         List<Long> tagList = new ArrayList<>();
         tagList.add(firstTag.getTagId());
-        Long boardId = boardService.makeBoard(new BoardCreateRequest(userId, "title1", "content1", tagList));
-        commentService.makeComment(new CommentCreateRequest(boardId, userId, "commentContent"));
-        BoardDetailResponse boardDetailResponse = boardService.findBoardDetail(boardId);
+        Long boardId = boardService.makeBoard(userId, new BoardCreateRequest("title1", "content1", tagList));
+        commentService.makeComment(userId, new CommentCreateRequest(boardId, "commentContent"));
+        BoardDetailResponse boardDetailResponse = boardService.findBoardDetail(boardId, userId);
 
         assertThat(boardDetailResponse.getCommentList().size(), is(equalTo(1)));
 
@@ -131,7 +132,7 @@ class BoardControllerTest {
         boardService.changeBoard(boardId, boardChangeRequest);
         em.flush();
         em.clear();
-        BoardDetailResponse newBoardDetailResponse = boardService.findBoardDetail(boardId);
+        BoardDetailResponse newBoardDetailResponse = boardService.findBoardDetail(boardId, userId);
 
         assertThat(newBoardDetailResponse.getTitle(), is(equalTo("title1")));
         assertThat(newBoardDetailResponse.getContent(), is(equalTo("newContent")));
@@ -143,14 +144,14 @@ class BoardControllerTest {
     void deleteBoard() {
         List<Long> tagList = new ArrayList<>();
         tagList.add(firstTag.getTagId());
-        Long boardId = boardService.makeBoard(new BoardCreateRequest(userId, "title1", "content1", tagList));
-        BoardDetailResponse boardDetailResponse = boardService.findBoardDetail(boardId);
+        Long boardId = boardService.makeBoard(userId, new BoardCreateRequest("title1", "content1", tagList));
+        BoardDetailResponse boardDetailResponse = boardService.findBoardDetail(boardId, userId);
         assertThat(boardDetailResponse.getContent(), is(equalTo("content1")));
 
         boardService.deleteBoard(boardId);
         boolean errorFlag = false;
         try {
-            boardService.findBoardDetail(boardId);
+            boardService.findBoardDetail(boardId, userId);
         } catch(RuntimeException ex) {
             errorFlag = true;
         }

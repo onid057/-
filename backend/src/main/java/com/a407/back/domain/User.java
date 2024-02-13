@@ -12,12 +12,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.sql.Timestamp;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
+import org.joda.time.DateTime;
 
 @Table(name = "USER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,8 +43,8 @@ public class User {
     @Column(name = "name", nullable = false, length = 20)
     private String name;
 
-    @Column(name = "birth", nullable = false, columnDefinition = "TIMESTAMP")
-    private Timestamp birth;
+    @Column(name = "birth", nullable = false, columnDefinition = "DATETIME")
+    private DateTime birth;
 
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -92,7 +92,7 @@ public class User {
 
     @Builder(toBuilder = true)
     public User(Association associationId, String email, String password, String name,
-        Timestamp birth, Gender gender, String phoneNumber, String address, String profileImage,
+        DateTime birth, Gender gender, String phoneNumber, String address, String profileImage,
         Boolean isCertificated,
         Double latitude, Double longitude, String account, Boolean isBlocked, Boolean isAdmin,
         Boolean isAffiliated, int serviceCount) {

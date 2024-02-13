@@ -24,6 +24,7 @@ import com.a407.back.model.service.UserService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,7 +57,7 @@ class RoomControllerTest {
     void setup() {
         // 사용자 생성
         UserCreateRequest firstUser = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         userId = userService.makeUser(firstUser);
         // 대분류 카테고리 생성
@@ -134,7 +135,7 @@ class RoomControllerTest {
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
         UserCreateRequest secondUser = new UserCreateRequest("user1@abc.com", "user", "user1",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long secondUserId = userService.makeUser(secondUser);
         Zipsa firstZipsa = Zipsa.builder().zipsaId(userService.findByUserId(secondUserId)).account("계좌")
             .description("설명").gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D)
@@ -142,7 +143,7 @@ class RoomControllerTest {
         em.persist(firstZipsa);
 
         UserCreateRequest thirdUser = new UserCreateRequest("user2@abc.com", "user", "user2",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long thirdUserId = userService.makeUser(thirdUser);
         Zipsa secondZipsa = Zipsa.builder().zipsaId(userService.findByUserId(thirdUserId)).account("계좌")
             .description("설명").gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D)

@@ -28,6 +28,7 @@ import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,7 @@ class MatchControllerTest {
     void setup() {
         // 사용자 생성
         UserCreateRequest firstUser = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(firstUser);
         user = em.find(User.class, userId);
         // grade 생성
@@ -127,7 +128,7 @@ class MatchControllerTest {
     void makeRoomWithHelper() {
         // 집사1 생성
         UserCreateRequest user1 = new UserCreateRequest("user1@abc.com", "user1", "user1",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId1 = userService.makeUser(user1);
         User newUser1 = userService.findByUserId(userId1);
         Zipsa newZipsa1 = Zipsa.builder().zipsaId(newUser1).account("111").description("Asd")
@@ -142,7 +143,7 @@ class MatchControllerTest {
 
         // 집사2 생성
         UserCreateRequest user2 = new UserCreateRequest("user2@abc.com", "user2", "user2",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId2 = userService.makeUser(user2);
         User newUser2 = userService.findByUserId(userId2);
         Zipsa newZipsa2 = Zipsa.builder().zipsaId(newUser2).account("111").description("Asd")
@@ -179,7 +180,7 @@ class MatchControllerTest {
     void changeMatchStartedAt() {
         // 집사1 생성
         UserCreateRequest user1 = new UserCreateRequest("user1@abc.com", "user1", "user1",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId1 = userService.makeUser(user1);
         User newUser1 = userService.findByUserId(userId1);
         Zipsa newZipsa1 = Zipsa.builder().zipsaId(newUser1).account("111").description("Asd")
@@ -212,7 +213,7 @@ class MatchControllerTest {
     void changeMatchEndedAt() {
         // 집사1 생성
         UserCreateRequest user1 = new UserCreateRequest("user1@abc.com", "user1", "user1",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId1 = userService.makeUser(user1);
         User newUser1 = userService.findByUserId(userId1);
         Zipsa newZipsa1 = Zipsa.builder().zipsaId(newUser1).account("111").description("Asd")

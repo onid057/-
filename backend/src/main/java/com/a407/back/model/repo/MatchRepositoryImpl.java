@@ -8,6 +8,7 @@ import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.match.MatchSearchRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.sql.Timestamp;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -68,19 +70,20 @@ public class MatchRepositoryImpl implements MatchRepository {
 
         try {
             int ageInt = Integer.parseInt(age);
-            Timestamp lowerBound = Timestamp.valueOf(
-                // 예: 40대 미만인 경우 50년 전
-                LocalDate.now().minusYears(ageInt + 10L).atStartOfDay());
-            Timestamp upperBound = Timestamp.valueOf(
-                // 예: 40대 이상인 경우 40년 전
-                LocalDate.now().minusYears(ageInt).atStartOfDay());
+
+            // 예: 40대 미만인 경우 50년 전
+            DateTime lowerBound = DateTime.now().minusYears(ageInt + 10);
+            // 예: 40대 이상인 경우 40년 전
+            DateTime upperBound = DateTime.now().minusYears(ageInt);
+
+            DateTimePath<DateTime> birthPath = qZipsa.zipsaId.birth;
 
             if (ageInt >= 40) {
                 // 40대 이상인 경우
-                return qZipsa.zipsaId.birth.loe(upperBound);
+                return birthPath.loe(upperBound);
             } else {
                 // 40대 미만인 경우
-                return qZipsa.zipsaId.birth.gt(lowerBound);
+                return birthPath.gt(lowerBound);
             }
         } catch (NumberFormatException e) {
             return null;

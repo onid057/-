@@ -23,6 +23,7 @@ import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,24 +56,24 @@ class CommentControllerTest {
     @BeforeEach
     void setup() {
         firstUserId = userService.makeUser(new UserCreateRequest("user@abc.com", "firstUser", "firstUser",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.4, 127.4));
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.4, 127.4));
 
         secondUserId = userService.makeUser(new UserCreateRequest("user@def.com", "secondUser", "secondUser",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.WOMAN, "서울시", 36.5, 127.5));
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.WOMAN, "서울시", 36.5, 127.5));
 
         Tag tag = Tag.builder().name("tag").build();
         em.persist(tag);
         Long tagId = tag.getTagId();
         List<Long> tagList = new ArrayList<>(List.of(new Long[]{tagId}));
 
-        boardId = boardService.makeBoard(new BoardCreateRequest(firstUserId, "title", "content", tagList));
+        boardId = boardService.makeBoard(firstUserId, new BoardCreateRequest("title", "content", tagList));
     }
 
     @Test
     @Transactional
     @DisplayName("댓글 생성하기")
     void makeComment() {
-        Long commentId = commentService.makeComment(new CommentCreateRequest(boardId, secondUserId, "newContent"));
+        Long commentId = commentService.makeComment(secondUserId, new CommentCreateRequest(boardId, "newContent"));
         Comment comment = em.find(Comment.class, commentId);
         assertThat(comment.getContent(), is(equalTo("newContent")));
     }
@@ -81,7 +82,7 @@ class CommentControllerTest {
     @Transactional
     @DisplayName("댓글 수정하기")
     void changeComment() {
-        Long commentId = commentService.makeComment(new CommentCreateRequest(boardId, secondUserId, "newContent"));
+        Long commentId = commentService.makeComment(secondUserId, new CommentCreateRequest(boardId, "newContent"));
         Comment makeComment = em.find(Comment.class, commentId);
         assertThat(makeComment.getContent(), is(equalTo("newContent")));
 
@@ -96,7 +97,7 @@ class CommentControllerTest {
     @Transactional
     @DisplayName("댓글 삭제하기")
     void deleteComment() {
-        Long commentId = commentService.makeComment(new CommentCreateRequest(boardId, secondUserId, "newContent"));
+        Long commentId = commentService.makeComment(secondUserId, new CommentCreateRequest(boardId, "newContent"));
         Comment comment = em.find(Comment.class, commentId);
         assertThat(comment.getContent(), is(equalTo("newContent")));
 

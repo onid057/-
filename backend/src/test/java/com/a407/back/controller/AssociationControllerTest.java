@@ -12,15 +12,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
 import java.util.Objects;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -55,11 +52,11 @@ class AssociationControllerTest {
     void beforeEach() {
         // 사용자 생성
         UserCreateRequest userOne = new UserCreateRequest("userOne@abc.com", "userOne", "userOne",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         UserCreateRequest userTwo = new UserCreateRequest("userTwo@abc.com", "userTwo", "userTwo",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         UserCreateRequest userThree = new UserCreateRequest("userThree@abc.com", "userThree",
-            "userThree", Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            "userThree", new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         userIdOne = userService.makeUser(userOne);
         userIdTwo = userService.makeUser(userTwo);

@@ -30,6 +30,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -79,10 +80,10 @@ class UserControllerTest {
     @DisplayName("사용자 생성")
     void makeUser() {
         UserCreateRequest userOne = new UserCreateRequest("userOne@abc.com", "userOne", "userOne",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         UserCreateRequest userTwo = new UserCreateRequest("userTwo@abc.com", "userTwo", "userTwo",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         Long userOneId = userService.makeUser(userOne);
         Long userTwoId = userService.makeUser(userTwo);
@@ -97,11 +98,11 @@ class UserControllerTest {
     void getNotificationList() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         // 집사를 할 사용자 생성
         UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -145,11 +146,11 @@ class UserControllerTest {
     void getNearUserLocationList() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 50, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 50, 127.5);
 
         // 집사를 할 사용자 생성
         UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 50, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 50, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -185,11 +186,11 @@ class UserControllerTest {
     void getNearUserInfoList() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 55, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 55, 127.5);
 
         // 집사를 할 사용자 생성
         UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 55, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 55, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -230,11 +231,11 @@ class UserControllerTest {
     void getUserRecordList() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         // 집사를 할 사용자 생성
         UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -273,11 +274,11 @@ class UserControllerTest {
     void getUserReservationList() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         // 집사를 할 사용자 생성
         UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -320,7 +321,7 @@ class UserControllerTest {
     void makeAccount() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(user);
         assertThat(userService.findByUserId(userId).getAccount()).isNullOrEmpty();
         UserAccountRequest userAccountRequest = new UserAccountRequest("0000-0000-0000");
@@ -336,7 +337,7 @@ class UserControllerTest {
     void getMaskedCardNumber() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(user);
         assertThat(userService.findByUserId(userId).getAccount()).isNull();
         UserAccountRequest userAccountRequest = new UserAccountRequest("0000-0000-0000-0000");
@@ -353,7 +354,7 @@ class UserControllerTest {
     void deleteAccount() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         Long userId = userService.makeUser(user);
         assertThat(userService.findByUserId(userId).getAccount()).isNull();
@@ -376,7 +377,7 @@ class UserControllerTest {
     void makeSendMessage() throws NoSuchAlgorithmException, JsonProcessingException {
         // 주의 해당 테스트 실행 전 userServiceImpl로 가서 makeSendMessage 에서 외부 API 사용하는 부분 주석 해주기
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(user);
         assertThat(redisTemplate.keys("*")).isEmpty();
         UserPhoneNumberRequest request = new UserPhoneNumberRequest("0");
@@ -391,7 +392,7 @@ class UserControllerTest {
     void makePhoneNumber() throws NoSuchAlgorithmException, JsonProcessingException {
         // 주의 해당 테스트 실행 전 userServiceImpl로 가서 makeSendMessage 에서 외부 API 사용하는 부분 주석 해주기
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(user);
         assertThat(redisTemplate.keys("*")).isEmpty();
         UserPhoneNumberRequest request = new UserPhoneNumberRequest("0");
@@ -413,11 +414,11 @@ class UserControllerTest {
     void deleteUser() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         // 집사를 할 사용자 생성
         UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);

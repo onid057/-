@@ -27,6 +27,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
+import org.joda.time.DateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,10 +67,10 @@ class NotificationControllerTest {
     void setup() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         userId = userService.makeUser(user);
         UserCreateRequest user1 = new UserCreateRequest("user1@abc.com", "user1", "user1",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId1 = userService.makeUser(user1);
         User zipsaUser = userService.findByUserId(userId1);
         // grade 생성

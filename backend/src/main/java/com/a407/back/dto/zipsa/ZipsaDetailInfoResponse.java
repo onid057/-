@@ -1,10 +1,10 @@
 package com.a407.back.dto.zipsa;
 
 import com.a407.back.domain.User.Gender;
-import java.sql.Timestamp;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
+import org.joda.time.DateTime;
 
 @Getter
 @Builder
@@ -13,7 +13,7 @@ public class ZipsaDetailInfoResponse {
     private String name;
     private String email;
     private String phoneNumber;
-    private Timestamp birth;
+    private DateTime birth;
     private Gender gender;
     private String address;
     private String profileImage;
