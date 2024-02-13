@@ -397,12 +397,6 @@ public class UserServiceImpl implements UserService {
             request.getLongitude() == null ? user.getLongitude() : request.getLongitude(),
             request.getPassword() == null ? user.getPassword()
                 : bCryptPasswordEncoder.encode(request.getPassword()));
-        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
-        if (zipsa != null) {
-            zipsaRepository.changeZipsaDescription(userId,
-                request.getDescription() == null ? zipsa.getDescription()
-                    : request.getDescription());
-        }
         userRepository.changeUserInfo(userId, userChangeDto);
     }
 

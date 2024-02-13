@@ -216,7 +216,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<ApiResponse<String>> updateUserInfo(@PathVariable Long userId,
+    public ResponseEntity<ApiResponse<String>> changeUserInfo(@PathVariable Long userId,
         @RequestPart(name = "image", required = false) MultipartFile image,
         @RequestPart(name = "request") UserChangeRequest userChangeRequest) throws IOException {
         userService.changeUserInfo(userId, userChangeRequest, image);
