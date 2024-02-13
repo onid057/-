@@ -62,7 +62,7 @@ public class AuthController {
 
 
             ResponseCookie accessCookie = ResponseCookie.from("Authorization", "accessCookie")
-                .sameSite("None").httpOnly(false).secure(true).path("/").domain("localhost")
+                .sameSite("None").httpOnly(true).secure(true).path("/").domain("127.0.0.1")
                 .maxAge(cookieMaxAge).build();
 
 //            ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
