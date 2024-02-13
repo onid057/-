@@ -63,14 +63,16 @@ export default function Home() {
   const isLoggedIn = useUserInfo(state => state.isLoggedIn);
 
   useEffect(() => {
-    isQualifiedZipsa().then(response => {
-      console.log(response);
-      setIsZipsa(response.data);
-    });
+    if (isLoggedIn) {
+      isQualifiedZipsa().then(response => {
+        console.log(response);
+        setIsZipsa(response.data);
+      });
+    }
   }, []);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (isLoggedIn) {
       getUserState().then(response => {
         setIsWorked(response.data.isWorked);
         setUserState(response.data.isWorked ? 'ZIPSA' : 'USER');
