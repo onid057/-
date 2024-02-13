@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { getUserState } from '../apis/api/toggle.js';
 import { subscribeSSE } from '../apis/api/subscribe.js';
 import { useUserInfo } from '../hooks/useUserInfo.js';
-import { doLogOut } from '../apis/api/login.js';
+import { doLogOut, isQualifiedZipsa } from '../apis/api/login.js';
 
 import Image from '../components/common/Image.jsx';
 import Paragraph from '../components/common/Paragraph.jsx';
@@ -55,13 +55,20 @@ const Register = styled.div`
 
 export default function Home() {
   const [isWorked, setIsWorked] = useState();
+  const [isZipsa, setIsZipsa] = useState();
   const { setUserState, setIsLoggedIn } = useUserInfo();
-  const navigate = useNavigate('/notify');
+  const navigate = useNavigate();
   // const eventSourceRef = useRef();
 
-  const userState = useUserInfo(state => state.userState);
-
   const isLoggedIn = useUserInfo(state => state.isLoggedIn);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      isQualifiedZipsa().then(response => {
+        setIsZipsa(response.data);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (!isLoggedIn) {
@@ -113,7 +120,9 @@ export default function Home() {
 
       {isLoggedIn ? (
         <>
-          <Toggle isWorked={isWorked} setIsWorked={setIsWorked}></Toggle>
+          {isZipsa && (
+            <Toggle isWorked={isWorked} setIsWorked={setIsWorked}></Toggle>
+          )}
 
           {/* <Notice
           upper={[

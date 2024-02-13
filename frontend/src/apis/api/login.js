@@ -32,4 +32,17 @@ const doLogOut = async () => {
   }
 };
 
-export { doLogIn, doLogOut };
+// 로그인한 사람이 집사인지 확인
+const isQualifiedZipsa = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/helpers/distinction`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { doLogIn, doLogOut, isQualifiedZipsa };

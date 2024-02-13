@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { changeUserState } from '../../apis/api/toggle';
+import { useUserInfo } from '../hooks/useUserInfo.js';
 import styled from 'styled-components';
 
 const ToggleWrapper = styled.div`
@@ -58,8 +59,13 @@ const ToggleWrapper = styled.div`
 `;
 
 function Toggle({ isWorked, setIsWorked }) {
+  const { setUserState } = useUserInfo();
+
   const toggleHandler = () => {
-    changeUserState().then(() => setIsWorked(!isWorked));
+    changeUserState().then(() => {
+      setIsWorked(!isWorked);
+      setUserState(!isWorked);
+    });
   };
 
   return (
