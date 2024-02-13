@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getUserState } from '../apis/api/toggle.js';
+import { getFirstReservation } from '../apis/api/reserve.js'; // 추후 연결 요망
 import { subscribeSSE } from '../apis/api/subscribe.js';
 import { useUserInfo } from '../hooks/useUserInfo.js';
 import { doLogOut, isQualifiedZipsa } from '../apis/api/login.js';

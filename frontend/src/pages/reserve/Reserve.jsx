@@ -47,8 +47,7 @@ function Reserve() {
     queryFn: () => getReservationListByUser(),
   });
 
-  const userInfo = useUserInfo(state => state.userInfo);
-
+  const userState = useUserInfo(state => state.userState); // 전역에서 관리하는 유저 상태
   const navigate = useNavigate();
 
   console.log(data);
@@ -71,7 +70,7 @@ function Reserve() {
             return (
               <Fragment key={index}>
                 <SimpleReserve
-                  mode={userInfo}
+                  mode={userState}
                   status={reservation.status}
                   roomId={reservation.roomId}
                   name={reservation.name}

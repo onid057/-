@@ -1,14 +1,14 @@
-import { doLogIn } from '../apis/api/login';
+import { doLogIn } from '../../apis/api/login';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUserInfo } from '../hooks/useUserInfo';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 import styled from 'styled-components';
-import Paragraph from '../components/common/Paragraph';
-import BoldText from '../components/common/BoldText';
-import Input from '../components/common/Input';
-import Button from '../components/common/Button';
-import NavigateText from '../components/common/NavigateText';
+import Paragraph from '../../components/common/Paragraph';
+import BoldText from '../../components/common/BoldText';
+import Input from '../../components/common/Input';
+import Button from '../../components/common/Button';
+import NavigateText from '../../components/common/NavigateText';
 
 const Wrapper = styled.div`
   width: 320px;

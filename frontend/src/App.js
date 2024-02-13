@@ -3,8 +3,8 @@
 import { Route, Routes } from 'react-router-dom';
 import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
-import Home from './pages/Home'; // 홈 페이지
-import Login from './pages/Login'; // 로그인 페이지
+import Home from './pages/home/Home';
+import Login from './pages/login/Login';
 import UserMyPage from './pages/userMyPage/UserMyPage'; // 사용자 마이 페이지
 import ConnectOption from './pages/connect/ConnectOption'; // 연동 옵션 고르기 페이지
 import ConnectAsLeader from './pages/connect/ConnectAsLeader'; // 대표로 연동하기 페이지
@@ -22,7 +22,7 @@ import PaymentRegistration from './pages/userMyPage/PaymentRegistration';
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
 import MatchOption from './pages/MatchOption';
-import NotFound from './pages/NotFound';
+import NotFound from './pages/error/NotFound';
 import StartMatch from './pages/StartMatch';
 import Notify from './pages/notify/Notify';
 import SuggestByUser from './pages/notify/SuggestByUser';

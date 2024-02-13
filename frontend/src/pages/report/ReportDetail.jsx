@@ -78,8 +78,8 @@ function ReportDetail() {
         gap={'5px'}
         fontSize={'15px'}
         sentences={[
-          `보낸 사람 : ${'곽희웅'} 집사`,
-          `받는 사람 : ${'장수민'} 고객`,
+          `보낸 사람 : ${reportInfos.zipsaName} 집사`,
+          `받는 사람 : ${reportInfos.userName} 고객`,
         ]}
       ></Paragraph>
 

@@ -27,4 +27,21 @@ const getReservationDetailInfoByUser = async roomId => {
   }
 };
 
-export { getReservationListByUser, getReservationDetailInfoByUser };
+// 홈 화면에 띄울 현재 진행 중이거나 가장 빠른 시일 내에 이뤄질 예약 내역
+const getFirstReservation = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/users/reservations/first`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export {
+  getReservationListByUser,
+  getReservationDetailInfoByUser,
+  getFirstReservation,
+};

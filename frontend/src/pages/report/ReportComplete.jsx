@@ -39,21 +39,7 @@ const HeartWrapper = styled.div`
   background-color: #ffffff;
 `;
 
-export default function ReportComplete({ name }) {
-  // const UpperContent = [
-  //   <BoldText
-  //     fontSize={'25px'}
-  //     BoldContent={`${name}`}
-  //     NormalContent={'님의'}
-  //   />,
-  //   <BoldText
-  //     fontSize={'35px'}
-  //     BoldContent={'보고서 작성'}
-  //     NormalContent={'을'}
-  //   />,
-  //   '완료했어요!',
-  // ];
-
+export default function ReportComplete() {
   return (
     <Wrapper>
       <HeadWrapper>

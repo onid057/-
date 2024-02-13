@@ -1,8 +1,8 @@
 import { styled } from 'styled-components';
 
-import Image from '../components/common/Image';
-import Paragraph from '../components/common/Paragraph';
-import NavigateText from '../components/common/NavigateText';
+import Image from '../../components/common/Image';
+import Paragraph from '../../components/common/Paragraph';
+import NavigateText from '../../components/common/NavigateText';
 
 const Wrapper = styled.div`
   width: 320px;
