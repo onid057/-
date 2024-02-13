@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import NavigationBar from '../components/common/NavigationBar';
-import Image from '../components/common/Image';
-import Paragraph from '../components/common/Paragraph';
-import Input from '../components/common/Input';
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
+import Paragraph from '../../components/common/Paragraph';
+import Input from '../../components/common/Input';
 import { useNavigate } from 'react-router-dom';
+import { updateUserInfo } from '../../apis/api/userMyPage';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -36,6 +37,9 @@ function PasswordUpdate() {
   const onPrevious = () => {
     navigate(-1);
   };
+  const onClickUpdateButton = () => {
+    updateUserInfo(null, { password }).then(navigate('/userMyPage'));
+  };
 
   return (
     <Wrapper>
@@ -48,8 +52,12 @@ function PasswordUpdate() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
-        rightContent={'수정'}
+        rightContent={'완료'}
         onPrevious={onPrevious}
+        onNext={onClickUpdateButton}
+        disabledOnNext={
+          (!password && !confirmPassword) || password !== confirmPassword
+        }
       ></NavigationBar>
       <Paragraph
         fontSize={'35px'}

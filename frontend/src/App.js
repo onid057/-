@@ -11,6 +11,10 @@ import ConnectAsLeader from './pages/connect/ConnectAsLeader'; // 대표로 연�
 import ConnectMember from './pages/connect/ConnectMember'; // 연동되어 있는 멤버 조회 페이지
 import ConnectCode from './pages/connect/ConnectCode'; // 연동 코드 보여주는 페이지
 import MapFunnel from './pages/mapFunnel/MapFunnel';
+import UserProfileUpdate from './pages/userMyPage/UserProfileUpdate';
+import PasswordUpdate from './pages/userMyPage/PasswordUpdate';
+import ApplyZipsa from './pages/userMyPage/ApplyZipsa';
+import Education from './pages/userMyPage/Education';
 
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
@@ -203,6 +207,13 @@ function App() {
         <Route path="/connectAsLeader" element={<ConnectAsLeader />}></Route>
         <Route path="/connectMember" element={<ConnectMember />}></Route>
         <Route path="/connectCode/:option" element={<ConnectCode />}></Route>
+        <Route
+          path="/userProfileUpdate"
+          element={<UserProfileUpdate />}
+        ></Route>
+        <Route path="/passwordUpdate" element={<PasswordUpdate />}></Route>
+        <Route path="/applyZipsa" element={<ApplyZipsa />}></Route>
+        <Route path="/education" element={<Education />}></Route>
 
         <Route path="/register" element={<RegisterFunnel />}></Route>
         <Route path="/filter" element={<FilterFunnel />}></Route>

@@ -30,19 +30,19 @@ const HeartWrapper = styled.div`
 `;
 
 export default function ReportComplete({ name }) {
-  const UpperContent = [
-    <BoldText
-      fontSize={'25px'}
-      BoldContent={`${name}`}
-      NormalContent={'님의'}
-    />,
-    <BoldText
-      fontSize={'35px'}
-      BoldContent={'보고서 작성'}
-      NormalContent={'을'}
-    />,
-    '완료했어요!',
-  ];
+  // const UpperContent = [
+  //   <BoldText
+  //     fontSize={'25px'}
+  //     BoldContent={`${name}`}
+  //     NormalContent={'님의'}
+  //   />,
+  //   <BoldText
+  //     fontSize={'35px'}
+  //     BoldContent={'보고서 작성'}
+  //     NormalContent={'을'}
+  //   />,
+  //   '완료했어요!',
+  // ];
 
   return (
     <Wrapper>

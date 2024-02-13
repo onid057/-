@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import NavigationBar from '../components/common/NavigationBar';
-import BoldText from '../components/common/BoldText';
-import Paragraph from '../components/common/Paragraph';
-import Image from '../components/common/Image';
-import Button from '../components/common/Button';
+import NavigationBar from '../../components/common/NavigationBar';
+import BoldText from '../../components/common/BoldText';
+import Paragraph from '../../components/common/Paragraph';
+import Image from '../../components/common/Image';
+import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
@@ -142,7 +142,7 @@ function ApplyZipsa() {
   };
   const onButtonClick = () => {
     // 필수교육 및 서약서 제출 페이지 이동
-    navigate('/test/2');
+    navigate('/education');
   };
 
   return (
