@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -36,7 +35,6 @@ public class RedisConfig {
         return new LettuceConnectionFactory(host, ssePort);
     }
 
-    @Primary
     @Bean(name = "certificationRedisConnectionFactory")
     public RedisConnectionFactory certificationRedisConnectionFactory() {
         return new LettuceConnectionFactory(host, certificationPort);
@@ -87,7 +85,7 @@ public class RedisConfig {
 
     @Bean
     public RedisMessageListenerContainer redisMessageListener(
-        RedisConnectionFactory connectionFactory) {
+        @Qualifier("sseRedisConnectionFactory") RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         return container;
@@ -105,6 +103,6 @@ public class RedisConfig {
     private static void sseRedisTemplateSetting(RedisConnectionFactory redisConnectionFactory, RedisTemplate<String, Object> redisTemplate) {
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<Object>(Object.class));
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
     }
 }
