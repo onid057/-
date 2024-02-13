@@ -88,7 +88,7 @@ public class RedisConfig {
 
     @Bean
     public RedisMessageListenerContainer redisMessageListener(
-        @Qualifier("sseRedisConnectionFactory") RedisConnectionFactory connectionFactory) {
+        @Qualifier(value = "sseRedisConnectionFactory") RedisConnectionFactory connectionFactory) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         return container;
@@ -103,7 +103,7 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new StringRedisSerializer());
     }
 
-    private static void sseRedisTemplateSetting(@Qualifier("sseRedisConnectionFactory") RedisConnectionFactory redisConnectionFactory, RedisTemplate<String, Object> redisTemplate) {
+    private static void sseRedisTemplateSetting(@Qualifier(value = "sseRedisConnectionFactory") RedisConnectionFactory redisConnectionFactory, RedisTemplate<String, Object> redisTemplate) {
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));

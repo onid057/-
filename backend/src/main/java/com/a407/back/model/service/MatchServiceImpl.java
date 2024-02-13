@@ -104,9 +104,11 @@ public class MatchServiceImpl implements MatchService {
             notificationRepository.makeNotification(notification);
         }
         for (Long id : roomCreateRequest.getZipsaList()) {
-            redisPublisher.send(id);
+            Zipsa zipsa = zipsaRepository.findByZipsaId(id);
+            if(zipsa != null && zipsa.getIsWorked()) {
+                redisPublisher.send(id);
+            }
         }
-
         return newRoomId;
     }
 
@@ -115,7 +117,6 @@ public class MatchServiceImpl implements MatchService {
     public Long changeMatchStartedAt(Long roomId) {
         matchRepository.changeMatchStartedAt(roomId);
         changeMatchStatus(roomId, "ONGOING");
-        makeReportNotification(roomId);
         return roomId;
     }
 
@@ -128,7 +129,6 @@ public class MatchServiceImpl implements MatchService {
         Room room = roomRepository.findByRoomId(roomId);
         Zipsa zipsa = zipsaRepository.findByZipsaId(room.getZipsaId().getZipsaId().getUserId());
         zipsaRepository.changeServiceCountIncrease(zipsa);
-        makeReportNotification(roomId);
         return roomId;
     }
 
@@ -137,17 +137,4 @@ public class MatchServiceImpl implements MatchService {
         matchRepository.changeMatchStatus(roomId, status);
     }
 
-    @Override
-    @Transactional
-    public void makeReportNotification(Long roomId) {
-        Room room = roomRepository.findByRoomId(roomId);
-        Notification notification = Notification.builder().roomId(room)
-            .sendId(room.getUserId().getUserId())
-            .receiveId(room.getZipsaId().getZipsaId().getUserId()).status(Status.REPORT)
-            .type(Type.ZIPSA)
-            .isRead(false).createdAt(
-                Timestamp.valueOf(LocalDateTime.now())).build();
-        notificationRepository.makeNotification(notification);
-        redisPublisher.send(room.getZipsaId().getZipsaId().getUserId());
-    }
 }

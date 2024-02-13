@@ -20,5 +20,4 @@ public interface MatchService {
 
     Long makeFilterRoom(RoomCreateRequest roomCreateRequest);
 
-    void makeReportNotification(Long roomId);
 }
