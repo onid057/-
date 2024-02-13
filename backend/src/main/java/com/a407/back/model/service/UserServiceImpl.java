@@ -22,6 +22,7 @@ import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
 import com.a407.back.dto.user.UserInfoResponse;
+import com.a407.back.dto.user.UserLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
@@ -103,6 +104,12 @@ public class UserServiceImpl implements UserService {
 
         return new UserInfoResponse(user.getName(), user.getProfileImage(), user.getIsAffiliated(),
             zipsa != null);
+    }
+
+    @Override
+    public UserLocationResponse findUserLocation(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        return new UserLocationResponse(user.getLatitude(), user.getLongitude());
     }
 
     private final Logger logger= LoggerFactory.getLogger(this.getClass());

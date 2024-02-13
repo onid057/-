@@ -13,6 +13,7 @@ import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
 import com.a407.back.dto.user.UserInfoResponse;
+import com.a407.back.dto.user.UserLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
@@ -103,6 +104,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 userService.findUserDetailInfo(user.getUserId())));
+    }
+
+    @GetMapping("/location")
+    public ResponseEntity<ApiResponse<UserLocationResponse>> findUserLocation(
+        @AuthenticationPrincipal SecurityUser user) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.findUserLocation(user.getUserId())));
     }
 
     // 알림 목록

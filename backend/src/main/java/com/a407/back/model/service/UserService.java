@@ -11,6 +11,7 @@ import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
 import com.a407.back.dto.user.UserInfoResponse;
+import com.a407.back.dto.user.UserLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
 import com.a407.back.dto.user.UserNearZipsaLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaRequest;
@@ -75,4 +76,6 @@ public interface UserService {
     BoardListResponse getUserBoardList(Long userId, int page, int size);
 
     UserInfoResponse findUserInfo(Long userId);
+
+    UserLocationResponse findUserLocation(Long userId);
 }
