@@ -59,9 +59,7 @@ const ToggleWrapper = styled.div`
 
 function Toggle({ isWorked, setIsWorked }) {
   const toggleHandler = () => {
-    changeUserState(3).then(response => {
-      setIsWorked(!isWorked);
-    });
+    changeUserState().then(() => setIsWorked(!isWorked));
   };
 
   return (
