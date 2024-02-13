@@ -235,6 +235,10 @@ public class ZipsaServiceImpl implements ZipsaService {
             .isRead(false).createdAt(
                 Timestamp.valueOf(LocalDateTime.now())).build();
         notificationRepository.makeNotification(notification);
-        redisPublisher.send(room.getUserId().getUserId());
+
+        Zipsa zipsa = zipsaRepository.findByZipsaId(room.getUserId().getUserId());
+        if(zipsa == null || !zipsa.getIsWorked()) {
+            redisPublisher.send(room.getUserId().getUserId());
+        }
     }
 }
