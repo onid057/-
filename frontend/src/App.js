@@ -244,11 +244,6 @@ function App() {
         <Route path="/boards/:boardId/update" element={<UpdateBoard />}></Route>
         <Route path="/boards/create" element={<CreateBoard />}></Route>
 
-        <Route
-          path="/experiment"
-          element={<ExperimentCommonComponent />}
-        ></Route>
-
         {/* 
 					1. 한 명의 집사와의 매칭을 위해 정보 입력 Funnel
 				*/}
