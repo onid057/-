@@ -53,11 +53,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/")
-    public ResponseEntity<String> testServer() {
-        return ResponseEntity.status(HttpStatus.OK).body("server 이상 무");
-    }
-
     @GetMapping
     public ResponseEntity<ApiResponse<UserInfoResponse>> findUserInfo(
         @AuthenticationPrincipal SecurityUser user) {
