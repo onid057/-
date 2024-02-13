@@ -30,4 +30,17 @@ const getZipsaListFromMap = async (lat, lng) => {
   }
 };
 
-export { getZipsaPositionWithinTwoKilos, getZipsaListFromMap };
+// 내 위치 확인하기
+const getMyLocation = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: '/users/location',
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getZipsaPositionWithinTwoKilos, getZipsaListFromMap, getMyLocation };

@@ -32,7 +32,7 @@ const AbsoluteWrapper = styled.div`
 `;
 
 // Map 컴포넌트를 띄울 때, lat값과 lng값이 입력되어야 함.
-function Map({ onPrevious, onNext }) {
+function Map({ onPrevious, onNext, myLocation }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isDetailOpen, setIsDetailOpen] = useState(false); // 상세 정보
   const [positions, setPositions] = useState([]);
@@ -92,7 +92,7 @@ function Map({ onPrevious, onNext }) {
       </AbsoluteWrapper>
 
       <KakaoMap
-        center={{ lat: 37.506320759000715, lng: 127.05368251210247 }}
+        center={{ lat: myLocation.latitude, lng: myLocation.longitude }}
         style={{
           width: '320px',
           height: '568px',
