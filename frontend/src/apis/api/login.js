@@ -12,11 +12,24 @@ const doLogIn = async (email, password) => {
       },
       withCredentials: true,
     });
-    console.log(response);
     return response.data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export { doLogIn };
+// 로그아웃
+const doLogOut = async () => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `/auth/sign-out`,
+      withCredentials: true,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { doLogIn, doLogOut };

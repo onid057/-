@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { getUserState } from '../apis/api/toggle.js';
 import { subscribeSSE } from '../apis/api/subscribe.js';
 import { useUserInfo } from '../hooks/useUserInfo.js';
+import { doLogout } from '../apis/api/login.js';
 
 import Image from '../components/common/Image.jsx';
 import Paragraph from '../components/common/Paragraph.jsx';
@@ -235,6 +236,13 @@ export default function Home() {
                 ></Paragraph>,
               ]}
             ></Notice>
+
+            <Button
+              mode="THIN_WHITE"
+              onClick={() => doLogout().then(response => console.log(response))}
+            >
+              로그아웃
+            </Button>
           </NoticeWrapper>
         </>
       ) : (
