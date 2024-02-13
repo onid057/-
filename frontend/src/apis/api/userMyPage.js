@@ -27,26 +27,26 @@ const getDetailUserInfo = async userId => {
 
 const updateUserInfo = async (image, ...arg) => {
   const userForm = new FormData();
-  const datas = arg[0];
+  const datas = arg[0] || {};
   if (image) {
-    userForm.append('image', datas.image);
+    userForm.append('image', image);
   }
+
   userForm.append(
     'request',
     new Blob([JSON.stringify(datas)], { type: 'application/json' }),
   );
-  console.log(image);
 
-  // try {
-  //   const response = await axios({
-  //     method: 'patch',
-  //     url: '/users/1',
-  //     data: userForm,
-  //   });
-  //   return response.data;
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  try {
+    const response = await axios({
+      method: 'patch',
+      url: '/users/1',
+      data: userForm,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const applyZipsaRequest = async userId => {

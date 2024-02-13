@@ -72,7 +72,7 @@ function ZipsaRoomDetail() {
     getRoomDetailInfo(roomId).then(response => {
       setRoomInfo(response.data);
     });
-  }, []);
+  }, [roomId]);
 
   const formattingDate = date => {
     const serviceDate = new Date(date);
