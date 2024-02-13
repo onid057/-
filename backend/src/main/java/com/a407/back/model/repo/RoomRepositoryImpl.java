@@ -85,14 +85,18 @@ public class RoomRepositoryImpl implements RoomRepository {
     @Override
     public QueryResults<Room> getPublicRoomList(int page, int size) {
         QRoom qRoom = QRoom.room;
-        return query.selectFrom(qRoom).where(qRoom.isPublic.eq(true).and(qRoom.status.eq(Process.CREATE))).orderBy(qRoom.roomCreatedAt.desc())
+        return query.selectFrom(qRoom)
+            .where(qRoom.isPublic.eq(true).and(qRoom.status.eq(Process.CREATE)))
+            .orderBy(qRoom.roomCreatedAt.desc())
             .offset(page).limit(size).fetchResults();
     }
 
     @Override
     public List<Room> getUserPublicRoomList(User user) {
         QRoom qRoom = QRoom.room;
-        return query.selectFrom(qRoom).where(qRoom.userId.eq(user).and(qRoom.isPublic.eq(true)).and(qRoom.status.eq(Process.CREATE))).orderBy(qRoom.roomCreatedAt.asc()).fetch();
+        return query.selectFrom(qRoom).where(
+                qRoom.userId.eq(user).and(qRoom.isPublic.eq(true)).and(qRoom.status.eq(Process.CREATE)))
+            .orderBy(qRoom.roomCreatedAt.asc()).fetch();
     }
 
 

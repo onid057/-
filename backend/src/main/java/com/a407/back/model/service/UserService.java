@@ -26,8 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface UserService {
 
-    UserInfoResponse findUserInfo(Long userId);
-
     Long makeUser(UserCreateRequest userCreateRequest);
 
     List<NotificationListResponse> findNotificationByUserIdList(Long userId);
@@ -41,7 +39,7 @@ public interface UserService {
 
     User findByUserId(Long userId);
 
-    UserRecordInfoResponse getUserRecordInfo(Long userId);
+    UserRecordInfoResponse getUserRecordInfo(Long roomId);
 
     List<UserRecordResponse> getUserRecordList(Long userId);
 
@@ -49,9 +47,8 @@ public interface UserService {
 
     List<UserReservationResponse> getUserReservationList(Long userId);
 
+    UserAccountResponse makeAccount(Long userId, UserAccountRequest userAccountRequest);
     UserReservationResponse getUserReservationFirst(Long userId);
-
-    UserAccountResponse makeAccount(UserAccountRequest userAccountRequest);
 
     String getMaskedCardNumber(Long userId);
 
@@ -76,4 +73,6 @@ public interface UserService {
     UserPublicRoomListResponse getUserPublicRoomList(Long userId);
 
     BoardListResponse getUserBoardList(Long userId, int page, int size);
+
+    UserInfoResponse findUserInfo(Long userId);
 }

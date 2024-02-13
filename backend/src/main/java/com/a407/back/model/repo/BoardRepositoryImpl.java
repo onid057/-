@@ -8,7 +8,6 @@ import com.a407.back.domain.QTag;
 import com.a407.back.domain.Tag;
 import com.a407.back.domain.User;
 import com.a407.back.dto.util.BoardChangeDto;
-import com.querydsl.core.QueryResults;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

@@ -52,6 +52,8 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -103,11 +105,14 @@ public class UserServiceImpl implements UserService {
             zipsa != null);
     }
 
+    private final Logger logger= LoggerFactory.getLogger(this.getClass());
+    
     @Override
     @Transactional
     public Long makeUser(UserCreateRequest request) {
         // 에러 처리
         if (userRepository.findByUserEmail(request.getEmail()) != null) {
+            logger.info("어떤 값이 등장하나{}",userRepository.findByUserEmail(request.getEmail()));
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 
@@ -259,8 +264,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserAccountResponse makeAccount(UserAccountRequest userAccountRequest) {
-        User user = userRepository.findByUserId(userAccountRequest.getUserId());
+    public UserAccountResponse makeAccount(Long userId, UserAccountRequest userAccountRequest) {
+        User user = userRepository.findByUserId(userId);
         if (user == null) {
             throw new CustomException(ErrorCode.USER_NOT_FOUND);
         }

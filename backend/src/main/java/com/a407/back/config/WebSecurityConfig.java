@@ -48,13 +48,9 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(
             requests -> requests.requestMatchers("/admin/**").hasAuthority("ADMIN"));
         http.authorizeHttpRequests(
-            requests -> requests.requestMatchers("/**").permitAll().anyRequest()
+            requests -> requests.requestMatchers("/auth/sign-in", "/users").permitAll().anyRequest()
                 .authenticated());
-//        http.authorizeHttpRequests(
-//            requests -> requests.requestMatchers("/auth/sign-in", "/users").permitAll().anyRequest()
-//                .authenticated());
-        http.logout(
-            logout -> logout.invalidateHttpSession(true).logoutSuccessUrl("/auth/sign-out"));
+        http.logout(logout -> logout.invalidateHttpSession(true).logoutSuccessUrl("/auth/sign-out"));
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
         http.headers(headers->headers.cacheControl(CacheControlConfig::disable));

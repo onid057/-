@@ -7,7 +7,8 @@ import com.a407.back.dto.board.BoardListRequest;
 import com.a407.back.dto.board.BoardListResponse;
 
 public interface BoardService {
-    Long makeBoard(BoardCreateRequest boardCreateRequest);
+
+    Long makeBoard(Long userId, BoardCreateRequest boardCreateRequest);
 
     void changeBoard(Long boardId, BoardChangeRequest boardChangeRequest);
 

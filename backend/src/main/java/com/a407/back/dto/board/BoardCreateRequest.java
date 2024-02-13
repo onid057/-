@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BoardCreateRequest {
 
-    private Long userId;
     private String title;
     private String content;
     private List<Long> tagList;

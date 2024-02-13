@@ -24,7 +24,7 @@ public class RoomController {
 
     private final RoomService roomService;
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<ApiResponse<Long>> makePublicRoom(
         @RequestBody MakePublicRoomRequest makePublicRoomRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(

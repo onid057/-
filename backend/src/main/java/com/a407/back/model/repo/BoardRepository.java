@@ -5,7 +5,6 @@ import com.a407.back.domain.BoardTag;
 import com.a407.back.domain.Tag;
 import com.a407.back.domain.User;
 import com.a407.back.dto.util.BoardChangeDto;
-import com.querydsl.core.QueryResults;
 import java.util.List;
 
 public interface BoardRepository {

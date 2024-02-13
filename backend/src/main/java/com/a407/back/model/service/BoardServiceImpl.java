@@ -41,8 +41,8 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public Long makeBoard(BoardCreateRequest boardCreateRequest) {
-        User user = userRepository.findByUserId(boardCreateRequest.getUserId());
+    public Long makeBoard(Long userId, BoardCreateRequest boardCreateRequest) {
+        User user = userRepository.findByUserId(userId);
         Long boardId = boardRepository.makeBoard(
             Board.builder().title(boardCreateRequest.getTitle())
                 .content(boardCreateRequest.getContent())
