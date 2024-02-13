@@ -1,9 +1,8 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { getUserState } from '../apis/api/toggle.js';
 import { subscribeSSE } from '../apis/api/subscribe.js';
-import { getComplaintList } from '../apis/api/admin.js';
 import { useUserInfo } from '../hooks/useUserInfo.js';
 
 import Image from '../components/common/Image.jsx';
@@ -240,9 +239,9 @@ export default function Home() {
         </>
       ) : (
         <LoginRegisterWrapper>
-          <div>로그인</div>
+          <div onClick={() => navigate('/login')}>로그인</div>
           <div>|</div>
-          <div>회원가입</div>
+          <div onClick={() => navigate('/register')}>회원가입</div>
         </LoginRegisterWrapper>
       )}
 

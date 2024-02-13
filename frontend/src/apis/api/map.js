@@ -1,11 +1,11 @@
 import axios from '../utils/instance';
 
 // 2km 반경 내에 있는 모든 집사의 위치 불러오기
-const getZipsaPositionWithinTwoKilos = async userId => {
+const getZipsaPositionWithinTwoKilos = async () => {
   try {
     const response = await axios({
-      method: 'post',
-      url: `/users/helpers-map/${userId}`,
+      method: 'get',
+      url: `/users/helpers-map`,
     });
     return response.data.data;
   } catch (error) {
