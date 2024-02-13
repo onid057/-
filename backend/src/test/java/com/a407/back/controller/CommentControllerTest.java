@@ -20,10 +20,13 @@ import com.a407.back.model.service.CommentService;
 import com.a407.back.model.service.UserService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,10 +59,10 @@ class CommentControllerTest {
     @BeforeEach
     void setup() {
         firstUserId = userService.makeUser(new UserCreateRequest("user@abc.com", "firstUser", "firstUser",
-            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.4, 127.4));
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.4, 127.4));
 
         secondUserId = userService.makeUser(new UserCreateRequest("user@def.com", "secondUser", "secondUser",
-            new DateTime(2024, 1, 1, 1, 1, 1), Gender.WOMAN, "서울시", 36.5, 127.5));
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.WOMAN, "서울시", 36.5, 127.5));
 
         Tag tag = Tag.builder().name("tag").build();
         em.persist(tag);

@@ -10,7 +10,10 @@ import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.model.service.AuthService;
 import com.a407.back.model.service.UserService;
 import jakarta.transaction.Transactional;
+import java.sql.Date;
+import java.time.LocalDate;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +49,7 @@ class AuthControllerTest {
     void test(){
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
         userService.makeUser(user);
     }
 

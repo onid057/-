@@ -26,8 +26,11 @@ import com.a407.back.model.service.ZipsaService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -67,10 +70,10 @@ class NotificationControllerTest {
     void setup() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
         userId = userService.makeUser(user);
         UserCreateRequest user1 = new UserCreateRequest("user1@abc.com", "user1", "user1",
-            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId1 = userService.makeUser(user1);
         User zipsaUser = userService.findByUserId(userId1);
         // grade 생성

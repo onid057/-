@@ -12,8 +12,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -52,11 +55,11 @@ class AssociationControllerTest {
     void beforeEach() {
         // 사용자 생성
         UserCreateRequest userOne = new UserCreateRequest("userOne@abc.com", "userOne", "userOne",
-            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
         UserCreateRequest userTwo = new UserCreateRequest("userTwo@abc.com", "userTwo", "userTwo",
-            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
         UserCreateRequest userThree = new UserCreateRequest("userThree@abc.com", "userThree",
-            "userThree", new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5);
+            "userThree", Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
 
         userIdOne = userService.makeUser(userOne);
         userIdTwo = userService.makeUser(userTwo);

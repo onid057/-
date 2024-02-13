@@ -11,9 +11,11 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.DateTime;
@@ -72,18 +74,17 @@ public class MatchRepositoryImpl implements MatchRepository {
             int ageInt = Integer.parseInt(age);
 
             // 예: 40대 미만인 경우 50년 전
-            DateTime lowerBound = DateTime.now().minusYears(ageInt + 10);
+            Date lowerBound = Date.valueOf(
+                String.valueOf(LocalDateTime.now().minusYears(ageInt + 10L)));
             // 예: 40대 이상인 경우 40년 전
-            DateTime upperBound = DateTime.now().minusYears(ageInt);
-
-            DateTimePath<DateTime> birthPath = qZipsa.zipsaId.birth;
+            Date upperBound = Date.valueOf(String.valueOf(LocalDateTime.now().minusYears(ageInt)));
 
             if (ageInt >= 40) {
                 // 40대 이상인 경우
-                return birthPath.loe(upperBound);
+                return qZipsa.zipsaId.birth.loe(upperBound);
             } else {
                 // 40대 미만인 경우
-                return birthPath.gt(lowerBound);
+                return qZipsa.zipsaId.birth.gt(lowerBound);
             }
         } catch (NumberFormatException e) {
             return null;

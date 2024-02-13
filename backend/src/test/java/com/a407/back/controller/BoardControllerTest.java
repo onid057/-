@@ -21,10 +21,13 @@ import com.a407.back.model.service.CommentService;
 import com.a407.back.model.service.UserService;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -57,7 +60,7 @@ class BoardControllerTest {
     @BeforeEach
     void setup() {
         userId = userService.makeUser(new UserCreateRequest("user@abc.com", "user", "user",
-            new DateTime(2024, 1, 1, 1, 1, 1), Gender.MAN, "서울시", 36.5, 127.5));
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5));
 
         Tag tempFirstTag = Tag.builder().name("first").build();
         em.persist(tempFirstTag);

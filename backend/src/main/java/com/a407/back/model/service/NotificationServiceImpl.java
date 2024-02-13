@@ -47,6 +47,7 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = notificationRepository.findByNotificationId(notificationId);
         // 만약 고객이라면 error
         if(!notification.getType().equals(Type.ZIPSA)) throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+
         String userName = userRepository.findByUserId(notification.getSendId()).getName();
         Room room = notification.getRoomId();
         String majorCategoryName = categoryRepository.findMajorCategoryName(
