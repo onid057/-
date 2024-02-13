@@ -1,9 +1,11 @@
 package com.a407.back.model.service;
 
-import com.a407.back.domain.Room;
+import com.a407.back.domain.Notification;
+import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.notification.NotificationListResponse;
 import com.a407.back.model.repo.CategoryRepository;
+import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.SseRepository;
 import com.a407.back.model.repo.UserRepository;
@@ -34,32 +36,16 @@ public class SseServiceImpl implements SseService {
 
     private final ZipsaRepository zipsaRepository;
 
-    private final RoomRepository roomRepository;
-
-    private final CategoryRepository categoryRepository;
-
     // SseEmitter를 사용해서 알림을 보낼 때 사용
     @Transactional
     public void send(Long userId) {
         // 로그인 한 유저의 SseEmitter 가져오기
         SseEmitter sseEmitter = sseRepository.get(userId);
-        if(sseEmitter != null) {
+        if (sseEmitter != null) {
             Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
             String type = zipsa != null && zipsa.getIsWorked() ? "ZIPSA" : "USER";
-            List<NotificationListResponse> notificationList = userRepository.findNotificationByUserIdList(
-                userId, type).stream().map(notification -> {
-                Room room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
-                return new NotificationListResponse(
-                    userRepository.findByUserId(notification.getSendId()).getName(),
-                    notification.getType(), room.getStatus(), notification.getStatus(),
-                    categoryRepository.findMajorCategoryName(
-                        notification.getRoomId().getSubCategoryId().getMajorCategoryId()
-                            .getMajorCategoryId()),
-                    notification.getRoomId().getRoomId(), notification.getNotificationId(),
-                    notification.getCreatedAt());
-            }).toList();
-
-            sendToClient(sseEmitter, userId, notificationList);
+            Notification notification = userRepository.findNotificationByUserIdList(userId, type).get(0);
+            sendToClient(sseEmitter, userId, notification);
             log.info("이벤트가 성공적으로 진행되었습니다. {}", userId);
         }
     }
@@ -81,7 +67,6 @@ public class SseServiceImpl implements SseService {
     }
 
     @Override
-    @Transactional
     public void sendToClient(SseEmitter sseEmitter, Long userId, Object data) {
         try {
             sseEmitter.send(SseEmitter.event()

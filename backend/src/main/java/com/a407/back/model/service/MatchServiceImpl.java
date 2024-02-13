@@ -100,14 +100,14 @@ public class MatchServiceImpl implements MatchService {
             .notificationCount(notificationCount).status(Process.CREATE).isComplained(false)
             .isPublic(false).isReviewed(false).isReported(false).build();
         Long newRoomId = roomRepository.makeRoom(room);
-        Room newRoom = roomRepository.findByRoomId(newRoomId);
         // 방 아이디 가지고 알림 보내기
         for (Long id : roomCreateRequest.getZipsaList()) {
-            Notification notification = Notification.builder().roomId(newRoom)
+            Notification notification = Notification.builder().roomId(room)
                 .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
                     Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
         }
+
         for (Long id : roomCreateRequest.getZipsaList()) {
             Zipsa zipsa = zipsaRepository.findByZipsaId(id);
             if(zipsa != null && zipsa.getIsWorked()) {

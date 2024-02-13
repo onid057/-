@@ -105,6 +105,7 @@ public class RedisConfig {
 
     private static void sseRedisTemplateSetting(@Qualifier(value = "sseRedisConnectionFactory") RedisConnectionFactory redisConnectionFactory, RedisTemplate<String, Object> redisTemplate) {
         redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setDefaultSerializer(new StringRedisSerializer());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
     }

@@ -1,8 +1,10 @@
 package com.a407.back.config.redis;
 
+import com.a407.back.domain.Room.Process;
 import com.a407.back.model.service.SseService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +38,7 @@ public class RedisPublisher {
         return sseService.connect(userId, response);
     }
 
+    @Transactional
     public void send(Long userId) {
         if (channelTopicMap.get(userId.toString()) == null) {
             logger.error("등록되지 않은 채널입니다. {}", userId);
