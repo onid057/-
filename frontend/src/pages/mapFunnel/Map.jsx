@@ -101,7 +101,7 @@ function Map({ onPrevious, onNext }) {
       </AbsoluteWrapper>
 
       <KakaoMap
-        center={{ lat: myPosition.latitude, lng: myPosition.longitude }}
+        center={{ lat: myPosition?.latitude, lng: myPosition?.longitude }}
         style={{
           width: '320px',
           height: '568px',
