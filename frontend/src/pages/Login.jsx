@@ -1,5 +1,7 @@
 import { doLogIn } from '../apis/api/login';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useUserInfo } from '../hooks/useUserInfo';
 
 import styled from 'styled-components';
 import Paragraph from '../components/common/Paragraph';
@@ -31,6 +33,8 @@ const QuestionWrapper = styled.span`
 `;
 
 function Login() {
+  const navigate = useNavigate();
+  const { setIsLoggedIn } = useUserInfo();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
 
@@ -68,7 +72,10 @@ function Login() {
         mode="THICK_BLUE"
         onClick={() => {
           doLogIn(email, password).then(response => {
-            console.log(response);
+            if (response) {
+              setIsLoggedIn(true);
+              navigate('/');
+            }
           });
         }}
       >
