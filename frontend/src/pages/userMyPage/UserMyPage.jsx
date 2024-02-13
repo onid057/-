@@ -49,55 +49,56 @@ function UserMyPage() {
 
   return (
     <Wrapper>
-      <Notice
-        upper={[
-          <Image
-            src={
-              data?.profileImage ||
-              process.env.PUBLIC_URL + '/images/profile_img.svg'
-            }
-            width={'60px'}
-            height={'60px'}
-          ></Image>,
-          <Paragraph
-            gap={'20px'}
-            fontSize={'13px'}
-            sentences={[
+      <HeadWrapper>
+        <Notice
+          upper={[
+            <Image
+              src={
+                data?.profileImage ||
+                process.env.PUBLIC_URL + '/images/profile_img.svg'
+              }
+              width={'60px'}
+              height={'60px'}
+            ></Image>,
+            <Paragraph
+              gap={'20px'}
+              fontSize={'13px'}
+              sentences={[
+                <BoldText
+                  fontSize={'20px'}
+                  boldContent={data?.name}
+                  normalContent={' 사용자님'}
+                ></BoldText>,
+                '내 정보 수정하기',
+              ]}
+            ></Paragraph>,
+          ]}
+          nextPage={'/UserProfileUpdate'}
+        ></Notice>
+        <Notice
+          upper={[
+            <Image
+              src={process.env.PUBLIC_URL + '/images/family.svg'}
+              width={'30px'}
+              height={'30px'}
+              margin={'4px 0 0 0'}
+            ></Image>,
+            <ContentWrapper>
               <BoldText
                 fontSize={'20px'}
-                boldContent={data?.name}
-                normalContent={' 사용자님'}
-              ></BoldText>,
-              '내 정보 수정하기',
-            ]}
-          ></Paragraph>,
-        ]}
-        nextPage={'/UserProfileUpdate'}
-      ></Notice>
-      <Notice
-        upper={[
-          <Image
-            src={process.env.PUBLIC_URL + '/images/family.svg'}
-            width={'30px'}
-            height={'30px'}
-            margin={'4px 0 0 0'}
-          ></Image>,
-          <ContentWrapper>
-            <BoldText
-              fontSize={'20px'}
-              boldContent={
-                data?.isAffiliated ? '멤버 확인하기' : '계정 연동하기'
-              }
-            ></BoldText>
-            <Image
-              src={process.env.PUBLIC_URL + '/images/right_arrow.svg'}
-              width={'24px'}
-              height={'24px'}
-            ></Image>
-          </ContentWrapper>,
-        ]}
-        nextPage={data?.isAffiliated ? '/connectMember' : '/connectOption'}
-      ></Notice>
+                boldContent={
+                  data?.isAffiliated ? '멤버 확인하기' : '계정 연동하기'
+                }
+              ></BoldText>
+              <Image
+                src={process.env.PUBLIC_URL + '/images/right_arrow.svg'}
+                width={'24px'}
+                height={'24px'}
+              ></Image>
+            </ContentWrapper>,
+          ]}
+          nextPage={data?.isAffiliated ? '/connectMember' : '/connectOption'}
+        ></Notice>
 
         <NavigateButton
           onClick={() => {
