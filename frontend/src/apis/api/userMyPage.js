@@ -61,9 +61,35 @@ const applyZipsaRequest = async userId => {
   }
 };
 
+const getBoardListByUser = async (userId, page, size) => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/users/${userId}/boards?page=${page}&size=${size}`,
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const getUserActivityHistory = async userId => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/users/${userId}/records`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   getSimpleUserInfo,
   getDetailUserInfo,
   updateUserInfo,
   applyZipsaRequest,
+  getBoardListByUser,
+  getUserActivityHistory,
 };

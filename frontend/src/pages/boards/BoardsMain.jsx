@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoardsTags from '../../components/boards/BoardsTags';
+import MenuBar from '../../components/common/MenuBar';
 
 import { useState, useEffect } from 'react';
 import { getAllArticles } from '../../apis/api/board';
@@ -10,9 +11,19 @@ import { calculateReportWritingTime } from '../../utils/time';
 
 const Wrapper = styled.div`
   width: 320px;
-  min-height: 568px;
   margin: 0 auto;
-  padding: 25px 16px;
+  padding: 25px 16px 0;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.primary};
+  font-size: 18px;
+  font-weight: 300;
+  white-space: pre-wrap;
+`;
+
+const HeadWrapper = styled.div`
+  width: 100%;
+  min-height: 509px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -132,53 +143,57 @@ function BoardsMain() {
 
   return (
     <Wrapper>
-      <Paragraph gap="5px" fontSize="35px" sentences={['게시판']}></Paragraph>
+      <HeadWrapper>
+        <Paragraph gap="5px" fontSize="35px" sentences={['게시판']}></Paragraph>
 
-      <CreateNewBox onClick={() => navigate(`/boards/create`)}>
-        <Image
-          src={process.env.PUBLIC_URL + '/images/pencil.svg'}
-          width={'20px'}
-          height={'20px'}
-          margin={'0 -30px 0 0'}
-        ></Image>
-        <span>새 게시물 작성하기</span>
-        <Image
-          src={process.env.PUBLIC_URL + '/images/right_arrow.svg'}
-          width={'24px'}
-          height={'24px'}
-          margin={'0'}
-        ></Image>
-      </CreateNewBox>
+        <CreateNewBox onClick={() => navigate(`/boards/create`)}>
+          <Image
+            src={process.env.PUBLIC_URL + '/images/pencil.svg'}
+            width={'20px'}
+            height={'20px'}
+            margin={'0 -30px 0 0'}
+          ></Image>
+          <span>새 게시물 작성하기</span>
+          <Image
+            src={process.env.PUBLIC_URL + '/images/right_arrow.svg'}
+            width={'24px'}
+            height={'24px'}
+            margin={'0'}
+          ></Image>
+        </CreateNewBox>
 
-      <TagWrapper>
-        {allTags.map((tag, idx) => (
-          <BoardsTags
+        <TagWrapper>
+          {allTags.map((tag, idx) => (
+            <BoardsTags
+              key={idx}
+              mode={isSelected[idx] ? 'LARGE_SELECTED' : 'LARGE'}
+              tagname={tag}
+              onClick={() => toggleSelected(idx)}
+            ></BoardsTags>
+          ))}
+        </TagWrapper>
+
+        {/* API 받아서 map 돌기 */}
+        {list?.map((article, idx) => (
+          <Article
             key={idx}
-            mode={isSelected[idx] ? 'LARGE_SELECTED' : 'LARGE'}
-            tagname={tag}
-            onClick={() => toggleSelected(idx)}
-          ></BoardsTags>
+            onClick={() => navigate(`/boards/${article.boardId}`)}
+          >
+            <InsideTags>
+              {article.tagNameList.map((tag, idx) => (
+                <BoardsTags key={idx} mode={'SMALL'} tagname={tag}></BoardsTags>
+              ))}
+            </InsideTags>
+            <ArticleTitle>{article.title}</ArticleTitle>
+            <ArticleInfo>
+              {article.userName} |{' '}
+              {calculateReportWritingTime(article.updatedAt)} | 댓글{' '}
+              {article.commentCount}
+            </ArticleInfo>
+          </Article>
         ))}
-      </TagWrapper>
-
-      {/* API 받아서 map 돌기 */}
-      {list?.map((article, idx) => (
-        <Article
-          key={idx}
-          onClick={() => navigate(`/boards/${article.boardId}`)}
-        >
-          <InsideTags>
-            {article.tagNameList.map((tag, idx) => (
-              <BoardsTags key={idx} mode={'SMALL'} tagname={tag}></BoardsTags>
-            ))}
-          </InsideTags>
-          <ArticleTitle>{article.title}</ArticleTitle>
-          <ArticleInfo>
-            {article.userName} | {calculateReportWritingTime(article.updatedAt)}{' '}
-            | 댓글 {article.commentCount}
-          </ArticleInfo>
-        </Article>
-      ))}
+      </HeadWrapper>
+      <MenuBar currentMenu="POST"></MenuBar>
     </Wrapper>
   );
 }

@@ -15,6 +15,9 @@ import UserProfileUpdate from './pages/userMyPage/UserProfileUpdate';
 import PasswordUpdate from './pages/userMyPage/PasswordUpdate';
 import ApplyZipsa from './pages/userMyPage/ApplyZipsa';
 import Education from './pages/userMyPage/Education';
+import MyBoardList from './pages/MyBoardList';
+import UserActivityHistory from './pages/userMyPage/UserActivityHistory';
+import PaymentRegistration from './pages/userMyPage/PaymentRegistration';
 
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
@@ -215,6 +218,15 @@ function App() {
         <Route path="/passwordUpdate" element={<PasswordUpdate />}></Route>
         <Route path="/applyZipsa" element={<ApplyZipsa />}></Route>
         <Route path="/education" element={<Education />}></Route>
+        <Route path="/myBoards" element={<MyBoardList />}></Route>
+        <Route
+          path="/userActivityHistory"
+          element={<UserActivityHistory />}
+        ></Route>
+        <Route
+          path="/paymentRegistration"
+          element={<PaymentRegistration />}
+        ></Route>
 
         <Route path="/register" element={<RegisterFunnel />}></Route>
         <Route path="/registerSuccess" element={<RegisterSuccess />}></Route>

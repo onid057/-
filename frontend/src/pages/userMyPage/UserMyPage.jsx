@@ -11,9 +11,19 @@ import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 320px;
-  min-height: 568px;
   margin: 0 auto;
   padding: 20px 16px 0;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.primary};
+  font-size: 18px;
+  font-weight: 300;
+  white-space: pre-wrap;
+`;
+
+const HeadWrapper = styled.div`
+  width: 100%;
+  min-height: 509px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -89,31 +99,43 @@ function UserMyPage() {
         nextPage={data?.isAffiliated ? '/connectMember' : '/connectOption'}
       ></Notice>
 
-      <NavigateButton onClick={() => console.log('페이지 이동')}>
-        사용 내역 보기
-      </NavigateButton>
-      <NavigateButton onClick={() => console.log('페이지 이동')}>
-        작성한 게시물 확인하기
-      </NavigateButton>
-      <NavigateButton onClick={() => console.log('페이지 이동')}>
-        간편 결제 수단 등록하기
-      </NavigateButton>
-      <NavigateButton
-        onClick={() => {
-          navigate('/applyZipsa');
-        }}
-        disabled={data?.isZipsa}
-      >
-        집사 되기
-      </NavigateButton>
-      <NavigateButton
-        onClick={() => {
-          navigate('/passwordUpdate');
-        }}
-      >
-        비밀번호 변경하기
-      </NavigateButton>
-
+        <NavigateButton
+          onClick={() => {
+            navigate('/userActivityHistory');
+          }}
+        >
+          사용 내역 보기
+        </NavigateButton>
+        <NavigateButton
+          onClick={() => {
+            navigate('/myBoards');
+          }}
+        >
+          작성한 게시물 확인하기
+        </NavigateButton>
+        <NavigateButton
+          onClick={() => {
+            navigate('/paymentRegistration');
+          }}
+        >
+          간편 결제 수단 등록하기
+        </NavigateButton>
+        <NavigateButton
+          onClick={() => {
+            navigate('/applyZipsa');
+          }}
+          disabled={data?.isZipsa}
+        >
+          집사 되기
+        </NavigateButton>
+        <NavigateButton
+          onClick={() => {
+            navigate('/passwordUpdate');
+          }}
+        >
+          비밀번호 변경하기
+        </NavigateButton>
+      </HeadWrapper>
       <MenuBar currentMenu="USER"></MenuBar>
     </Wrapper>
   );

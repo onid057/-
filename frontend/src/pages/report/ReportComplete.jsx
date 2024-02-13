@@ -2,13 +2,23 @@ import styled from 'styled-components';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Image from '../../components/common/Image';
-import NavigateText from '../../components/common/NavigateText';
+import MenuBar from '../../components/common/MenuBar';
 
 const Wrapper = styled.div`
   width: 320px;
-  min-height: 568px;
   margin: 0 auto;
   padding: 40px 16px 0 16px;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.primary};
+  font-size: 18px;
+  font-weight: 300;
+  white-space: pre-wrap;
+`;
+
+const HeadWrapper = styled.div`
+  width: 100%;
+  min-height: 509px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -46,33 +56,34 @@ export default function ReportComplete({ name }) {
 
   return (
     <Wrapper>
-      <Paragraph
-        gap={'5px'}
-        fontSize={'35px'}
-        sentences={[
-          <BoldText
-            boldContent={'보고서 작성'}
-            normalContent={'을'}
-          ></BoldText>,
-          '완료했어요!',
-        ]}
-      ></Paragraph>
-
-      <HeartWrapper>
-        <Image
-          src={`${process.env.PUBLIC_URL}/images/heart.svg`}
-          width={'150px'}
-          height={'150px'}
-        ></Image>
+      <HeadWrapper>
         <Paragraph
           gap={'5px'}
-          fontSize={'15px'}
-          sentences={['고객님이 집사님을', '더욱 믿고 맡기실 수 있어요!']}
-          textAlign={'center'}
+          fontSize={'35px'}
+          sentences={[
+            <BoldText
+              boldContent={'보고서 작성'}
+              normalContent={'을'}
+            ></BoldText>,
+            '완료했어요!',
+          ]}
         ></Paragraph>
-      </HeartWrapper>
 
-      <NavigateText nextPage="/">홈 화면으로 이동하기</NavigateText>
+        <HeartWrapper>
+          <Image
+            src={`${process.env.PUBLIC_URL}/images/heart.svg`}
+            width={'150px'}
+            height={'150px'}
+          ></Image>
+          <Paragraph
+            gap={'5px'}
+            fontSize={'15px'}
+            sentences={['고객님이 집사님을', '더욱 믿고 맡기실 수 있어요!']}
+            textAlign={'center'}
+          ></Paragraph>
+        </HeartWrapper>
+      </HeadWrapper>
+      <MenuBar></MenuBar>
     </Wrapper>
   );
 }
