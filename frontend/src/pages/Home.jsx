@@ -63,11 +63,10 @@ export default function Home() {
   const isLoggedIn = useUserInfo(state => state.isLoggedIn);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      isQualifiedZipsa().then(response => {
-        setIsZipsa(response.data);
-      });
-    }
+    isQualifiedZipsa().then(response => {
+      console.log(response);
+      setIsZipsa(response.data);
+    });
   }, []);
 
   useEffect(() => {
@@ -167,13 +166,7 @@ export default function Home() {
               <Paragraph
                 fontSize="16px"
                 gap="5px"
-                sentences={[
-                  <BoldText
-                    boldContent="14"
-                    normalContent=" 명의 집사가"
-                  ></BoldText>,
-                  '주변에 기다리고 있어요.',
-                ]}
+                sentences={['여러 명의 집사가', '주변에 기다리고 있어요.']}
               ></Paragraph>,
             ]}
             nextPage="/map"
@@ -254,6 +247,7 @@ export default function Home() {
             mode="THIN_WHITE"
             onClick={() => {
               doLogOut().then(response => console.log(response));
+              setUserState('');
               setIsLoggedIn(false);
             }}
           >

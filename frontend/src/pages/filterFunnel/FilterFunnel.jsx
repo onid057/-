@@ -101,8 +101,6 @@ function FilterFunnel() {
         ></ZipsaList>
       </Funnel.Step>
 
-      {/* 여기까지 플로우 완성 */}
-
       <Funnel.Step name="DATE">
         <TargetDate
           onPrevious={() => {
@@ -165,7 +163,7 @@ function FilterFunnel() {
               CATEGORY_ID[filterData.matchMainCategory][1][
                 filterData.matchSubCategory
               ],
-              'dummy',
+              '제목 없음',
               nextMatchDetailData.matchDetail,
               filterData.matchAddress + ' ' + filterData.matchDetailAddress,
               filterData.matchEndTime - filterData.matchStartTime,
