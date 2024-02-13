@@ -25,6 +25,7 @@ public class RedisSubscriber implements MessageListener {
     public void onMessage(Message message, byte[] pattern) {
         try {
             Long publishMessage = objectMapper.readValue(message.getBody(), Long.class);
+            logger.info("메세지를 전송합니다. {}", publishMessage);
             sseService.send(publishMessage);
         } catch (Exception e) {
             logger.error(String.valueOf(e));
