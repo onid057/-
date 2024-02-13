@@ -57,7 +57,7 @@ function UserMyPage() {
             ]}
           ></Paragraph>,
         ]}
-        nextPage={'/'}
+        nextPage={'/userInfoUpdate'}
       ></Notice>
       <Notice
         upper={[

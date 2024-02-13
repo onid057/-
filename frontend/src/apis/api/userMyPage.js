@@ -13,4 +13,16 @@ const getSimpleUserInfo = async userId => {
   }
 };
 
-export { getSimpleUserInfo };
+const getDetailUserInfo = async userId => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `/users/${userId}/detail`,
+    });
+    return response.data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { getSimpleUserInfo, getDetailUserInfo };
