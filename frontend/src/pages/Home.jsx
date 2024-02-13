@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { getUserState } from '../apis/api/toggle.js';
 import { subscribeSSE } from '../apis/api/subscribe.js';
 import { useUserInfo } from '../hooks/useUserInfo.js';
-import { doLogout } from '../apis/api/login.js';
+import { doLogOut } from '../apis/api/login.js';
 
 import Image from '../components/common/Image.jsx';
 import Paragraph from '../components/common/Paragraph.jsx';
@@ -51,7 +51,7 @@ const LoginRegisterWrapper = styled.div`
 
 export default function Home() {
   const [isWorked, setIsWorked] = useState();
-  const { setUserState } = useUserInfo();
+  const { setUserState, setIsLoggedIn } = useUserInfo();
   const navigate = useNavigate('/notify');
   // const eventSourceRef = useRef();
 
@@ -239,7 +239,10 @@ export default function Home() {
 
             <Button
               mode="THIN_WHITE"
-              onClick={() => doLogout().then(response => console.log(response))}
+              onClick={() => {
+                doLogOut().then(response => console.log(response));
+                setIsLoggedIn(false);
+              }}
             >
               로그아웃
             </Button>
