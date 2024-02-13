@@ -43,13 +43,13 @@ function MatchOption() {
       ></Paragraph>
 
       <OptionWrapper>
-        <Button mode={'THIN_WHITE'} onClick={() => navigate('/filter')}>
+        <Button mode={'THIN_WHITE'} onClick={() => navigate('/map')}>
           지도에서 빠르게 찾아볼래요.
         </Button>
         <Button mode={'THIN_WHITE'} onClick={() => navigate('/filter')}>
           조건이 맞는 집사님을 찾고 있어요.
         </Button>
-        <Button mode={'THIN_WHITE'} onClick={() => navigate('/filter')}>
+        <Button mode={'THIN_WHITE'} onClick={() => navigate('/rooms/create')}>
           집사님을 모집해보고 싶어요.
         </Button>
       </OptionWrapper>

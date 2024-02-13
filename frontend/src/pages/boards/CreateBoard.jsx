@@ -63,9 +63,7 @@ function CreateBoard() {
     navigate(-1);
   };
   const onNext = async () => {
-    await createArticle(userId, title, content, tagList).then(response => {
-      console.log(response);
-    });
+    await createArticle(title, content, tagList);
     navigate(`/boards`);
   };
 
@@ -82,8 +80,6 @@ function CreateBoard() {
     ]);
   };
 
-  // POST 요청 보낼 data 선언하기
-  const userId = 6;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [tagList, setTagList] = useState([]);

@@ -31,13 +31,12 @@ const getOneArticle = async boardId => {
 };
 
 // 새 게시글 작성
-const createArticle = async (userId, title, content, tagList) => {
+const createArticle = async (title, content, tagList) => {
   try {
     const response = await axios({
       method: 'post',
       url: `boards`,
       data: {
-        userId: userId,
         title: title,
         content: content,
         tagList: tagList,

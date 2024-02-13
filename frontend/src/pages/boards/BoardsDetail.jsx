@@ -99,9 +99,6 @@ const CommentLength = styled.span`
   color: gray;
 `;
 
-// 현재 로그인 된 유저 구하기
-const getCurrentUser = 'admin';
-
 function BoardsDetail() {
   const { boardId } = useParams();
   const navigate = useNavigate();
@@ -186,10 +183,10 @@ function BoardsDetail() {
 
         {calculateReportWritingTime(data.updatedAt)}
 
-        {getCurrentUser === data.userName ? (
+        {data.boardDistinction ? (
           <UpdateDeleteButton
-            needUpdateButton
-            needDeleteButton
+            needUpdateButton={true}
+            needDeleteButton={true}
             updateOnClick={() => toArticleUpdate()}
             deleteOnClick={() => toArticleDelete()}
           ></UpdateDeleteButton>
@@ -212,7 +209,7 @@ function BoardsDetail() {
               updatedAt={comment.updatedAt}
               defaultValue={comment.content}
               needUpdateButton={false}
-              needDeleteButton={getCurrentUser === comment.userName}
+              needDeleteButton={comment.commentDistinction}
               deleteOnClick={() => {
                 (async () => {
                   await deleteOneComment(comment.commentId);
