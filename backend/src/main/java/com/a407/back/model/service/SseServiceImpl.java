@@ -49,6 +49,10 @@ public class SseServiceImpl implements SseService {
             List<NotificationListResponse> notificationList = userRepository.findNotificationByUserIdList(
                 userId, type).stream().map(notification -> {
                 Room room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
+                log.info(String.valueOf(notification.getRoomId().getRoomId()));
+                log.info(String.valueOf(room));
+                log.info(String.valueOf(room == null));
+                log.info(String.valueOf(room.getStatus()));
                 return new NotificationListResponse(
                     userRepository.findByUserId(notification.getSendId()).getName(),
                     notification.getType(), room.getStatus(), notification.getStatus(),
