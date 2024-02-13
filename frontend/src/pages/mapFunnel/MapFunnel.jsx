@@ -22,7 +22,7 @@ function MapFunnel() {
       console.log(response);
       setMyLocation(response);
     });
-  });
+  }, []);
 
   console.log(mapData);
 
