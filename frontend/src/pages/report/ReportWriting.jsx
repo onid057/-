@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import Button from '../../components/common/Button';
 import styled from 'styled-components';
 import Image from '../../components/common/Image';
@@ -53,7 +53,7 @@ function ReportWriting() {
   };
   const [imageFile, setImageFile] = useState(null);
   const [content, setContent] = useState('');
-  // const currentimageFile = URL.createObjectURL(image);
+  const [imageUrl, setImageUrl] = useState(null);
   // const roomId = useParams();
 
   const PlaceholderContent =
@@ -65,10 +65,16 @@ function ReportWriting() {
   };
 
   const onClickButton = () => {
-    sendReportData(imageFile, 1, content).then(response =>
-      console.log(response),
-    );
+    if (imageFile && content) {
+      sendReportData(imageFile, 1, content).then(response => navigate('/'));
+    }
   };
+
+  useEffect(() => {
+    if (imageFile) {
+      setImageUrl(URL.createObjectURL(imageFile));
+    }
+  }, [imageFile]);
 
   return (
     <Wrapper>
@@ -106,12 +112,8 @@ function ReportWriting() {
               )
             }
           ></ImageUploader>
-          {imageFile && (
-            <Image
-              src={URL.createObjectURL(imageFile)}
-              width={'100%'}
-              height={'200px'}
-            ></Image>
+          {imageUrl && (
+            <Image src={imageUrl} width={'100%'} height={'200px'}></Image>
           )}
         </ImageWrapper>
         <LongInputBox
@@ -121,7 +123,7 @@ function ReportWriting() {
           onChange={event => setContent(event.target.value)}
         ></LongInputBox>
         <Button
-          mode={'THICK_BLUE'}
+          mode={imageFile && content ? 'THICK_BLUE' : 'THICK_GRAY'}
           children={'작성 완료'}
           onClick={onClickButton}
         ></Button>
