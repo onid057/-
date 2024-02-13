@@ -46,12 +46,12 @@ public class WebSecurityConfig {
             UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(
             requests -> requests.requestMatchers("/admin/**").hasAuthority("ADMIN"));
-        http.authorizeHttpRequests(
-            requests -> requests.requestMatchers("/**").permitAll().anyRequest().permitAll());
 //        http.authorizeHttpRequests(
-//            requests -> requests.requestMatchers("/auth/sign-in", "/users", "/boards",
-//                    "/actuator/health").permitAll().anyRequest()
-//                .authenticated());
+//            requests -> requests.requestMatchers("/**").permitAll().anyRequest().permitAll());
+        http.authorizeHttpRequests(
+            requests -> requests.requestMatchers("/auth/sign-in", "/users",
+                    "/actuator/health").permitAll().anyRequest()
+                .authenticated());
         http.logout(
             logout -> logout.invalidateHttpSession(true).logoutSuccessUrl("/auth/sign-out"));
         http.csrf(AbstractHttpConfigurer::disable);
