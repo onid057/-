@@ -92,6 +92,14 @@ public class ZipsaController {
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 성격 변경이 완료되었습니다."));
     }
 
+    @GetMapping("/distinction")
+    public ResponseEntity<ApiResponse<Boolean>> findZipsaDistinction(
+        @AuthenticationPrincipal SecurityUser user) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.findZipsaDistinction(user.getUserId())));
+    }
+
     @GetMapping("/reports/{roomId}")
     public ResponseEntity<ApiResponse<ReportResponse>> findReportByRoomIdList(
         @PathVariable Long roomId) {
@@ -158,7 +166,8 @@ public class ZipsaController {
     }
 
     @PatchMapping
-    public ResponseEntity<ApiResponse<String>> changeZipsaInfo(@AuthenticationPrincipal SecurityUser user,
+    public ResponseEntity<ApiResponse<String>> changeZipsaInfo(
+        @AuthenticationPrincipal SecurityUser user,
         @RequestBody ZipsaChangeRequest request) {
         zipsaService.changeZipsaInfo(user.getUserId(), request);
         return ResponseEntity.status(HttpStatus.OK)

@@ -299,4 +299,11 @@ public class ZipsaServiceImpl implements ZipsaService {
             request.getPreferTag() == null ? zipsa.getPreferTag() : request.getPreferTag());
         zipsaRepository.changeZipsaInfo(zipsaId, zipsaChangeDto);
     }
+
+    @Override
+    public Boolean findZipsaDistinction(Long userId) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+        if(zipsa == null) return false;
+        else return true;
+    }
 }
