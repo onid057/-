@@ -26,7 +26,6 @@ import NotFound from './pages/error/NotFound';
 import StartMatch from './pages/StartMatch';
 import Notify from './pages/notify/Notify';
 import SuggestByUser from './pages/notify/SuggestByUser';
-import ExperimentCommonComponent from './pages/ExperimentCommonComponent';
 import Reserve from './pages/reserve/Reserve';
 import ReserveDetail from './pages/reserve/ReserveDetail';
 import UserRoomList from './pages/createRoomFunnel/UserRoomList';
