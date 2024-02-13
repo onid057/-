@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Paragraph from '../components/common/Paragraph';
-import NavigationBar from '../components/common/NavigationBar';
-import Image from '../components/common/Image';
-import BoldText from '../components/common/BoldText';
-import HorizontalLine from '../components/common/HorizontalLine';
-import Input from '../components/common/Input';
-import Button from '../components/common/Button';
+import Paragraph from '../../components/common/Paragraph';
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
+import BoldText from '../../components/common/BoldText';
+import HorizontalLine from '../../components/common/HorizontalLine';
+import Input from '../../components/common/Input';
+import Button from '../../components/common/Button';
 import { useNavigate } from 'react-router-dom';
+import { applyZipsaRequest } from '../../apis/api/userMyPage';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -50,7 +51,7 @@ const TextWrapper = styled.div`
   line-height: 1.3;
 `;
 
-function Education({ userName }) {
+function Education() {
   const educationInfo = [
     {
       name: '유의사항',
@@ -83,17 +84,20 @@ function Education({ userName }) {
   const onSignChange = e => setSign(e.target.value);
 
   const onButtonClick = () => {
-    // 서명이 실명과 일치하지 않는다면
-    if (userName !== sign) {
-      alert('본인의 실명을 입력해주세요.');
-    } else {
-      // axios 요청 보내기
-    }
+    // // 서명이 실명과 일치하지 않는다면
+    // if (userName !== sign) {
+    //   alert('본인의 실명을 입력해주세요.');
+    // } else {
+    //   // axios 요청 보내기
+    // }
+    applyZipsaRequest(userId);
   };
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
   };
+
+  const userId = 1;
 
   return (
     <Wrapper>

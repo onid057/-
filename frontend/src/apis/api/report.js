@@ -22,6 +22,7 @@ const sendReportData = async (image, roomId, content) => {
     'request',
     new Blob([JSON.stringify(datas)], { type: 'application/json' }),
   );
+
   try {
     const response = await axios({
       method: 'post',

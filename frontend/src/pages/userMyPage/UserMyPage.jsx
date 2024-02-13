@@ -7,6 +7,7 @@ import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import NavigateButton from '../../components/common/NavigateButton';
 import MenuBar from '../../components/common/MenuBar';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -34,6 +35,7 @@ function UserMyPage() {
     queryKey: ['simpleUserInfo'],
     queryFn: () => getSimpleUserInfo(4),
   });
+  const navigate = useNavigate();
 
   return (
     <Wrapper>
@@ -57,7 +59,7 @@ function UserMyPage() {
             ]}
           ></Paragraph>,
         ]}
-        nextPage={'/'}
+        nextPage={'/UserProfileUpdate'}
       ></Notice>
       <Notice
         upper={[
@@ -94,12 +96,18 @@ function UserMyPage() {
         간편 결제 수단 등록하기
       </NavigateButton>
       <NavigateButton
-        onClick={() => console.log('페이지 이동')}
+        onClick={() => {
+          navigate('/applyZipsa');
+        }}
         disabled={data?.isZipsa}
       >
         집사 되기
       </NavigateButton>
-      <NavigateButton onClick={() => console.log('페이지 이동')}>
+      <NavigateButton
+        onClick={() => {
+          navigate('/passwordUpdate');
+        }}
+      >
         비밀번호 변경하기
       </NavigateButton>
 
