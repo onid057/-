@@ -120,7 +120,7 @@ function RegisterFunnel() {
               nextRegisterData.userEmail,
               nextRegisterData.userPassword,
             );
-            navigate('/startMatch');
+            navigate('/registerSuccess');
           }}
         ></PassWord>
       </Funnel.Step>

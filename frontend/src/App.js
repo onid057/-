@@ -41,6 +41,7 @@ import TestLee from './pages/TestLee';
 import ReportWriting from './pages/report/ReportWriting';
 import ReportDetail from './pages/report/ReportDetail';
 import ReportComplete from './pages/report/ReportComplete';
+import RegisterSuccess from './pages/registerFunnel/RegisterSuccess';
 
 const GlobalStyle = createGlobalStyle`
 	*,
@@ -216,6 +217,7 @@ function App() {
         <Route path="/education" element={<Education />}></Route>
 
         <Route path="/register" element={<RegisterFunnel />}></Route>
+        <Route path="/registerSuccess" element={<RegisterSuccess />}></Route>
         <Route path="/filter" element={<FilterFunnel />}></Route>
         <Route path="/matchOption" element={<MatchOption />}></Route>
 
