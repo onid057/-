@@ -22,7 +22,7 @@ import com.a407.back.dto.zipsa.ZipsaChangeRequest;
 import com.a407.back.dto.zipsa.ZipsaCreateRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
-import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
+import com.a407.back.dto.zipsa.ZipsaRecordResponse;
 import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
@@ -148,25 +148,16 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public ZipsaRecordsResponse getZipsaRecordInfo(Long roomId) {
-        Room room = zipsaRepository.getZipsaRecordInfo(roomId);
-        return ZipsaRecordsResponse.builder().name(room.getUserId().getName())
-            .profileImage(room.getUserId().getProfileImage())
-            .subCategoryName(room.getSubCategoryId().getName())
-            .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
-            .content(room.getContent())
-            .estimateDuration(room.getEstimateDuration())
-            .roomCreatedAt(room.getRoomCreatedAt())
-            .matchCreatedAt(room.getMatchCreatedAt())
-            .isReported(room.getIsReported())
-            .reportCycle(room.getReportCycle())
-            .isPublic(room.getIsPublic())
-            .startedAt(room.getStartedAt())
-            .endedAt(room.getEndedAt())
-            .expectationStartedAt(room.getExpectationStartedAt())
-            .expectationEndedAt(room.getExpectationEndedAt())
-            .expectationPay(room.getExpectationPay())
-            .totalPay(room.getTotalPay()).build();
+    public List<ZipsaRecordResponse> getZipsaRecordList(Long zipsaId) {
+        return userRepository.getUserRecordList(zipsaId, true).stream().map(
+
+            room -> ZipsaRecordResponse.builder().roomId(room.getRoomId())
+                .name(room.getUserId().getName())
+                .majorCategoryName(room.getSubCategoryId().getMajorCategoryId().getName())
+                .subCategoryName(room.getSubCategoryId().getName()).content(room.getContent())
+                .startedAt(room.getStartedAt()).endedAt(room.getEndedAt())
+                .totalPay(room.getTotalPay()).build()).toList();
+
     }
 
     @Override
@@ -303,7 +294,10 @@ public class ZipsaServiceImpl implements ZipsaService {
     @Override
     public Boolean findZipsaDistinction(Long userId) {
         Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
-        if(zipsa == null) return false;
-        else return true;
+        if (zipsa == null) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

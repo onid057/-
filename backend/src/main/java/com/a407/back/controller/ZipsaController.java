@@ -11,7 +11,7 @@ import com.a407.back.dto.zipsa.ZipsaChangeRequest;
 import com.a407.back.dto.zipsa.ZipsaCreateRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
-import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
+import com.a407.back.dto.zipsa.ZipsaRecordResponse;
 import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
@@ -124,12 +124,12 @@ public class ZipsaController {
                 zipsaService.findsZipsaReviewFindByZipsaId(helperId)));
     }
 
-    @GetMapping("/records/{roomId}")
-    public ResponseEntity<ApiResponse<ZipsaRecordsResponse>> getZipsaRecordInfo(
-        @PathVariable Long roomId) {
+    @GetMapping("/records")
+    public ResponseEntity<ApiResponse<List<ZipsaRecordResponse>>> getZipsaRecordList(
+        @AuthenticationPrincipal SecurityUser user) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.getZipsaRecordInfo(roomId)));
+                zipsaService.getZipsaRecordList(user.getUserId())));
     }
 
     @GetMapping("/reservations/{roomId}")

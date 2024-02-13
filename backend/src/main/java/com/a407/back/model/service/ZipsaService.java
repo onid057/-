@@ -8,7 +8,7 @@ import com.a407.back.dto.zipsa.ZipsaChangeRequest;
 import com.a407.back.dto.zipsa.ZipsaCreateRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
-import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
+import com.a407.back.dto.zipsa.ZipsaRecordResponse;
 import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
@@ -30,7 +30,7 @@ public interface ZipsaService {
 
     Zipsa findByZipsaId(Long zipsaId);
 
-    ZipsaRecordsResponse getZipsaRecordInfo(Long roomId);
+    List<ZipsaRecordResponse> getZipsaRecordList(Long zipsaId);
 
     ZipsaReservationInfoResponse getZipsaReservationInfo(Long roomId);
 
