@@ -16,7 +16,7 @@ const makeRoom = async (
   try {
     const response = await axios({
       method: 'post',
-      url: '/rooms/',
+      url: '/rooms',
       data: {
         userId,
         subCategoryId,
