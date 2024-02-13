@@ -397,12 +397,6 @@ public class UserServiceImpl implements UserService {
             request.getLongitude() == null ? user.getLongitude() : request.getLongitude(),
             request.getPassword() == null ? user.getPassword()
                 : bCryptPasswordEncoder.encode(request.getPassword()));
-        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
-        if (zipsa != null) {
-            zipsaRepository.changeZipsaDescription(userId,
-                request.getDescription() == null ? zipsa.getDescription()
-                    : request.getDescription());
-        }
         userRepository.changeUserInfo(userId, userChangeDto);
     }
 
@@ -410,12 +404,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDetailInfoResponse findUserDetailInfo(Long userId) {
         User user = userRepository.findByUserId(userId);
-        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
-
         return UserDetailInfoResponse.builder().profileImage(user.getProfileImage())
             .name(user.getName())
             .birth(user.getBirth()).email(user.getEmail()).phoneNumber(user.getPhoneNumber())
-            .address(user.getAddress()).description(zipsa != null ? zipsa.getDescription() : null)
+            .address(user.getAddress())
             .build();
     }
 
