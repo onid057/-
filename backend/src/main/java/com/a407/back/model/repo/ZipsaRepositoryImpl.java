@@ -115,4 +115,11 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         query.update(qZipsa).set(qZipsa.isWorked, status)
             .where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
     }
+
+    @Override
+    public Zipsa makeZipsa(Zipsa zipsa) {
+        em.persist(zipsa);
+        return zipsa;
+    }
+
 }

@@ -6,6 +6,7 @@ import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportResponse;
+import com.a407.back.dto.zipsa.ZipsaCreateRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
@@ -125,5 +126,13 @@ public class ZipsaController {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getPublicRoomList(page, size)));
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<Long>> makeZipsa(
+        @RequestBody ZipsaCreateRequest zipsaCreateRequest) {
+        long id = zipsaService.makeZipsa(zipsaCreateRequest);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
     }
 }
