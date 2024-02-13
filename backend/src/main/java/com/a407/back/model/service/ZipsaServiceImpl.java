@@ -1,7 +1,7 @@
 package com.a407.back.model.service;
 
-import com.a407.back.config.redis.RedisPublisher;
 import com.a407.back.config.constants.ErrorCode;
+import com.a407.back.config.redis.RedisPublisher;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Status;
 import com.a407.back.domain.Notification.Type;
@@ -14,6 +14,8 @@ import com.a407.back.dto.util.ImageUtil;
 import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
+import com.a407.back.dto.zipsa.ZipsaChangeDto;
+import com.a407.back.dto.zipsa.ZipsaChangeRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
@@ -237,8 +239,18 @@ public class ZipsaServiceImpl implements ZipsaService {
         notificationRepository.makeNotification(notification);
 
         Zipsa zipsa = zipsaRepository.findByZipsaId(room.getUserId().getUserId());
-        if(zipsa == null || !zipsa.getIsWorked()) {
+        if (zipsa == null || !zipsa.getIsWorked()) {
             redisPublisher.send(room.getUserId().getUserId());
         }
+    }
+
+    @Override
+    @Transactional
+    public void changeZipsaInfo(Long zipsaId, ZipsaChangeRequest request) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
+        ZipsaChangeDto zipsaChangeDto = new ZipsaChangeDto(
+            request.getDescription() == null ? zipsa.getDescription() : request.getDescription(),
+            request.getPreferTag() == null ? zipsa.getPreferTag() : request.getPreferTag());
+        zipsaRepository.changeZipsaInfo(zipsaId, zipsaChangeDto);
     }
 }

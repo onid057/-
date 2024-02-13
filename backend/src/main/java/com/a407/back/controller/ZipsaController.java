@@ -2,12 +2,11 @@ package com.a407.back.controller;
 
 import com.a407.back.config.constants.SuccessCode;
 import com.a407.back.dto.room.PublicRoomListResponse;
-import com.a407.back.dto.user.UserRecordResponse;
-import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportCreateRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
+import com.a407.back.dto.zipsa.ZipsaChangeRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
@@ -37,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ZipsaController {
 
     private final ZipsaServiceImpl zipsaService;
+
     @PostMapping("/reports")
     public ResponseEntity<ApiResponse<String>> makeReport(
         @RequestPart("image") MultipartFile image,
@@ -47,6 +47,7 @@ public class ZipsaController {
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "정기 보고 생성 성공"));
     }
+
     @GetMapping("/reports/{roomId}")
     public ResponseEntity<ApiResponse<List<ReportSearchResponse>>> findReportByRoomIdList(
         @PathVariable Long roomId) {
@@ -54,6 +55,7 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.findReportByRoomIdList(roomId)));
     }
+
     @GetMapping("/{helperId}")
     public ResponseEntity<ApiResponse<ZipsaInfoResponse>> findZipsaFindByZipsaId(
         @PathVariable Long helperId) {
@@ -61,6 +63,7 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.findZipsaFindByZipsaId(helperId)));
     }
+
     @GetMapping("/{helperId}/detail")
     public ResponseEntity<ApiResponse<ZipsaDetailInfoResponse>> findZipsaDetailFindByZipsaId(
         @PathVariable Long helperId) {
@@ -68,6 +71,7 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.findZipsaDetailFindByZipsaId(helperId)));
     }
+
     @GetMapping("/{helperId}/reviews")
     public ResponseEntity<ApiResponse<List<ZipsaReviewResponse>>> findsZipsaReviewFindByZipsaId(
         @PathVariable Long helperId) {
@@ -75,6 +79,7 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.findsZipsaReviewFindByZipsaId(helperId)));
     }
+
     @GetMapping("/records/{roomId}")
     public ResponseEntity<ApiResponse<ZipsaRecordsResponse>> getZipsaRecordInfo(
         @PathVariable Long roomId) {
@@ -82,6 +87,7 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaRecordInfo(roomId)));
     }
+
     @GetMapping("/reservations/{roomId}")
     public ResponseEntity<ApiResponse<ZipsaReservationInfoResponse>> getZipsaReservationInfo(
         @PathVariable Long roomId) {
@@ -89,6 +95,7 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaReservationInfo(roomId)));
     }
+
     @PatchMapping("/{helperId}/reversal")
     public ResponseEntity<ApiResponse<String>> changeZipsaStatus(
         @PathVariable("helperId") Long helperId) {
@@ -96,6 +103,7 @@ public class ZipsaController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 성격 변경이 완료되었습니다."));
     }
+
     @GetMapping("/{helperId}/status")
     public ResponseEntity<ApiResponse<ZipsaStatusResponse>> getZipsaWorkStatus(
         @PathVariable("helperId") Long helperId) {
@@ -103,6 +111,7 @@ public class ZipsaController {
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaWorkStatus(helperId)));
     }
+
     @PostMapping("/participation")
     public ResponseEntity<ApiResponse<String>> makePublicRoomNotification(
         @RequestBody PublicRoomNotificationRequest publicRoomNotificationRequest) {
@@ -110,6 +119,7 @@ public class ZipsaController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "공개 방 참가 요청이 발신되었습니다."));
     }
+
     @GetMapping("/rooms")
     public ResponseEntity<ApiResponse<PublicRoomListResponse>> getPublicRoomList(
         @RequestParam("page") int page, @RequestParam("size") int size) {
@@ -117,4 +127,13 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getPublicRoomList(page, size)));
     }
+
+    @PatchMapping("/{helperId}")
+    public ResponseEntity<ApiResponse<String>> changeZipsaInfo(@PathVariable Long helperId,
+        @RequestBody ZipsaChangeRequest request) {
+        zipsaService.changeZipsaInfo(helperId, request);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "집사 정보 수정 성공"));
+    }
+
 }
