@@ -404,12 +404,10 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserDetailInfoResponse findUserDetailInfo(Long userId) {
         User user = userRepository.findByUserId(userId);
-        Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
-
         return UserDetailInfoResponse.builder().profileImage(user.getProfileImage())
             .name(user.getName())
             .birth(user.getBirth()).email(user.getEmail()).phoneNumber(user.getPhoneNumber())
-            .address(user.getAddress()).description(zipsa != null ? zipsa.getDescription() : null)
+            .address(user.getAddress())
             .build();
     }
 
