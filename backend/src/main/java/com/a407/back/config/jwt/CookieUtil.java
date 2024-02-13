@@ -24,14 +24,14 @@ public class CookieUtil {
     public static void saveCookie(String accessToken, String refreshToken,
         HttpServletResponse response, int age) {
         ResponseCookie accessCookie = ResponseCookie.from("Authorization", accessToken)
-            .sameSite("None").httpOnly(true).secure(true).path("/")
+            .sameSite("None").httpOnly(true).secure(true).path("/").domain("localhost")
             .maxAge(age).build();
 
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
-            .sameSite("None").httpOnly(true).secure(true).path("/")
+            .sameSite("None").httpOnly(true).secure(true).path("/").domain("localhost")
             .maxAge(age).build();
 
-        response.addHeader("Set-Cookie", accessCookie.toString());
+        response.setHeader("Set-Cookie", accessCookie.toString());
         response.addHeader("Set-Cookie", refreshCookie.toString());
 
     }
