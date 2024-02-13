@@ -61,7 +61,7 @@ public class AuthController {
 //            cookieMaxAge);
 
             ResponseCookie accessCookie = ResponseCookie.from("Authorization", tokens.getAccessToken())
-                .sameSite("Strict").httpOnly(true).secure(false).path("/").domain("i10a407.p.ssafy.io")
+                .sameSite("Strict").httpOnly(true).secure(false).path("/").domain("localhost")
                 .maxAge(cookieMaxAge).build();
 
             ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
