@@ -30,9 +30,9 @@ const ContentWrapper = styled.div`
 `;
 
 function UserMyPage() {
-  const { data, isPending, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['simpleUserInfo'],
-    queryFn: () => getSimpleUserInfo(4),
+    queryFn: () => getSimpleUserInfo(),
   });
 
   return (
@@ -40,7 +40,7 @@ function UserMyPage() {
       <Notice
         upper={[
           <Image
-            src={process.env.PUBLIC_URL + '/images/profile_img.svg'}
+            src={data?.profileImage}
             width={'60px'}
             height={'60px'}
           ></Image>,

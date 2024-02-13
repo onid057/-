@@ -237,17 +237,16 @@ export default function Home() {
                 ></Paragraph>,
               ]}
             ></Notice>
-
-            <Button
-              mode="THIN_WHITE"
-              onClick={() => {
-                doLogOut().then(response => console.log(response));
-                setIsLoggedIn(false);
-              }}
-            >
-              로그아웃
-            </Button>
           </NoticeWrapper>
+          <Button
+            mode="THIN_WHITE"
+            onClick={() => {
+              doLogOut().then(response => console.log(response));
+              setIsLoggedIn(false);
+            }}
+          >
+            로그아웃
+          </Button>
         </>
       ) : (
         <LoginRegisterWrapper>
