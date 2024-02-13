@@ -8,6 +8,7 @@ import com.a407.back.dto.auth.Tokens;
 import com.a407.back.dto.util.ApiResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.AuthService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -76,6 +77,12 @@ public class AuthController {
 //            .orElse(UUID.randomUUID()));
 //        return ResponseEntity.status(HttpStatus.OK).headers(headers)
 //            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "로그인 성공"));
+
+        Cookie cookie = new Cookie("cookieName", "cookieValue");
+        cookie.setDomain("i10a407.p.ssafy.io");
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
         return ResponseEntity.ok().headers(headers)
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "access token 발급"));
     }
