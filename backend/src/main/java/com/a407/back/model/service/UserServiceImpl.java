@@ -266,9 +266,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserAccountResponse makeAccount(Long userId, UserAccountRequest userAccountRequest) {
         User user = userRepository.findByUserId(userId);
-        if (user == null) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
         if (user.getAccount() != null && user.getAccount()
             .equals(userAccountRequest.getAccount())) {
             return new UserAccountResponse("이미 등록된 카드입니다");
@@ -282,9 +279,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getMaskedCardNumber(Long userId) {
         User user = userRepository.findByUserId(userId);
-        if (user == null || user.getAccount() == null) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
         String cardNumber = user.getAccount();
         return "****-****-****-" + cardNumber.substring(cardNumber.length() - 4);
     }
@@ -316,9 +310,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteAccount(Long userId) {
         User user = userRepository.findByUserId(userId);
-        if (user == null) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
         userRepository.deleteAccount(user, user.getAccount());
     }
 

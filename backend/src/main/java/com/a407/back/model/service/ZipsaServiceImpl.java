@@ -262,9 +262,6 @@ public class ZipsaServiceImpl implements ZipsaService {
     public Long makeZipsa(ZipsaCreateRequest request) {
         User user = userRepository.findByUserId(request.getUserId());
         Grade grade = gradeRepository.findGradeById(1L);
-        if (user.getUserId() == null) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
-        }
         // 인증이 완료되지 않은 경우
         if (Boolean.FALSE.equals(user.getIsCertificated())) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
