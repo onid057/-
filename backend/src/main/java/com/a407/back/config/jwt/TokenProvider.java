@@ -86,7 +86,7 @@ public class TokenProvider {
 
                 return email;
             } catch (Exception error) {
-                throw new CustomException(ErrorCode.USER_NOT_FOUND);
+                throw new CustomException(ErrorCode.UNAUTHORIZED_ACCESS);
             }
 
         }

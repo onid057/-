@@ -11,7 +11,6 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -48,12 +47,14 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(
             requests -> requests.requestMatchers("/admin/**").hasAuthority("ADMIN"));
         http.authorizeHttpRequests(
-            requests -> requests.requestMatchers("/auth/sign-in", "/users","/boards").permitAll().anyRequest()
+            requests -> requests.requestMatchers("/auth/sign-in", "/users", "/boards",
+                    "/actuator/health").permitAll().anyRequest()
                 .authenticated());
-        http.logout(logout -> logout.invalidateHttpSession(true).logoutSuccessUrl("/auth/sign-out"));
+        http.logout(
+            logout -> logout.invalidateHttpSession(true).logoutSuccessUrl("/auth/sign-out"));
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(AbstractHttpConfigurer::disable);
-        http.headers(headers->headers.cacheControl(CacheControlConfig::disable));
+        http.headers(headers -> headers.cacheControl(CacheControlConfig::disable));
 
         return http.build();
     }
@@ -67,25 +68,23 @@ public class WebSecurityConfig {
 
     @Bean
     public AuthenticationEntryPoint customTempAuthenticationEntryPoint() {
-        return (request, response, authException) -> errorResponse(ErrorCode.USER_NOT_FOUND,
-            response);
+        return (request, response, authException) -> errorResponse(response);
     }
 
 
     @Bean
     public AccessDeniedHandler customAccessDeniedHandler() {
-        return (request, response, accessDeniedException) -> errorResponse(
-            ErrorCode.UNAUTHORIZED_ACCESS, response);
+        return (request, response, accessDeniedException) -> errorResponse(response);
     }
 
-    private static void errorResponse(ErrorCode errorCode, HttpServletResponse response)
+    private static void errorResponse(HttpServletResponse response)
         throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        ErrorResponse errorResponse = new ErrorResponse(errorCode);
+        ErrorResponse errorResponse = new ErrorResponse(ErrorCode.UNAUTHORIZED_ACCESS);
         objectMapper.writeValueAsString(errorResponse);
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setStatus(ErrorCode.UNAUTHORIZED_ACCESS.getStatus());
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }

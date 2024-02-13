@@ -26,7 +26,7 @@ public class AuthServiceImpl implements AuthService {
     public Tokens login(String email, String password) {
         User user = userRepository.findByUserEmail(email);
         if (user == null || !bCryptPasswordEncoder.matches(password, user.getPassword())) {
-            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+            throw new CustomException(ErrorCode.UNAUTHORIZED_ACCESS);
         }
 
         String accessToken = tokenProvider.makeAccessToken(email);
