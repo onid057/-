@@ -9,6 +9,7 @@ import com.a407.back.model.repo.SseRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -38,6 +39,7 @@ public class SseServiceImpl implements SseService {
     private final CategoryRepository categoryRepository;
 
     // SseEmitter를 사용해서 알림을 보낼 때 사용
+    @Transactional
     public void send(Long userId) {
         // 로그인 한 유저의 SseEmitter 가져오기
         SseEmitter sseEmitter = sseRepository.get(userId);
@@ -70,6 +72,7 @@ public class SseServiceImpl implements SseService {
     }
 
     @Override
+    @Transactional
     public SseEmitter connect(Long userId, HttpServletResponse response) {
         SseEmitter sseEmitter = sseRepository.save(userId, new SseEmitter(defaultTimeout));
         response.setHeader("X-Accel-Buffering", "no");
