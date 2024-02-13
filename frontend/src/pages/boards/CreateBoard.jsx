@@ -23,27 +23,22 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-const ParagraphWrapper = styled.div`
-  margin-bottom: 40px;
-`;
-
 const SubTitle = styled.div`
   box-sizing: border-box;
   width: 100%;
+  margin-bottom: -15px;
   display: flex;
   justify-content: flex-start;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: light;
 `;
 
 const TagWrapper = styled.div`
   width: 100%;
-  height: 50px;
   display: flex;
   align-content: center;
   gap: 8px;
   overflow: scroll;
-  /* background: #f0d9ff; */
   overflow: auto;
   white-space: nowrap;
   ::-webkit-scrollbar {
@@ -51,7 +46,6 @@ const TagWrapper = styled.div`
   }
 `;
 
-// 여기는 '전체' 선택지가 없어용
 const allTags = [
   '맛집 추천',
   '동네 소식',
@@ -68,14 +62,11 @@ function CreateBoard() {
   const onPrevious = () => {
     navigate(-1);
   };
-  const onNext = () => {
-    createArticle(userId, title, content, tagList).then(response => {
+  const onNext = async () => {
+    await createArticle(userId, title, content, tagList).then(response => {
       console.log(response);
     });
-    navigate(`/boards/`);
-    window.location.reload();
-    console.log('새 게시글 생성 완료');
-    // window.location.replace(`/boards/`);
+    navigate(`/boards`);
   };
 
   // tagCheckList의 상태를 관리할 useState 함수
@@ -107,7 +98,6 @@ function CreateBoard() {
     });
     setTagList(filtered);
   }, [isSelected]);
-  // console.log(`태그에 변화 발생 : ${tagList}`)
 
   return (
     <Wrapper>
@@ -125,25 +115,22 @@ function CreateBoard() {
         onNext={onNext}
       ></NavigationBar>
 
-      <ParagraphWrapper>
-        <Paragraph
-          gap="5px"
-          fontSize="35px"
-          sentences={['새 게시물 작성하기']}
-        ></Paragraph>
-      </ParagraphWrapper>
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={['게시물 작성하기']}
+        margin={'0 0 20px 0'}
+      ></Paragraph>
 
-      <div>
-        <SubTitle>제목</SubTitle>
-        <Input
-          type={'text'}
-          width={'100%'}
-          maxLength={50}
-          placeholder={'제목을 입력해 주세요'}
-          value={title}
-          onChange={event => setTitle(event.target.value)}
-        ></Input>
-      </div>
+      <Input
+        labelText={'제목'}
+        type={'text'}
+        width={'100%'}
+        maxLength={50}
+        placeholder={'제목을 입력해 주세요'}
+        value={title}
+        onChange={event => setTitle(event.target.value)}
+      ></Input>
 
       <SubTitle>태그</SubTitle>
       <TagWrapper>
@@ -153,7 +140,6 @@ function CreateBoard() {
             mode={isSelected[idx] ? 'LARGE_SELECTED' : 'LARGE'}
             tagname={tag}
             onClick={() => toggleSelected(idx)}
-            // onChange={()=> addSelectedTags(idx)}
           ></BoardsTags>
         ))}
       </TagWrapper>

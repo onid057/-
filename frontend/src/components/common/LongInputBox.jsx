@@ -14,7 +14,7 @@ const TitleBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: light;
 `;
 

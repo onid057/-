@@ -1,19 +1,18 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { useLocation, useNavigate, useParams, Link } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import Input from '../../components/common/Input';
 import LongInputBox from '../../components/common/LongInputBox';
-import BoardsTags from '../../components/boards/BoardsTags';
 import { updateArticle } from '../../apis/api/board';
 
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0px 16px;
+  padding: 0px 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 25px;
@@ -23,35 +22,6 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-const ParagraphWrapper = styled.div`
-  margin-bottom: 40px;
-`;
-
-const SubTitle = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  font-size: 20px;
-  font-weight: light;
-`;
-
-const TagWrapper = styled.div`
-  width: 100%;
-  height: 30px;
-  display: flex;
-  align-content: center;
-  gap: 8px;
-  overflow: scroll;
-  /* background: #f0d9ff; */
-  overflow: auto;
-  white-space: nowrap;
-  ::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
-// 여기는 '전체' 선택지가 없어용
 const allTags = [
   '맛집 추천',
   '동네 소식',
@@ -60,20 +30,16 @@ const allTags = [
   '생활 꿀팁',
   '일상 공유',
 ];
-const tagLength = allTags.length;
 
-function CreateBoard() {
+function UpdateBoard() {
   // NavigationBAr 사용 위한 변수 선언
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
   };
-  const onNext = () => {
-    updateArticle(boardId, newTitle, newcontent, newtagList);
+  const onNext = async () => {
+    await updateArticle(boardId, newTitle, newcontent, newtagList);
     navigate(`/boards/${boardId}`);
-    window.location.reload();
-    // window.location.replace(`/boards/${boardId}`);
-    console.log('게시글 수정 완료');
   };
 
   // tagList를 숫자 배열로 반환하는 함수
@@ -97,21 +63,8 @@ function CreateBoard() {
 
   // useState로 변수 선언하기
   const [newTitle, setNewTitle] = useState(title);
-  const [newtagList, setNewtagList] = useState(tagList);
+  const [newtagList, _] = useState(tagList);
   const [newcontent, setNewcontent] = useState(content);
-
-  // // tagCheckList의 상태를 관리할 useState 함수
-  // const tagCheckList = Array.from({ length: tagLength }, () => false);
-  // const [isSelected, setIsSelected] = useState(tagCheckList);
-
-  // // 누르면 check값이 토글되는 함수
-  // const toggleSelected = idx => {
-  //   setIsSelected(array => [
-  //     ...array.slice(0, idx),
-  //     !array[idx],
-  //     ...array.slice(idx + 1),
-  //   ]);
-  // };
 
   return (
     <Wrapper>
@@ -129,36 +82,21 @@ function CreateBoard() {
         onNext={onNext}
       ></NavigationBar>
 
-      <ParagraphWrapper>
-        <Paragraph
-          gap="5px"
-          fontSize="35px"
-          sentences={['게시글 수정하기']}
-        ></Paragraph>
-      </ParagraphWrapper>
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={['게시글 수정']}
+        margin={'0 0 20px 0'}
+      ></Paragraph>
 
-      <div>
-        <SubTitle>제목</SubTitle>
-        <Input
-          type={'text'}
-          width={'100%'}
-          maxLength={50}
-          defaultValue={newTitle}
-          onChange={e => setNewTitle(e.target.value)}
-        ></Input>
-      </div>
-
-      <SubTitle>태그</SubTitle>
-      <TagWrapper>
-        {allTags.map((tag, idx) => (
-          <BoardsTags
-            key={idx}
-            mode={tagList.includes(tag) ? 'LARGE_SELECTED' : 'LARGE'}
-            tagname={tag}
-            // onClick={() => toggleSelected(idx)}
-          ></BoardsTags>
-        ))}
-      </TagWrapper>
+      <Input
+        labelText={'제목'}
+        type={'text'}
+        width={'100%'}
+        maxLength={50}
+        defaultValue={newTitle}
+        onChange={e => setNewTitle(e.target.value)}
+      ></Input>
 
       <LongInputBox
         title={'내용'}
@@ -170,4 +108,4 @@ function CreateBoard() {
   );
 }
 
-export default CreateBoard;
+export default UpdateBoard;

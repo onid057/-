@@ -1,12 +1,11 @@
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState } from 'react';
-import { createComment } from '../../apis/api/board';
+import { getOneArticle, createComment } from '../../apis/api/board';
+import styled from 'styled-components';
 import Image from '../../components/common/Image';
 
 const Wrapper = styled.div`
   display: flex;
-  margin-top: 20px;
   justify-content: space-between;
   align-items: center;
 `;
@@ -47,17 +46,18 @@ const SubmitImg = styled.div`
   justify-content: center;
 `;
 
-function CreateComment({ onClick, value }) {
-  // 현재 게시글의 boardId와 userId 구하기
+function CreateComment({ setData, setCommentLength }) {
   const { boardId } = useParams();
   const userId = 6;
 
-  // 댓글 생성 요청 보내는 함수
   const [comment, setComment] = useState('');
-  const toCreateComment = () => {
-    console.log('새 댓글 생성 완료');
-    createComment(boardId, userId, comment);
-    window.location.replace(`/boards/${boardId}`);
+  const toCreateComment = async () => {
+    setComment('');
+    await createComment(boardId, userId, comment);
+    getOneArticle(boardId).then(response => {
+      setData(response.data);
+      setCommentLength(response.data.commentList.length);
+    });
   };
 
   return (
@@ -72,7 +72,7 @@ function CreateComment({ onClick, value }) {
         ></TextArea>
       </InputBox>
 
-      <SubmitImg onClick={() => toCreateComment()}>
+      <SubmitImg onClick={toCreateComment}>
         <Image
           src={`${process.env.PUBLIC_URL}/images/send_arrow.svg`}
           width={'26px'}

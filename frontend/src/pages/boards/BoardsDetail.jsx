@@ -1,11 +1,9 @@
-import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import {
-  getOneArticle,
-  updateOneComment,
-  deleteOneComment,
-} from '../../apis/api/board';
+import { deleteOneComment, getOneArticle } from '../../apis/api/board';
+import { calculateReportWritingTime } from '../../utils/time';
+
+import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoardComment from '../../components/boards/BoardComment';
@@ -13,13 +11,12 @@ import BoardsTags from '../../components/boards/BoardsTags';
 import UpdateDeleteButton from '../../components/common/UpdateDeleteButton';
 import CreateComment from '../../components/boards/CreateComment';
 import DeleteBoardModal from '../../components/boards/DeleteBoardModal';
-import UpdateCommentModal from '../../components/boards/UpdateCommentModal';
 
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0px 16px;
+  padding: 0px 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -28,7 +25,6 @@ const Wrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
 const ArticleWrapper = styled.div`
   width: 100%;
   height: auto;
@@ -36,20 +32,17 @@ const ArticleWrapper = styled.div`
   padding: 25px 15px;
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 20px;
   border-radius: 25px;
   background-color: white;
 `;
-
 const ProfileWrapper = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: auto;
-  margin-bottom: 10px;
   display: flex;
   align-items: center;
 `;
-
 const ProfileLeft = styled.div`
   width: 100%;
   height: auto;
@@ -57,7 +50,6 @@ const ProfileLeft = styled.div`
   display: flex;
   justify-content: center;
 `;
-
 const ProfileRight = styled.div`
   width: 100%;
   height: 30px;
@@ -68,17 +60,14 @@ const ProfileRight = styled.div`
   justify-content: center;
   gap: 3px;
 `;
-
 const ProfileName = styled.div`
   font-size: 16px;
   font-weight: 500;
 `;
-
 const ProfileAddress = styled.div`
   font-size: 14px;
   font-weight: 300;
 `;
-
 const TagsWrapper = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -86,32 +75,27 @@ const TagsWrapper = styled.div`
   align-items: center;
   gap: 3px;
 `;
-
 const ArticleTitle = styled.div`
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 400;
   word-break: keep-all;
   line-height: 28px;
 `;
-
 const ArticleContent = styled.div`
   font-size: 18px;
   font-weight: 300;
-  word-break: keep-all;
   line-height: 25px;
 `;
-
 const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 3px;
-  gap: 23px;
-  font-size: 18px;
-  font-weight: 500;
+  gap: 15px;
+  font-size: 16px;
+  font-weight: 400;
 `;
-
 const CommentLength = styled.span`
-  font-size: 18px;
+  font-size: 16px;
   color: gray;
 `;
 
@@ -119,31 +103,23 @@ const CommentLength = styled.span`
 const getCurrentUser = 'admin';
 
 function BoardsDetail() {
-  // NavigationBar 사용 위한 변수 선언
+  const { boardId } = useParams();
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(`/boards`);
   };
 
-  // 게시판 상세 조회 API 호출
   const [data, setData] = useState({});
-  const [commentLength, setcommentLength] = useState();
-  const { boardId } = useParams();
+  const [commentLength, setCommentLength] = useState(0);
 
   useEffect(() => {
     getOneArticle(boardId).then(response => {
-      // console.log('게시판 상세 조회 API 성공');
+      console.log(response);
       setData(response.data);
-      setcommentLength(response.data.commentList.length);
+      setCommentLength(response.data.commentList.length);
     });
   }, []);
 
-  // 게시글 수정, 게시글 삭제, 댓글 수정, 댓글 삭제 시 페이지 새로 렌더링하는 함수
-  // useEffect(() => {
-  //   console.log('변경됨');
-  // }, [ArticleWrapper]);
-
-  // 게시글 수정 페이지로 이동하는 함수
   const toArticleUpdate = () => {
     navigate(`/boards/${boardId}/update`, {
       state: {
@@ -155,47 +131,9 @@ function BoardsDetail() {
     });
   };
 
-  // 게시글 삭제 버튼을 누르면 모달이 열리는 함수
   const [isArticleDelete, setIsArticleDelete] = useState(false);
-  const toAtricleDelete = () => {
-    setIsArticleDelete(() => true);
-  };
-
-  // 댓글 수정 버튼을 누르면 수정 칸이 나오는 함수
-  const checkMode = Array.from({ length: commentLength }, () => false);
-  const [isCommentUpdate, setIsCommentUpdate] = useState(checkMode);
-
-  useEffect(() => {
-    setIsCommentUpdate(checkMode);
-    console.log('isCommentUpdate', isCommentUpdate);
-    console.log(typeof isCommentUpdate);
-    console.log(isCommentUpdate.length);
-  }, [commentLength]);
-
-  const toUpdateOneComment = idx => {
-    console.log('버튼은 눌림');
-    setIsCommentUpdate(arr =>
-      [...arr].map((element, index) => (index === idx ? true : element)),
-    );
-    // console.log(`${idx}번 isCommentUpdate : ${isCommentUpdate}`);
-    // <UpdateCommentModal
-    //   boardId={boardId}
-    //   defaultValue={content}
-    //   onClick={() => {
-    //     setIsCommentUpdate(() => false);
-    //   }}
-    // ></UpdateCommentModal>;
-  };
-
-  // 댓글 수정 완료 버튼을 누르면 닫히는 함수
-  const toFinishCommentUpdate = () => {
-    setIsCommentUpdate(() => false);
-  };
-
-  // 댓글 삭제하는 함수
-  const toDeleteOneComment = commentId => {
-    deleteOneComment(commentId);
-    console.log('댓글 삭제 완료');
+  const toArticleDelete = () => {
+    setIsArticleDelete(true);
   };
 
   return (
@@ -212,7 +150,6 @@ function BoardsDetail() {
         onPrevious={onPrevious}
       ></NavigationBar>
 
-      {/* 게시글 삭제 모달을 띄우는 부분 */}
       {isArticleDelete === true && (
         <DeleteBoardModal
           boardId={boardId}
@@ -239,7 +176,7 @@ function BoardsDetail() {
 
         <TagsWrapper>
           {data.tagList?.map((tag, idx) => (
-            <BoardsTags key={idx} mode={'MEDIUM'} tagname={tag}></BoardsTags>
+            <BoardsTags key={idx} mode={'SMALL'} tagname={tag}></BoardsTags>
           ))}
         </TagsWrapper>
 
@@ -247,61 +184,53 @@ function BoardsDetail() {
 
         <ArticleContent>{data.content}</ArticleContent>
 
-        {data.updatedAt}
+        {calculateReportWritingTime(data.updatedAt)}
 
         {getCurrentUser === data.userName ? (
           <UpdateDeleteButton
             needUpdateButton
             needDeleteButton
             updateOnClick={() => toArticleUpdate()}
-            deleteOnClick={() => toAtricleDelete()}
+            deleteOnClick={() => toArticleDelete()}
           ></UpdateDeleteButton>
         ) : (
           ''
         )}
       </ArticleWrapper>
 
-      {/* 댓글이 하나도 없을 때 분기 */}
-      {/* 댓글 작성자와 currentUser가 같으면 수정/삭제 버튼 나오게 */}
-      {!data.commentList ? (
-        <p>새 댓글을 작성해 보세요!</p>
-      ) : (
+      {
         <CommentWrapper>
           <p>
-            댓글 <CommentLength>{data.commentList.length}</CommentLength>
+            댓글 <CommentLength>{commentLength}</CommentLength>
           </p>
 
-          {data.commentList.map((comment, idx) => (
-            <div key={idx}>
-              <BoardComment
-                userName={comment.userName}
-                content={comment.content}
-                updatedAt={comment.updatedAt}
-                defaultValue={comment.content}
-                submitOnClick={() => toFinishCommentUpdate()}
-                needUpdateButton={getCurrentUser === comment.userName}
-                needDeleteButton={getCurrentUser === comment.userName}
-                updateOnClick={() => toUpdateOneComment(idx)}
-                deleteOnClick={() => toDeleteOneComment(comment.commentId)}
-                update={isCommentUpdate[idx]}
-              ></BoardComment>
-
-              {/* {isCommentUpdate === true && (
-                <UpdateCommentModal
-                  boardId={boardId}
-                  defaultValue={comment.content}
-                  commentId={comment.commentId}
-                  onClick={() => {
-                    setIsCommentUpdate(() => false);
-                  }}
-                ></UpdateCommentModal>
-              )} */}
-            </div>
+          {data?.commentList?.map((comment, idx) => (
+            <BoardComment
+              key={`comment-${idx}`}
+              userName={comment.userName}
+              content={comment.content}
+              updatedAt={comment.updatedAt}
+              defaultValue={comment.content}
+              needUpdateButton={false}
+              needDeleteButton={getCurrentUser === comment.userName}
+              deleteOnClick={() => {
+                (async () => {
+                  await deleteOneComment(comment.commentId);
+                  getOneArticle(boardId).then(response => {
+                    setData(response.data);
+                    setCommentLength(response.data.commentList.length);
+                  });
+                })();
+              }}
+            ></BoardComment>
           ))}
         </CommentWrapper>
-      )}
+      }
 
-      <CreateComment></CreateComment>
+      <CreateComment
+        setData={setData}
+        setCommentLength={setCommentLength}
+      ></CreateComment>
     </Wrapper>
   );
 }

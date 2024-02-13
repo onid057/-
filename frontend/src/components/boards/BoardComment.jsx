@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import NavigationBar from '../common/NavigationBar';
 import Image from '../common/Image';
 import UpdateDeleteButton from '../common/UpdateDeleteButton';
+import { calculateReportWritingTime } from '../../utils/time';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -32,14 +31,14 @@ const RightBox = styled.div`
 `;
 
 const Name = styled.div`
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 const Address = styled.div``;
 
 const Content = styled.div`
   font-size: 14px;
-  font-weight: 350;
+  font-weight: 300;
 `;
 
 const UpdateInput = styled.textarea`
@@ -80,12 +79,10 @@ function BoardComment({
   content,
   updatedAt,
   defaultValue,
-  submitOnClick,
   needUpdateButton,
   needDeleteButton,
   updateOnClick,
   deleteOnClick,
-  update,
 }) {
   // 댓글 수정 버튼의 상태를 관리할 변수
   // const [isCommentUpdate, setIsCommentUpdate] = useState(false);
@@ -106,15 +103,10 @@ function BoardComment({
         <Address>{address}</Address>
 
         {/* isCommentUpdate 상태에 따라서 수정 textarea를 보여주는 부분 */}
-        {update ? (
-          <>
-            <UpdateInput defaultValue={defaultValue}></UpdateInput>
-            <SubmitButton onClick={submitOnClick}>완료</SubmitButton>
-          </>
-        ) : (
+        {
           <>
             <Content>{content}</Content>
-            <Date>{updatedAt}</Date>
+            <Date>{calculateReportWritingTime(updatedAt)}</Date>
             {/* 수정, 삭제 버튼 넣을 곳 */}
             <UpdateDeleteButton
               needUpdateButton={needUpdateButton}
@@ -123,7 +115,7 @@ function BoardComment({
               deleteOnClick={deleteOnClick}
             ></UpdateDeleteButton>
           </>
-        )}
+        }
       </RightBox>
     </Wrapper>
   );

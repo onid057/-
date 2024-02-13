@@ -15,7 +15,7 @@ const Wrapper = styled.div`
   white-space: nowrap;
   border: ${props => (props.$border ? props.$border : 'none')};
   font-size: ${props => (props.$fontSize ? props.$fontSize : '15px')};
-  font-weight: ${props => (props.$fontWeight ? props.$fontWeight : '500')};
+  font-weight: ${props => (props.$fontWeight ? props.$fontWeight : '400')};
   color: ${props => (props.color ? props.color : '#000000')};
 `;
 
@@ -29,7 +29,6 @@ function BoardsTags({ mode, tagname, onClick, onChange }) {
           $height={'27px'}
           $padding={'5px 15px'}
           $borderRadius={'25px'}
-          $border={'solid 0.5px #1c2064'}
           onClick={onClick}
           onChange={onChange}
         >
@@ -45,8 +44,6 @@ function BoardsTags({ mode, tagname, onClick, onChange }) {
           $padding={'5px 15px'}
           $backgroundColor={'#629AF9'}
           $borderRadius={'25px'}
-          $border={'solid 0.5px #629AF9'}
-          $fontWeight={'400'}
           color={'#FFFFFF'}
           onClick={onClick}
           onChange={onChange}
@@ -62,7 +59,6 @@ function BoardsTags({ mode, tagname, onClick, onChange }) {
           $width={'49px'}
           $height={'21px'}
           $fontSize={'11px'}
-          $fontWeight={'350'}
           onClick={onClick}
           onChange={onChange}
         >

@@ -3,9 +3,13 @@ import axios from '../utils/instance';
 // 게시판 리스트 조회
 const getAllArticles = async (page, size, tagList) => {
   try {
+    const isTagListExist = !!tagList;
+
     const response = await axios({
       method: 'get',
-      url: `boards?page=${page}&size=${size}&tagList=${tagList}`,
+      url: isTagListExist
+        ? `boards?page=${page}&size=${size}&tagList=${tagList}`
+        : `boards?page=${page}&size=${size}`,
     });
     return response.data;
   } catch (error) {

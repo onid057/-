@@ -1,18 +1,18 @@
 import styled from 'styled-components';
-import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoardsTags from '../../components/boards/BoardsTags';
+
 import { useState, useEffect } from 'react';
 import { getAllArticles } from '../../apis/api/board';
 import { useNavigate } from 'react-router-dom';
-import { element } from 'prop-types';
+import { calculateReportWritingTime } from '../../utils/time';
 
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0px 16px;
+  padding: 25px 16px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -21,7 +21,6 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-// 가로스크롤 구현 위한 div
 const TagWrapper = styled.div`
   width: 100%;
   height: 30px;
@@ -41,7 +40,7 @@ const CreateNewBox = styled.div`
   cursor: pointer;
   width: 100%;
   height: 70px;
-  margin: 20px 0;
+  margin: 10px 0;
   padding: 0 15px;
   display: flex;
   justify-content: space-between;
@@ -52,15 +51,6 @@ const CreateNewBox = styled.div`
   font-weight: 300;
 `;
 
-const SelectedTag = styled.div`
-  width: 100%;
-  height: auto;
-  white-space: pre-wrap;
-  font-size: 16px;
-  font-weight: 400;
-  color: #3f3f3f;
-`;
-
 const Article = styled.div`
   cursor: pointer;
   width: 100%;
@@ -68,7 +58,7 @@ const Article = styled.div`
   padding: 20px 13px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
   border-radius: 25px;
   background-color: white;
 `;
@@ -80,8 +70,9 @@ const InsideTags = styled.div`
 `;
 
 const ArticleTitle = styled.div`
+  margin-bottom: 20px;
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 400;
 `;
 
 const ArticleInfo = styled.div`
@@ -90,9 +81,7 @@ const ArticleInfo = styled.div`
   text-align: end;
 `;
 
-// 게시판 태그 목록과 길이
 const allTags = [
-  '전체',
   '맛집 추천',
   '동네 소식',
   '집사 후기',
@@ -100,97 +89,57 @@ const allTags = [
   '생활 꿀팁',
   '일상 공유',
 ];
-const tagLength = allTags.length;
+
+const page = 1;
+const size = 50;
 
 function BoardsMain() {
-  // NavigationBAr 사용 위한 변수 선언
   const navigate = useNavigate();
-  const onPrevious = () => {
-    navigate(`/`);
-  };
-
-  // tagCheckList의 상태를 관리할 useState 함수
-  const tagCheckList = Array.from({ length: tagLength }, () => false);
+  const tagCheckList = [true, true, true, true, true, true];
   const [isSelected, setIsSelected] = useState(tagCheckList);
-
-  // 게시판 리스트 조회 API 호출
-  // isSelected 값에 따라서 다른 API를 호출
-
-  const page = 1;
-  const size = 10;
-  const [tempTagList, setTempTagList] = useState([1, 2, 3, 4, 5, 6]);
-  let tagList = tempTagList.join(',');
-  // console.log('tagList :', tagList);
   const [list, setList] = useState([]);
 
-  useEffect(() => {
-    // setTempTagList([]);
-    console.log('tempTagList 바꾸기!!!');
-    console.log('tempTagList :', tempTagList);
-    console.log('isSelected :', isSelected);
-    console.log('요청 보낼 str', tagList);
-
-    // isSelected 값에 따라서 tempTagList를 변환하기
-    isSelected.map((element, idx) => {
-      if (idx === 0 && element) {
-        setTempTagList([1, 2, 3, 4, 5, 6]);
-      } else if (idx != 0 && element && !tempTagList.includes(idx)) {
-        setTempTagList(prevList => [...prevList, idx]);
-      } else if (idx != 0 && !element && tempTagList.includes(idx)) {
-        setTempTagList(prevList => prevList.filter(item => item !== idx));
-      }
-    });
-  }, [isSelected]);
+  const tagListArray = [];
+  isSelected.forEach((element, index) => {
+    if (element) tagListArray.push(index + 1);
+  });
 
   useEffect(() => {
-    getAllArticles(page, size, tagList).then(response => {
-      // console.log('게시판 리스트 조회 API 성공');
-      // console.log(response.data);
+    getAllArticles(page, size, tagListArray.join(',')).then(response => {
+      console.log(response);
       setList(response.data.boardList);
     });
   }, [isSelected]);
 
-  // 누르면 check값이 토글되는 함수
   const toggleSelected = idx => {
-    if (idx === 0 && isSelected[0] === false) {
-      setIsSelected(Array.from({ length: tagLength }, () => true));
-    } else if (idx === 0 && isSelected[0] === true) {
-      setIsSelected(Array.from({ length: tagLength }, () => false));
-    } else {
-      setIsSelected(array => [
-        ...array.slice(0, idx),
-        !array[idx],
-        ...array.slice(idx + 1),
-      ]);
-    }
+    const nextState = [
+      ...isSelected.slice(0, idx),
+      !isSelected[idx],
+      ...isSelected.slice(idx + 1),
+    ];
+
+    let isEveryElementEqualsFalse = true;
+    nextState.forEach(element => {
+      if (element) isEveryElementEqualsFalse = false;
+    });
+
+    setIsSelected(
+      isEveryElementEqualsFalse
+        ? Array.from({ length: 6 }, () => true)
+        : nextState,
+    );
   };
 
   return (
     <Wrapper>
-      <NavigationBar
-        leftContent={
-          <Image
-            src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
-            width={'40px'}
-            height={'40px'}
-            margin={'0 0 0 -12px'}
-          ></Image>
-        }
-        onPrevious={onPrevious}
-      ></NavigationBar>
-
-      <Paragraph
-        gap="5px"
-        fontSize="35px"
-        sentences={['한집사 게시판']}
-      ></Paragraph>
+      <Paragraph gap="5px" fontSize="35px" sentences={['게시판']}></Paragraph>
 
       <CreateNewBox onClick={() => navigate(`/boards/create`)}>
         <Image
           src={process.env.PUBLIC_URL + '/images/pencil.svg'}
-          width={'40px'}
-          height={'40px'}
-          margin={'0 -40px 0 0'}
+          width={'20px'}
+          height={'20px'}
+          margin={'0 -30px 0 0'}
         ></Image>
         <span>새 게시물 작성하기</span>
         <Image
@@ -212,14 +161,6 @@ function BoardsMain() {
         ))}
       </TagWrapper>
 
-      {/* 태그가 선택되면 나오는 div */}
-      <SelectedTag>
-        {isSelected[0] ? <span># 전체 </span> : ''}
-        {allTags.map((tag, idx) =>
-          !isSelected[0] && isSelected[idx] ? <span>#{tag} </span> : '',
-        )}
-      </SelectedTag>
-
       {/* API 받아서 map 돌기 */}
       {list?.map((article, idx) => (
         <Article
@@ -231,11 +172,10 @@ function BoardsMain() {
               <BoardsTags key={idx} mode={'SMALL'} tagname={tag}></BoardsTags>
             ))}
           </InsideTags>
-
           <ArticleTitle>{article.title}</ArticleTitle>
           <ArticleInfo>
-            {article.userName} | {article.updatedAt} | 댓글{' '}
-            {article.commentCount}
+            {article.userName} | {calculateReportWritingTime(article.updatedAt)}{' '}
+            | 댓글 {article.commentCount}
           </ArticleInfo>
         </Article>
       ))}

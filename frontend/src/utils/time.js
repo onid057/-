@@ -44,7 +44,9 @@ const calculateReportWritingTime = createdAt => {
   const elapsedHours = Math.floor(diff / (1000 * 60 * 60));
   const elapsedMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-  if (elapsedDays >= 7) {
+  if (diff < 1000 * 60) {
+    return '방금 전';
+  } else if (elapsedDays >= 7) {
     return converToyyyymmdd(createdAt);
   } else if (elapsedDays === 0) {
     if (elapsedHours === 0) return `${elapsedMinutes}분 전`;

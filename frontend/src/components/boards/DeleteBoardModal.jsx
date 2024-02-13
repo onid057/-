@@ -39,12 +39,9 @@ const ButtonWrapper = styled.div`
 function DeleteBoardModal({ boardId, onClick }) {
   // 게시글 삭제 API 호출
   const navigate = useNavigate();
-  const deleteThisArticle = () => {
-    deleteOneArticle(boardId);
-    // window.location.replace(`/boards`);
+  const deleteThisArticle = async () => {
+    await deleteOneArticle(boardId);
     navigate(`/boards/`);
-    window.location.reload();
-    console.log('게시글 삭제 성공');
   };
 
   return (
