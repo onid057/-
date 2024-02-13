@@ -16,5 +16,5 @@ public interface BoardService {
 
     BoardListResponse findBoardList(BoardListRequest boardListRequest);
 
-    BoardDetailResponse findBoardDetail(Long boardId);
+    BoardDetailResponse findBoardDetail(Long boardId, Long userId);
 }

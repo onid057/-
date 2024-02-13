@@ -14,5 +14,6 @@ public class CommentListDto {
     private String userName;
     private String content;
     private Timestamp updatedAt;
+    private Boolean commentDistinction;
 
 }

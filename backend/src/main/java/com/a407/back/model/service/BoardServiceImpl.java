@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -152,21 +153,25 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public BoardDetailResponse findBoardDetail(Long boardId) {
+    public BoardDetailResponse findBoardDetail(Long boardId, Long userId) {
         Board board = boardRepository.findBoard(boardId);
         User user = userRepository.findByUserId(board.getUserId().getUserId());
         List<CommentListDto> commentList = commentRepository.findCommentList(board).stream()
             .map(
-                comment -> new CommentListDto(comment.getCommentId(), comment.getUserId().getName(),
-                    comment.getContent(),
-                    comment.getUpdatedAt())
+                comment -> {
+                    boolean commentDistinction = Objects.equals(comment.getUserId().getUserId(),
+                        userId);
+                    return new CommentListDto(comment.getCommentId(), comment.getUserId().getName(),
+                        comment.getContent(),
+                        comment.getUpdatedAt(), commentDistinction);
+                }
             ).toList();
 
         List<String> tagList = boardRepository.findBoardTagList(board).stream()
             .map(boardTag -> boardTag.getBoardTagId().tagId.getName()).toList();
-
+        boolean boardDistinction = Objects.equals(board.getUserId().getUserId(), userId);
         return new BoardDetailResponse(user.getName(), user.getAddress(), user.getProfileImage(),
             board.getTitle(),
-            board.getContent(), board.getUpdatedAt(), commentList, tagList);
+            board.getContent(), board.getUpdatedAt(), commentList, tagList, boardDistinction);
     }
 }

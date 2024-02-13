@@ -19,4 +19,5 @@ public class BoardDetailResponse {
     private Timestamp updatedAt;
     private List<CommentListDto> commentList;
     private List<String> tagList;
+    private Boolean boardDistinction;
 }

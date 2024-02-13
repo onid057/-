@@ -10,6 +10,9 @@ import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.util.Optional;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -37,7 +40,7 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody AuthRequest authRequest,
-        HttpServletRequest request,HttpServletResponse response) {
+        HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
         if (CookieUtil.getCookieValue(request.getCookies(), refreshTokenName) != null) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
@@ -45,20 +48,19 @@ public class AuthController {
 
         Tokens tokens = authService.login(authRequest.getEmail(), authRequest.getPassword());
 
-
-        HttpHeaders headers=new HttpHeaders();
-
+        HttpHeaders headers = new HttpHeaders();
 
         CookieUtil.saveCookie(tokens.getAccessToken(), tokens.getRefreshToken(), response,
             cookieMaxAge);
-
+        session.setAttribute("uid", Optional.ofNullable((UUID) session.getAttribute("uid"))
+            .orElse(UUID.randomUUID()));
         return ResponseEntity.status(HttpStatus.OK).headers(headers)
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "로그인 성공"));
     }
 
     @PostMapping("/sign-out")
     public ResponseEntity<ApiResponse<String>> logout(HttpServletRequest request,
-        HttpServletResponse response) {
+        HttpServletResponse response, HttpSession session) {
 
         String refreshToken = CookieUtil.getCookieValue(request.getCookies(), refreshTokenName);
 
@@ -67,7 +69,7 @@ public class AuthController {
         }
 
         CookieUtil.saveCookie("", "", response, 0);
-
+        session.invalidate();
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "로그아웃 성공"));
     }

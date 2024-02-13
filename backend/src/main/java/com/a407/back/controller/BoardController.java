@@ -50,10 +50,10 @@ public class BoardController {
 
     @GetMapping("/{boardId}")
     public ResponseEntity<ApiResponse<BoardDetailResponse>> findBoardDetail(
-        @PathVariable("boardId") Long boardId) {
+        @PathVariable("boardId") Long boardId, @AuthenticationPrincipal SecurityUser user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                boardService.findBoardDetail(boardId)));
+                boardService.findBoardDetail(boardId, user.getUserId())));
     }
 
     @PatchMapping("/{boardId}")
