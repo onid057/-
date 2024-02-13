@@ -55,7 +55,7 @@ const UnSelectedIndex = styled.div`
   }
 `;
 
-function TwoIndex({ name, gradeId, gradeName, avgScore }) {
+function TwoIndex({ helperId, name, gradeId, gradeName, avgScore }) {
   // 클릭 이벤트 핸들러 함수 정의
   const [index, setIndex] = useState('GRADE');
 
@@ -83,6 +83,7 @@ function TwoIndex({ name, gradeId, gradeName, avgScore }) {
       </IndexBox>
 
       <TwoIndexRoute
+        helperId={helperId}
         index={index}
         name={name}
         gradeId={gradeId}

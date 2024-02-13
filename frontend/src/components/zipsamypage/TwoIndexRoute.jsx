@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import Image from '../common/Image';
 import Paragraph from '../common/Paragraph';
 import BoldText from '../common/BoldText';
@@ -48,8 +49,24 @@ const NameBox = styled.div`
   border-radius: 25px;
 `;
 
-function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
-  //   const navigate = useNavigate();
+function TwoIndexRoute({
+  helperId,
+  index,
+  name,
+  gradeId,
+  gradeName,
+  avgScore,
+}) {
+  // 집사 상세정보 확인하기 페이지 이동
+  const navigate = useNavigate();
+  const toZipsaDetail = helperId => {
+    navigate(`/zipsa/detail`, {
+      state: {
+        helperId: helperId,
+      },
+    });
+  };
+  console.log('TwoIndexRoute에서의 helperId: ', helperId);
 
   //   const handleClick = () => {
   //     navigate(nextPage);
@@ -68,12 +85,33 @@ function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
     nameBoxColor = '#EBA8FF';
   }
 
+  let diaPicture;
+  if (0.0 <= avgScore && avgScore <= 0.5) {
+    diaPicture = 'dia_0.5';
+  } else if (0.5 < avgScore && avgScore <= 1.0) {
+    diaPicture = 'dia_1.0';
+  } else if (1.0 < avgScore && avgScore <= 1.5) {
+    diaPicture = 'dia_1.5';
+  } else if (1.5 < avgScore && avgScore <= 2.0) {
+    diaPicture = 'dia_2.0';
+  } else if (2.0 < avgScore && avgScore <= 2.5) {
+    diaPicture = 'dia_2.5';
+  } else if (2.5 < avgScore && avgScore <= 3.0) {
+    diaPicture = 'dia_3.0';
+  } else if (3.0 < avgScore && avgScore <= 3.5) {
+    diaPicture = 'dia_3.5';
+  } else if (3.5 < avgScore && avgScore <= 4.0) {
+    diaPicture = 'dia_4.0';
+  } else if (4.5 < avgScore && avgScore <= 5.0) {
+    diaPicture = 'dia_4.5';
+  }
+
   if (index === 'GRADE') {
     return (
       <ContentBox>
         <LinkText>
           {/* 누르면 ZipsaDetail 페이지로 이동 */}
-          <span>상세정보 확인하기</span>
+          <span onClick={() => toZipsaDetail(helperId)}>상세정보 확인하기</span>
           <Image
             src={`${process.env.PUBLIC_URL}/images/right_arrow_no_tail.svg`}
             width={'7px'}
@@ -109,7 +147,7 @@ function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
       <ContentBox>
         <LinkText>
           {/* 누르면 상세정보 페이지로 이동 */}
-          <span>상세정보 확인하기</span>
+          <span onClick={() => toZipsaDetail(helperId)}>상세정보 확인하기</span>
           <Image
             src={`${process.env.PUBLIC_URL}/images/right_arrow_no_tail.svg`}
             width={'7px'}
@@ -117,8 +155,11 @@ function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
             margin={'5px'}
           ></Image>
         </LinkText>
+
+        {/* avgScore에 따라 분기 */}
+
         <Image
-          src={`${process.env.PUBLIC_URL}/images/dia_5.svg`}
+          src={`${process.env.PUBLIC_URL}/images/${diaPicture}.svg`}
           width={'245px'}
           height={'47px'}
         ></Image>
