@@ -52,7 +52,6 @@ public class RedisConfig {
         return new LettuceConnectionFactory(host, tokenPort);
     }
 
-    @Primary
     @Bean(name = "certificationRedisTemplate")
     public RedisTemplate<String, String> certificationRedisTemplate(
         @Qualifier(value = "certificationRedisConnectionFactory") RedisConnectionFactory certificationRedisConnectionFactory) {

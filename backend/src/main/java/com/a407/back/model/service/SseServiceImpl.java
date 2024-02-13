@@ -44,30 +44,23 @@ public class SseServiceImpl implements SseService {
         // 로그인 한 유저의 SseEmitter 가져오기
         SseEmitter sseEmitter = sseRepository.get(userId);
         if(sseEmitter != null) {
-            try {
-                Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
-                String type = zipsa != null && zipsa.getIsWorked() ? "ZIPSA" : "USER";
-                List<NotificationListResponse> notificationList = userRepository.findNotificationByUserIdList(
-                    userId, type).stream().map(notification -> {
-                    Room room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
-                    return new NotificationListResponse(
-                        userRepository.findByUserId(notification.getSendId()).getName(),
-                        notification.getType(), room.getStatus(), notification.getStatus(),
-                        categoryRepository.findMajorCategoryName(
-                            notification.getRoomId().getSubCategoryId().getMajorCategoryId()
-                                .getMajorCategoryId()),
-                        notification.getRoomId().getRoomId(), notification.getNotificationId(),
-                        notification.getCreatedAt());
-                }).toList();
+            Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
+            String type = zipsa != null && zipsa.getIsWorked() ? "ZIPSA" : "USER";
+            List<NotificationListResponse> notificationList = userRepository.findNotificationByUserIdList(
+                userId, type).stream().map(notification -> {
+                Room room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
+                return new NotificationListResponse(
+                    userRepository.findByUserId(notification.getSendId()).getName(),
+                    notification.getType(), room.getStatus(), notification.getStatus(),
+                    categoryRepository.findMajorCategoryName(
+                        notification.getRoomId().getSubCategoryId().getMajorCategoryId()
+                            .getMajorCategoryId()),
+                    notification.getRoomId().getRoomId(), notification.getNotificationId(),
+                    notification.getCreatedAt());
+            }).toList();
 
-                sseEmitter.send(
-                    SseEmitter.event().id(userId.toString()).name("sse").data(notificationList));
-                log.info("이벤트가 성공적으로 진행되었습니다. {}", userId);
-            } catch(IOException e) {
-                sseRepository.delete(userId);
-                sseEmitter.completeWithError(e);
-                log.error(String.valueOf(e));
-            }
+            sendToClient(sseEmitter, userId, notificationList);
+            log.info("이벤트가 성공적으로 진행되었습니다. {}", userId);
         }
     }
 
