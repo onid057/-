@@ -12,6 +12,7 @@ import Notice from '../components/common/Notice.jsx';
 import BoldText from '../components/common/BoldText.jsx';
 import MenuBar from '../components/common/MenuBar.jsx';
 import Toggle from '../components/common/Toggle.jsx';
+import Button from '../components/common/Button.jsx';
 
 const Wrapper = styled.div`
   width: 320px;
