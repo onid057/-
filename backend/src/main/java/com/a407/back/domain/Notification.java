@@ -77,6 +77,6 @@ public class Notification {
     }
 
     public enum Status {
-        STANDBY, ACCEPT, REJECT, CLOSE, REPORT, CONFIRM
+        STANDBY, ACCEPT, REJECT, CLOSE, CONFIRM
     }
 }
