@@ -112,14 +112,14 @@ public class UserServiceImpl implements UserService {
         return new UserLocationResponse(user.getLatitude(), user.getLongitude());
     }
 
-    private final Logger logger= LoggerFactory.getLogger(this.getClass());
-    
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Override
     @Transactional
     public Long makeUser(UserCreateRequest request) {
         // 에러 처리
         if (userRepository.findByUserEmail(request.getEmail()) != null) {
-            logger.info("어떤 값이 등장하나{}",userRepository.findByUserEmail(request.getEmail()));
+            logger.info("어떤 값이 등장하나{}", userRepository.findByUserEmail(request.getEmail()));
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 
@@ -216,12 +216,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserRecordResponse> getUserRecordList(Long userId) {
-        boolean isZipsa = isWorkedDistinction(userId);
-        return userRepository.getUserRecordList(userId, isZipsa).stream().map(
+        return userRepository.getUserRecordList(userId, false).stream().map(
             room -> new UserRecordResponse(room.getRoomId(),
-                isZipsa ? room.getUserId().getName() : room.getZipsaId().getZipsaId().getName(),
-                room.getSubCategoryId().getMajorCategoryId().getName(), room.getStatus(),
-                room.getEndedAt())).toList();
+                room.getZipsaId().getZipsaId().getName(),
+                room.getSubCategoryId().getName(), room.getEndedAt(),
+                room.getTotalPay())).toList();
     }
 
     @Override
