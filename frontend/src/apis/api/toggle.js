@@ -1,11 +1,11 @@
 import axios from '../utils/instance';
 
 // 고객/집사 상태 변경
-const changeUserState = async helperId => {
+const changeUserState = async () => {
   try {
     const response = await axios({
       method: 'patch',
-      url: `/helpers/${helperId}/reversal`,
+      url: `/helpers/reversal`,
     });
     return response.data;
   } catch (error) {
@@ -14,11 +14,11 @@ const changeUserState = async helperId => {
 };
 
 // 고객/집사 상태 불러오기
-const getUserState = async helperId => {
+const getUserState = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: `/helpers/${helperId}/status`,
+      url: `/helpers/status`,
     });
     return response.data;
   } catch (error) {
