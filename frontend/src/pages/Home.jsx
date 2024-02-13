@@ -27,19 +27,16 @@ const Wrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
 const UpperWrapper = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
-
 const NoticeWrapper = styled.div`
   display: flex;
   gap: 15px;
 `;
-
 const LoginRegisterWrapper = styled.div`
   width: 100%;
   padding: 20px 18px;
@@ -48,6 +45,12 @@ const LoginRegisterWrapper = styled.div`
   background-color: ${({ theme }) => theme.colors.secondary};
   font-size: 16px;
   border-radius: 25px;
+`;
+const Login = styled.div`
+  cursor: pointer;
+`;
+const Register = styled.div`
+  cursor: pointer;
 `;
 
 export default function Home() {
@@ -250,9 +253,9 @@ export default function Home() {
         </>
       ) : (
         <LoginRegisterWrapper>
-          <div onClick={() => navigate('/login')}>로그인</div>
+          <Login onClick={() => navigate('/login')}>로그인</Login>
           <div>|</div>
-          <div onClick={() => navigate('/register')}>회원가입</div>
+          <Register onClick={() => navigate('/register')}>회원가입</Register>
         </LoginRegisterWrapper>
       )}
 

@@ -79,7 +79,12 @@ function MenuBar({ currentMenu }) {
       </MenuWrapper>
 
       <MenuWrapper selected={currentMenu === 'SEARCH'}>
-        <Image src={searchImageURL} width="28px" height="28px"></Image>
+        <Image
+          src={searchImageURL}
+          width="28px"
+          height="28px"
+          onClick={() => navigate('/matchOption')}
+        ></Image>
         집사찾기
       </MenuWrapper>
 

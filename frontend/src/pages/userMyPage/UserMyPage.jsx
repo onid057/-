@@ -40,7 +40,10 @@ function UserMyPage() {
       <Notice
         upper={[
           <Image
-            src={data?.profileImage}
+            src={
+              data?.profileImage ||
+              process.env.PUBLIC_URL + '/images/profile_img.svg'
+            }
             width={'60px'}
             height={'60px'}
           ></Image>,
