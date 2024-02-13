@@ -81,9 +81,6 @@ function ProfileUpdate() {
   };
 
   const navigate = useNavigate();
-  const onPrevious = () => {
-    navigate(-1);
-  };
 
   const userId = 1;
   const [userInfo, setUserInfo] = useState({});
@@ -115,7 +112,7 @@ function ProfileUpdate() {
           ></Image>
         }
         rightContent={'완료'}
-        onPrevious={onPrevious}
+        onPrevious={() => navigate(-1)}
         onNext={onClickButton}
       ></NavigationBar>
 

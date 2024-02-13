@@ -34,9 +34,7 @@ function PasswordUpdate() {
   };
 
   const navigate = useNavigate();
-  const onPrevious = () => {
-    navigate(-1);
-  };
+
   const onClickUpdateButton = () => {
     updateUserInfo(null, { password }).then(navigate('/userMyPage'));
   };
@@ -53,7 +51,7 @@ function PasswordUpdate() {
           ></Image>
         }
         rightContent={'완료'}
-        onPrevious={onPrevious}
+        onPrevious={() => navigate(-1)}
         onNext={onClickUpdateButton}
         disabledOnNext={
           (!password && !confirmPassword) || password !== confirmPassword
