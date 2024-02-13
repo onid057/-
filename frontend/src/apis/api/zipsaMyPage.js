@@ -1,5 +1,18 @@
 import axios from '../utils/instance';
 
+// (간단)집사 정보 조회하기
+const getSimpleZipsaInfo = async helperId => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `helpers/${helperId}`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // (세부)집사 정보 조회하기
 const getDetailedZipsaInfo = async helperId => {
   try {
@@ -13,4 +26,4 @@ const getDetailedZipsaInfo = async helperId => {
   }
 };
 
-export { getDetailedZipsaInfo };
+export { getSimpleZipsaInfo, getDetailedZipsaInfo };
