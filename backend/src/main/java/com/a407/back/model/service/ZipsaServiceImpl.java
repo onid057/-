@@ -1,19 +1,22 @@
 package com.a407.back.model.service;
 
-import com.a407.back.config.redis.RedisPublisher;
 import com.a407.back.config.constants.ErrorCode;
+import com.a407.back.config.redis.RedisPublisher;
+import com.a407.back.domain.Grade;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Status;
 import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.Report;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
+import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
 import com.a407.back.dto.util.ImageUtil;
 import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
 import com.a407.back.dto.zipsa.ReportSearchResponse;
+import com.a407.back.dto.zipsa.ZipsaCreateRequest;
 import com.a407.back.dto.zipsa.ZipsaDetailInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaRecordsResponse;
@@ -21,8 +24,10 @@ import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
 import com.a407.back.exception.CustomException;
+import com.a407.back.model.repo.GradeRepository;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
+import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import com.querydsl.core.QueryResults;
 import jakarta.transaction.Transactional;
@@ -48,6 +53,10 @@ public class ZipsaServiceImpl implements ZipsaService {
     private final ImageUtil imageUtil;
 
     private final RedisPublisher redisPublisher;
+
+    private final UserRepository userRepository;
+
+    private final GradeRepository gradeRepository;
 
     @Value("${image.size.report}")
     private Integer repostSize;
@@ -236,5 +245,41 @@ public class ZipsaServiceImpl implements ZipsaService {
                 Timestamp.valueOf(LocalDateTime.now())).build();
         notificationRepository.makeNotification(notification);
         redisPublisher.send(room.getUserId().getUserId());
+    }
+
+    @Override
+    @Transactional
+    public Long makeZipsa(ZipsaCreateRequest request) {
+        User user = userRepository.findByUserId(request.getUserId());
+        Grade grade = gradeRepository.findGradeById(1L);
+        if (user.getUserId() == null) {
+            throw new CustomException(ErrorCode.USER_NOT_FOUND);
+        }
+        // 인증이 완료되지 않은 경우
+        if (Boolean.FALSE.equals(user.getIsCertificated())) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
+        // 이미 집사인 경우
+        if (zipsaRepository.findByZipsaId(request.getUserId()) != null) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
+        // 조건을 만족하는 경우
+        if (!request.getCategories().isEmpty()
+            && request.getCategories().size() < 6) {
+
+            Zipsa zipsa = Zipsa.builder()
+                .zipsaId(userRepository.findByUserId(request.getUserId())).gradeId(grade)
+                .description(request.getDescription())
+                .account(request.getAccount())
+                .isWorked(false).preferTag(request.getPreferTag())
+                .serviceCount(0).replyAverage(0D).replyCount(0).skillAverage(0D)
+                .rewindAverage(0D).kindnessAverage(0D)
+                .build();
+            return zipsaRepository.makeZipsa(zipsa).getZipsaId().getUserId();
+
+        }
+
+        // 대분류 카테고리 수가 다른 경우
+        throw new CustomException(ErrorCode.MISSING_REQUEST_PARAMETER_ERROR);
     }
 }

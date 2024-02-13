@@ -1,4 +1,5 @@
 package com.a407.back.model.repo;
+
 import com.a407.back.domain.QReport;
 import com.a407.back.domain.QReview;
 import com.a407.back.domain.QRoom;
@@ -13,25 +14,31 @@ import jakarta.persistence.EntityManager;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+
 @Repository
 @RequiredArgsConstructor
 public class ZipsaRepositoryImpl implements ZipsaRepository {
+
     private final JPAQueryFactory query;
     private final EntityManager em;
     private static final QReport qReport = QReport.report;
+
     @Override
     public void makeReport(Report report) {
         em.persist(report);
     }
+
     @Override
     public List<Report> findReportByRoomIdList(Long roomId) {
         return
             query.selectFrom(qReport).where(qReport.roomId.roomId.eq(roomId)).fetch();
     }
+
     @Override
     public Zipsa findByZipsaId(Long zipsaId) {
         return em.find(Zipsa.class, zipsaId);
     }
+
     @Override
     public List<String> searchSubCategoryList(Long zipsaId) {
         QRoom qRoom = QRoom.room;
@@ -40,6 +47,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
             .groupBy(qRoom.subCategoryId.subCategoryId)
             .orderBy(qRoom.subCategoryId.subCategoryId.count().desc()).limit(3).fetch();
     }
+
     @Override
     public List<Review> searchReviewList(Long zipsaId) {
         QReview qReview = QReview.review;
@@ -47,6 +55,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
             .where(qReview.zipsaId.zipsaId.userId.eq(zipsaId)).orderBy(qReview.createdAt.desc())
             .fetch();
     }
+
     @Override
     public Room getZipsaRecordInfo(Long roomId) {
         QRoom qRoom = QRoom.room;
@@ -54,6 +63,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
             .where(qRoom.roomId.eq(roomId).and(qRoom.status.eq(
                 Process.END))).orderBy(qRoom.endedAt.desc()).limit(1).fetchOne();
     }
+
     @Override
     public Room getZipsaReservationInfo(Long roomId) {
         QRoom qRoom = QRoom.room;
@@ -62,6 +72,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
                 Process.BEFORE, Process.ONGOING))).orderBy(qRoom.expectationStartedAt.asc())
             .fetchOne();
     }
+
     @Override
     public void updateZipsaAverage(Long zipsaId, Double kindnessAverage, Double skillAverage,
         Double rewindAverage) {
@@ -71,6 +82,7 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
             .where(qZipsa.zipsaId.userId.eq(zipsaId))
             .execute();
     }
+
     @Override
     public void changeServiceCountIncrease(Zipsa zipsa) {
         QZipsa qZipsa = QZipsa.zipsa;
@@ -79,21 +91,31 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
             .set(qZipsa.serviceCount, newServiceCount)
             .where(qZipsa.eq(zipsa)).execute();
     }
+
     @Override
     public void deleteZipsa(Long zipsaId) {
         QZipsa qZipsa = QZipsa.zipsa;
         query.delete(qZipsa).where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
     }
+
     @Override
     public void changeZipsaDescription(Long zipsaId, String description) {
         QZipsa qZipsa = QZipsa.zipsa;
         query.update(qZipsa).set(qZipsa.description, description)
             .where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
     }
+
     @Override
     public void changeZipsaStatus(Long zipsaId, boolean status) {
         QZipsa qZipsa = QZipsa.zipsa;
         query.update(qZipsa).set(qZipsa.isWorked, status)
             .where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
     }
+
+    @Override
+    public Zipsa makeZipsa(Zipsa zipsa) {
+        em.persist(zipsa);
+        return zipsa;
+    }
+
 }
