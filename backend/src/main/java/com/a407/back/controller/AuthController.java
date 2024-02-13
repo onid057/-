@@ -47,7 +47,7 @@ public class AuthController {
 
 
     @PostMapping("/sign-in")
-    public ResponseEntity<ApiResponse<String>> login(@RequestBody AuthRequest authRequest,
+    public ResponseEntity<String> login(@RequestBody AuthRequest authRequest,
         HttpServletRequest request, HttpServletResponse response, HttpSession session) {
 
         if (CookieUtil.getCookieValue(request.getCookies(), refreshTokenName) != null) {
@@ -79,12 +79,10 @@ public class AuthController {
 //            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "로그인 성공"));
 
         Cookie cookie = new Cookie("cookieName", "cookieValue");
-        cookie.setDomain("i10a407.p.ssafy.io");
         cookie.setPath("/");
         response.addCookie(cookie);
 
-        return ResponseEntity.ok().headers(headers)
-            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "access token 발급"));
+        return ResponseEntity.ok("access token 발급");
     }
 
     @PostMapping("/sign-out")
