@@ -30,7 +30,6 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
 @ContextConfiguration(classes = BackendApplication.class)
-@Transactional
 class ReviewControllerTest {
 
     @Autowired
@@ -90,6 +89,7 @@ class ReviewControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("리뷰 생성")
     void makeReview() {
         assertThat(reviewService.findReviewsByUserId(userId)).isEmpty();
@@ -113,6 +113,7 @@ class ReviewControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("리뷰 검색")
     void findReviewsByUserId() {
         assertThat(reviewService.findReviewsByUserId(userId)).isEmpty();
@@ -130,6 +131,7 @@ class ReviewControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("리뷰 삭제")
     void deleteReview() {
 

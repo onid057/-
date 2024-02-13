@@ -15,9 +15,12 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.Objects;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,7 +29,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
 @ContextConfiguration(classes = BackendApplication.class)
-@Transactional
+
 class AssociationControllerTest {
 
 
@@ -69,6 +72,7 @@ class AssociationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 생성")
     void makeAssociation() {
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
@@ -85,6 +89,7 @@ class AssociationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 참가 목록 확인")
     void getAssociationUserList() throws NoSuchAlgorithmException, JsonProcessingException {
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
@@ -111,11 +116,10 @@ class AssociationControllerTest {
         assertThat(
             userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).isEqualTo(
             userService.findByUserId(userIdTwo).getAssociationId().getAssociationId());
-
-
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 삭제")
     void deleteAssociation() {
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
@@ -136,13 +140,10 @@ class AssociationControllerTest {
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
 
         assertThat(associationService.getAssociationUserList(associationId)).isEmpty();
-
-//        Assertions.assertThrows(NullPointerException.class,
-//            () -> associationService.getAssociationUserList(associationId));
-
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 참가 코드 생성")
     void makeAdditionCode() throws NoSuchAlgorithmException, JsonProcessingException {
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
@@ -161,6 +162,7 @@ class AssociationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 참가")
     void changeAddition() throws NoSuchAlgorithmException, JsonProcessingException {
 
@@ -192,6 +194,7 @@ class AssociationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("대표 변경")
     void changeAssociationRepresentative()
         throws NoSuchAlgorithmException, JsonProcessingException {

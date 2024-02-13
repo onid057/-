@@ -5,12 +5,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.a407.back.BackendApplication;
 import com.a407.back.controller.AuthController;
 import com.a407.back.controller.UserController;
-import com.a407.back.domain.User;
+import com.a407.back.domain.QUser;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.dto.auth.AuthRequest;
+import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.util.SecurityUser;
 import com.a407.back.model.service.AuthService;
 import com.a407.back.model.service.UserService;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
@@ -48,18 +51,22 @@ class SecurityTest {
     @Autowired
     UserDetailsService userDetailsService;
 
+    @Autowired
+    JPAQueryFactory query;
+
+    @Autowired
+    EntityManager em;
+
 
     @Test
     @DisplayName("회원가입")
     void signupTest() {
-        User newUser = User.builder().email("make@make.com")
-            .password(bCryptPasswordEncoder.encode("make")).name("make")
-            .birth(new Timestamp(System.currentTimeMillis())).gender(Gender.MAN).address("주소")
-            .latitude(35D).longitude(125D).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
-        Long userId = userService.makeUser(newUser);
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
-        assertThat(userService.findByUserId(userId)).isEqualTo(newUser);
+        Long userId = userService.makeUser(user);
+
+        assertThat(userService.findByUserId(userId).getEmail()).isEqualTo("user@abc.com");
 
     }
 
@@ -67,16 +74,14 @@ class SecurityTest {
     @Test
     @DisplayName("사용자 로그인")
     void loginTest() {
-        User newUser = User.builder().email("make@make.com")
-            .password(bCryptPasswordEncoder.encode("make")).name("make")
-            .birth(new Timestamp(System.currentTimeMillis())).gender(Gender.MAN).address("주소")
-            .latitude(35D).longitude(125D).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
-        Long userId = userService.makeUser(newUser);
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
 
-        assertThat(userService.findByUserId(userId)).isEqualTo(newUser);
+        Long userId = userService.makeUser(user);
 
-        AuthRequest request = new AuthRequest("make@make.com", "make");
+        assertThat(userService.findByUserId(userId).getEmail()).isEqualTo("user@abc.com");
+
+        AuthRequest request = new AuthRequest("user@abc.com", "user");
         authService.login(request.getEmail(), request.getPassword());
 
         SecurityUser securityUser = (SecurityUser) userDetailsService.loadUserByUsername(
@@ -84,18 +89,33 @@ class SecurityTest {
 
         assertThat(securityUser.getAuthorities()).isEqualTo(
             List.of(new SimpleGrantedAuthority("USER")));
-        assertThat(securityUser.getEmail()).isEqualTo("make@make.com");
+        assertThat(securityUser.getEmail()).isEqualTo("user@abc.com");
     }
 
     @Test
     @DisplayName("관리자 로그인")
     void adminTest() {
-        AuthRequest request = new AuthRequest("admin@admin.com", "admin");
+        UserCreateRequest admin = new UserCreateRequest("admin@admin.admin", "admin", "admin",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+
+        changeAdmin(userService.makeUser(admin));
+        em.flush();
+        em.clear();
+
+        AuthRequest request = new AuthRequest("admin@admin.admin", "admin");
         authService.login(request.getEmail(), request.getPassword());
         SecurityUser securityUser = (SecurityUser) userDetailsService.loadUserByUsername(
             request.getEmail());
         assertThat(securityUser.getAuthorities()).isEqualTo(
             List.of(new SimpleGrantedAuthority("ADMIN")));
+    }
+
+
+    void changeAdmin(Long userId) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.isAdmin, true).where(qUser.userId.eq(userId)).execute();
+        em.flush();
+        em.clear();
     }
 
 

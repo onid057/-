@@ -36,7 +36,6 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
 @ContextConfiguration(classes = BackendApplication.class)
-@Transactional
 class NotificationControllerTest {
 
     @Autowired
@@ -114,6 +113,7 @@ class NotificationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("고객이 자신의 알림 조회 테스트")
     void findUserNotificationDetail() {
         Notification userNotification = Notification.builder().sendId(zipsaId).receiveId(userId)
@@ -126,6 +126,7 @@ class NotificationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("집사가 자신의 알림 조회 테스트")
     void findZipsaNotificationDetail() {
         Notification zipsaNotification = Notification.builder().sendId(userId).receiveId(zipsaId)
@@ -138,6 +139,7 @@ class NotificationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("알림 거절 테스트")
     void changeNotificationToReject() {
         Notification zipsaNotification = Notification.builder().sendId(userId).receiveId(zipsaId)
@@ -149,6 +151,7 @@ class NotificationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("알림 수락 테스트")
     void changeRoomToMatch() {
         Notification zipsaNotification = Notification.builder().sendId(userId).receiveId(zipsaId)

@@ -41,7 +41,6 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
 @ContextConfiguration(classes = BackendApplication.class)
-@Transactional
 class UserControllerTest {
 
     @Autowired
@@ -76,6 +75,7 @@ class UserControllerTest {
 
 
     @Test
+    @Transactional
     @DisplayName("사용자 생성")
     void makeUser() {
         UserCreateRequest userOne = new UserCreateRequest("userOne@abc.com", "userOne", "userOne",
@@ -92,6 +92,7 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("사용자 알림 조회")
     void getNotificationList() {
         // 사용자 생성
@@ -139,6 +140,7 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("근처 집사 위치 조회")
     void getNearUserLocationList() {
         // 사용자 생성
@@ -178,15 +180,16 @@ class UserControllerTest {
 
 
     @Test
+    @Transactional
     @DisplayName("근처 집사 정보 조회")
     void getNearUserInfoList() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 55, 127.5);
 
         // 집사를 할 사용자 생성
         UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
-            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 55, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -222,6 +225,7 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("사용자 이용 내역 조회")
     void getUserRecordList() {
         // 사용자 생성
@@ -264,6 +268,7 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("사용자 진행, 예약 내역 조회")
     void getUserReservationList() {
         // 사용자 생성
@@ -310,6 +315,7 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("결제 정보 등록")
     void makeAccount() {
         // 사용자 생성
@@ -317,14 +323,15 @@ class UserControllerTest {
             Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(user);
         assertThat(userService.findByUserId(userId).getAccount()).isNullOrEmpty();
-        UserAccountRequest userAccountRequest = new UserAccountRequest(userId, "0000-0000-0000");
-        userService.makeAccount(userAccountRequest);
+        UserAccountRequest userAccountRequest = new UserAccountRequest("0000-0000-0000");
+        userService.makeAccount(userId, userAccountRequest);
         em.flush();
         em.clear();
         assertThat(userService.findByUserId(userId).getAccount()).isEqualTo("0000-0000-0000");
     }
 
     @Test
+    @Transactional
     @DisplayName("마스킹 처리된 결제 정보 조회")
     void getMaskedCardNumber() {
         // 사용자 생성
@@ -332,9 +339,8 @@ class UserControllerTest {
             Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId = userService.makeUser(user);
         assertThat(userService.findByUserId(userId).getAccount()).isNull();
-        UserAccountRequest userAccountRequest = new UserAccountRequest(userId,
-            "0000-0000-0000-0000");
-        userService.makeAccount(userAccountRequest);
+        UserAccountRequest userAccountRequest = new UserAccountRequest("0000-0000-0000-0000");
+        userService.makeAccount(userId, userAccountRequest);
         em.flush();
         em.clear();
         assertThat(userService.findByUserId(userId).getAccount()).isEqualTo("0000-0000-0000-0000");
@@ -342,6 +348,7 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("결제 정보 삭제")
     void deleteAccount() {
         // 사용자 생성
@@ -350,8 +357,8 @@ class UserControllerTest {
 
         Long userId = userService.makeUser(user);
         assertThat(userService.findByUserId(userId).getAccount()).isNull();
-        UserAccountRequest userAccountRequest = new UserAccountRequest(userId, "0000-0000-0000");
-        userService.makeAccount(userAccountRequest);
+        UserAccountRequest userAccountRequest = new UserAccountRequest("0000-0000-0000");
+        userService.makeAccount(userId, userAccountRequest);
         em.flush();
         em.clear();
         assertThat(userService.findByUserId(userId).getAccount()).isEqualTo("0000-0000-0000");
@@ -364,33 +371,44 @@ class UserControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("인증 번호 생성")
     void makeSendMessage() throws NoSuchAlgorithmException, JsonProcessingException {
         // 주의 해당 테스트 실행 전 userServiceImpl로 가서 makeSendMessage 에서 외부 API 사용하는 부분 주석 해주기
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+        Long userId = userService.makeUser(user);
         assertThat(redisTemplate.keys("*")).isEmpty();
-        UserPhoneNumberRequest request = new UserPhoneNumberRequest("01012341234", "test@test.com");
-        userService.makeSendMessage(request.getPhoneNumber(), request.getEmail());
+        UserPhoneNumberRequest request = new UserPhoneNumberRequest("0");
+        userService.makeSendMessage(request.getPhoneNumber(),
+            userService.findByUserId(userId).getEmail());
         assertThat(redisTemplate.keys("*")).hasSize(1);
     }
 
     @Test
+    @Transactional
     @DisplayName("인증 번호 입력")
     void makePhoneNumber() throws NoSuchAlgorithmException, JsonProcessingException {
         // 주의 해당 테스트 실행 전 userServiceImpl로 가서 makeSendMessage 에서 외부 API 사용하는 부분 주석 해주기
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5);
+        Long userId = userService.makeUser(user);
         assertThat(redisTemplate.keys("*")).isEmpty();
-        UserPhoneNumberRequest request = new UserPhoneNumberRequest("01012341234", "test@test.com");
-        userService.makeSendMessage(request.getPhoneNumber(), request.getEmail());
+        UserPhoneNumberRequest request = new UserPhoneNumberRequest("0");
+        userService.makeSendMessage(request.getPhoneNumber(),
+            userService.findByUserId(userId).getEmail());
         assertThat(redisTemplate.keys("*")).hasSize(1);
         ObjectMapper objectMapper = new ObjectMapper();
         UserPhoneNumberAndEmail userPhoneNumberAndEmail = objectMapper.readValue(
             redisTemplate.opsForValue()
                 .get(Objects.requireNonNull(redisTemplate.keys("*")).stream().findFirst().get()),
             UserPhoneNumberAndEmail.class);
-        assertThat(userPhoneNumberAndEmail.getEmail()).isEqualTo("test@test.com");
+        assertThat(userPhoneNumberAndEmail.getEmail()).isEqualTo("user@abc.com");
     }
 
 
     @Test
+    @Transactional
     @DisplayName("회원 정보 삭제")
     void deleteUser() {
         // 사용자 생성
@@ -407,7 +425,8 @@ class UserControllerTest {
         Long zipsaId = userService.makeUser(zipsaUser);
         assertThat(userService.findByUserId(userId)).isEqualTo(userService.findByUserId(userId));
         assertThat(userService.findByUserId(zipsaId)).isEqualTo(userService.findByUserId(zipsaId));
-        Zipsa zipsa = Zipsa.builder().zipsaId(userService.findByUserId(zipsaId)).account("계좌").description("설명")
+        Zipsa zipsa = Zipsa.builder().zipsaId(userService.findByUserId(zipsaId)).account("계좌")
+            .description("설명")
             .gradeId(grade).isWorked(true).kindnessAverage(0D).skillAverage(0D).rewindAverage(0D)
             .replyAverage(0D).replyCount(0).preferTag("임시 태그").build();
         em.persist(zipsa);

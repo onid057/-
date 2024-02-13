@@ -39,7 +39,6 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
 @ContextConfiguration(classes = BackendApplication.class)
-@Transactional
 class MatchControllerTest {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -106,6 +105,7 @@ class MatchControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("필터링 기반 검색 구현")
     void getFilteredZipsaList() {
         // 필터링 기반 탐색
@@ -122,6 +122,7 @@ class MatchControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("필터링 기반 검색 후 방 만들기 구현")
     void makeRoomWithHelper() {
         // 집사1 생성
@@ -173,6 +174,7 @@ class MatchControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("업무 시작 버튼 구현")
     void changeMatchStartedAt() {
         // 집사1 생성
@@ -205,6 +207,7 @@ class MatchControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("업무 종료 버튼 구현")
     void changeMatchEndedAt() {
         // 집사1 생성

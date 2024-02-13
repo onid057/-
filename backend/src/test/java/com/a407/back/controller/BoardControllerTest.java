@@ -54,7 +54,6 @@ class BoardControllerTest {
     private Tag secondTag;
 
     @BeforeEach
-    @Transactional
     void setup() {
         userId = userService.makeUser(new UserCreateRequest("user@abc.com", "user", "user",
             Timestamp.valueOf("2024-01-01 01:01:01"), Gender.MAN, "서울시", 36.5, 127.5));

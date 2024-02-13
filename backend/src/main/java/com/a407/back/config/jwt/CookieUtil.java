@@ -24,11 +24,11 @@ public class CookieUtil {
     public static void saveCookie(String accessToken, String refreshToken,
         HttpServletResponse response, int age) {
         ResponseCookie accessCookie = ResponseCookie.from("Authorization", accessToken)
-            .sameSite("None").httpOnly(true).secure(true).path("/").domain("i10a407.p.ssafy.io")
+            .sameSite("None").httpOnly(true).secure(true).path("/")
             .maxAge(age).build();
 
         ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken)
-            .sameSite("None").httpOnly(true).secure(true).path("/").domain("i10a407.p.ssafy.io")
+            .sameSite("None").httpOnly(true).secure(true).path("/")
             .maxAge(age).build();
 
         response.setHeader("Set-Cookie", accessCookie.toString());
