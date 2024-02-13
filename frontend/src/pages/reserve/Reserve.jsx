@@ -34,7 +34,7 @@ const SimpleReservesWrapper = styled.div`
 function Reserve() {
   const { data } = useQuery({
     queryKey: ['reservationListByUser'],
-    queryFn: () => getReservationListByUser(3),
+    queryFn: () => getReservationListByUser(),
   });
 
   const userInfo = useUserInfo(state => state.userInfo);
