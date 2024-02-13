@@ -42,7 +42,10 @@ function Map({ onPrevious, onNext }) {
 
   // 중심 좌표 기준으로 2km 이내의 집사들의 lat, lng 값을 받아옴
   useEffect(() => {
-    getZipsaPositionWithinTwoKilos().then(response => setPositions(response));
+    getZipsaPositionWithinTwoKilos().then(response => {
+      console.log(response);
+      setPositions(response);
+    });
   }, []);
 
   // bottom sheet 영역 이외의 부분을 클릭 시 모달 isOpen 변경
