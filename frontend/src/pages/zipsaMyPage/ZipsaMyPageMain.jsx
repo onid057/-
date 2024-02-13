@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { getDetailedZipsaInfo } from '../../apis/api/zipsaMyPage';
+import { useNavigate, useParams } from 'react-router-dom';
 import NavigationBar from '../../components/common/NavigationBar';
 import TwoIndex from '../../components/zipsamypage/TwoIndex';
 import Notice from '../../components/common/Notice';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Image from '../../components/common/Image';
+import { getSimpleZipsaInfo } from '../../apis/api/zipsaMyPage';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -30,60 +30,54 @@ const MenuText = styled.div`
   align-items: center;
 `;
 
-// 집사 상세정보 API 조회해 오기
-const zipsaData = {
-  name: '이수민',
-  birth: '2024-01-23T14:25:12.000+00:00',
-  gender: 'man',
-  address: '서울시 강서구',
-  profileImage: null,
-  latitude: 37.54815556,
-  longitude: 126.851675,
-  gradeId: 1,
-  gradeName: '견습',
-  salary: 5000,
-  description: '옆집 아줌마처럼 친근한 사람이예요! 동네에서 친해져요!',
-  preferTag: '저는 운전을 잘합니다.',
-  serviceCount: 1,
-  replyAverage: 0.0,
-  replyCount: 0,
-  kindnessAverage: 4.3,
-  skillAverage: 3.5,
-  rewindAverage: 2.7,
-  reviews: [
-    {
-      userName: 'user4',
-      profileImage: null,
-      content: '나쁘지 않았습니다.',
-      kindnessScore: 3,
-      skillScore: 5,
-      rewindScore: 7,
-      createdAt: '2024-01-23T14:25:13.000+00:00',
-    },
-  ],
-  subCategory: ['병원 동행', '마트 동행', '식사 돌봄'],
-};
-
 function ZipsaMyPageMain() {
-  // 집사 상세정보 API 조회해 오기
-  // const { helperId } = useParams();
-  // const [zipsaData, setZipsaData] = useState();
+  // NavigationBar 사용 위한 변수 선언
+  const navigate = useNavigate();
+  const onPrevious = () => {
+    navigate(-1);
+  };
 
-  // useEffect(() => {
-  //   getDetailedZipsaInfo(helperId).then(response => {
-  //     console.log(response);
-  //     console.log(helperId);
-  //     setZipsaData(response.data);
-  //   });
-  // }, []);
-  // ======================================================
+  // helperId 조회 ★★★★★★★ helperId ★★★★★★★★
+  const helperId = 3;
+
+  // (간단) 집사 정보조회 API 호출
+  const [data, setData] = useState({});
+  const [gradeName, setGradeName] = useState();
+
+  useEffect(() => {
+    getSimpleZipsaInfo(helperId).then(response => {
+      console.log('집사 간단 정보 조회 성공');
+      setData(response.data);
+    });
+  }, []);
+
+  // 집사 명칭 영 → 한 변환
+  const nameChanger = () => {
+    switch (data.gradeName) {
+      case 'APPRENTICE':
+        setGradeName('견습');
+      case 'NOVICE':
+        setGradeName('초보');
+      case 'ADVANCED':
+        setGradeName('숙련');
+      case 'PROFESSIONAL':
+        setGradeName('프로');
+      case 'LEGEND':
+        setGradeName('전설');
+      default:
+        setGradeName('견습');
+    }
+  };
+
+  useEffect(() => {
+    nameChanger();
+  }, [data]);
+
+  // 내 정보 수정페이지로 이동
 
   const MenuList = ['활동 내역 보기', '정산하기', '작성한 게시물 확인하기'];
   const number =
-    (zipsaData.kindnessAverage +
-      zipsaData.skillAverage +
-      zipsaData.rewindAverage) /
-    3;
+    (data.kindnessAverage + data.skillAverage + data.rewindAverage) / 3;
   const avgScore = number.toFixed(2);
 
   return (
@@ -97,9 +91,9 @@ function ZipsaMyPageMain() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
+        onPrevious={onPrevious}
       ></NavigationBar>
 
-      {/* 여기서 ProfileUpdate 페이지로 넘어가는데 페이지가 넘어갈 때는 data를 어떻게 보내지? */}
       <Notice
         upper={[
           <Image
@@ -114,7 +108,7 @@ function ZipsaMyPageMain() {
             sentences={[
               <BoldText
                 fontSize={'20px'}
-                boldContent={'장수민'}
+                boldContent={data.name}
                 normalContent={' 집사님'}
               ></BoldText>,
               '내 정보 수정하기',
@@ -122,15 +116,14 @@ function ZipsaMyPageMain() {
           ></Paragraph>,
         ]}
         lower={null}
-        // Profile Update 페이지로 이동하도록 설정
-        // nextPage={}
-        padding={'15px 0px'}
+        padding={'15px 13px'}
       ></Notice>
 
       <TwoIndex
-        name={zipsaData.name}
-        gradeId={zipsaData.gradeId}
-        gradeName={zipsaData.gradeName}
+        helperId={helperId}
+        name={data.name}
+        gradeId={data.gradeId}
+        gradeName={gradeName}
         avgScore={avgScore}
       ></TwoIndex>
 
