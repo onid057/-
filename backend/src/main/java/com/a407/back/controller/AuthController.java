@@ -53,29 +53,30 @@ public class AuthController {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         }
 
-        Tokens tokens = authService.login(authRequest.getEmail(), authRequest.getPassword());
-        logger.info(String.valueOf(tokens));
-//        HttpHeaders headers = new HttpHeaders();
+//        Tokens tokens = authService.login(authRequest.getEmail(), authRequest.getPassword());
+//        logger.info(String.valueOf(tokens));
+        HttpHeaders headers = new HttpHeaders();
 
 //        CookieUtil.saveCookie(tokens.getAccessToken(), tokens.getRefreshToken(), response,
 //            cookieMaxAge);
 
-            ResponseCookie accessCookie = ResponseCookie.from("Authorization", tokens.getAccessToken())
-                .sameSite("Strict").httpOnly(true).secure(false).path("/").domain("localhost")
+
+            ResponseCookie accessCookie = ResponseCookie.from("Authorization", "accessCookie")
+                .sameSite("None").httpOnly(false).secure(true).path("/").domain("localhost")
                 .maxAge(cookieMaxAge).build();
 
-            ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
-                .sameSite("None").httpOnly(true).secure(true).path("/").domain("i10a407.p.ssafy.io")
-                .maxAge(cookieMaxAge).build();
+//            ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", tokens.getRefreshToken())
+//                .sameSite("None").httpOnly(true).secure(true).path("/").domain("i10a407.p.ssafy.io")
+//                .maxAge(cookieMaxAge).build();
 
-//            response.setHeader("Set-Cookie", accessCookie.toString());
+            response.addHeader("Set-Cookie", accessCookie.toString());
 //            response.addHeader("Set-Cookie", refreshCookie.toString());
 //
 //        session.setAttribute("uid", Optional.ofNullable((UUID) session.getAttribute("uid"))
 //            .orElse(UUID.randomUUID()));
 //        return ResponseEntity.status(HttpStatus.OK).headers(headers)
 //            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "로그인 성공"));
-        return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE, accessCookie.toString())
+        return ResponseEntity.ok().headers(headers)
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "access token 발급"));
     }
 
