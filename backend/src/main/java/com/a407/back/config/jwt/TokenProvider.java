@@ -16,6 +16,8 @@ import jakarta.transaction.Transactional;
 import java.time.Duration;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +42,7 @@ public class TokenProvider {
 
 
     public String makeAccessToken(String email) {
-        return createToken(email, Duration.ofMinutes(15));
+        return createToken(email, Duration.ofSeconds(30));
     }
 
     public String makeRefreshToken(String email) {
@@ -57,6 +59,8 @@ public class TokenProvider {
             .compact();
     }
 
+    private final Logger logger= LoggerFactory.getLogger(this.getClass());
+
     @Transactional
     public String getEmailFromToken(String accessToken, HttpServletRequest request,
         HttpServletResponse response) {
@@ -68,6 +72,8 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
 
             String refreshToken = CookieUtil.getCookieValue(request.getCookies(), "refreshToken");
+
+            logger.info("리프레쉬!!!!!!");
 
             try {
                 String email = Jwts.parser()
