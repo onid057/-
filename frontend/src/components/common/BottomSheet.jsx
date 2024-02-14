@@ -103,7 +103,7 @@ const BottomSheet = forwardRef(
 
         {!isDetailOpen ? (
           <NameWrapper>
-            {zipsaList.map((zipsa, index) => (
+            {zipsaList?.map((zipsa, index) => (
               <Name
                 key={`${zipsa.zipsaName}-${index}`}
                 onClick={() => {
@@ -133,7 +133,7 @@ const BottomSheet = forwardRef(
               mode="THIN_GRAY"
               onClick={() => setZipsaId([targetZipsa.zipsaId])}
             >
-              집사에게 제안하기
+              집사 선택하기
             </Button>
           </Detail>
         )}

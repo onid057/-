@@ -6,6 +6,7 @@ import axios from 'axios';
 const instance = axios.create({
   baseURL: 'http://localhost:8080',
   // baseURL: 'https://i10a407.p.ssafy.io/api',
+  withCredentials: true,
 });
 
 export default instance;

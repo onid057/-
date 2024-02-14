@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
+import { persist } from 'zustand/middleware';
 
 // 전역에서 관리해야 하는 목록
 // 1. userId(일단 빼놓기)
@@ -15,7 +15,7 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 const useUserInfo = create(
   persist(
     (set, get) => ({
-      userState: '',
+      userState: 'USER',
       isLoggedIn: false,
       setUserState: state => set({ userState: state }),
       setIsLoggedIn: state => set({ isLoggedIn: state }),

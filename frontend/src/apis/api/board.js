@@ -7,9 +7,7 @@ const getAllArticles = async (page, size, tagList) => {
 
     const response = await axios({
       method: 'get',
-      url: isTagListExist
-        ? `boards?page=${page}&size=${size}&tagList=${tagList}`
-        : `boards?page=${page}&size=${size}`,
+      url: `/boards?page=${page}&size=${size}&tagList=${tagList}`,
     });
     return response.data;
   } catch (error) {

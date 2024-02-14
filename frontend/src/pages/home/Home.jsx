@@ -26,7 +26,6 @@ const Wrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
 const HeadWrapper = styled.div`
   width: 100%;
   min-height: 509px;
@@ -83,8 +82,10 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn) {
+    // 로그인이 무조건 되어야 하는 상태이고, 집사의 자격이 있는지 알아야 함(토글 버튼을 띄우기 위해)
+    if (isLoggedIn && isZipsa) {
       getUserState().then(response => {
+        console.log(response);
         setIsWorked(response.data.isWorked);
         setUserState(response.data.isWorked ? 'ZIPSA' : 'USER');
       });
@@ -112,7 +113,7 @@ export default function Home() {
     // eventSource.addEventListener('sse', event => {
     //   console.log(event);
     // })
-  }, [isWorked]);
+  }, [isZipsa, isWorked]);
 
   return (
     <Wrapper>

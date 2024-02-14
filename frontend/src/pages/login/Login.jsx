@@ -2,6 +2,7 @@ import { doLogIn } from '../../apis/api/login';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '../../hooks/useUserInfo';
+import { regEmail, regPassword } from '../../utils/regularExpression';
 
 import styled from 'styled-components';
 import Paragraph from '../../components/common/Paragraph';
@@ -56,7 +57,10 @@ function Login() {
         labelText="이메일"
         commentText="이메일 형식이 올바르지 않습니다."
         placeholder="hanzipsa@naver.com"
-        onChange={event => setEmail(event.target.value)}
+        onChange={event => {
+          setEmail(event.target.value);
+          // if (regEmail.test(email))
+        }}
       ></Input>
 
       <Input

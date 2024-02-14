@@ -1,5 +1,4 @@
 import { changeUserState } from '../../apis/api/toggle';
-// import { useUserInfo } from '../../hooks/useUserInfo.js';
 import styled from 'styled-components';
 
 const ToggleWrapper = styled.div`
@@ -58,12 +57,10 @@ const ToggleWrapper = styled.div`
 `;
 
 function Toggle({ isWorked, setIsWorked }) {
-  // const { setUserState } = useUserInfo();
-
   const toggleHandler = () => {
-    changeUserState().then(() => {
+    changeUserState().then(response => {
       setIsWorked(!isWorked);
-      // setUserState(!isWorked ? 'USER' : 'ZIPSA');
+      console.log(response);
     });
   };
 
