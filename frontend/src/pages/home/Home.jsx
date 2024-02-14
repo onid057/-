@@ -85,8 +85,11 @@ export default function Home() {
   const navigate = useNavigate();
   const eventSourceRef = useRef();
   const [isVisibleRound, setIsVisibleRound] = useState(false);
+  const [diffTime, setDiffTime] = useState();
 
   const isLoggedIn = useUserInfo(state => state.isLoggedIn);
+  const isRemainTimeLowerThanHalfOfHour = time =>
+    time <= 1000 * 60 * 60 && time >= 0;
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -94,39 +97,47 @@ export default function Home() {
         setIsZipsa(response.data);
       });
       getFirstReservation().then(response => {
+        console.log(response);
         setReserveInfo(response.data);
+        setDiffTime(
+          new Date(reserveInfo?.expectationStartedAt).getTime() - new Date(),
+        );
       });
     }
   }, []);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      eventSourceRef.current = new EventSource(
-        //'http://localhost:8080' + `/sse`,
-        'https://i10a407.p.ssafy.io/api' + `/sse`,
-        {
-          withCredentials: true,
-        },
-      );
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     eventSourceRef.current = new EventSource(
+  //       'http://localhost:8080' + `/sse`,
+  //       // 'https://i10a407.p.ssafy.io/api' + `/sse`,
+  //       {
+  //         withCredentials: true,
+  //       },
+  //     );
 
-      eventSourceRef.current.onopen = () => {
-        console.log('Server와 연결');
-      };
+  //     eventSourceRef.current.onopen = () => {
+  //       console.log('Server와 연결');
+  //     };
 
-      eventSourceRef.current.onerror = error => {
-        console.log(error);
-      };
+  //     eventSourceRef.current.onerror = error => {
+  //       console.log(error);
+  //     };
 
-      eventSourceRef.current.onmessage = event => {
-        console.log(event);
-        setIsVisibleRound(true);
-      };
+  //     eventSourceRef.current.onmessage = event => {
+  //       console.log(event);
+  //       setIsVisibleRound(true);
+  //     };
 
-      // eventSourceRef.current.addEventListener('sse', () => {
-      //   setIsVisibleRound(true);
-      // });
-    }
-  }, []);
+  //     // eventSourceRef.current.addEventListener('sse', () => {
+  //     //   setIsVisibleRound(true);
+  //     // });
+  //   }
+
+  //   return () => {
+  //     eventSourceRef.current.close();
+  //   };
+  // }, []);
 
   useEffect(() => {
     // 로그인이 무조건 되어야 하는 상태이고, 집사의 자격이 있는지 알아야 함(토글 버튼을 띄우기 위해)
@@ -216,48 +227,53 @@ export default function Home() {
           </>
         ) : (
           <>
-            <Notice
-              upper={[
-                <Image
-                  src={process.env.PUBLIC_URL + '/images/lightning.svg'}
-                  width="30px"
-                  height="30px"
-                  margin="4px 0 0 0"
-                ></Image>,
-                <BoldText
-                  fontSize="20px"
-                  boldContent={`{ ${reserveInfo.name} }`}
-                  normalContent={
-                    ' 고객님' + (reserveInfo.status === 'BEFORE' ? '과' : '이')
-                  }
-                ></BoldText>,
-              ]}
-              lower={[
-                <Paragraph
-                  fontSize="16px"
-                  gap="10px"
-                  sentences={[
-                    <BoldText
-                      boldContent={
-                        calculateRemainDate(reserveInfo.expectationStartedAt) +
-                        ' ' +
-                        convertToHour(reserveInfo.expectationStartedAt)
-                      }
-                      normalContent=" 시에"
-                    ></BoldText>,
-                    <BoldText
-                      boldContent={reserveInfo.majorCategoryName}
-                      normalContent={
-                        reserveInfo.status === 'BEFORE'
-                          ? '을 요청했어요!'
-                          : '을 진행 중이에요!'
-                      }
-                    ></BoldText>,
-                  ]}
-                ></Paragraph>,
-              ]}
-              nextPage="/"
-            ></Notice>
+            {reserveInfo && (
+              <Notice
+                upper={[
+                  <Image
+                    src={process.env.PUBLIC_URL + '/images/lightning.svg'}
+                    width="30px"
+                    height="30px"
+                    margin="4px 0 0 0"
+                  ></Image>,
+                  <BoldText
+                    fontSize="20px"
+                    boldContent={`{ ${reserveInfo.name} }`}
+                    normalContent={' 고객님과'}
+                  ></BoldText>,
+                ]}
+                lower={[
+                  <Paragraph
+                    fontSize="16px"
+                    gap="10px"
+                    sentences={[
+                      <BoldText
+                        boldContent={
+                          reserveInfo.status === 'ONGOING'
+                            ? '현재'
+                            : isRemainTimeLowerThanHalfOfHour(diffTime)
+                              ? `${Math.floor(diffTime / (1000 * 60))}분 후에`
+                              : `${calculateRemainDate(reserveInfo?.expectationStartedAt)}`
+                        }
+                      ></BoldText>,
+                      <BoldText
+                        boldContent={
+                          reserveInfo.majorCategoryName === '상관없음'
+                            ? '약속'
+                            : reserveInfo.majorCategoryName
+                        }
+                        normalContent={
+                          reserveInfo.status === 'BEFORE'
+                            ? '을 앞두고 있어요!'
+                            : '을 진행 중이에요!'
+                        }
+                      ></BoldText>,
+                    ]}
+                  ></Paragraph>,
+                ]}
+                nextPage="/"
+              ></Notice>
+            )}
           </>
         )}
         <NoticeWrapper>
