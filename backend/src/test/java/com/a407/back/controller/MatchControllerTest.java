@@ -14,6 +14,7 @@ import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.domain.ZipsaCategory;
+import com.a407.back.domain.ZipsaCategoryId;
 import com.a407.back.dto.match.MatchSearchRequest;
 import com.a407.back.dto.match.MatchSearchResponse;
 import com.a407.back.dto.match.RoomCreateRequest;
@@ -101,8 +102,8 @@ class MatchControllerTest {
         Long subCategoryId = newSubCategory.getSubCategoryId();
         subCategory = em.find(SubCategory.class, subCategoryId);
         // zipsa - category 생성
-        ZipsaCategory zipsaCategory = ZipsaCategory.builder().majorCategoryId(majorCategory)
-            .zipsaId(zipsa).build();
+        ZipsaCategory zipsaCategory = ZipsaCategory.builder().zipsaCategoryId(
+            ZipsaCategoryId.builder().majorCategory(majorCategory).zipsa(zipsa).build()).build();
         em.persist(zipsaCategory);
     }
 
@@ -138,8 +139,9 @@ class MatchControllerTest {
         em.persist(newZipsa1);
         Long zipsaId1 = newZipsa1.getZipsaId().getUserId();
         Zipsa zipsa1 = zipsaService.findByZipsaId(zipsaId1);
-        ZipsaCategory zipsaCategory1 = ZipsaCategory.builder().majorCategoryId(majorCategory)
-            .zipsaId(zipsa1).build();
+        ZipsaCategory zipsaCategory1 = ZipsaCategory.builder().zipsaCategoryId(
+            ZipsaCategoryId.builder().majorCategory(majorCategory).zipsa(zipsa1).build()).build();
+
         em.persist(zipsaCategory1);
 
         // 집사2 생성
@@ -153,8 +155,8 @@ class MatchControllerTest {
         em.persist(newZipsa2);
         Long zipsaId2 = newZipsa2.getZipsaId().getUserId();
         Zipsa zipsa2 = zipsaService.findByZipsaId(zipsaId2);
-        ZipsaCategory zipsaCategory2 = ZipsaCategory.builder().majorCategoryId(majorCategory)
-            .zipsaId(zipsa2).build();
+        ZipsaCategory zipsaCategory2 = ZipsaCategory.builder().zipsaCategoryId(
+            ZipsaCategoryId.builder().majorCategory(majorCategory).zipsa(zipsa2).build()).build();
         em.persist(zipsaCategory2);
 
         List<Long> zipsaList = new ArrayList<>();
@@ -190,8 +192,8 @@ class MatchControllerTest {
         em.persist(newZipsa1);
         Long zipsaId1 = newZipsa1.getZipsaId().getUserId();
         Zipsa zipsa1 = zipsaService.findByZipsaId(zipsaId1);
-        ZipsaCategory zipsaCategory1 = ZipsaCategory.builder().majorCategoryId(majorCategory)
-            .zipsaId(zipsa1).build();
+        ZipsaCategory zipsaCategory1 = ZipsaCategory.builder().zipsaCategoryId(
+            ZipsaCategoryId.builder().majorCategory(majorCategory).zipsa(zipsa1).build()).build();
         em.persist(zipsaCategory1);
 
         // 방 만들기
@@ -223,8 +225,8 @@ class MatchControllerTest {
         em.persist(newZipsa1);
         Long zipsaId1 = newZipsa1.getZipsaId().getUserId();
         Zipsa zipsa1 = zipsaService.findByZipsaId(zipsaId1);
-        ZipsaCategory zipsaCategory1 = ZipsaCategory.builder().majorCategoryId(majorCategory)
-            .zipsaId(zipsa1).build();
+        ZipsaCategory zipsaCategory1 = ZipsaCategory.builder().zipsaCategoryId(
+            ZipsaCategoryId.builder().majorCategory(majorCategory).zipsa(zipsa1).build()).build();
         em.persist(zipsaCategory1);
 
         // 방 만들기

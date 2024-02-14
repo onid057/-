@@ -39,6 +39,8 @@ import org.awaitility.Durations;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
@@ -103,7 +105,7 @@ class ZipsaControllerTest {
         RoomCreateRequest roomCreateRequest = new RoomCreateRequest(userId, 1L, "제목", "1", "장소", 12,
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), 15000, list);
-        roomId = matchService.makeFilterRoom(roomCreateRequest);
+        roomId = matchService.makeFilterRoom(userId,roomCreateRequest);
         roomService.changeRoomZipsa(zipsa, roomId);
         em.flush();
         em.clear();
@@ -255,9 +257,12 @@ class ZipsaControllerTest {
                 Process.END).build();
         em.persist(room);
 
-        assertThat(userService.getUserRecordList(zipsaId)).hasSize(1);
+        logger.info("테스트용 {}",zipsa.getIsWorked());
+
+        assertThat(zipsaService.getZipsaRecordList(zipsaId)).hasSize(1);
     }
 
+    Logger logger= LoggerFactory.getLogger(this.getClass());
 
     @Test
     @Transactional

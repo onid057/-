@@ -83,7 +83,7 @@ class ReviewControllerTest {
         RoomCreateRequest roomCreateRequest = new RoomCreateRequest(userId, 1L, "제목", "1", "장소", 12,
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), 15000, list);
-        roomId = matchService.makeFilterRoom(roomCreateRequest);
+        roomId = matchService.makeFilterRoom(userId,roomCreateRequest);
         roomService.changeRoomZipsa(zipsa, roomId);
         em.flush();
         em.clear();

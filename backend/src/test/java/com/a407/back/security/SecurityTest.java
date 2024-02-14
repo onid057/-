@@ -16,8 +16,8 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
-import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +63,7 @@ class SecurityTest {
     @DisplayName("회원가입")
     void signupTest() {
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Date.valueOf(String.valueOf(LocalDateTime.now())), Gender.MAN, "서울시", 36.5, 127.5);
+            Date.valueOf(LocalDate.now()), Gender.MAN, "서울시", 36.5, 127.5);
 
         Long userId = userService.makeUser(user);
 
@@ -77,7 +77,7 @@ class SecurityTest {
     @DisplayName("사용자 로그인")
     void loginTest() {
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Date.valueOf(String.valueOf(LocalDateTime.now())), Gender.MAN, "서울시", 36.5, 127.5);
+            Date.valueOf(LocalDate.now()), Gender.MAN, "서울시", 36.5, 127.5);
 
         Long userId = userService.makeUser(user);
 
@@ -99,7 +99,7 @@ class SecurityTest {
     @DisplayName("관리자 로그인")
     void adminTest() {
         UserCreateRequest admin = new UserCreateRequest("admin@admin.admin", "admin", "admin",
-            Date.valueOf(String.valueOf(LocalDateTime.now())), Gender.MAN, "서울시", 36.5, 127.5);
+            Date.valueOf(LocalDate.now()), Gender.MAN, "서울시", 36.5, 127.5);
 
         changeAdmin(userService.makeUser(admin));
         em.flush();

@@ -1,11 +1,14 @@
 package com.a407.back.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.a407.back.BackendApplication;
+import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.dto.association.AssociationAdditionCodeResponse;
 import com.a407.back.dto.user.UserCreateRequest;
+import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.AssociationService;
 import com.a407.back.model.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -232,6 +235,57 @@ class AssociationControllerTest {
         assertThat(associationService.getAssociationUserList(
                 userService.findByUserId(userIdTwo).getAssociationId().getAssociationId()).get(1)
             .getIsRepresentative()).isTrue();
+
+    }
+
+
+    @Test
+    @Transactional
+    @DisplayName("현재 대표인지 확인")
+    void getAssociationRepresentative() throws NoSuchAlgorithmException, JsonProcessingException {
+
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdOne)).isInstanceOf(
+            CustomException.class);
+
+        associationService.makeAssociation(userIdOne);
+        em.flush();
+        em.clear();
+
+        assertThat(associationService.getAssociationRepresentative(userIdOne)).isTrue();
+
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdTwo)).isInstanceOf(
+            CustomException.class);
+
+        User user = userService.findByUserId(userIdOne);
+        AssociationAdditionCodeResponse associationAdditionCodeResponse = associationService.makeAdditionCode(
+            user.getUserId(), user.getEmail(), user.getAssociationId().getAssociationId());
+
+        associationService.changeAssociation(userIdTwo,
+            associationAdditionCodeResponse.getAdditionCode());
+        associationService.changeAssociation(userIdThree,
+            associationAdditionCodeResponse.getAdditionCode());
+
+        em.flush();
+        em.clear();
+
+        assertThat(associationService.getAssociationRepresentative(userIdTwo)).isFalse();
+        assertThat(associationService.getAssociationRepresentative(userIdThree)).isFalse();
+
+        associationService.deleteAssociation(userIdOne);
+        em.flush();
+        em.clear();
+
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdOne)).isInstanceOf(
+            CustomException.class);
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdTwo)).isInstanceOf(
+            CustomException.class);
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdThree)).isInstanceOf(
+            CustomException.class);
 
     }
 

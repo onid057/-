@@ -74,7 +74,7 @@ class UserControllerTest {
     @AfterEach
     void afterEach() {
         // redis에 저장된 모든 정보를 초기화 하는 작업을 진행
-//        Objects.requireNonNull(redisTemplate.keys("*")).forEach(key -> redisTemplate.delete(key));
+        Objects.requireNonNull(redisTemplate.keys("*")).forEach(key -> redisTemplate.delete(key));
     }
 
 
@@ -127,7 +127,7 @@ class UserControllerTest {
         RoomCreateRequest roomCreateRequest = new RoomCreateRequest(userId, 1L, "제목", "1", "장소", 12,
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), 15000, list);
-        Long roomId = matchService.makeFilterRoom(roomCreateRequest);
+        Long roomId = matchService.makeFilterRoom(userId,roomCreateRequest);
         em.flush();
         em.clear();
 
@@ -258,7 +258,7 @@ class UserControllerTest {
         RoomCreateRequest roomCreateRequest = new RoomCreateRequest(userId, 1L, "제목", "1", "장소", 12,
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), 15000, list);
-        Long roomId = matchService.makeFilterRoom(roomCreateRequest);
+        Long roomId = matchService.makeFilterRoom(userId,roomCreateRequest);
         em.flush();
         em.clear();
         roomService.changeRoomZipsa(zipsa, roomId);
@@ -313,7 +313,7 @@ class UserControllerTest {
         RoomCreateRequest roomCreateRequest = new RoomCreateRequest(userId, subCategoryId, "제목", "1", "장소", 12,
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), 15000, list);
-        Long roomId = matchService.makeFilterRoom(roomCreateRequest);
+        Long roomId = matchService.makeFilterRoom(userId,roomCreateRequest);
         em.flush();
         em.clear();
         roomService.changeRoomZipsa(zipsa, roomId);
