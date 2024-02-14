@@ -21,8 +21,8 @@ public class AuthRepositoryImpl implements AuthRepository {
     }
 
     @Override
-    public String findRefreshToken(String token) {
-        return redisTemplate.opsForValue().getAndDelete(token);
+    public Boolean findRefreshToken(String token) {
+        return redisTemplate.delete(token);
     }
 
 }

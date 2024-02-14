@@ -24,10 +24,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public Tokens login(String email, String password) {
-        System.out.println(email);
-        System.out.println(password);
         User user = userRepository.findByUserEmail(email);
-        System.out.println(user.getBirth());
         if (user == null || !bCryptPasswordEncoder.matches(password, user.getPassword())) {
             throw new CustomException(ErrorCode.UNAUTHORIZED_ACCESS);
         }

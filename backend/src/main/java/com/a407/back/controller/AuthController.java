@@ -52,7 +52,7 @@ public class AuthController {
         if (refreshToken != null) {
             authService.deleteRefreshToken(refreshToken);
         }
-        CookieUtil.saveCookie("", "", response, 0);
+        CookieUtil.saveCookie("accessToken", "refreshToken", response, 0);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "로그아웃 성공"));
     }
