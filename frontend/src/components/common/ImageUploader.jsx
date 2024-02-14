@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ImageUploaderWrapper = styled.div`
-  width: 294px;
+  width: 288px;
   display: flex;
   flex-direction: column;
   align-items: center;

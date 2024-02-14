@@ -49,12 +49,13 @@ const Wrapper = styled.div`
 //   border: none;
 // `;
 
-// const ImageWrapper = styled.div`
-//   width: 60px;
-//   height: 60px;
-//   border-radius: 50%;
-//   overflow: hidden;
-// `;
+const ImageWrapper = styled.div`
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  border-radius: 50%;
+  overflow: hidden;
+`;
 
 const InfoWrapper = styled.div`
   width: 100%;
@@ -114,12 +115,14 @@ function ProfileUpdate() {
         margin={'0 0 20px 0'}
       ></Paragraph>
 
-      <Image
-        src={imageUrl || `${process.env.PUBLIC_URL}/images/profile_img.svg`}
-        width={'60px'}
-        height={'60px'}
-        margin={'0'}
-      ></Image>
+      <ImageWrapper>
+        <Image
+          src={imageUrl || `${process.env.PUBLIC_URL}/images/profile_img.svg`}
+          width={'60px'}
+          height={'60px'}
+          margin={'0'}
+        ></Image>
+      </ImageWrapper>
 
       <InfoWrapper>
         <BoldText fontSize={'17px'} normalContent={'이름'}></BoldText>
