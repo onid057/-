@@ -42,10 +42,7 @@ public class SseServiceImpl implements SseService {
         // 로그인 한 유저의 SseEmitter 가져오기
         SseEmitter sseEmitter = sseRepository.get(userId);
         if (sseEmitter != null) {
-            Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
-            String type = zipsa != null && zipsa.getIsWorked() ? "ZIPSA" : "USER";
-            Notification notification = userRepository.findNotificationByUserIdList(userId, type).get(0);
-            sendToClient(sseEmitter, userId, notification, "notification");
+            sendToClient(sseEmitter, userId, "알림이 도착했습니다.", "notification");
             log.info("이벤트가 성공적으로 진행되었습니다. {}", userId);
         }
     }
@@ -61,7 +58,7 @@ public class SseServiceImpl implements SseService {
         // 연결 요청에 의해 SseEmitter가 생성되면 더미 데이터를 보내줘야함.
         // 연결된 후 하나의 데이터도 전송되지 않는다면 SseEmitter의 유효시간이 끝났을 경우,
         // 503 응답이 발생하므로 연결시 바로 더미 데이터를 한 번 보내준다.
-        sendToClient(sseEmitter, userId, "connect complete", "sse");
+        sendToClient(sseEmitter, userId, "구독이 완료되었습니다.", "sse");
         return sseEmitter;
     }
 
