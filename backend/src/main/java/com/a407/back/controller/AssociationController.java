@@ -74,6 +74,14 @@ public class AssociationController {
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "연동 계정 참가 성공"));
     }
 
+    @GetMapping("/representative")
+    public ResponseEntity<ApiResponse<Boolean>> getAssociationRepresentative(
+        @AuthenticationPrincipal SecurityUser user) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                associationService.getAssociationRepresentative(user.getUserId())));
+    }
+
     @PatchMapping("/representative")
     public ResponseEntity<ApiResponse<String>> changeAssociationRepresentative(
         @AuthenticationPrincipal SecurityUser user,

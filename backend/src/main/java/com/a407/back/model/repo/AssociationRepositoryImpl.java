@@ -88,5 +88,10 @@ public class AssociationRepositoryImpl implements AssociationRepository {
             .fetchOne();
     }
 
+    @Override
+    public Association getAssociationRepresentative(Long associationId) {
+        return em.find(Association.class, associationId);
+    }
+
 
 }

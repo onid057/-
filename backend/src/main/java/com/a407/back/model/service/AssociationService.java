@@ -1,7 +1,7 @@
 package com.a407.back.model.service;
 
-import com.a407.back.dto.user.UserAssociationResponse;
 import com.a407.back.dto.association.AssociationAdditionCodeResponse;
+import com.a407.back.dto.user.UserAssociationResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -21,4 +21,5 @@ public interface AssociationService {
 
     void changeAssociationRepresentative(Long representativeId, Long userId);
 
+    Boolean getAssociationRepresentative(Long userId);
 }

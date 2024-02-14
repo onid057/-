@@ -149,4 +149,18 @@ public class AssociationServiceImpl implements AssociationService {
         associationRepository.changeAssociationRepresentative(userId, associationId);
     }
 
+    @Override
+    public Boolean getAssociationRepresentative(Long userId) {
+
+        User user = userRepository.findByUserId(userId);
+        if (user.getAssociationId() == null) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
+
+        Association association = associationRepository.getAssociationRepresentative(
+            user.getAssociationId().getAssociationId());
+
+        return Objects.equals(association.getUserId(), userId);
+    }
+
 }
