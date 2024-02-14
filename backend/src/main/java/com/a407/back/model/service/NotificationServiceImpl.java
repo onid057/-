@@ -14,6 +14,9 @@ import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -93,6 +96,10 @@ public class NotificationServiceImpl implements NotificationService {
         if (newNotificationCount == 0) {
             roomRepository.changeRoomStatus(notification.getRoomId().getRoomId(), "BROKEN");
         }
+        Zipsa zipsa = zipsaRepository.findByZipsaId(notification.getReceiveId());
+        if(zipsa != null) {
+            changeReplyStatus(room, zipsa);
+        }
         return newNotificationCount;
     }
 
@@ -116,6 +123,16 @@ public class NotificationServiceImpl implements NotificationService {
             zipsa = zipsaRepository.findByZipsaId(notification.getSendId());
         }
         roomRepository.changeRoomZipsa(zipsa, notification.getRoomId().getRoomId());
+        room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
+        changeReplyStatus(room, zipsa);
+    }
+
+    private void changeReplyStatus(Room room, Zipsa zipsa) {
+        // 평균 회신 시간 갱신
+        double roomCreatedAt = (double) room.getRoomCreatedAt().getTime() / 60000;
+        double nowReplay = (double) Timestamp.valueOf(LocalDateTime.now()).getTime() / 60000;
+        double replyAverage = (zipsa.getReplyCount() * zipsa.getReplyAverage() + nowReplay - roomCreatedAt) / (zipsa.getReplyCount() + 1);
+        zipsaRepository.changeZipsaReplyCount(zipsa, replyAverage);
     }
 
 }

@@ -36,4 +36,6 @@ public interface ZipsaRepository {
 
     Zipsa makeZipsa(Zipsa zipsa);
 
+    void changeZipsaReplyCount(Zipsa zipsa, double replyAverage);
+
 }

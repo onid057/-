@@ -125,4 +125,11 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
         return zipsa;
     }
 
+    @Override
+    public void changeZipsaReplyCount(Zipsa zipsa, double replyAverage) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        int replyCount = zipsa.getReplyCount() + 1;
+        query.update(qZipsa).set(qZipsa.replyCount, replyCount).set(qZipsa.replyAverage, replyAverage).where(qZipsa.eq(zipsa)).execute();
+    }
+
 }

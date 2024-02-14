@@ -129,13 +129,8 @@ public class BoardServiceImpl implements BoardService {
         List<BoardTag> totalBoardList = boardRepository.findBoardList(
             (boardListRequest.getPage() - 1) * boardListRequest.getSize(),
             boardListRequest.getSize(), boardListRequest.getTagList());
-        List<Long> countBoard = new ArrayList<>();
         List<BoardListDto> boardList = new ArrayList<>();
         for (BoardTag boardTag : totalBoardList) {
-            if (countBoard.contains(boardTag.getBoardTagId().boardId.getBoardId())) {
-                continue;
-            }
-            countBoard.add(boardTag.getBoardTagId().boardId.getBoardId());
             // 게시판의 댓글 개수 계산하기
             int commentCount = commentRepository.getCommentCount(boardTag.getBoardTagId().boardId)
                 .intValue();
@@ -149,7 +144,7 @@ public class BoardServiceImpl implements BoardService {
                 boardTag.getBoardTagId().boardId.getUserId().getName(), commentCount,
                 boardTag.getBoardTagId().boardId.getUpdatedAt(), tagNameList));
         }
-        return new BoardListResponse(countBoard.size(), boardListRequest.getPage(), boardList);
+        return new BoardListResponse(boardListRequest.getSize(), boardListRequest.getPage(), boardList);
     }
 
     @Override

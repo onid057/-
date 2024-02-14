@@ -12,6 +12,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -79,7 +80,7 @@ public class BoardRepositoryImpl implements BoardRepository {
         QTag qTag = QTag.tag;
         return query.selectFrom(qBoardTag).join(qBoardTag.boardTagId.boardId, qBoard)
             .join(qBoardTag.boardTagId.tagId, qTag)
-            .where(tagEq(tagList)).orderBy(qBoard.updatedAt.desc()).offset(page)
+            .where(tagEq(tagList)).orderBy(qBoard.updatedAt.desc()).groupBy(qBoard.boardId).offset(page)
             .limit(size).fetch();
     }
 
