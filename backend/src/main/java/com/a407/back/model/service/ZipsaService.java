@@ -44,7 +44,7 @@ public interface ZipsaService {
 
     void makeConfirmNotification(Long roomId);
 
-    Long makeZipsa(ZipsaCreateRequest zipsaCreateRequest);
+    Long makeZipsa(Long userId, Boolean isCertificated, ZipsaCreateRequest request);
 
     void changeZipsaInfo(Long zipsaId, ZipsaChangeRequest request);
 

@@ -8,11 +8,9 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ZipsaCreateRequest {
 
-    private Long userId;
-    private Boolean isCertificated;
     private String description;
     private String account;
     private String preferTag;
-    private List<String> categories;
+    private List<Long> majorCategoryList;
 
 }

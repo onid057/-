@@ -42,8 +42,10 @@ public class ZipsaController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> makeZipsa(
+        @AuthenticationPrincipal SecurityUser user,
         @RequestBody ZipsaCreateRequest zipsaCreateRequest) {
-        long id = zipsaService.makeZipsa(zipsaCreateRequest);
+        long id = zipsaService.makeZipsa(user.getUserId(), user.getIsCertificated(),
+            zipsaCreateRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
     }

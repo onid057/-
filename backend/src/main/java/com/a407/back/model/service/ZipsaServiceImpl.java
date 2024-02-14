@@ -1,5 +1,6 @@
 package com.a407.back.model.service;
 
+import com.a407.back.config.ImageConfig;
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.config.redis.RedisPublisher;
 import com.a407.back.domain.Grade;
@@ -9,10 +10,10 @@ import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.Report;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
-import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.domain.ZipsaCategory;
+import com.a407.back.domain.ZipsaCategoryId;
 import com.a407.back.dto.room.PublicRoomListResponse;
-import com.a407.back.config.ImageConfig;
 import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.dto.util.ReportListDto;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
@@ -250,30 +251,36 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     @Override
     @Transactional
-    public Long makeZipsa(ZipsaCreateRequest request) {
-        User user = userRepository.findByUserId(request.getUserId());
-        Grade grade = gradeRepository.findGradeById(1L);
+    public Long makeZipsa(Long userId, Boolean isCertificated, ZipsaCreateRequest request) {
         // 인증이 완료되지 않은 경우
-        if (Boolean.FALSE.equals(user.getIsCertificated())) {
+        if (Boolean.TRUE.equals(isCertificated)) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
         // 이미 집사인 경우
-        if (zipsaRepository.findByZipsaId(request.getUserId()) != null) {
+        if (zipsaRepository.findByZipsaId(userId) != null) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
         // 조건을 만족하는 경우
-        if (!request.getCategories().isEmpty()
-            && request.getCategories().size() < 6) {
-
+        if (!request.getMajorCategoryList().isEmpty()
+            && request.getMajorCategoryList().size() < 6) {
+            Grade grade = gradeRepository.findGradeById(1L);
             Zipsa zipsa = Zipsa.builder()
-                .zipsaId(userRepository.findByUserId(request.getUserId())).gradeId(grade)
+                .zipsaId(userRepository.findByUserId(userId)).gradeId(grade)
                 .description(request.getDescription())
                 .account(request.getAccount())
                 .isWorked(false).preferTag(request.getPreferTag())
                 .serviceCount(0).replyAverage(0D).replyCount(0).skillAverage(0D)
                 .rewindAverage(0D).kindnessAverage(0D)
                 .build();
-            return zipsaRepository.makeZipsa(zipsa).getZipsaId().getUserId();
+            Long zipsaId = zipsaRepository.makeZipsa(zipsa).getZipsaId().getUserId();
+            for (Long majorCategoryId : request.getMajorCategoryList()) {
+                ZipsaCategoryId zipsaCategoryId = new ZipsaCategoryId(zipsa,
+                    zipsaRepository.getMajorCategory(majorCategoryId));
+                zipsaRepository.makeZipsaCategory(
+                    ZipsaCategory.builder().zipsaCategoryId(zipsaCategoryId).build());
+            }
+
+            return zipsaId;
 
         }
 

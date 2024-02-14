@@ -1,5 +1,6 @@
 package com.a407.back.model.repo;
 
+import com.a407.back.domain.MajorCategory;
 import com.a407.back.domain.QReport;
 import com.a407.back.domain.QReview;
 import com.a407.back.domain.QRoom;
@@ -9,6 +10,7 @@ import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.domain.ZipsaCategory;
 import com.a407.back.dto.zipsa.ZipsaChangeDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
@@ -129,7 +131,18 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     public void changeZipsaReplyCount(Zipsa zipsa, double replyAverage) {
         QZipsa qZipsa = QZipsa.zipsa;
         int replyCount = zipsa.getReplyCount() + 1;
-        query.update(qZipsa).set(qZipsa.replyCount, replyCount).set(qZipsa.replyAverage, replyAverage).where(qZipsa.eq(zipsa)).execute();
+        query.update(qZipsa).set(qZipsa.replyCount, replyCount)
+            .set(qZipsa.replyAverage, replyAverage).where(qZipsa.eq(zipsa)).execute();
+    }
+
+    @Override
+    public void makeZipsaCategory(ZipsaCategory zipsaCategory) {
+        em.persist(zipsaCategory);
+    }
+
+    @Override
+    public MajorCategory getMajorCategory(Long majorCategoryId) {
+        return em.find(MajorCategory.class, majorCategoryId);
     }
 
 }

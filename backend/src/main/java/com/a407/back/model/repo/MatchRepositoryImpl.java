@@ -3,22 +3,20 @@ package com.a407.back.model.repo;
 import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.QZipsaCategory;
+import com.a407.back.domain.QZipsaCategoryId;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.match.MatchSearchRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.DateTimePath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.joda.time.DateTime;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -40,11 +38,13 @@ public class MatchRepositoryImpl implements MatchRepository {
 
     private BooleanExpression majorCategoryIdEq(Long categoryId) {
         QZipsaCategory qZipsaCategory = QZipsaCategory.zipsaCategory;
+        QZipsaCategoryId qZipsaCategoryId = QZipsaCategoryId.zipsaCategoryId;
         QZipsa qZipsa = QZipsa.zipsa;
         if (categoryId != null) {
             return qZipsa.zipsaId.userId.in(
-                query.select(qZipsaCategory.zipsaId.zipsaId.userId).from(qZipsaCategory)
-                    .where(qZipsaCategory.majorCategoryId.majorCategoryId.eq(categoryId)).fetch());
+                query.select(qZipsaCategoryId.zipsaId.zipsaId.userId).from(qZipsaCategory)
+                    .where(qZipsaCategoryId.majorCategoryId.majorCategoryId.eq(categoryId))
+                    .fetch());
         }
         return null;
     }
@@ -118,8 +118,9 @@ public class MatchRepositoryImpl implements MatchRepository {
         // 집사의 아이디를 기준으로 대분류 이름을 가져오는 함수
         QZipsaCategory qZipsaCategory = QZipsaCategory.zipsaCategory;
 
-        return query.select(qZipsaCategory.majorCategoryId.name).from(qZipsaCategory)
-            .where(qZipsaCategory.zipsaId.zipsaId.userId.eq(zipsaId)).fetch();
+        return query.select(qZipsaCategory.zipsaCategoryId.majorCategoryId.name)
+            .from(qZipsaCategory)
+            .where(qZipsaCategory.zipsaCategoryId.zipsaId.zipsaId.userId.eq(zipsaId)).fetch();
     }
 
     @Override
