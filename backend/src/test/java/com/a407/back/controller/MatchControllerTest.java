@@ -165,7 +165,7 @@ class MatchControllerTest {
             subCategory.getSubCategoryId(), "title", "content", "place", 2,
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), 15000, zipsaList);
-        Long roomId = matchService.makeFilterRoom(roomCreateRequest);
+        Long roomId = matchService.makeFilterRoom(user.getUserId(), roomCreateRequest);
         Room room = roomService.findByRoomId(roomId);
         if (room != null) {
             logger.info(String.valueOf(room.getRoomId()));
