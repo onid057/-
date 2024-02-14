@@ -45,7 +45,7 @@ public class SseServiceImpl implements SseService {
             Zipsa zipsa = zipsaRepository.findByZipsaId(userId);
             String type = zipsa != null && zipsa.getIsWorked() ? "ZIPSA" : "USER";
             Notification notification = userRepository.findNotificationByUserIdList(userId, type).get(0);
-            sendToClient(sseEmitter, userId, notification);
+            sendToClient(sseEmitter, userId, notification, "notification");
             log.info("이벤트가 성공적으로 진행되었습니다. {}", userId);
         }
     }
@@ -61,16 +61,16 @@ public class SseServiceImpl implements SseService {
         // 연결 요청에 의해 SseEmitter가 생성되면 더미 데이터를 보내줘야함.
         // 연결된 후 하나의 데이터도 전송되지 않는다면 SseEmitter의 유효시간이 끝났을 경우,
         // 503 응답이 발생하므로 연결시 바로 더미 데이터를 한 번 보내준다.
-        sendToClient(sseEmitter, userId, "connect complete");
+        sendToClient(sseEmitter, userId, "connect complete", "sse");
         return sseEmitter;
     }
 
     @Override
-    public void sendToClient(SseEmitter sseEmitter, Long userId, Object data) {
+    public void sendToClient(SseEmitter sseEmitter, Long userId, Object data, String eventName) {
         try {
             sseEmitter.send(SseEmitter.event()
                 .id(String.valueOf(userId))
-                .name("sse")
+                .name(eventName)
                 .data(data));
         } catch (IOException e) {
             sseRepository.delete(userId);
