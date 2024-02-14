@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisPassword;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -31,25 +33,32 @@ public class RedisConfig {
     @Value("${spring.data.redis.sse.port}")
     private int SSE_PORT;
 
+    @Value("${spring.data.redis.password}")
+    private String PASSWORD;
+
     @Bean(name = "sseRedisConnectionFactory")
     public RedisConnectionFactory sseRedisConnectionFactory() {
-        return new LettuceConnectionFactory(HOST, SSE_PORT);
+        RedisStandaloneConfiguration config = standaloneConfiguration(HOST, SSE_PORT, PASSWORD);
+        return new LettuceConnectionFactory(config);
     }
 
     @Primary
     @Bean(name = "certificationRedisConnectionFactory")
     public RedisConnectionFactory certificationRedisConnectionFactory() {
-        return new LettuceConnectionFactory(HOST, CERTIFICATION_PORT);
+        RedisStandaloneConfiguration config = standaloneConfiguration(HOST, CERTIFICATION_PORT, PASSWORD);
+        return new LettuceConnectionFactory(config);
     }
 
     @Bean(name = "associationRedisConnectionFactory")
     public RedisConnectionFactory associationRedisConnectionFactory() {
-        return new LettuceConnectionFactory(HOST, ASSOCIATION_PORT);
+        RedisStandaloneConfiguration config = standaloneConfiguration(HOST, ASSOCIATION_PORT, PASSWORD);
+        return new LettuceConnectionFactory(config);
     }
 
     @Bean(name = "refreshTokenRedisConnectionFactory")
     public RedisConnectionFactory refreshTokenRedisConnectionFactory() {
-        return new LettuceConnectionFactory(HOST, TOKEN_PORT);
+        RedisStandaloneConfiguration config = standaloneConfiguration(HOST, TOKEN_PORT, PASSWORD);
+        return new LettuceConnectionFactory(config);
     }
 
     @Primary
@@ -91,6 +100,14 @@ public class RedisConfig {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         return container;
+    }
+
+    private static RedisStandaloneConfiguration standaloneConfiguration(String host, int port, String password) {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName(host);
+        config.setPort(port);
+        config.setPassword(RedisPassword.of(password));
+        return config;
     }
 
     private static void redisTemplateSetting(
