@@ -49,11 +49,11 @@ const updateUserInfo = async (image, ...arg) => {
   }
 };
 
-const applyZipsaRequest = async userId => {
+const applyZipsaRequest = async () => {
   try {
     const response = await axios({
       method: 'patch',
-      url: `/users/${userId}/promise`,
+      url: `/users/promise`,
     });
     return response.data.data;
   } catch (error) {

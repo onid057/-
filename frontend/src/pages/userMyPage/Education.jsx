@@ -14,11 +14,11 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 16px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
+  gap: 20px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
@@ -47,7 +47,8 @@ const ContentWrapper = styled.div`
 `;
 
 const TextWrapper = styled.div`
-  font-size: 18px;
+  word-break: break-all;
+  font-size: 16px;
   line-height: 1.3;
 `;
 
@@ -56,15 +57,15 @@ function Education() {
     {
       name: '유의사항',
       content: [
-        '심부름 지원 시 요청 내용과 시간, 장소 등을 꼼꼼히 확인한 후 지원해 주세요.',
-        '고객과 매칭이 되면 취소가 불가능해요.',
+        '심부름 지원 시 요청 내용과 시간, 장소 등을 꼼꼼히 확인하고 지원해 주세요.',
+        '매칭이 되면 취소가 불가능해요.',
       ],
     },
     {
       name: '고객응대',
       content: [
-        '항상 단정한 용모와 깨끗한 복장을 유지해 주세요.',
-        '항상 웃는 얼굴로 고객을 맞이하고 먼저 밝게 인사해 주세요.',
+        '단정한 용모와 깨끗한 복장을 유지해 주세요.',
+        '웃는 얼굴로 고객을 맞이하고 먼저 밝게 인사해 주세요.',
       ],
     },
   ];
@@ -77,24 +78,17 @@ function Education() {
 
   let today = new Date();
   let year = today.getFullYear();
-  let month = today.getMonth();
+  let month = today.getMonth() + 1;
   let date = today.getDate();
 
   const [sign, setSign] = useState('');
   const onSignChange = e => setSign(e.target.value);
 
-  const onButtonClick = () => {
-    // // 서명이 실명과 일치하지 않는다면
-    // if (userName !== sign) {
-    //   alert('본인의 실명을 입력해주세요.');
-    // } else {
-    //   // axios 요청 보내기
-    // }
-    applyZipsaRequest(userId);
+  const onButtonClick = async () => {
+    await applyZipsaRequest().then(response => console.log(response));
+    navigate('/insertZipsaInfo');
   };
   const navigate = useNavigate();
-
-  const userId = 1;
 
   return (
     <Wrapper>
@@ -114,11 +108,12 @@ function Education() {
           gap={'10px'}
           fontSize={'35px'}
           sentences={['필수교육을', '꼼꼼히', '읽어주세요']}
+          margin={'0 0 20px 0'}
         ></Paragraph>
       </TitleWrapper>
       {educationInfo.map((info, idx) => (
         <BodyWrapper key={idx}>
-          <BoldText fontSize={'25px'} normalContent={info.name}></BoldText>
+          <BoldText fontSize={'20px'} normalContent={info.name}></BoldText>
           <ContentWrapper>
             {info.content.map((content, idx) => (
               <TextWrapper key={idx}>{`${idx + 1}. ` + content}</TextWrapper>
@@ -126,9 +121,9 @@ function Education() {
           </ContentWrapper>
         </BodyWrapper>
       ))}
-      <HorizontalLine height={'7px'} color={'#D9D9D9'}></HorizontalLine>
+      <HorizontalLine height={'2px'}></HorizontalLine>
       <TitleWrapper>
-        <Paragraph fontSize={'35px'} sentences={['서비스 서약서']}></Paragraph>
+        <Paragraph fontSize={'25px'} sentences={['서비스 서약서']}></Paragraph>
       </TitleWrapper>
       <ContentWrapper>
         <TextWrapper>

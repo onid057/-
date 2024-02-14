@@ -15,6 +15,7 @@ import UserProfileUpdate from './pages/userMyPage/UserProfileUpdate';
 import PasswordUpdate from './pages/userMyPage/PasswordUpdate';
 import ApplyZipsa from './pages/userMyPage/ApplyZipsa';
 import Education from './pages/userMyPage/Education';
+import InsertZipsaInfo from './pages/userMyPage/InsertZipsaInfo';
 import MyBoardList from './pages/MyBoardList';
 import UserActivityHistory from './pages/userMyPage/UserActivityHistory';
 import PaymentRegistration from './pages/userMyPage/PaymentRegistration';
@@ -220,6 +221,7 @@ function App() {
         <Route path="/passwordUpdate" element={<PasswordUpdate />}></Route>
         <Route path="/applyZipsa" element={<ApplyZipsa />}></Route>
         <Route path="/education" element={<Education />}></Route>
+        <Route path="/insertZipsaInfo" element={<InsertZipsaInfo />}></Route>
         <Route path="/myBoards" element={<MyBoardList />}></Route>
         <Route
           path="/userActivityHistory"

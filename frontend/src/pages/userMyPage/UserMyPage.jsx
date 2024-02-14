@@ -123,7 +123,7 @@ function UserMyPage() {
         </NavigateButton>
         <NavigateButton
           onClick={() => {
-            navigate('/applyZipsa');
+            return data?.isZipsa ? undefined : navigate('/applyZipsa');
           }}
           disabled={data?.isZipsa}
         >

@@ -261,7 +261,10 @@ export default function Home() {
             <Button
               mode="THIN_WHITE"
               onClick={() => {
-                doLogOut().then(response => console.log(response));
+                doLogOut().then(response => {
+                  console.log(response);
+                  window.localStorage.removeItem('user-storage');
+                });
                 setUserState('');
                 setIsLoggedIn(false);
               }}

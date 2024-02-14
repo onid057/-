@@ -11,11 +11,11 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 16px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 25px;
+  gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
@@ -24,15 +24,13 @@ const Wrapper = styled.div`
 
 const TitleWrapper = styled.div`
   width: 288px;
-  height: 260px;
   padding: 20px 0;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
   border-radius: 25px;
-  gap: 15px;
+  gap: 50px;
 `;
 
 const TitleUpperWrapper = styled.div`
@@ -44,21 +42,6 @@ const TitleUpperWrapper = styled.div`
 const TitleCenterWrapper = styled.div`
   text-align: center;
   position: relative;
-`;
-
-const ImageWrapper = styled.div`
-  position: absolute;
-  top: -20px;
-  right: -10px;
-  z-index: 999;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  background-image: url(${process.env.PUBLIC_URL}/images/magnifier.svg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: none;
 `;
 
 const ContentWrapper = styled.div`
@@ -74,7 +57,7 @@ const InnerContentWrapper = styled.div`
   background-color: white;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   border-radius: 25px;
 `;
@@ -84,8 +67,8 @@ const ButtonWrapper = styled.div`
 `;
 
 const BoldTextWrapper = styled.div`
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 500;
   text-align: center;
 `;
 
@@ -117,29 +100,28 @@ function ApplyZipsa() {
     {
       url: `${process.env.PUBLIC_URL}/images/city_work.svg`,
       normalContent: ['동네에서', '간편하게 하는'],
-      boldContent: ['투잡'],
+      boldContent: ['아르바이트'],
     },
   ];
 
   const applyProcedure = [
     {
       normalContent: '집사 지원',
-      boldContent: 'step1.',
+      boldContent: 'step1. ',
     },
     {
       normalContent: '필수교육 이수 및 퀴즈',
-      boldContent: 'step2.',
+      boldContent: 'step2. ',
     },
     {
       normalContent: '서약서 작성 후 지원 완료',
-      boldContent: 'step3.',
+      boldContent: 'step3. ',
     },
   ];
 
   const navigate = useNavigate();
 
   const onButtonClick = () => {
-    // 필수교육 및 서약서 제출 페이지 이동
     navigate('/education');
   };
 
@@ -159,7 +141,7 @@ function ApplyZipsa() {
       <TitleWrapper>
         <TitleUpperWrapper>
           <Image
-            src={`${process.env.PUBLIC_URL}/images/3d_arrow.svg`}
+            src={`${process.env.PUBLIC_URL}/images/small_heart.svg`}
             width={'18px'}
             height={'18px'}
           ></Image>
@@ -175,38 +157,26 @@ function ApplyZipsa() {
         <TitleCenterWrapper>
           <Paragraph
             gap={'10px'}
-            fontSize={'35px'}
-            sentences={['집사님을', '모집합니다']}
+            fontSize={'25px'}
+            sentences={['"집사"님을', '모집합니다!']}
             textAlign={'center'}
           ></Paragraph>
-          <ImageWrapper></ImageWrapper>
         </TitleCenterWrapper>
-        <ButtonWrapper>
-          <Button
-            mode={'THICK_BLUE'}
-            children={'집사 지원하기'}
-            onClick={onButtonClick}
-          ></Button>
-        </ButtonWrapper>
       </TitleWrapper>
       <ContentWrapper>
-        <BoldText
-          fontSize={'25px'}
-          boldContent={null}
-          normalContent={'집사가 된다면'}
-        />
+        <BoldText fontSize={'20px'} normalContent={'집사가 된다면!'} />
         <InnerContentWrapper>
           {infoContent.map((content, idx) => (
             <Paragraph
               key={idx}
               gap={'10px'}
-              fontSize={'18px'}
+              fontSize={'16px'}
               textAlign={'center'}
               sentences={[
                 <Image
                   src={content.url}
-                  width={'134px'}
-                  height={'134px'}
+                  width={'90px'}
+                  height={'90px'}
                 ></Image>,
                 ...content.normalContent,
                 <BoldTextWrapper>{content.boldContent}</BoldTextWrapper>,
@@ -217,9 +187,9 @@ function ApplyZipsa() {
       </ContentWrapper>
       <ContentWrapper>
         <BoldText
-          fontSize={'25px'}
+          fontSize={'20px'}
           boldContent={null}
-          normalContent={'지원절차'}
+          normalContent={'지원 절차'}
         />
         <ApplyWrapper>
           {applyProcedure.map((content, idx) => (
@@ -239,6 +209,13 @@ function ApplyZipsa() {
           ))}
         </ApplyWrapper>
       </ContentWrapper>
+      <ButtonWrapper>
+        <Button
+          mode={'THICK_BLUE'}
+          children={'집사 지원하기'}
+          onClick={onButtonClick}
+        ></Button>
+      </ButtonWrapper>
     </Wrapper>
   );
 }

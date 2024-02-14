@@ -32,9 +32,9 @@ const MemberWrapper = styled.div`
 `;
 
 function ConnectCodeShow() {
-  const { data, isPending, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['associatedUserList'],
-    queryFn: () => getAssociatedUserList(2),
+    queryFn: () => getAssociatedUserList(),
   });
 
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ function ConnectCodeShow() {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        onPrevious={() => navigate(-1)}
+        onPrevious={() => navigate('/userMyPage')}
       ></NavigationBar>
 
       <Paragraph
@@ -67,7 +67,10 @@ function ConnectCodeShow() {
               width="60px"
               height="60px"
               margin="4px 0 0 0"
-              src={process.env.PUBLIC_URL + '/images/profile_img.svg'}
+              src={
+                user.profileImage ||
+                process.env.PUBLIC_URL + '/images/profile_img.svg'
+              }
             ></Image>
             {user.isRepresentative
               ? `${user.name} (${'나, 대표'})`

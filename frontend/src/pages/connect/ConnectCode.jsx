@@ -43,7 +43,7 @@ function ConnectCode() {
 
   useEffect(() => {
     if (option === 'show') {
-      createAssociationCode(4, 'user4@ssafy.com', 2).then(response => {
+      createAssociationCode().then(response => {
         setCode(response.data.additionCode);
         setLeftTime(response.data.leftTime);
       });
@@ -61,7 +61,7 @@ function ConnectCode() {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        onPrevious={() => navigate('/connectMember')}
+        onPrevious={() => navigate('/userMyPage')}
       ></NavigationBar>
 
       <Paragraph

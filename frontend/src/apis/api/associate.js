@@ -1,14 +1,11 @@
 import axios from '../utils/instance';
 
 // 대표로 등록하기
-const createAssociationAsLeader = async userId => {
+const createAssociationAsLeader = async () => {
   try {
     const response = await axios({
       method: 'post',
       url: '/associations',
-      data: {
-        userId,
-      },
     });
     return response.data;
   } catch (error) {
@@ -18,11 +15,11 @@ const createAssociationAsLeader = async userId => {
 
 // 나와 연결된 연동 고객 리스트 조회
 // useQuery 사용
-const getAssociatedUserList = async associationId => {
+const getAssociatedUserList = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: `/associations/${associationId}`,
+      url: `/associations`,
     });
     return response.data.data;
   } catch (error) {
@@ -31,16 +28,11 @@ const getAssociatedUserList = async associationId => {
 };
 
 // 연동 코드 생성(대표만 가능)
-const createAssociationCode = async (userId, userEmail, associationId) => {
+const createAssociationCode = async () => {
   try {
     const response = await axios({
       method: 'post',
       url: '/associations/addition',
-      data: {
-        userId,
-        userEmail,
-        associationId,
-      },
     });
     return response.data;
   } catch (error) {

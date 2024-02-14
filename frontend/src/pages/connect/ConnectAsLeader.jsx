@@ -75,8 +75,8 @@ function ConnectAsLeader() {
         }
         onClick={
           isFirstConditionAgreed && isSecondConditionAgreed
-            ? () => {
-                createAssociationAsLeader(4).then(response =>
+            ? async () => {
+                await createAssociationAsLeader().then(response =>
                   console.log(response),
                 );
                 navigate('/connectCode/show');
