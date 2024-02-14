@@ -11,7 +11,7 @@ const Wrapper = styled.div`
   display: flex;
   margin-top: 20px;
   margin-left: -16px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 18px;
   background-color: ${({ theme }) => theme.colors.secondary};
@@ -19,6 +19,7 @@ const Wrapper = styled.div`
   font-size: 11px;
   font-weight: 400;
   z-index: 9999;
+  padding: 0 20px;
 `;
 
 const MenuWrapper = styled.div`
@@ -31,7 +32,7 @@ const MenuWrapper = styled.div`
   color: ${props => (props.selected ? '#000000' : '#a7acb4')};
 `;
 
-function MenuBar({ currentMenu }) {
+function MenuBar({ currentMenu, isWorked }) {
   const navigate = useNavigate();
 
   const homeImageURL =
@@ -79,15 +80,17 @@ function MenuBar({ currentMenu }) {
         게시판
       </MenuWrapper>
 
-      <MenuWrapper selected={currentMenu === 'SEARCH'}>
-        <Image
-          src={searchImageURL}
-          width="28px"
-          height="28px"
-          onClick={() => navigate('/matchOption')}
-        ></Image>
-        집사찾기
-      </MenuWrapper>
+      {!isWorked && (
+        <MenuWrapper selected={currentMenu === 'SEARCH'}>
+          <Image
+            src={searchImageURL}
+            width="28px"
+            height="28px"
+            onClick={() => navigate('/matchOption')}
+          ></Image>
+          집사찾기
+        </MenuWrapper>
+      )}
 
       <MenuWrapper selected={currentMenu === 'RESERVE'}>
         <Image
