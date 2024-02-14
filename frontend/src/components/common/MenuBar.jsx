@@ -107,7 +107,7 @@ function MenuBar({ currentMenu, isWorked }) {
           src={userImageURL}
           width="24px"
           height="27px"
-          onClick={() => navigate('/userMyPage')}
+          onClick={() => navigate('/myPage')}
         ></Image>
         사용자
       </MenuWrapper>

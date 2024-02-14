@@ -59,7 +59,7 @@ const ImageWrapper = styled.div`
 `;
 
 const InfoWrapper = styled.div`
-  width: 270px;
+  width: 100%;
   font-size: 17px;
   display: flex;
   flex-wrap: wrap;

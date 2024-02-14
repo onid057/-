@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavigationBar from '../../components/common/NavigationBar';
+import MenuBar from '../../components/common/MenuBar';
 import TwoIndex from '../../components/zipsamypage/TwoIndex';
 import Notice from '../../components/common/Notice';
 import Paragraph from '../../components/common/Paragraph';
@@ -22,7 +23,17 @@ const Wrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
+const HeadWrapper = styled.div`
+  width: 100%;
+  min-height: 509px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: ${({ theme }) => theme.colors.primary};
+  font-size: 16px;
+  font-weight: 300;
+  white-space: pre-wrap;
+`;
 const MenuText = styled.div`
   width: ${props => props.width || '200px'};
   display: flex;
@@ -83,88 +94,91 @@ function ZipsaMyPageMain() {
 
   return (
     <Wrapper>
-      <NavigationBar
-        leftContent={
-          <Image
-            src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
-            width={'40px'}
-            height={'40px'}
-            margin={'0 0 0 -12px'}
-          ></Image>
-        }
-        onPrevious={onPrevious}
-      ></NavigationBar>
-
-      <Notice
-        upper={[
-          <Image
-            src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
-            width={'60px'}
-            height={'60px'}
-            margin={'0px'}
-          ></Image>,
-          <Paragraph
-            gap={'10px'}
-            fontSize={'13px'}
-            sentences={[
-              <BoldText
-                fontSize={'20px'}
-                boldContent={data.name}
-                normalContent={' 집사님'}
-              ></BoldText>,
-              '내 정보 수정하기',
-            ]}
-          ></Paragraph>,
-        ]}
-        lower={null}
-        padding={'15px 13px'}
-        nextPage={'/zipsa/update'}
-      ></Notice>
-
-      <TwoIndex
-        helperId={helperId}
-        name={data.name}
-        gradeId={data.gradeId}
-        gradeName={gradeName}
-        avgScore={avgScore}
-      ></TwoIndex>
-
-      {MenuList.map((content, idx) => (
-        // let nextPage;
-        // swtich (idx) {
-        //   case '0':
-        //     nextPage='/zipsa/history'
-        //   case '1':
-        //     nextPage='/zipsa/history'
-        //   case '2':
-        //     nextPage='/zipsa/history'
-        //   default:
-        //     nextPage='/zipsa/history'
-        // }
+      <HeadWrapper>
+        <NavigationBar
+          leftContent={
+            <Image
+              src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
+              width={'40px'}
+              height={'40px'}
+              margin={'0 0 0 -12px'}
+            ></Image>
+          }
+          onPrevious={onPrevious}
+        ></NavigationBar>
 
         <Notice
-          key={idx}
           upper={[
-            <MenuText width="270px">
-              <BoldText
-                fontSize={'18px'}
-                boldContent={null}
-                normalContent={content}
-              ></BoldText>
-              <Image
-                src={process.env.PUBLIC_URL + '/images/right_arrow.svg'}
-                width={'24px'}
-                height={'24px'}
-                margin={'0'}
-              ></Image>
-            </MenuText>,
+            <Image
+              src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
+              width={'60px'}
+              height={'60px'}
+              margin={'0px'}
+            ></Image>,
+            <Paragraph
+              gap={'10px'}
+              fontSize={'13px'}
+              sentences={[
+                <BoldText
+                  fontSize={'20px'}
+                  boldContent={data.name}
+                  normalContent={' 집사님'}
+                ></BoldText>,
+                '내 정보 수정하기',
+              ]}
+            ></Paragraph>,
           ]}
           lower={null}
-          // 각자 페이지로 이동하기
-          nextPage={`/zipsa/history`}
-          padding={'20px 12px'}
+          padding={'15px 13px'}
+          nextPage={'/zipsa/update'}
         ></Notice>
-      ))}
+
+        <TwoIndex
+          helperId={helperId}
+          name={data.name}
+          gradeId={data.gradeId}
+          gradeName={gradeName}
+          avgScore={avgScore}
+        ></TwoIndex>
+
+        {MenuList.map((content, idx) => (
+          // let nextPage;
+          // swtich (idx) {
+          //   case '0':
+          //     nextPage='/zipsa/history'
+          //   case '1':
+          //     nextPage='/zipsa/history'
+          //   case '2':
+          //     nextPage='/zipsa/history'
+          //   default:
+          //     nextPage='/zipsa/history'
+          // }
+
+          <Notice
+            key={idx}
+            upper={[
+              <MenuText width="270px">
+                <BoldText
+                  fontSize={'18px'}
+                  boldContent={null}
+                  normalContent={content}
+                ></BoldText>
+                <Image
+                  src={process.env.PUBLIC_URL + '/images/right_arrow.svg'}
+                  width={'24px'}
+                  height={'24px'}
+                  margin={'0'}
+                ></Image>
+              </MenuText>,
+            ]}
+            lower={null}
+            // 각자 페이지로 이동하기
+            nextPage={`/zipsa/history`}
+            padding={'20px 12px'}
+          ></Notice>
+        ))}
+      </HeadWrapper>
+      <MenuBar currentMenu="USER" isWorked={true}></MenuBar>
     </Wrapper>
   );
 }

@@ -5,6 +5,7 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
+import MyPage from './pages/myPage/MyPage';
 import UserMyPage from './pages/userMyPage/UserMyPage'; // 사용자 마이 페이지
 import ConnectOption from './pages/connect/ConnectOption'; // 연동 옵션 고르기 페이지
 import ConnectAsLeader from './pages/connect/ConnectAsLeader'; // 대표로 연동하기 페이지
@@ -216,11 +217,14 @@ function App() {
         <Route index element={<Home />}></Route>
         <Route path="/login" element={<Login />}></Route>
 
+        <Route path="/myPage" element={<MyPage />}></Route>
+
         {/* 유저 마이 페이지 */}
-        <Route path="/userMyPage" element={<UserMyPage />}></Route>
+        {/* <Route path="/userMyPage" element={<UserMyPage />}></Route> */}
 
         {/* 집사 마이 페이지 */}
-        <Route path="/zipsa/mypage" element={<ZipsaMyPageMain />}></Route>
+        {/* <Route path="/zipsa/mypage" element={<ZipsaMyPageMain />}></Route> */}
+
         <Route path="/zipsa/detail" element={<ZipsaDetail />}></Route>
         <Route path="/zipsa/history" element={<ZipsaActivityHistory />}></Route>
         <Route path="/zipsa/update" element={<ZipsaProfileUpdate />}></Route>
@@ -279,8 +283,6 @@ function App() {
           element={<ReserveDetail />}
         ></Route>
 
-        <Route path="*" element={<NotFound />}></Route>
-
         <Route path="/rooms" element={<UserRoomList />}></Route>
         <Route path="/rooms/create" element={<CreateRoomFunnel />}></Route>
         <Route
@@ -300,6 +302,9 @@ function App() {
         <Route path="/report/:roomId" element={<ReportWriting />}></Route>
         <Route path="/reportComplete" element={<ReportComplete />}></Route>
         <Route path="/reportDetail/:roomId" element={<ReportDetail />}></Route>
+
+        {/* 404 페이지 */}
+        <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </ThemeProvider>
   );
