@@ -24,18 +24,18 @@ import org.springframework.stereotype.Service;
 public class TokenProvider {
 
     @Value("${jwt.issuer}")
-    private String issuer;
+    private String ISSUER;
 
     @Value("${jwt.secretKey}")
-    private String secretKey;
+    private String SECRET_KEY;
 
     @Value("${cookie.age}")
-    private Integer cookieMaxAge;
-
-    private final AuthRepository authRepository;
+    private Integer COOKIE_MAX_AGE;
 
     @Value("${jwt.claim-name}")
-    private String claimName;
+    private String CLAIM_NAME;
+
+    private final AuthRepository authRepository;
 
     public String makeAccessToken(String email) {
         return createToken(email, Duration.ofMinutes(10));
@@ -49,9 +49,9 @@ public class TokenProvider {
         Date now = new Date();
         Date validity = new Date(now.getTime() + time.toMillis());
 
-        return Jwts.builder().header().type("JWT").and().issuer(issuer)
-            .issuedAt(now).expiration(validity).claim(claimName, email)
-            .signWith(Keys.hmacShaKeyFor(secretKey.getBytes()), SIG.HS256)
+        return Jwts.builder().header().type("JWT").and().issuer(ISSUER)
+            .issuedAt(now).expiration(validity).claim(CLAIM_NAME, email)
+            .signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SIG.HS256)
             .compact();
     }
 
@@ -61,14 +61,14 @@ public class TokenProvider {
 
         try {
             return Jwts.parser()
-                .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build()
-                .parseSignedClaims(accessToken).getPayload().get(claimName, String.class);
+                .verifyWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())).build()
+                .parseSignedClaims(accessToken).getPayload().get(CLAIM_NAME, String.class);
         } catch (ExpiredJwtException e) {
             String refreshToken = CookieUtil.getCookieValue(request.getCookies(), "refreshToken");
             try {
                 String email = Jwts.parser()
-                    .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build()
-                    .parseSignedClaims(refreshToken).getPayload().get(claimName, String.class);
+                    .verifyWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes())).build()
+                    .parseSignedClaims(refreshToken).getPayload().get(CLAIM_NAME, String.class);
                 String tokenEmail = authRepository.findRefreshToken(refreshToken);
                 if (tokenEmail.isEmpty() || !email.equals(tokenEmail)) {
                     return null;
@@ -79,7 +79,7 @@ public class TokenProvider {
 
                 authRepository.makeRefreshToken(newRefreshToken, email);
                 CookieUtil.saveCookie(newAccessToken, newRefreshToken, response,
-                    cookieMaxAge);
+                    COOKIE_MAX_AGE);
                 return email;
             } catch (Exception error) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ACCESS);
@@ -91,7 +91,7 @@ public class TokenProvider {
     public boolean validationToken(String token) {
 
         try {
-            Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
+            Jwts.parser().verifyWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()))
                 .build().parseSignedClaims(token);
             return true;
         } catch (SignatureException | MalformedJwtException | UnsupportedJwtException |

@@ -17,39 +17,39 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 public class RedisConfig {
 
     @Value("${spring.data.redis.host}")
-    private String host;
+    private String HOST;
 
     @Value("${spring.data.redis.certification.port}")
-    private int certificationPort;
+    private int CERTIFICATION_PORT;
 
     @Value("${spring.data.redis.association.port}")
-    private int associationPort;
+    private int ASSOCIATION_PORT;
 
     @Value("${spring.data.redis.token.port}")
-    private int tokenPort;
+    private int TOKEN_PORT;
 
     @Value("${spring.data.redis.sse.port}")
-    private int ssePort;
+    private int SSE_PORT;
 
     @Bean(name = "sseRedisConnectionFactory")
     public RedisConnectionFactory sseRedisConnectionFactory() {
-        return new LettuceConnectionFactory(host, ssePort);
+        return new LettuceConnectionFactory(HOST, SSE_PORT);
     }
 
     @Primary
     @Bean(name = "certificationRedisConnectionFactory")
     public RedisConnectionFactory certificationRedisConnectionFactory() {
-        return new LettuceConnectionFactory(host, certificationPort);
+        return new LettuceConnectionFactory(HOST, CERTIFICATION_PORT);
     }
 
     @Bean(name = "associationRedisConnectionFactory")
     public RedisConnectionFactory associationRedisConnectionFactory() {
-        return new LettuceConnectionFactory(host, associationPort);
+        return new LettuceConnectionFactory(HOST, ASSOCIATION_PORT);
     }
 
     @Bean(name = "refreshTokenRedisConnectionFactory")
     public RedisConnectionFactory refreshTokenRedisConnectionFactory() {
-        return new LettuceConnectionFactory(host, tokenPort);
+        return new LettuceConnectionFactory(HOST, TOKEN_PORT);
     }
 
     @Primary

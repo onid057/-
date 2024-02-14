@@ -17,10 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageConfig {
 
     @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+    private String BUCKET;
 
     @Value("${image.prefix}")
-    private String prefix;
+    private String PREFIX;
 
     private final AmazonS3Client amazonS3Client;
 
@@ -35,14 +35,14 @@ public class ImageConfig {
         objectMetadata.setUserMetadata(Map.of("size", String.valueOf(size)));
 
         amazonS3Client.putObject(
-            new PutObjectRequest(bucket, randomFileName, originalImage.getInputStream(),
+            new PutObjectRequest(BUCKET, randomFileName, originalImage.getInputStream(),
                 objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
 
-        return prefix + randomFileName;
+        return PREFIX + randomFileName;
     }
 
     public void deleteImage(String key) {
-        amazonS3Client.deleteObject(bucket, key.substring(prefix.length()));
+        amazonS3Client.deleteObject(BUCKET, key.substring(PREFIX.length()));
     }
 
 }

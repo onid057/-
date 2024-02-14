@@ -87,16 +87,16 @@ public class UserServiceImpl implements UserService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${sms.number}")
-    private String senderPhoneNumber;
+    private String SENDER_PHONE_NUMBER;
 
     @Value("${image.size.profile}")
-    private Integer profileSize;
+    private Integer PROFILE_SIZE;
 
     @Value("${code.phone.start}")
-    private Integer codeStart;
+    private Integer CODE_START;
 
     @Value("${code.phone.end}")
-    private Integer codeEnd;
+    private Integer CODE_END;
 
     @Override
     public UserInfoResponse findUserInfo(Long userId) {
@@ -292,14 +292,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public void makeSendMessage(String phoneNumber, String email)
         throws JsonProcessingException, NoSuchAlgorithmException {
-        int code = getInstanceStrong().nextInt(codeStart,
-            codeEnd);
+        int code = getInstanceStrong().nextInt(CODE_START,
+            CODE_END);
         while (userRepository.findCode(String.valueOf(code)) != null) {
-            code = getInstanceStrong().nextInt(codeStart,
-                codeEnd);
+            code = getInstanceStrong().nextInt(CODE_START,
+                CODE_END);
         }
         Message message = new Message();
-        message.setFrom(senderPhoneNumber);
+        message.setFrom(SENDER_PHONE_NUMBER);
         message.setTo(phoneNumber);
         message.setText("인증 번호 " + code + " 를 입력해주세요");
         SingleMessageSentResponse response = messageService.sendOne(
@@ -390,7 +390,7 @@ public class UserServiceImpl implements UserService {
             if (user.getProfileImage() != null && !user.getProfileImage().isBlank()) {
                 imageConfig.deleteImage(user.getProfileImage());
             }
-            imageName = imageConfig.resizeImage(image, profileSize);
+            imageName = imageConfig.resizeImage(image, PROFILE_SIZE);
         }
         UserChangeDto userChangeDto = new UserChangeDto(
             imageName == null ? user.getProfileImage() : imageName,

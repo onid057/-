@@ -10,14 +10,14 @@ import org.springframework.stereotype.Component;
 public class MessageConfig {
 
     @Value("${sms.api.key}")
-    private String apiKey;
+    private String API_KEY;
 
     @Value("${sms.api.secret}")
-    private String secret;
+    private String SECRET;
 
     @Bean
     public DefaultMessageService messageService(){
-        return NurigoApp.INSTANCE.initialize(apiKey,secret,"https://api.coolsms.co.kr");
+        return NurigoApp.INSTANCE.initialize(API_KEY, SECRET, "https://api.coolsms.co.kr");
     }
 
 }

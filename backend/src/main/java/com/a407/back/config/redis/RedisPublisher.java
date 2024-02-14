@@ -30,7 +30,6 @@ public class RedisPublisher {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final Map<String, ChannelTopic> channelTopicMap = new ConcurrentHashMap<>();
 
-    @Transactional
     public SseEmitter createTopic(Long userId, HttpServletResponse response) {
         ChannelTopic channelTopic = new ChannelTopic(userId.toString());
         redisMessageListenerContainer.addMessageListener(redisSubscriber, channelTopic);
@@ -38,7 +37,6 @@ public class RedisPublisher {
         return sseService.connect(userId, response);
     }
 
-    @Transactional
     public void send(Long userId) {
         if (channelTopicMap.get(userId.toString()) == null) {
             logger.error("등록되지 않은 채널입니다. {}", userId);

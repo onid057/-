@@ -28,7 +28,7 @@ public class SseServiceImpl implements SseService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Value("${default.timeout}")
-    private Long defaultTimeout;
+    private Long DEFAULT_TIMEOUT;
 
     private final SseRepository sseRepository;
 
@@ -51,9 +51,8 @@ public class SseServiceImpl implements SseService {
     }
 
     @Override
-    @Transactional
     public SseEmitter connect(Long userId, HttpServletResponse response) {
-        SseEmitter sseEmitter = sseRepository.save(userId, new SseEmitter(defaultTimeout));
+        SseEmitter sseEmitter = sseRepository.save(userId, new SseEmitter(DEFAULT_TIMEOUT));
         response.setHeader("X-Accel-Buffering", "no");
         // 시간 초과, 네트워크 오류를 포함한 모든 이유로 비동기 요청이 정상 동작할 수 없을 때 저장해둔 SseEmitter를 삭제함.
         sseEmitter.onCompletion(() -> sseRepository.delete(userId));

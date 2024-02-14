@@ -39,7 +39,7 @@ public class UserRepositoryImpl implements UserRepository {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Value("${map.range}")
-    private Double range;
+    private Double RANGE;
 
     @Override
     public User findByUserEmail(String email) {
@@ -80,7 +80,7 @@ public class UserRepositoryImpl implements UserRepository {
         User user = em.find(User.class, userId);
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
-                user.getLatitude(), user.getLongitude(), range * 4)))).orderBy(
+                user.getLatitude(), user.getLongitude(), RANGE * 4)))).orderBy(
             qZipsa.serviceCount.desc()).fetch();
     }
 
@@ -89,7 +89,7 @@ public class UserRepositoryImpl implements UserRepository {
         QZipsa qZipsa = QZipsa.zipsa;
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude, lat,
-                lng, range)))).orderBy(qZipsa.serviceCount.desc()).fetch();
+                lng, RANGE)))).orderBy(qZipsa.serviceCount.desc()).fetch();
     }
 
     @Override

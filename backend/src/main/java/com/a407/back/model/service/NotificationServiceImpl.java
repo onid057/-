@@ -18,6 +18,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,6 +34,9 @@ public class NotificationServiceImpl implements NotificationService {
     private final RoomRepository roomRepository;
 
     private final ZipsaRepository zipsaRepository;
+
+    @Value("${date.to.minute}")
+    private Double DATE_TO_MINUTE;
 
     // 고객이 자신의 알림 세부조회
     @Override
@@ -129,8 +133,8 @@ public class NotificationServiceImpl implements NotificationService {
 
     private void changeReplyStatus(Room room, Zipsa zipsa) {
         // 평균 회신 시간 갱신
-        double roomCreatedAt = (double) room.getRoomCreatedAt().getTime() / 60000;
-        double nowReplay = (double) Timestamp.valueOf(LocalDateTime.now()).getTime() / 60000;
+        double roomCreatedAt = room.getRoomCreatedAt().getTime() / DATE_TO_MINUTE;
+        double nowReplay = Timestamp.valueOf(LocalDateTime.now()).getTime() / DATE_TO_MINUTE;
         double replyAverage = (zipsa.getReplyCount() * zipsa.getReplyAverage() + nowReplay - roomCreatedAt) / (zipsa.getReplyCount() + 1);
         zipsaRepository.changeZipsaReplyCount(zipsa, replyAverage);
     }
