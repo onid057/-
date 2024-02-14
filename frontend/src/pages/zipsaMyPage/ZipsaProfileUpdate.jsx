@@ -179,7 +179,7 @@ function ProfileUpdate() {
       ></LongInputBox>
 
       <ZipsaTagUpdate
-        preferTag={preferTags}
+        preferTags={preferTags}
         setPreferTags={setPreferTags}
       ></ZipsaTagUpdate>
     </Wrapper>
