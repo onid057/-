@@ -253,7 +253,7 @@ public class ZipsaServiceImpl implements ZipsaService {
     @Transactional
     public Long makeZipsa(Long userId, Boolean isCertificated, ZipsaCreateRequest request) {
         // 인증이 완료되지 않은 경우
-        if (Boolean.TRUE.equals(isCertificated)) {
+        if (Boolean.FALSE.equals(isCertificated)) {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
         // 이미 집사인 경우
