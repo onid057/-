@@ -109,7 +109,6 @@ function ZipsaActivityHistory() {
                 <BoldText
                   fontSize={'16px'}
                   boldContent={data.startedAt.substr(0, 10).replace(/-/gi, '.')}
-                  normalContent={null}
                 ></BoldText>
               </DetailContentWrapper>
 
@@ -117,7 +116,7 @@ function ZipsaActivityHistory() {
                 <span>시작 시간</span>
                 <BoldText
                   fontSize={'16px'}
-                  boldContent={`${data.startedAt.substr(11, 2)}시 ${data.startedAt.substr(14, 2)}분`}
+                  boldContent={`${new Date(data.startedAt).getHours()}시 ${new Date(data.startedAt).getMinutes()}분`}
                   normalContent={null}
                 ></BoldText>
               </DetailContentWrapper>
@@ -126,7 +125,7 @@ function ZipsaActivityHistory() {
                 <span>끝난 시간</span>
                 <BoldText
                   fontSize={'16px'}
-                  boldContent={`${data.endedAt.substr(11, 2)}시 ${data.endedAt.substr(14, 2)}분`}
+                  boldContent={`${new Date(data.startedAt).getHours()}시 ${new Date(data.startedAt).getMinutes()}분`}
                   normalContent={null}
                 ></BoldText>
               </DetailContentWrapper>

@@ -1,6 +1,10 @@
 import styled from 'styled-components';
-import React, { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  getDetailZipsaInfo,
+  updateZipsaInfo,
+} from '../../apis/api/zipsaMyPage';
 import NavigationBar from '../../components/common/NavigationBar';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
@@ -14,7 +18,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0px 16px 50px;
+  padding: 0px 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -62,40 +66,6 @@ const InfoWrapper = styled.div`
   gap: 15px;
 `;
 
-// (세부)집사 정보조회 API 호출
-const zipsaData = {
-  name: 'user3',
-  email: 'user3@ssafy.com',
-  phoneNumber: null,
-  birth: '1980-01-30T02:09:41.000+00:00',
-  gender: 'MAN',
-  address: '서울시 강서구',
-  profileImage: null,
-  latitude: 37.54815556,
-  longitude: 126.851675,
-  gradeId: 1,
-  gradeName: 'APPRENTICE',
-  salary: 5000,
-  description: '열심히 하겠습니다.',
-  preferTag: '산책하기#함께 장보기#병원 가기#자차 보유#요양보호사',
-  serviceCount: 1,
-  replyAverage: 0.0,
-  replyCount: 0,
-  kindnessAverage: 110.0,
-  skillAverage: 110.0,
-  rewindAverage: 110.0,
-  subCategory: ['병원 동행', '동네 산책'],
-};
-
-// map 함수 돌기 위해 리스트로 만들기
-const zipsaInfo = [
-  ['이름', zipsaData.name],
-  ['생년월일', zipsaData.birth],
-  ['이메일 주소', zipsaData.email],
-  ['휴대폰 번호', zipsaData.phoneNumber],
-  ['집 주소', zipsaData.address],
-];
-
 function ProfileUpdate() {
   const fileInputRef = useRef(null);
 
@@ -104,16 +74,23 @@ function ProfileUpdate() {
     e.stopPropagation();
     fileInputRef.current.click();
   };
+  const [zipsaData, setZipsaData] = useState();
   const [showImages, setShowImages] = useState([]);
+  const [detail, setDetail] = useState();
 
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
   };
 
-  // preferTag 업데이트 위한 변수 선언
-  const [preferTags, setPreferTags] = useState(zipsaData.preferTag);
-  // console.log('ProfileUpdate에서 내려준 preferTags: ', preferTags);
+  useEffect(() => {
+    getDetailZipsaInfo(0).then(response => {
+      console.log(response);
+      setZipsaData(response.data);
+    });
+  }, []);
+
+  const [preferTags, setPreferTags] = useState(zipsaData.preferTag.split('#'));
 
   return (
     <Wrapper>
@@ -128,6 +105,12 @@ function ProfileUpdate() {
         }
         rightContent={'완료'}
         onPrevious={onPrevious}
+        onNext={async () => {
+          await updateZipsaInfo(detail, preferTags.join('#')).then(response => {
+            console.log(response);
+          });
+          navigate('/myPage');
+        }}
       ></NavigationBar>
 
       <Paragraph
@@ -159,22 +142,40 @@ function ProfileUpdate() {
         }
       ></ImageUploader>
 
-      {zipsaInfo.map((content, idx) => (
-        <InfoWrapper key={idx}>
-          <BoldText fontSize={'17px'} normalContent={content[0]}></BoldText>
-          <BoldText fontSize={'17px'} boldContent={content[1]}></BoldText>
-        </InfoWrapper>
-      ))}
+      <InfoWrapper>
+        <BoldText fontSize={'17px'} normalContent={'이름'}></BoldText>
+        <BoldText fontSize={'17px'} boldContent={zipsaData.name}></BoldText>
+      </InfoWrapper>
+      <InfoWrapper>
+        <BoldText fontSize={'17px'} normalContent={'생년월일'}></BoldText>
+        <BoldText fontSize={'17px'} boldContent={zipsaData.birth}></BoldText>
+      </InfoWrapper>
+      <InfoWrapper>
+        <BoldText fontSize={'17px'} normalContent={'이메일 주소'}></BoldText>
+        <BoldText fontSize={'17px'} boldContent={zipsaData.email}></BoldText>
+      </InfoWrapper>
+      <InfoWrapper>
+        <BoldText fontSize={'17px'} normalContent={'휴대폰 번호'}></BoldText>
+        <BoldText
+          fontSize={'17px'}
+          boldContent={zipsaData.phoneNumber}
+        ></BoldText>
+      </InfoWrapper>
+      <InfoWrapper>
+        <BoldText fontSize={'17px'} normalContent={'집 주소'}></BoldText>
+        <BoldText fontSize={'17px'} boldContent={zipsaData.address}></BoldText>
+      </InfoWrapper>
 
       <HorizontalLine
-        marginTop={'10PX'}
-        marginBottom={'8PX'}
-        height={'1px'}
+        marginTop={'10px'}
+        marginBottom={'10px'}
+        height={'2px'}
       ></HorizontalLine>
 
       <LongInputBox
         title={'자기소개'}
-        placeholder={zipsaData.description}
+        value={zipsaData.description}
+        onChange={event => setDetail(event.target.value)}
       ></LongInputBox>
 
       <ZipsaTagUpdate
