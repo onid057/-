@@ -13,11 +13,11 @@ const getSimpleUserInfo = async () => {
   }
 };
 
-const getDetailUserInfo = async userId => {
+const getDetailUserInfo = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: `/users/${userId}/detail`,
+      url: `/users/detail`,
     });
     return response.data.data;
   } catch (error) {
@@ -40,7 +40,7 @@ const updateUserInfo = async (image, ...arg) => {
   try {
     const response = await axios({
       method: 'patch',
-      url: '/users/1',
+      url: '/users',
       data: userForm,
     });
     return response.data;
@@ -61,11 +61,11 @@ const applyZipsaRequest = async userId => {
   }
 };
 
-const getBoardListByUser = async (userId, page, size) => {
+const getBoardListByUser = async (page, size) => {
   try {
     const response = await axios({
       method: 'get',
-      url: `/users/${userId}/boards?page=${page}&size=${size}`,
+      url: `/users/boards?page=${page}&size=${size}`,
     });
     return response.data.data;
   } catch (error) {
@@ -73,11 +73,11 @@ const getBoardListByUser = async (userId, page, size) => {
   }
 };
 
-const getUserActivityHistory = async userId => {
+const getUserActivityHistory = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: `/users/${userId}/records`,
+      url: `/users/records`,
     });
     return response.data;
   } catch (error) {

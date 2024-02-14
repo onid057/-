@@ -77,19 +77,20 @@ function ProfileUpdate() {
   };
 
   const onClickButton = () => {
-    updateUserInfo(imageFile).then(navigate('/userMyPage'));
+    updateUserInfo(imageFile).then(() => {
+      navigate('/userMyPage');
+    });
   };
 
   const navigate = useNavigate();
 
-  const userId = 1;
   const [userInfo, setUserInfo] = useState({});
 
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
   useEffect(() => {
-    getDetailUserInfo(userId).then(response => {
+    getDetailUserInfo().then(response => {
       setUserInfo(response);
     });
   }, []);

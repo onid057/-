@@ -275,9 +275,8 @@ export default function Home() {
             <Register onClick={() => navigate('/register')}>회원가입</Register>
           </LoginRegisterWrapper>
         )}
-
-        <MenuBar currentMenu="HOME"></MenuBar>
       </HeadWrapper>
+      <MenuBar currentMenu="HOME"></MenuBar>
     </Wrapper>
   );
 }

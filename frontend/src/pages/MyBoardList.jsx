@@ -4,6 +4,7 @@ import NavigationBar from '../components/common/NavigationBar';
 import Image from '../components/common/Image';
 import Paragraph from '../components/common/Paragraph';
 import BoardsTags from '../components/boards/BoardsTags';
+import NavigateText from '../components/common/NavigateText';
 
 import { useNavigate } from 'react-router-dom';
 import { calculateReportWritingTime } from '../utils/time';
@@ -54,9 +55,16 @@ const ArticleInfo = styled.div`
   text-align: end;
 `;
 
+const NoInfoWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 35px 0 0;
+  gap: 50px;
+`;
+
 const page = 1;
 const size = 50;
-const userId = 6;
 
 function MyBoardList() {
   const navigate = useNavigate();
@@ -67,7 +75,7 @@ function MyBoardList() {
   };
 
   useEffect(() => {
-    getBoardListByUser(userId, page, size).then(resp => {
+    getBoardListByUser(page, size).then(resp => {
       setList(resp.boardList);
     });
   }, []);
@@ -90,7 +98,30 @@ function MyBoardList() {
         sentences={['내가', '작성한 게시글']}
         gap={'15px'}
       ></Paragraph>
+      {list.length === 0 && (
+        <NoInfoWrapper>
+          <Paragraph
+            fontSize={'20px'}
+            sentences={['작성한 게시글이 없어요']}
+            gap={'7px'}
+          ></Paragraph>
+          <Paragraph
+            fontSize={'20px'}
+            sentences={[
+              '동네사람들과',
+              '다양한 이야기를 주고 받아보세요!',
+              <NavigateText
+                nextPage={'/boards'}
+                children={'게시판 가기'}
+              ></NavigateText>,
+            ]}
+            gap={'7px'}
+          ></Paragraph>
+        </NoInfoWrapper>
+      )}
+
       {/* API 받아서 map 돌기 */}
+      {!list && <>hi</>}
       {list?.map((article, idx) => (
         <Article
           key={idx}
