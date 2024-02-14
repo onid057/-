@@ -129,7 +129,6 @@ function ProfileUpdate() {
             <ImageWrapper>
               <Image
                 src={
-                  zipsaData.profileImage ||
                   showImages[0] ||
                   `${process.env.PUBLIC_URL}/images/profile_img.svg`
                 }
@@ -145,26 +144,26 @@ function ProfileUpdate() {
 
       <InfoWrapper>
         <BoldText fontSize={'17px'} normalContent={'이름'}></BoldText>
-        <BoldText fontSize={'17px'} boldContent={zipsaData.name}></BoldText>
+        <BoldText fontSize={'17px'} boldContent={zipsaData?.name}></BoldText>
       </InfoWrapper>
       <InfoWrapper>
         <BoldText fontSize={'17px'} normalContent={'생년월일'}></BoldText>
-        <BoldText fontSize={'17px'} boldContent={zipsaData.birth}></BoldText>
+        <BoldText fontSize={'17px'} boldContent={zipsaData?.birth}></BoldText>
       </InfoWrapper>
       <InfoWrapper>
         <BoldText fontSize={'17px'} normalContent={'이메일 주소'}></BoldText>
-        <BoldText fontSize={'17px'} boldContent={zipsaData.email}></BoldText>
+        <BoldText fontSize={'17px'} boldContent={zipsaData?.email}></BoldText>
       </InfoWrapper>
       <InfoWrapper>
         <BoldText fontSize={'17px'} normalContent={'휴대폰 번호'}></BoldText>
         <BoldText
           fontSize={'17px'}
-          boldContent={zipsaData.phoneNumber}
+          boldContent={zipsaData?.phoneNumber}
         ></BoldText>
       </InfoWrapper>
       <InfoWrapper>
         <BoldText fontSize={'17px'} normalContent={'집 주소'}></BoldText>
-        <BoldText fontSize={'17px'} boldContent={zipsaData.address}></BoldText>
+        <BoldText fontSize={'17px'} boldContent={zipsaData?.address}></BoldText>
       </InfoWrapper>
 
       <HorizontalLine
@@ -175,7 +174,7 @@ function ProfileUpdate() {
 
       <LongInputBox
         title={'자기소개'}
-        value={zipsaData.description}
+        value={zipsaData?.description}
         onChange={event => setDetail(event.target.value)}
       ></LongInputBox>
 
