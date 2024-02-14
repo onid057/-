@@ -60,7 +60,6 @@ function Toggle({ isWorked, setIsWorked }) {
   const toggleHandler = () => {
     changeUserState().then(response => {
       setIsWorked(!isWorked);
-      console.log(response);
     });
   };
 

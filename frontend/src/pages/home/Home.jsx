@@ -6,6 +6,7 @@ import { getFirstReservation } from '../../apis/api/reserve.js'; // 추후 연�
 import { subscribeSSE } from '../../apis/api/subscribe.js';
 import { useUserInfo } from '../../hooks/useUserInfo.js';
 import { doLogOut, isQualifiedZipsa } from '../../apis/api/login.js';
+import { calculateRemainDate, convertToHour } from '../../utils/time.js';
 
 import Image from '../../components/common/Image.jsx';
 import Paragraph from '../../components/common/Paragraph.jsx';
@@ -66,6 +67,7 @@ const Register = styled.div`
 export default function Home() {
   const [isWorked, setIsWorked] = useState();
   const [isZipsa, setIsZipsa] = useState();
+  const [reserveInfo, setReserveInfo] = useState({});
   const { setUserState, setIsLoggedIn } = useUserInfo();
   const navigate = useNavigate();
   // const eventSourceRef = useRef();
@@ -75,8 +77,10 @@ export default function Home() {
   useEffect(() => {
     if (isLoggedIn) {
       isQualifiedZipsa().then(response => {
-        console.log(response);
         setIsZipsa(response.data);
+      });
+      getFirstReservation().then(response => {
+        setReserveInfo(response.data);
       });
     }
   }, []);
@@ -86,7 +90,6 @@ export default function Home() {
     if (isLoggedIn && isZipsa) {
       getUserState().then(response => {
         console.log(response);
-        setIsWorked(response.data.isWorked);
         setUserState(response.data.isWorked ? 'ZIPSA' : 'USER');
       });
     }
@@ -131,46 +134,12 @@ export default function Home() {
             // }
           ></Image>
         </UpperWrapper>
+        {isZipsa && (
+          <Toggle isWorked={isWorked} setIsWorked={setIsWorked}></Toggle>
+        )}
 
-        {isLoggedIn ? (
+        {!isWorked ? (
           <>
-            {isZipsa && (
-              <Toggle isWorked={isWorked} setIsWorked={setIsWorked}></Toggle>
-            )}
-
-            {/* <Notice
-          upper={[
-            <Image
-              src={process.env.PUBLIC_URL + '/images/lightning.svg'}
-              width="30px"
-              height="30px"
-              margin="4px 0 0 0"
-            ></Image>,
-            <BoldText
-              fontSize="20px"
-              boldContent="{ 곽희웅 }"
-              normalContent=" 고객님"
-            ></BoldText>,
-          ]}
-          lower={[
-            <Paragraph
-              fontSize="16px"
-              gap="10px"
-              sentences={[
-                <BoldText
-                  boldContent="오늘 15:00"
-                  normalContent=" 시에"
-                ></BoldText>,
-                <BoldText
-                  boldContent="강아지 산책"
-                  normalContent=" 을 맡겼어요!"
-                ></BoldText>,
-              ]}
-            ></Paragraph>,
-          ]}
-          nextPage="/"
-        ></Notice> */}
-
             <Notice
               upper={[
                 <Image
@@ -220,58 +189,104 @@ export default function Home() {
               ]}
               nextPage="/matchOption"
             ></Notice>
-
-            <NoticeWrapper>
-              <Notice
-                upper={[
-                  <Image
-                    src={process.env.PUBLIC_URL + '/images/post.svg'}
-                    width="30px"
-                    height="30px"
-                    margin="0"
-                  ></Image>,
-                ]}
-                lower={[
-                  <Paragraph
-                    fontSize="14px"
-                    gap="5px"
-                    sentences={['다른 사용자들과', '소통하고 싶어요.']}
-                  ></Paragraph>,
-                ]}
-              ></Notice>
-
-              <Notice
-                upper={[
-                  <Image
-                    src={process.env.PUBLIC_URL + '/images/date.svg'}
-                    width="30px"
-                    height="30px"
-                    margin="0"
-                  ></Image>,
-                ]}
-                lower={[
-                  <Paragraph
-                    fontSize="14px"
-                    gap="5px"
-                    sentences={['예약 내역을', '보고 싶어요.']}
-                  ></Paragraph>,
-                ]}
-              ></Notice>
-            </NoticeWrapper>
-            <Button
-              mode="THIN_WHITE"
-              onClick={() => {
-                doLogOut().then(response => {
-                  console.log(response);
-                  window.localStorage.removeItem('user-storage');
-                });
-                setUserState('');
-                setIsLoggedIn(false);
-              }}
-            >
-              로그아웃
-            </Button>
           </>
+        ) : (
+          <>
+            <Notice
+              upper={[
+                <Image
+                  src={process.env.PUBLIC_URL + '/images/lightning.svg'}
+                  width="30px"
+                  height="30px"
+                  margin="4px 0 0 0"
+                ></Image>,
+                <BoldText
+                  fontSize="20px"
+                  boldContent={`{ ${reserveInfo.name} }`}
+                  normalContent={
+                    ' 고객님' + (reserveInfo.status === 'BEFORE' ? '과' : '이')
+                  }
+                ></BoldText>,
+              ]}
+              lower={[
+                <Paragraph
+                  fontSize="16px"
+                  gap="10px"
+                  sentences={[
+                    <BoldText
+                      boldContent={
+                        calculateRemainDate(reserveInfo.expectationStartedAt) +
+                        ' ' +
+                        convertToHour(reserveInfo.expectationStartedAt)
+                      }
+                      normalContent=" 시에"
+                    ></BoldText>,
+                    <BoldText
+                      boldContent={reserveInfo.majorCategoryName}
+                      normalContent={
+                        reserveInfo.status === 'BEFORE'
+                          ? '을 요청했어요!'
+                          : '을 진행 중이에요!'
+                      }
+                    ></BoldText>,
+                  ]}
+                ></Paragraph>,
+              ]}
+              nextPage="/"
+            ></Notice>
+          </>
+        )}
+        <NoticeWrapper>
+          <Notice
+            upper={[
+              <Image
+                src={process.env.PUBLIC_URL + '/images/post.svg'}
+                width="30px"
+                height="30px"
+                margin="0"
+              ></Image>,
+            ]}
+            lower={[
+              <Paragraph
+                fontSize="14px"
+                gap="5px"
+                sentences={['다른 사용자들과', '소통하고 싶어요.']}
+              ></Paragraph>,
+            ]}
+          ></Notice>
+
+          <Notice
+            upper={[
+              <Image
+                src={process.env.PUBLIC_URL + '/images/date.svg'}
+                width="30px"
+                height="30px"
+                margin="0"
+              ></Image>,
+            ]}
+            lower={[
+              <Paragraph
+                fontSize="14px"
+                gap="5px"
+                sentences={['예약 내역을', '보고 싶어요.']}
+              ></Paragraph>,
+            ]}
+          ></Notice>
+        </NoticeWrapper>
+        {isLoggedIn ? (
+          <Button
+            mode="THIN_WHITE"
+            onClick={() => {
+              doLogOut().then(response => {
+                console.log(response);
+                window.localStorage.removeItem('user-storage');
+              });
+              setUserState('');
+              setIsLoggedIn(false);
+            }}
+          >
+            로그아웃
+          </Button>
         ) : (
           <LoginRegisterWrapper>
             <Login onClick={() => navigate('/login')}>로그인</Login>
@@ -280,7 +295,7 @@ export default function Home() {
           </LoginRegisterWrapper>
         )}
       </HeadWrapper>
-      <MenuBar currentMenu="HOME"></MenuBar>
+      <MenuBar currentMenu="HOME" isWorked={isWorked}></MenuBar>
     </Wrapper>
   );
 }
