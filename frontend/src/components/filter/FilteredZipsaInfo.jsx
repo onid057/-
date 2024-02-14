@@ -3,6 +3,7 @@ import Image from '../common/Image';
 import GradeBadge from '../common/GradeBadge';
 import ScoreBadge from '../common/ScoreBadge';
 import PreferTag from '../common/PreferTag';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   cursor: pointer;
@@ -53,11 +54,13 @@ function FilteredZipsaInfo({
   onClick,
   isSelected,
 }) {
+  const navigate = useNavigate();
+
   return (
     <Wrapper onClick={onClick} $isSelected={isSelected}>
       {/* 추후에 여기에 profileImg 첨부 */}
       <Image
-        src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
+        src={profileImage || `${process.env.PUBLIC_URL}/images/profile_img.svg`}
         width={'69px'}
         height={'69px'}
       ></Image>
@@ -81,6 +84,13 @@ function FilteredZipsaInfo({
         width={'24px'}
         height={'24px'}
         margin={'0 -8px 0 0'}
+        onClick={() =>
+          navigate(`/zipsa/detail`, {
+            state: {
+              helperId: zipsaId,
+            },
+          })
+        }
       ></Image>
     </Wrapper>
   );

@@ -49,7 +49,7 @@ function ZipsaMyPageMain() {
   // 다이아 점수 계산
   const number =
     (data.kindnessAverage + data.skillAverage + data.rewindAverage) / 3;
-  const avgScore = number.toFixed(1);
+  const avgScore = number.toFixed(2);
 
   // 집사 명칭 영 → 한 변환
   const nameChanger = () => {

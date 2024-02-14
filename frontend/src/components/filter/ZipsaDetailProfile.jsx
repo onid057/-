@@ -8,13 +8,11 @@ const Wrapper = styled.div`
   width: 100%;
   height: auto;
   padding: 0 10px;
-  margin-top: 10px;
   display: flex;
   justify-content: start;
   align-items: start;
   font-weight: 300;
 `;
-
 const RightBox = styled.div`
   max-width: 200px;
   padding: 5px 10px;
@@ -23,13 +21,11 @@ const RightBox = styled.div`
   gap: 8px;
   justify-content: start;
 `;
-
 const Name = styled.div`
   width: 100%;
   font-size: 16px;
   font-weight: bold;
 `;
-
 const Infos = styled.div`
   width: 100%;
   height: 18px;
@@ -39,7 +35,6 @@ const Infos = styled.div`
   gap: 4px;
   font-size: 12px;
 `;
-
 const Description = styled.div`
   word-break: break-all;
   font-size: 13px;
@@ -50,6 +45,7 @@ function ZipsaDetailProfile({
   profileImage,
   name,
   gradeId,
+  gradeName,
   avgScore,
   reviewCount,
   description,
@@ -57,11 +53,7 @@ function ZipsaDetailProfile({
   return (
     <Wrapper>
       <Image
-        src={
-          profileImage
-            ? `${process.env.PUBLIC_URL}/images/${profileImage}.svg`
-            : `${process.env.PUBLIC_URL}/images/profile_img.svg`
-        }
+        src={profileImage || `${process.env.PUBLIC_URL}/images/profile_img.svg`}
         width={'70px'}
         height={'70px'}
         margin={'5px 5px 0 0'}
@@ -70,7 +62,7 @@ function ZipsaDetailProfile({
       <RightBox>
         <Name>{name}</Name>
         <Infos>
-          <GradeBadge grade={gradeId}></GradeBadge>
+          <GradeBadge grade={gradeName}></GradeBadge>
           <ScoreBadge score={avgScore} actCount={reviewCount}></ScoreBadge>
         </Infos>
         <Description>"{description}"</Description>

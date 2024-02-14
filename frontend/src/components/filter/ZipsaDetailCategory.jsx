@@ -66,7 +66,8 @@ function ZipsaDetailCategory({ subCategory, preferTagList }) {
         {subCategory.map((category, index) => {
           return (
             <span key={index}>
-              {index + 1}. {category}
+              {index + 1}.{' '}
+              {category === '상관없음' ? '어느 일이나 다 잘해요!' : category}
             </span>
           );
         })}

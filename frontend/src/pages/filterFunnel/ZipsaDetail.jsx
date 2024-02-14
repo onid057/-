@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -89,6 +89,7 @@ function ZipsaDetail() {
       <ZipsaDetailProfile
         profileImage={data.profileImage}
         name={data.name}
+        gradeName={data.gradeName}
         gradeId={data.gradeId}
         avgScore={avgScore}
         reviewCount={reviews.length}
