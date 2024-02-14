@@ -181,7 +181,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void deleteAssociation(Long userId) {
         QUser qUser = QUser.user;
-        query.update(qUser).set(qUser.associationId.associationId, 0L)
+        query.update(qUser).set(qUser.associationId.associationId, (Long) null)
             .set(qUser.isAffiliated, false).where(qUser.userId.eq(userId)).execute();
     }
 
