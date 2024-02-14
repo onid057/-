@@ -1,6 +1,7 @@
 package com.a407.back.model.repo;
 
 import com.a407.back.domain.Notification;
+import com.a407.back.domain.Notification.Status;
 import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.QNotification;
 import com.a407.back.domain.QRoom;
@@ -19,6 +20,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -60,7 +62,9 @@ public class UserRepositoryImpl implements UserRepository {
             .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
             .execute();
         return query.selectFrom(qNotification).where(
-                qNotification.receiveId.eq(userId).and(qNotification.type.eq(Type.valueOf(type))))
+                qNotification.receiveId.eq(userId).and(qNotification.type.eq(Type.valueOf(type))).and(qNotification.status.in(
+                    Arrays.asList(
+                    Status.STANDBY, Status.CONFIRM))))
             .orderBy(qNotification.createdAt.desc()).fetch();
     }
 
