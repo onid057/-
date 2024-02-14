@@ -5,7 +5,10 @@ import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import ZipsaDetailProfile from '../../components/filter/ZipsaDetailProfile';
 import ZipsaDetailRoute from '../../components/filter/ZipsaDetailRoute';
-import { getDetailZipsaInfo } from '../../apis/api/zipsaMyPage';
+import {
+  getDetailZipsaInfo,
+  getReviewZipsaInfo,
+} from '../../apis/api/zipsaMyPage';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -45,23 +48,29 @@ function ZipsaDetail() {
     navigate(-1);
   };
 
-  // (세부)집사 정보 조회 API 호출
+  // (간단) 집사 정보 조회 API 호출
+  // (리뷰)집사 정보 조회 API 호출
   const location = useLocation();
   const helperId = location.state.helperId;
   const [data, setData] = useState({});
-  console.log('ZipsaDetail에서의 helperId : ', helperId);
+  const [reviews, setReviews] = useState({});
 
   useEffect(() => {
     getDetailZipsaInfo(helperId).then(response => {
-      console.log('(세부)집사 정보 조회 API 성공');
+      // console.log('(상세)집사 정보 조회 API 성공');
       setData(response.data);
-      console.log(data);
+    });
+
+    getReviewZipsaInfo(helperId).then(response => {
+      // console.log('(리뷰)집사 정보 조회 API 성공');
+      setReviews(response.data);
     });
   }, []);
 
   // 카테고리 변경 위한 변수 정의
   const [selectedCompo, setSelectedCompo] = useState('CATEGORY');
 
+  // avgScore 계산하기
   const number =
     (data.kindnessAverage + data.skillAverage + data.rewindAverage) / 3;
   const avgScore = number.toFixed(2);
@@ -80,12 +89,12 @@ function ZipsaDetail() {
         onPrevious={onPrevious}
       ></NavigationBar>
 
-      {/* <ZipsaDetailProfile
+      <ZipsaDetailProfile
         profileImage={data.profileImage}
         name={data.name}
         gradeId={data.gradeId}
         avgScore={avgScore}
-        reviewCount={data.reviews.length}
+        reviewCount={reviews.length}
         description={data.description}
       ></ZipsaDetailProfile>
 
@@ -122,17 +131,9 @@ function ZipsaDetail() {
       </NavigationWrapper>
 
       <ZipsaDetailRoute
+        helperId={helperId}
         component={selectedCompo}
-        subCategory={data.subCategory}
-        preferTag={data.preferTag}
-        replyAverage={data.replyAverage}
-        serviceCount={data.serviceCount}
-        kindnessAverage={data.kindnessAverage}
-        skillAverage={data.skillAverage}
-        rewindAverage={data.rewindAverage}
-        totalReview={data.reviews.length}
-        reviews={data.reviews}
-      ></ZipsaDetailRoute> */}
+      ></ZipsaDetailRoute>
     </Wrapper>
   );
 }

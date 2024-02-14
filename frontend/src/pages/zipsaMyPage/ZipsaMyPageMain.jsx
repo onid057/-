@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import NavigationBar from '../../components/common/NavigationBar';
 import TwoIndex from '../../components/zipsamypage/TwoIndex';
 import Notice from '../../components/common/Notice';
@@ -13,7 +13,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0px 16px;
+  padding: 0px 16px 10px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -51,6 +51,11 @@ function ZipsaMyPageMain() {
     });
   }, []);
 
+  // 다이아 점수 계산
+  const number =
+    (data.kindnessAverage + data.skillAverage + data.rewindAverage) / 3;
+  const avgScore = number.toFixed(2);
+
   // 집사 명칭 영 → 한 변환
   const nameChanger = () => {
     switch (data.gradeName) {
@@ -73,12 +78,8 @@ function ZipsaMyPageMain() {
     nameChanger();
   }, [data]);
 
-  // 내 정보 수정페이지로 이동
-
+  // 다른 페이지로 이동
   const MenuList = ['활동 내역 보기', '정산하기', '작성한 게시물 확인하기'];
-  const number =
-    (data.kindnessAverage + data.skillAverage + data.rewindAverage) / 3;
-  const avgScore = number.toFixed(2);
 
   return (
     <Wrapper>
@@ -117,6 +118,7 @@ function ZipsaMyPageMain() {
         ]}
         lower={null}
         padding={'15px 13px'}
+        nextPage={'/zipsa/update'}
       ></Notice>
 
       <TwoIndex
@@ -128,6 +130,18 @@ function ZipsaMyPageMain() {
       ></TwoIndex>
 
       {MenuList.map((content, idx) => (
+        // let nextPage;
+        // swtich (idx) {
+        //   case '0':
+        //     nextPage='/zipsa/history'
+        //   case '1':
+        //     nextPage='/zipsa/history'
+        //   case '2':
+        //     nextPage='/zipsa/history'
+        //   default:
+        //     nextPage='/zipsa/history'
+        // }
+
         <Notice
           key={idx}
           upper={[
@@ -147,7 +161,7 @@ function ZipsaMyPageMain() {
           ]}
           lower={null}
           // 각자 페이지로 이동하기
-          nextPage={''}
+          nextPage={`/zipsa/history`}
           padding={'20px 12px'}
         ></Notice>
       ))}

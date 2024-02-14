@@ -66,11 +66,7 @@ function TwoIndexRoute({
       },
     });
   };
-  console.log('TwoIndexRoute에서의 helperId: ', helperId);
-
-  //   const handleClick = () => {
-  //     navigate(nextPage);
-  //   };
+  // console.log('TwoIndexRoute에서의 helperId: ', helperId);
 
   let nameBoxColor;
   if (gradeId === 1) {
@@ -127,7 +123,7 @@ function TwoIndexRoute({
         ></Image>
         <NameBox $backgroundcolor={nameBoxColor}>
           <Paragraph
-            gap={'5px'}
+            gap={'8px'}
             fontSize={'20px'}
             sentences={[
               `${name} 집사님은`,
