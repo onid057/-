@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getUserState } from '../../apis/api/toggle.js';
 import { getFirstReservation } from '../../apis/api/reserve.js'; // 추후 연결 요망
 import { subscribeSSE } from '../../apis/api/subscribe.js';
@@ -38,6 +38,19 @@ const HeadWrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
+const ImageWrapper = styled.div`
+  position: relative;
+`;
+const NoticeRound = styled.div`
+  display: ${props => (props.$display ? 'default' : 'none')};
+  position: absolute;
+  right: -3px;
+  top: -3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #e83b46;
+`;
 const UpperWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -70,7 +83,8 @@ export default function Home() {
   const [reserveInfo, setReserveInfo] = useState({});
   const { setUserState, setIsLoggedIn } = useUserInfo();
   const navigate = useNavigate();
-  // const eventSourceRef = useRef();
+  const eventSourceRef = useRef();
+  const [isVisibleRound, setIsVisibleRound] = useState(false);
 
   const isLoggedIn = useUserInfo(state => state.isLoggedIn);
 
@@ -86,36 +100,41 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (isLoggedIn) {
+      eventSourceRef.current = new EventSource(
+        //'http://localhost:8080' + `/sse`,
+        'https://i10a407.p.ssafy.io/api' + `/sse`,
+        {
+          withCredentials: true,
+        },
+      );
+
+      eventSourceRef.current.onopen = () => {
+        console.log('Server와 연결');
+      };
+
+      eventSourceRef.current.onerror = error => {
+        console.log(error);
+      };
+
+      eventSourceRef.current.onmessage = event => {
+        console.log(event);
+      };
+
+      eventSourceRef.current.addEventListener('sse', () => {
+        setIsVisibleRound(true);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
     // 로그인이 무조건 되어야 하는 상태이고, 집사의 자격이 있는지 알아야 함(토글 버튼을 띄우기 위해)
     if (isLoggedIn && isZipsa) {
       getUserState().then(response => {
-        console.log(response);
+        setIsWorked(response.data.isWorked);
         setUserState(response.data.isWorked ? 'ZIPSA' : 'USER');
       });
     }
-
-    // eventSourceRef.current = new EventSource(
-    //   'https://i10a407.p.ssafy.io/api' + `/sse/3`,
-    //   { withCredentials: true },
-    // );
-
-    // console.log({ eventSourceRef });
-
-    // eventSourceRef.current.onopen = () => {
-    //   console.log('Server와 연결');
-    // };
-
-    // eventSourceRef.current.onerror = error => {
-    //   console.log(error);
-    // };
-
-    // eventSourceRef.current.onmessage = event => {
-    //   console.log(event);
-    // };
-
-    // eventSource.addEventListener('sse', event => {
-    //   console.log(event);
-    // })
   }, [isZipsa, isWorked]);
 
   return (
@@ -124,16 +143,20 @@ export default function Home() {
         <UpperWrapper>
           <BoldText fontSize="30px" boldContent="한집사"></BoldText>
 
-          <Image
-            src={process.env.PUBLIC_URL + '/images/alarm.svg'}
-            width="30px"
-            height="34px"
-            onClick={() => navigate('/notify')}
-            // onClick={() =>
-            //   getComplaintList().then(response => console.log(response))
-            // }
-          ></Image>
+          <ImageWrapper>
+            <NoticeRound $display={isVisibleRound}></NoticeRound>
+            <Image
+              src={process.env.PUBLIC_URL + '/images/alarm.svg'}
+              width="30px"
+              height="34px"
+              onClick={() => navigate('/notify')}
+              // onClick={() =>
+              //   getComplaintList().then(response => console.log(response))
+              // }
+            ></Image>
+          </ImageWrapper>
         </UpperWrapper>
+
         {isZipsa && (
           <Toggle isWorked={isWorked} setIsWorked={setIsWorked}></Toggle>
         )}
