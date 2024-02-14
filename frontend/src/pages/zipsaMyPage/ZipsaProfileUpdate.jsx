@@ -178,10 +178,12 @@ function ProfileUpdate() {
         onChange={event => setDetail(event.target.value)}
       ></LongInputBox>
 
-      <ZipsaTagUpdate
-        preferTags={preferTags}
-        setPreferTags={setPreferTags}
-      ></ZipsaTagUpdate>
+      {preferTags && (
+        <ZipsaTagUpdate
+          preferTags={preferTags}
+          setPreferTags={setPreferTags}
+        ></ZipsaTagUpdate>
+      )}
     </Wrapper>
   );
 }
