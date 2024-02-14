@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import HorizontalLine from '../common/HorizontalLine';
+import { useEffect, useState } from 'react';
 
 const Wrapper = styled.div`
   cursor: pointer;
   box-sizing: border-box;
   width: 100%;
-  padding: 20px 15px;
+  padding: 20px 15px 30px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   font-weight: 300;
   font-size: 15px;
   background-color: #ffffff;
@@ -31,6 +32,8 @@ const TagContent = styled.div`
   flex-wrap: wrap;
   row-gap: 5px;
   column-gap: 8px;
+  font-weight: 700;
+  color: #629af9;
 `;
 
 const CategoryContent = styled.div`
@@ -38,22 +41,25 @@ const CategoryContent = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 `;
 
-function ZipsaDetailCategory({ subCategory, preferTag }) {
-  const zipsaTags = preferTag.split('#');
-
+function ZipsaDetailCategory({ subCategory, preferTagList }) {
   return (
     <Wrapper>
       <Title>이런 일을 잘해요!</Title>
       <TagContent>
-        {zipsaTags.map((tag, index) => {
+        {preferTagList.map((tag, index) => {
           return <span key={index}># {tag}</span>;
         })}
       </TagContent>
 
-      <HorizontalLine width={'100%'} height={'0.5px'}></HorizontalLine>
+      <HorizontalLine
+        marginTop={'10px'}
+        marginBottom={'10px'}
+        width={'100%'}
+        height={'0.5px'}
+      ></HorizontalLine>
 
       <Title>이런 일을 많이 했어요!</Title>
       <CategoryContent>
