@@ -7,4 +7,5 @@ public interface CategoryRepository {
     String findMajorCategoryName(Long majorId);
 
     SubCategory findBySubCategoryId(Long subCategoryId);
+
 }

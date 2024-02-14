@@ -174,4 +174,5 @@ public class BoardServiceImpl implements BoardService {
             board.getTitle(),
             board.getContent(), board.getUpdatedAt(), commentList, tagList, boardDistinction);
     }
+
 }

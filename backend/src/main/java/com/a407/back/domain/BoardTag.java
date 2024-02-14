@@ -21,4 +21,5 @@ public class BoardTag {
     public BoardTag(BoardTagId boardTagId) {
         this.boardTagId = boardTagId;
     }
+
 }

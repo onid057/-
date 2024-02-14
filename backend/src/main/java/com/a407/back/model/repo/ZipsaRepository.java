@@ -35,4 +35,5 @@ public interface ZipsaRepository {
     void changeZipsaStatus(Long zipsaId, boolean status);
 
     Zipsa makeZipsa(Zipsa zipsa);
+
 }

@@ -36,7 +36,6 @@ public class SecurityUser implements UserDetails {
     private final Boolean isAffiliated;
     private final int serviceCount;
 
-
     public SecurityUser(User user) {
         this.userId = user.getUserId();
         this.associationId = user.getAssociationId();
@@ -90,4 +89,5 @@ public class SecurityUser implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

@@ -100,4 +100,5 @@ public class BoardRepositoryImpl implements BoardRepository {
         QTag qTag = QTag.tag;
         return tagList != null ? qTag.tagId.in(tagList) : null;
     }
+
 }

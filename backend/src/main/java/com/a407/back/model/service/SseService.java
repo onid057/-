@@ -10,4 +10,5 @@ public interface SseService {
     SseEmitter connect(Long userId, HttpServletResponse response);
 
     void sendToClient(SseEmitter sseEmitter, Long userId, Object data);
+
 }

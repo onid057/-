@@ -91,7 +91,6 @@ public class User {
     @Column(name = "service_count")
     private int serviceCount;
 
-
     @Builder(toBuilder = true)
     public User(Association associationId, String email, String password, String name,
         Date birth, Gender gender, String phoneNumber, String address, String profileImage,

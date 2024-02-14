@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ZipsaStatusResponse {
+
     private Long zipsaId;
     private Boolean isWorked;
+
 }

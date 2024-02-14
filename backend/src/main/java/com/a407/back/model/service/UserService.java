@@ -78,4 +78,5 @@ public interface UserService {
     UserInfoResponse findUserInfo(Long userId);
 
     UserLocationResponse findUserLocation(Long userId);
+
 }

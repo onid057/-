@@ -26,7 +26,6 @@ public class ReviewController {
 
     private final ReviewService reviewService;
 
-
     @GetMapping
     public ResponseEntity<ApiResponse<List<ReviewListResponse>>> findReviewsByUserId(
         @AuthenticationPrincipal SecurityUser user) {
@@ -49,6 +48,5 @@ public class ReviewController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "리뷰 삭제 성공"));
     }
-
 
 }

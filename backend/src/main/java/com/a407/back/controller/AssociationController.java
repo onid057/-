@@ -30,7 +30,6 @@ public class AssociationController {
 
     private final AssociationService associationService;
 
-
     @GetMapping
     public ResponseEntity<ApiResponse<List<UserAssociationResponse>>> getAssociationUserList(
         @AuthenticationPrincipal SecurityUser user) {
@@ -55,7 +54,6 @@ public class AssociationController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "연동 계정 삭제 성공"));
     }
-
 
     @PostMapping("/addition")
     public ResponseEntity<ApiResponse<AssociationAdditionCodeResponse>> makeAdditionCode(

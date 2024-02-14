@@ -25,4 +25,5 @@ public class CategoryRepositoryImpl implements CategoryRepository {
         QSubCategory qSubCategory = QSubCategory.subCategory;
         return query.selectFrom(qSubCategory).where(qSubCategory.subCategoryId.eq(subCategoryId)).fetchOne();
     }
+
 }

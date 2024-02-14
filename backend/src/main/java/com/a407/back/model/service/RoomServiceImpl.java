@@ -110,4 +110,5 @@ public class RoomServiceImpl implements RoomService {
         }).toList();
         return new RoomNotificationListResponse(roomNotificationList);
     }
+
 }

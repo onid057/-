@@ -71,7 +71,6 @@ public class Notification {
         this.status = status;
     }
 
-
     public enum Type {
         USER, ZIPSA
     }
@@ -79,4 +78,5 @@ public class Notification {
     public enum Status {
         STANDBY, ACCEPT, REJECT, CLOSE, CONFIRM
     }
+
 }

@@ -24,4 +24,5 @@ public class SseController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(redisPublisher.createTopic(user.getUserId(), response));
     }
+
 }

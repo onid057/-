@@ -17,8 +17,11 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     private final TokenProvider tokenProvider;
+
     private final UserRepository userRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     private final AuthRepository authRepository;
 
     @Override
@@ -36,12 +39,10 @@ public class AuthServiceImpl implements AuthService {
         return new Tokens(accessToken, refreshToken);
     }
 
-
     @Override
     @Transactional
     public void deleteRefreshToken(String token) {
-        authRepository.findRefreshToken(token);
+        authRepository.deleteToken(token);
     }
-
 
 }

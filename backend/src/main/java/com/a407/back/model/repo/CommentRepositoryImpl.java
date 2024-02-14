@@ -54,4 +54,5 @@ public class CommentRepositoryImpl implements CommentRepository {
             .set(qComment.updatedAt, commentChangeDto.getUpdatedAt())
             .where(qComment.commentId.eq(commentChangeDto.getCommentId())).execute();
     }
+
 }

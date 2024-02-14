@@ -7,4 +7,5 @@ public interface ComplainRepository {
     void makeComplain(Complain complain);
 
     Complain findComplain(Long roomId);
+
 }

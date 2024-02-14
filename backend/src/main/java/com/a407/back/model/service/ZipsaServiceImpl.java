@@ -12,7 +12,7 @@ import com.a407.back.domain.Room;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.dto.room.PublicRoomListResponse;
-import com.a407.back.dto.util.ImageUtil;
+import com.a407.back.config.ImageConfig;
 import com.a407.back.dto.util.PublicRoom;
 import com.a407.back.dto.util.ReportListDto;
 import com.a407.back.dto.zipsa.PublicRoomNotificationRequest;
@@ -53,7 +53,7 @@ public class ZipsaServiceImpl implements ZipsaService {
 
     private final NotificationRepository notificationRepository;
 
-    private final ImageUtil imageUtil;
+    private final ImageConfig imageConfig;
 
     private final RedisPublisher redisPublisher;
 
@@ -68,7 +68,7 @@ public class ZipsaServiceImpl implements ZipsaService {
     @Transactional
     public void makeReport(Long roomId, MultipartFile image, String content) throws IOException {
         Room room = roomRepository.findByRoomId(roomId);
-        String fileName = imageUtil.resizeImage(image, repostSize);
+        String fileName = imageConfig.resizeImage(image, repostSize);
         Report report = Report.builder().roomId(room).processImage(fileName).processContent(content)
             .build();
         zipsaRepository.makeReport(report);
@@ -300,4 +300,5 @@ public class ZipsaServiceImpl implements ZipsaService {
             return true;
         }
     }
+
 }

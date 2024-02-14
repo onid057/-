@@ -117,4 +117,5 @@ public class NotificationServiceImpl implements NotificationService {
         }
         roomRepository.changeRoomZipsa(zipsa, notification.getRoomId().getRoomId());
     }
+
 }

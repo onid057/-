@@ -29,10 +29,10 @@ public class Grade {
     @Column(name = "salary", nullable = false)
     private int salary;
 
-
     @Builder
     public Grade(String name, int salary) {
         this.name = name;
         this.salary = salary;
     }
+
 }

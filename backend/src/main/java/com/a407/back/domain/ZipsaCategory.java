@@ -33,4 +33,5 @@ public class ZipsaCategory {
         this.zipsaId = zipsaId;
         this.majorCategoryId = majorCategoryId;
     }
+
 }

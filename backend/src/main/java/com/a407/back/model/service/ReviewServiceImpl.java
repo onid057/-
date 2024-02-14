@@ -112,4 +112,5 @@ public class ReviewServiceImpl implements ReviewService {
     private static double getAverageRemove(int score, Double average, Long countReview) {
         return ((average * (countReview)) - score) / (countReview - 1);
     }
+
 }

@@ -1,4 +1,5 @@
 package com.a407.back.dto.user;
+
 import com.a407.back.domain.Room.Process;
 import java.sql.Timestamp;
 import lombok.Builder;
@@ -6,6 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class UserReservationInfoResponse {
+
     private Long zipsaId;
     private String name;
     private String profile;
@@ -24,4 +26,5 @@ public class UserReservationInfoResponse {
     private Timestamp expectationEndedAt;
     private int expectationPay;
     private Process status;
+
 }

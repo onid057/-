@@ -33,8 +33,8 @@ import org.springframework.web.cors.CorsConfiguration;
 public class WebSecurityConfig {
 
     private final TokenProvider tokenProvider;
-    private final UserDetailsService userDetailsService;
 
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -68,22 +68,18 @@ public class WebSecurityConfig {
             return config;
         }));
         http.headers(headers -> headers.cacheControl(CacheControlConfig::disable));
-
         return http.build();
     }
-
 
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-
     @Bean
     public AuthenticationEntryPoint customTempAuthenticationEntryPoint() {
         return (request, response, authException) -> errorResponse(response);
     }
-
 
     @Bean
     public AccessDeniedHandler customAccessDeniedHandler() {
@@ -101,6 +97,5 @@ public class WebSecurityConfig {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
     }
-
 
 }

@@ -50,4 +50,5 @@ public class RedisPublisher {
     public void publish(ChannelTopic topic, Object obj) {
         redisTemplate.convertAndSend(topic.getTopic(), obj);
     }
+
 }

@@ -30,4 +30,5 @@ public interface BoardRepository {
     List<BoardTag> findBoardList(int page, int size, List<Long> tagList);
 
     List<Board> getUserBoardList(User user, int page, int size);
+
 }

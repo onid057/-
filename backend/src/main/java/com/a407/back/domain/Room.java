@@ -110,7 +110,6 @@ public class Room implements Serializable {
     @Enumerated(EnumType.STRING)
     private Process status;
 
-
     @Builder
     public Room(User userId, Zipsa zipsaId, SubCategory subCategoryId, String title, String content,
         String place,

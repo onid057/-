@@ -52,4 +52,5 @@ public class NotificationController {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, notificationId));
     }
+
 }

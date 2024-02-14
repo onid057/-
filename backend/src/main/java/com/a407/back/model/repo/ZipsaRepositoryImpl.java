@@ -21,6 +21,7 @@ import org.springframework.stereotype.Repository;
 public class ZipsaRepositoryImpl implements ZipsaRepository {
 
     private final JPAQueryFactory query;
+
     private final EntityManager em;
     private static final QReport qReport = QReport.report;
 

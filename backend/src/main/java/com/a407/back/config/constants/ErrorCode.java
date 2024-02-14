@@ -3,9 +3,10 @@ package com.a407.back.config.constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum ErrorCode {
+
     // 400
     INVALID_PARAMETER(400, "파라미터 값을 확인해주세요."),
     REQUEST_BODY_MISSING_ERROR(400, "Body에 객체 데이터가 없습니다."),
@@ -27,4 +28,5 @@ public enum ErrorCode {
 
     private final int status;
     private final String message;
+
 }

@@ -19,4 +19,5 @@ public class ReviewCreateRequest {
         return Review.builder().userId(room.getUserId()).zipsaId(room.getZipsaId()).content(content)
             .kindnessScore(kindnessScore).skillScore(skillScore).rewindScore(rewindScore).build();
     }
+
 }

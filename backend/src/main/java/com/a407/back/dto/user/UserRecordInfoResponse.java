@@ -1,10 +1,13 @@
 package com.a407.back.dto.user;
+
 import java.sql.Timestamp;
 import lombok.Builder;
 import lombok.Getter;
+
 @Getter
 @Builder
 public class UserRecordInfoResponse {
+
     private Long roomId;
     private Long zipsaId;
     private String name;
@@ -26,4 +29,5 @@ public class UserRecordInfoResponse {
     private int totalPay;
     private Boolean isComplained;
     private Boolean isReviewed;
+
 }

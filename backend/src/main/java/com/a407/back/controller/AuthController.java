@@ -26,8 +26,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
+
     @Value("${jwt.refresh-token}")
     private String refreshTokenName;
+
     @Value("${cookie.age}")
     private Integer cookieMaxAge;
 
@@ -56,4 +58,5 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "로그아웃 성공"));
     }
+
 }

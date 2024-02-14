@@ -4,5 +4,8 @@ public interface AuthRepository {
 
     void makeRefreshToken(String key, String value);
 
-    Boolean findRefreshToken(String token);
+    String findRefreshToken(String token);
+
+    Boolean deleteToken(String token);
+
 }

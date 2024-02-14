@@ -16,4 +16,5 @@ public class ZipsaRecordResponse {
     private Timestamp startedAt;
     private Timestamp endedAt;
     private Integer totalPay;
+
 }

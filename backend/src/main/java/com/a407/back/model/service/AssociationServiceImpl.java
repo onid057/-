@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AssociationServiceImpl implements AssociationService {
 
-
     private final AssociationRepository associationRepository;
+
     private final UserRepository userRepository;
 
     @Value("${code.association.start}")
@@ -129,7 +129,6 @@ public class AssociationServiceImpl implements AssociationService {
         userRepository.makeAssociation(userId, associationId);
     }
 
-
     @Override
     @Transactional
     public void changeAssociationRepresentative(Long representativeId, Long userId) {
@@ -149,6 +148,5 @@ public class AssociationServiceImpl implements AssociationService {
 
         associationRepository.changeAssociationRepresentative(userId, associationId);
     }
-
 
 }

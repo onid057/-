@@ -37,4 +37,5 @@ public class SubCategory {
         this.majorCategoryId = majorCategoryId;
         this.name = name;
     }
+
 }

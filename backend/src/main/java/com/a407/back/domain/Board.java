@@ -48,4 +48,5 @@ public class Board {
         this.content = content;
         this.updatedAt = updatedAt;
     }
+
 }

@@ -29,4 +29,5 @@ public class RedisSubscriber implements MessageListener {
             logger.error(String.valueOf(e));
         }
     }
+
 }

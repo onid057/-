@@ -39,7 +39,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Value("${map.range}")
     private Double range;
 
-
     @Override
     public User findByUserEmail(String email) {
         //하나만 반환->fetchOne
@@ -137,7 +136,6 @@ public class UserRepositoryImpl implements UserRepository {
             .orderBy(qRoom.expectationStartedAt.asc()).limit(1).fetchOne();
     }
 
-
     private BooleanExpression isZipsa(Long userId, Boolean isZipsa) {
         QRoom qRoom = QRoom.room;
         if (Boolean.TRUE.equals(isZipsa)) {
@@ -208,7 +206,6 @@ public class UserRepositoryImpl implements UserRepository {
         query.update(qUser).set(qUser.phoneNumber, phoneNumber).where(qUser.email.eq(email))
             .execute();
     }
-
 
     @Override
     public void makeSendMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)

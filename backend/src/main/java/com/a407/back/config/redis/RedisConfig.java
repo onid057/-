@@ -61,7 +61,6 @@ public class RedisConfig {
         return redisTemplate;
     }
 
-
     @Bean(name = "associationRedisTemplate")
     public RedisTemplate<String, String> associationRedisTemplate(
         @Qualifier(value = "associationRedisConnectionFactory") RedisConnectionFactory associationRedisConnectionFactory) {
@@ -109,4 +108,5 @@ public class RedisConfig {
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
     }
+
 }

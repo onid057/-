@@ -1,10 +1,10 @@
 package com.a407.back.dto.zipsa;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@AllArgsConstructor
 public class ReportCreateRequest {
 
     private Long roomId;

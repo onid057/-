@@ -32,7 +32,7 @@ import com.a407.back.dto.user.UserRecordResponse;
 import com.a407.back.dto.user.UserReservationInfoResponse;
 import com.a407.back.dto.user.UserReservationResponse;
 import com.a407.back.dto.util.BoardListDto;
-import com.a407.back.dto.util.ImageUtil;
+import com.a407.back.config.ImageConfig;
 import com.a407.back.dto.util.UserPublicRoom;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.BoardRepository;
@@ -53,10 +53,6 @@ import net.nurigo.sdk.message.model.Message;
 import net.nurigo.sdk.message.request.SingleMessageSendingRequest;
 import net.nurigo.sdk.message.response.SingleMessageSentResponse;
 import net.nurigo.sdk.message.service.DefaultMessageService;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -86,7 +82,9 @@ public class UserServiceImpl implements UserService {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private final ImageUtil imageUtil;
+    private final ImageConfig imageConfig;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${sms.number}")
     private String senderPhoneNumber;
@@ -115,8 +113,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByUserId(userId);
         return new UserLocationResponse(user.getLatitude(), user.getLongitude());
     }
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     @Transactional
@@ -392,9 +388,9 @@ public class UserServiceImpl implements UserService {
         String imageName = null;
         if (image != null) {
             if (user.getProfileImage() != null && !user.getProfileImage().isBlank()) {
-                imageUtil.deleteImage(user.getProfileImage());
+                imageConfig.deleteImage(user.getProfileImage());
             }
-            imageName = imageUtil.resizeImage(image, profileSize);
+            imageName = imageConfig.resizeImage(image, profileSize);
         }
         UserChangeDto userChangeDto = new UserChangeDto(
             imageName == null ? user.getProfileImage() : imageName,

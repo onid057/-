@@ -49,7 +49,6 @@ public class MatchRepositoryImpl implements MatchRepository {
         return null;
     }
 
-
     private BooleanExpression userGenderEq(String genderStr) {
         QZipsa qZipsa = QZipsa.zipsa;
         if (genderStr == null || genderStr.equalsIgnoreCase("ALL")) {
@@ -62,7 +61,6 @@ public class MatchRepositoryImpl implements MatchRepository {
             return null;
         }
     }
-
 
     private BooleanExpression userBirthGoe(String age) {
         QZipsa qZipsa = QZipsa.zipsa;
@@ -90,7 +88,6 @@ public class MatchRepositoryImpl implements MatchRepository {
             return null;
         }
     }
-
 
     private BooleanExpression zipsaGradeIdEq(String grade) {
         if (grade == null || grade.equalsIgnoreCase("ALL")) {
@@ -145,4 +142,5 @@ public class MatchRepositoryImpl implements MatchRepository {
         query.update(qRoom).set(qRoom.status, Process.valueOf(status))
             .where(qRoom.roomId.eq(roomId)).execute();
     }
+
 }

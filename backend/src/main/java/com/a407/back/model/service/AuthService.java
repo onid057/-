@@ -7,4 +7,5 @@ public interface AuthService {
     Tokens login(String email, String password);
 
     void deleteRefreshToken(String token);
+
 }

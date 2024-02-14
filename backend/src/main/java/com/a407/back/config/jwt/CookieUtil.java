@@ -33,7 +33,6 @@ public class CookieUtil {
 
         response.setHeader("Set-Cookie", accessCookie.toString());
         response.addHeader("Set-Cookie", refreshCookie.toString());
-
     }
 
 }

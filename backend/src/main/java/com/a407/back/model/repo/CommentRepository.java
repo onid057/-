@@ -6,6 +6,7 @@ import com.a407.back.dto.util.CommentChangeDto;
 import java.util.List;
 
 public interface CommentRepository {
+
     Long makeComment(Comment comment);
 
     Long getCommentCount(Board board);
@@ -17,4 +18,5 @@ public interface CommentRepository {
     List<Comment> findCommentList(Board board);
 
     void changeComment(CommentChangeDto commentChangeDto);
+
 }

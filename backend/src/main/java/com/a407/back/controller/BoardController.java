@@ -47,7 +47,6 @@ public class BoardController {
                 boardService.makeBoard(user.getUserId(), boardCreateRequest)));
     }
 
-
     @GetMapping("/{boardId}")
     public ResponseEntity<ApiResponse<BoardDetailResponse>> findBoardDetail(
         @PathVariable("boardId") Long boardId, @AuthenticationPrincipal SecurityUser user) {

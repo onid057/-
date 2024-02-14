@@ -54,4 +54,5 @@ public class CommentServiceImpl implements CommentService {
         CommentChangeDto commentChangeDto = new CommentChangeDto(commentId, content, Timestamp.valueOf(LocalDateTime.now()));
         commentRepository.changeComment(commentChangeDto);
     }
+
 }

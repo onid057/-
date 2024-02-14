@@ -29,4 +29,5 @@ public class MajorCategory {
     public MajorCategory(String name) {
         this.name = name;
     }
+
 }

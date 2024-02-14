@@ -18,6 +18,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private final TokenProvider tokenProvider;
+
     private final UserDetailsService userDetailsService;
 
     @Override
@@ -33,7 +34,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 null, userDetails.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-
         filterChain.doFilter(request, response);
     }
+
 }

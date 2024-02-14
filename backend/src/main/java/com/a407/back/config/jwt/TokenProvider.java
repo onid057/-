@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class TokenProvider {
 
-
     @Value("${jwt.issuer}")
     private String issuer;
 
@@ -37,7 +36,6 @@ public class TokenProvider {
 
     @Value("${jwt.claim-name}")
     private String claimName;
-
 
     public String makeAccessToken(String email) {
         return createToken(email, Duration.ofMinutes(10));
@@ -66,14 +64,13 @@ public class TokenProvider {
                 .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build()
                 .parseSignedClaims(accessToken).getPayload().get(claimName, String.class);
         } catch (ExpiredJwtException e) {
-
             String refreshToken = CookieUtil.getCookieValue(request.getCookies(), "refreshToken");
-
             try {
                 String email = Jwts.parser()
                     .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes())).build()
                     .parseSignedClaims(refreshToken).getPayload().get(claimName, String.class);
-                if (!email.equals(authRepository.findRefreshToken(refreshToken))) {
+                String tokenEmail = authRepository.findRefreshToken(refreshToken);
+                if (tokenEmail.isEmpty() || !email.equals(tokenEmail)) {
                     return null;
                 }
 
@@ -83,16 +80,16 @@ public class TokenProvider {
                 authRepository.makeRefreshToken(newRefreshToken, email);
                 CookieUtil.saveCookie(newAccessToken, newRefreshToken, response,
                     cookieMaxAge);
-
                 return email;
             } catch (Exception error) {
                 throw new CustomException(ErrorCode.UNAUTHORIZED_ACCESS);
             }
-
         }
+
     }
 
     public boolean validationToken(String token) {
+
         try {
             Jwts.parser().verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes()))
                 .build().parseSignedClaims(token);
@@ -103,6 +100,7 @@ public class TokenProvider {
         } catch (ExpiredJwtException error) {
             return true;
         }
+
     }
 
 }

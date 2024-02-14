@@ -30,4 +30,5 @@ public interface RoomRepository {
     QueryResults<Room> getPublicRoomList(int page, int size);
 
     List<Room> getUserPublicRoomList(User user);
+
 }

@@ -99,5 +99,4 @@ public class RoomRepositoryImpl implements RoomRepository {
             .orderBy(qRoom.roomCreatedAt.asc()).fetch();
     }
 
-
 }

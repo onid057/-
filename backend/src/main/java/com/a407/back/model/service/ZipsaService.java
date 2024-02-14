@@ -49,4 +49,5 @@ public interface ZipsaService {
     void changeZipsaInfo(Long zipsaId, ZipsaChangeRequest request);
 
     Boolean findZipsaDistinction(Long userId);
+
 }

@@ -9,4 +9,5 @@ public interface SseRepository {
     SseEmitter save(Long userId, SseEmitter sseEmitter);
 
     void delete(Long userId);
+
 }

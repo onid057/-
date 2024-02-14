@@ -17,4 +17,5 @@ public interface NotificationRepository {
     List<Notification> findByRoomIdList(Room room);
 
     void deleteNotification(Notification notification);
+
 }

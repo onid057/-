@@ -78,4 +78,5 @@ public class SseServiceImpl implements SseService {
             log.error("SSE 연결 오류 발생", e);
         }
     }
+
 }

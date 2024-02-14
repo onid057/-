@@ -40,7 +40,6 @@ public class ZipsaController {
 
     private final ZipsaServiceImpl zipsaService;
 
-
     @GetMapping("/{helperId}")
     public ResponseEntity<ApiResponse<ZipsaInfoResponse>> findZipsaFindByZipsaId(
         @PathVariable Long helperId) {
@@ -139,7 +138,6 @@ public class ZipsaController {
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaReservationInfo(roomId)));
     }
-
 
     @PatchMapping("/{helperId}/reversal")
     public ResponseEntity<ApiResponse<String>> changeZipsaStatus(
