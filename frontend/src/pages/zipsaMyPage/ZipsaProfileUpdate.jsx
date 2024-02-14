@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   getDetailZipsaInfo,
@@ -9,7 +9,6 @@ import NavigationBar from '../../components/common/NavigationBar';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Image from '../../components/common/Image';
-import ImageUploader from '../../components/common/ImageUploader';
 import LongInputBox from '../../components/common/LongInputBox';
 import HorizontalLine from '../../components/common/HorizontalLine';
 import ZipsaTagUpdate from '../../components/zipsamypage/ZipsaTagUpdate';
@@ -28,34 +27,34 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
-const EditImageButton = styled.button`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  position: relative;
-`;
+// const EditImageButton = styled.button`
+//   width: 60px;
+//   height: 60px;
+//   border-radius: 50%;
+//   position: relative;
+// `;
 
-const PlusImageWrapper = styled.div`
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  z-index: 999;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  background-image: url(${process.env.PUBLIC_URL}/images/plus.svg);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border: none;
-`;
+// const PlusImageWrapper = styled.div`
+//   position: absolute;
+//   top: -5px;
+//   right: -5px;
+//   z-index: 999;
+//   border-radius: 50%;
+//   width: 20px;
+//   height: 20px;
+//   background-image: url(${process.env.PUBLIC_URL}/images/plus.svg);
+//   background-size: cover;
+//   background-position: center;
+//   background-repeat: no-repeat;
+//   border: none;
+// `;
 
-const ImageWrapper = styled.div`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  overflow: hidden;
-`;
+// const ImageWrapper = styled.div`
+//   width: 60px;
+//   height: 60px;
+//   border-radius: 50%;
+//   overflow: hidden;
+// `;
 
 const InfoWrapper = styled.div`
   width: 100%;
@@ -67,17 +66,10 @@ const InfoWrapper = styled.div`
 `;
 
 function ProfileUpdate() {
-  const fileInputRef = useRef(null);
-
-  const handleImageClick = e => {
-    // input 태그 클릭
-    e.stopPropagation();
-    fileInputRef.current.click();
-  };
   const [zipsaData, setZipsaData] = useState();
-  const [showImages, setShowImages] = useState([]);
   const [detail, setDetail] = useState();
   const [preferTags, setPreferTags] = useState();
+  const [imageUrl, setImageUrl] = useState(null);
 
   const navigate = useNavigate();
   const onPrevious = () => {
@@ -90,7 +82,7 @@ function ProfileUpdate() {
       setZipsaData(response.data);
       setPreferTags(response.data.preferTag.split('#'));
       setDetail(response.data.description);
-      setShowImages(response.data.profileImage);
+      setImageUrl(response.data.profileImage);
     });
   }, []);
 
@@ -122,27 +114,12 @@ function ProfileUpdate() {
         margin={'0 0 20px 0'}
       ></Paragraph>
 
-      <ImageUploader
-        showImages={showImages}
-        setShowImages={setShowImages}
-        fileInputRef={fileInputRef}
-        children={
-          <EditImageButton onClick={handleImageClick}>
-            <ImageWrapper>
-              <Image
-                src={
-                  showImages[0] ||
-                  `${process.env.PUBLIC_URL}/images/profile_img.svg`
-                }
-                width={'60px'}
-                height={'60px'}
-                margin={'0'}
-              ></Image>
-            </ImageWrapper>
-            <PlusImageWrapper></PlusImageWrapper>
-          </EditImageButton>
-        }
-      ></ImageUploader>
+      <Image
+        src={imageUrl || `${process.env.PUBLIC_URL}/images/profile_img.svg`}
+        width={'60px'}
+        height={'60px'}
+        margin={'0'}
+      ></Image>
 
       <InfoWrapper>
         <BoldText fontSize={'17px'} normalContent={'이름'}></BoldText>
