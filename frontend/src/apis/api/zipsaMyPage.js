@@ -5,7 +5,7 @@ const getSimpleZipsaInfo = async helperId => {
   try {
     const response = await axios({
       method: 'get',
-      url: `helpers/${helperId}`,
+      url: `/helpers/${helperId}`,
     });
     return response.data;
   } catch (error) {
@@ -18,7 +18,7 @@ const getDetailZipsaInfo = async helperId => {
   try {
     const response = await axios({
       method: 'get',
-      url: `helpers/${helperId}/detail`,
+      url: `/helpers/${helperId}/detail`,
     });
     return response.data;
   } catch (error) {
@@ -31,7 +31,7 @@ const getReviewZipsaInfo = async helperId => {
   try {
     const response = await axios({
       method: 'get',
-      url: `helpers/${helperId}/reviews`,
+      url: `/helpers/${helperId}/reviews`,
     });
     return response.data;
   } catch (error) {
@@ -44,7 +44,7 @@ const updateZipsaInfo = async (description, preferTag) => {
   try {
     const response = await axios({
       method: 'patch',
-      url: `helpers`,
+      url: `/helpers`,
       data: {
         description: description,
         preferTag: preferTag,
@@ -61,7 +61,7 @@ const getZipsaRecords = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: `helpers/records`,
+      url: `/helpers/records`,
     });
     return response.data;
   } catch (error) {

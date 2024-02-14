@@ -95,6 +95,7 @@ export default function Home() {
     if (isLoggedIn) {
       isQualifiedZipsa().then(response => {
         setIsZipsa(response.data);
+        setUserState('USER');
       });
       getFirstReservation().then(response => {
         console.log(response);

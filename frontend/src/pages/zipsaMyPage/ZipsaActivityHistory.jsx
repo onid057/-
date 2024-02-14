@@ -38,48 +38,20 @@ const DetailContentWrapper = styled.div`
   font-size: 16px;
 `;
 
-// ================================================================
-// 집사 활동 내역 확인 API (아래는 예시)
-const data = [
-  {
-    roomId: 3,
-    name: 'user4',
-    subCategoryName: '행복복지센터 가기',
-    majorCategoryName: '동네 동행',
-    content: '병원을 가고싶어요~',
-    startedAt: '2024-02-01T04:43:58.000+00:00',
-    endedAt: '2024-02-01T04:43:58.000+00:00',
-    totalPay: 20000,
-  },
-  {
-    roomId: 2073,
-    name: 'user1',
-    subCategoryName: '청소하기',
-    majorCategoryName: '심부름',
-    content: '병원을 가고싶어요~',
-    startedAt: '2024-02-01T04:43:58.000+00:00',
-    endedAt: '2024-02-01T04:43:58.000+00:00',
-    totalPay: 20000,
-  },
-];
-
-// ================================================================
-
 function ZipsaActivityHistory() {
-  // NavigationBar 사용 위한 변수 선언
   const navigate = useNavigate();
   const onPrevious = () => {
-    navigate(`/zipsa/mypage`);
+    navigate(`/myPage`);
   };
 
   // 집사 활동 내역 목록 확인 API 호출
-  // const [data, setData] = useState();
-  // useEffect(() => {
-  //   getZipsaRecords().then(response => {
-  //     // console.log('집사 활동 내역 목록 조회 성공')
-  //     setData(response.data);
-  //   });
-  // }, []);
+  const [activity, setActivity] = useState();
+  useEffect(() => {
+    getZipsaRecords().then(response => {
+      console.log(response);
+      setActivity(response.data);
+    });
+  }, []);
 
   return (
     <Wrapper>
@@ -102,23 +74,21 @@ function ZipsaActivityHistory() {
         sentences={['나의', '집사 활동 내역']}
       ></Paragraph>
 
-      {data.map((data, idx) => (
+      {activity?.map((data, idx) => (
         <Accordian
           key={idx}
           title={
             <Paragraph
               gap={'5px'}
-              fontSize={'20px'}
+              fontSize={'18px'}
               sentences={[
                 <BoldText
-                  fontSize={'20px'}
-                  boldContent={`${data.name}`}
+                  boldContent={data.name}
                   normalContent={' 고객님의'}
                 />,
                 <BoldText
-                  fontSize={'20px'}
-                  boldContent={`${data.majorCategoryName}`}
-                  normalContent={' 을 맡았어요'}
+                  boldContent={data.majorCategoryName}
+                  normalContent={' 을 맡았어요.'}
                 />,
               ]}
             ></Paragraph>
@@ -166,7 +136,6 @@ function ZipsaActivityHistory() {
                 <BoldText
                   fontSize={'16px'}
                   boldContent={`${data.totalPay.toLocaleString()} 원`}
-                  normalContent={null}
                 ></BoldText>
               </DetailContentWrapper>
             </ContentWrapper>

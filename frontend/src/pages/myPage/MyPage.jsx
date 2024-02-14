@@ -4,7 +4,7 @@ import ZipsaMyPageMain from '../zipsaMyPage/ZipsaMyPageMain';
 
 function MyPage() {
   const userState = useUserInfo(state => state.userState);
-  return userState === 'USER' ? <UserMyPage /> : <ZipsaMyPageMain />;
+  return userState === 'ZIPSA' ? <ZipsaMyPageMain /> : <UserMyPage />;
 }
 
 export default MyPage;
