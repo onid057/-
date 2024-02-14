@@ -18,6 +18,6 @@ public interface MatchService {
 
     void changeMatchStatus(Long roomId, String status);
 
-    Long makeFilterRoom(RoomCreateRequest roomCreateRequest);
+    Long makeFilterRoom(Long userId, RoomCreateRequest roomCreateRequest);
 
 }

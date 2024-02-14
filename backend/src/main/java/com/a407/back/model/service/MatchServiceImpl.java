@@ -19,13 +19,10 @@ import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -50,7 +47,8 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     @Transactional
-    public List<MatchSearchResponse> getFilteredZipsaList(MatchSearchRequest matchSearchRequest) {
+    public List<MatchSearchResponse> getFilteredZipsaList(
+        MatchSearchRequest matchSearchRequest) {
         List<Zipsa> zipsaList = matchRepository.findByConditions(matchSearchRequest);
         return zipsaList.stream().map(zipsa -> {
             String gradeName = zipsa.getGradeId().getName();
@@ -80,9 +78,16 @@ public class MatchServiceImpl implements MatchService {
     // 필터링 기반 방 만들기
     @Override
     @Transactional
-    public Long makeFilterRoom(RoomCreateRequest roomCreateRequest) {
+    public Long makeFilterRoom(Long userId, RoomCreateRequest roomCreateRequest) {
         // User 가져오기
-        User user = userRepository.findByUserId(roomCreateRequest.getUserId());
+        User user;
+
+        if (roomCreateRequest.getUserId() == null) {
+            user = userRepository.findByUserId(userId);
+        } else {
+            user = userRepository.findByUserId(roomCreateRequest.getUserId());
+        }
+
         // SubCategory 가져오기
         SubCategory subCategory = categoryRepository.findBySubCategoryId(
             roomCreateRequest.getSubCategoryId());
@@ -103,14 +108,14 @@ public class MatchServiceImpl implements MatchService {
         // 방 아이디 가지고 알림 보내기
         for (Long id : roomCreateRequest.getZipsaList()) {
             Notification notification = Notification.builder().roomId(room)
-                .sendId(roomCreateRequest.getUserId()).receiveId(id).type(
+                .sendId(user.getUserId()).receiveId(id).type(
                     Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
             notificationRepository.makeNotification(notification);
         }
 
         for (Long id : roomCreateRequest.getZipsaList()) {
             Zipsa zipsa = zipsaRepository.findByZipsaId(id);
-            if(zipsa != null && zipsa.getIsWorked()) {
+            if (zipsa != null && zipsa.getIsWorked()) {
                 redisPublisher.send(id);
             } else {
                 logger.warn("집사 상태가 아닙니다. {}", id);
