@@ -22,11 +22,11 @@ public interface ZipsaService {
 
     ReportResponse findReportByRoomIdList(Long roomId);
 
-    ZipsaDetailInfoResponse findZipsaDetailFindByZipsaId(Long zipsaId);
+    ZipsaDetailInfoResponse findZipsaDetailFindByZipsaId(Long userId, Long zipsaId);
 
-    ZipsaInfoResponse findZipsaFindByZipsaId(Long zipsaId);
+    ZipsaInfoResponse findZipsaFindByZipsaId(Long userId, Long zipsaId);
 
-    List<ZipsaReviewResponse> findsZipsaReviewFindByZipsaId(Long zipsaId);
+    List<ZipsaReviewResponse> findsZipsaReviewFindByZipsaId(Long userId, Long zipsaId);
 
     Zipsa findByZipsaId(Long zipsaId);
 

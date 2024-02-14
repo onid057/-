@@ -8,6 +8,7 @@ import lombok.Getter;
 public class ZipsaInfoResponse {
 
     private String name;
+    private String profileImage;
     private Long gradeId;
     private String gradeName;
     private Double kindnessAverage;

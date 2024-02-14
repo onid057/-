@@ -83,7 +83,7 @@ class ReviewControllerTest {
         RoomCreateRequest roomCreateRequest = new RoomCreateRequest(userId, 1L, "제목", "1", "장소", 12,
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), 15000, list);
-        roomId = matchService.makeFilterRoom(userId,roomCreateRequest);
+        roomId = matchService.makeFilterRoom(userId, roomCreateRequest);
         roomService.changeRoomZipsa(zipsa, roomId);
         em.flush();
         em.clear();
@@ -107,11 +107,13 @@ class ReviewControllerTest {
         em.clear();
         assertThat(reviewService.findReviewsByUserId(userId)).hasSize(2);
         List<ZipsaReviewResponse> zipsaReviewResponses = zipsaService.findsZipsaReviewFindByZipsaId(
+            zipsaId,
             zipsaId);
         assertThat(zipsaReviewResponses).hasSize(2);
 
         assertThat(
-            zipsaService.findZipsaDetailFindByZipsaId(zipsaId).getKindnessAverage()).isEqualTo(5.0);
+            zipsaService.findZipsaDetailFindByZipsaId(zipsaId, zipsaId)
+                .getKindnessAverage()).isEqualTo(5.0);
     }
 
     @Test

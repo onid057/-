@@ -61,10 +61,11 @@ public class ZipsaController {
 
     @GetMapping("/{helperId}")
     public ResponseEntity<ApiResponse<ZipsaInfoResponse>> findZipsaFindByZipsaId(
+        @AuthenticationPrincipal SecurityUser user,
         @PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.findZipsaFindByZipsaId(helperId)));
+                zipsaService.findZipsaFindByZipsaId(user.getUserId(), helperId)));
     }
 
     @GetMapping("/rooms")
@@ -136,18 +137,20 @@ public class ZipsaController {
 
     @GetMapping("/{helperId}/detail")
     public ResponseEntity<ApiResponse<ZipsaDetailInfoResponse>> findZipsaDetailFindByZipsaId(
+        @AuthenticationPrincipal SecurityUser user,
         @PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.findZipsaDetailFindByZipsaId(helperId)));
+                zipsaService.findZipsaDetailFindByZipsaId(user.getUserId(), helperId)));
     }
 
     @GetMapping("/{helperId}/reviews")
     public ResponseEntity<ApiResponse<List<ZipsaReviewResponse>>> findsZipsaReviewFindByZipsaId(
+        @AuthenticationPrincipal SecurityUser user,
         @PathVariable Long helperId) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.findsZipsaReviewFindByZipsaId(helperId)));
+                zipsaService.findsZipsaReviewFindByZipsaId(user.getUserId(), helperId)));
     }
 
     @GetMapping("/reservations/{roomId}")

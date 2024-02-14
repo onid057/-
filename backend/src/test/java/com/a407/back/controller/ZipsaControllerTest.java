@@ -105,7 +105,7 @@ class ZipsaControllerTest {
         RoomCreateRequest roomCreateRequest = new RoomCreateRequest(userId, 1L, "제목", "1", "장소", 12,
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), 15000, list);
-        roomId = matchService.makeFilterRoom(userId,roomCreateRequest);
+        roomId = matchService.makeFilterRoom(userId, roomCreateRequest);
         roomService.changeRoomZipsa(zipsa, roomId);
         em.flush();
         em.clear();
@@ -143,7 +143,8 @@ class ZipsaControllerTest {
     @Transactional
     @DisplayName("집사 정보 조회")
     void findZipsaFindByZipsaId() {
-        ZipsaInfoResponse zipsaFindByZipsaId = zipsaService.findZipsaFindByZipsaId(zipsaId);
+        ZipsaInfoResponse zipsaFindByZipsaId = zipsaService.findZipsaFindByZipsaId(zipsaId,
+            zipsaId);
         assertThat(zipsaFindByZipsaId.getName()).isEqualTo("zipsa");
     }
 
@@ -162,7 +163,8 @@ class ZipsaControllerTest {
         em.flush();
         em.clear();
         assertThat(
-            zipsaService.findZipsaDetailFindByZipsaId(zipsaId).getKindnessAverage()).isEqualTo(15);
+            zipsaService.findZipsaDetailFindByZipsaId(zipsaId, zipsaId)
+                .getKindnessAverage()).isEqualTo(15);
     }
 
     @Test
@@ -179,9 +181,10 @@ class ZipsaControllerTest {
         reviewService.makeReview(reviewCreateRequestTwo);
         em.flush();
         em.clear();
-        assertThat(zipsaService.findsZipsaReviewFindByZipsaId(zipsaId)).hasSize(2);
+        assertThat(zipsaService.findsZipsaReviewFindByZipsaId(zipsaId, zipsaId)).hasSize(2);
         assertThat(
-            zipsaService.findsZipsaReviewFindByZipsaId(zipsaId).get(0).getContent()).isEqualTo(
+            zipsaService.findsZipsaReviewFindByZipsaId(zipsaId, zipsaId).get(0)
+                .getContent()).isEqualTo(
             "내용2");
     }
 
@@ -217,7 +220,6 @@ class ZipsaControllerTest {
         ZipsaReservationInfoResponse zipsaReservationInfoResponse = zipsaService.getZipsaReservationInfo(
             room.getRoomId());
         assertThat(zipsaReservationInfoResponse.getName()).isEqualTo("user");
-
 
         assertThat(userService.getUserReservationList(zipsaId)).hasSize(1);
 
@@ -257,12 +259,12 @@ class ZipsaControllerTest {
                 Process.END).build();
         em.persist(room);
 
-        logger.info("테스트용 {}",zipsa.getIsWorked());
+        logger.info("테스트용 {}", zipsa.getIsWorked());
 
         assertThat(zipsaService.getZipsaRecordList(zipsaId)).hasSize(1);
     }
 
-    Logger logger= LoggerFactory.getLogger(this.getClass());
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Test
     @Transactional

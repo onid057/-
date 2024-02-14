@@ -88,9 +88,9 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public ZipsaDetailInfoResponse findZipsaDetailFindByZipsaId(Long zipsaId) {
-        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
-        List<String> subCategoryList = zipsaRepository.searchSubCategoryList(zipsaId);
+    public ZipsaDetailInfoResponse findZipsaDetailFindByZipsaId(Long userId, Long zipsaId) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId == 0 ? userId : zipsaId);
+        List<String> subCategoryList = zipsaRepository.searchSubCategoryList(zipsa.getZipsaId().getUserId());
         return ZipsaDetailInfoResponse.builder()
             .name(zipsa.getZipsaId().getName())
             .email(zipsa.getZipsaId().getEmail())
@@ -117,10 +117,11 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public ZipsaInfoResponse findZipsaFindByZipsaId(Long zipsaId) {
-        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId);
+    public ZipsaInfoResponse findZipsaFindByZipsaId(Long userId, Long zipsaId) {
+        Zipsa zipsa = zipsaRepository.findByZipsaId(zipsaId == 0 ? userId : zipsaId);
         return ZipsaInfoResponse.builder()
             .name(zipsa.getZipsaId().getName())
+            .profileImage(zipsa.getZipsaId().getProfileImage())
             .gradeId(zipsa.getGradeId().getGradeId())
             .gradeName(zipsa.getGradeId().getName())
             .kindnessAverage(zipsa.getKindnessAverage())
@@ -130,8 +131,8 @@ public class ZipsaServiceImpl implements ZipsaService {
     }
 
     @Override
-    public List<ZipsaReviewResponse> findsZipsaReviewFindByZipsaId(Long zipsaId) {
-        List<Review> reviews = zipsaRepository.searchReviewList(zipsaId);
+    public List<ZipsaReviewResponse> findsZipsaReviewFindByZipsaId(Long userId, Long zipsaId) {
+        List<Review> reviews = zipsaRepository.searchReviewList(zipsaId == 0 ? userId : zipsaId);
         return reviews.stream().map(review -> ZipsaReviewResponse.builder()
             .userName(review.getUserId().getName())
             .profileImage(review.getUserId().getProfileImage())
