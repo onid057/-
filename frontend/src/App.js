@@ -22,7 +22,10 @@ import PaymentRegistration from './pages/userMyPage/PaymentRegistration';
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
 import MatchOption from './pages/MatchOption';
+
 import NotFound from './pages/error/NotFound';
+import NeedLogin from './pages/error/NeedLogin';
+
 import StartMatch from './pages/StartMatch';
 import Notify from './pages/notify/Notify';
 import SuggestByUser from './pages/notify/SuggestByUser';

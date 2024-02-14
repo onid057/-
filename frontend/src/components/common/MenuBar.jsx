@@ -9,6 +9,7 @@ const Wrapper = styled.div`
   width: 320px;
   height: 59px;
   display: flex;
+  margin-top: 20px;
   margin-left: -16px;
   justify-content: center;
   align-items: center;
