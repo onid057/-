@@ -77,6 +77,7 @@ function ProfileUpdate() {
   const [zipsaData, setZipsaData] = useState();
   const [showImages, setShowImages] = useState([]);
   const [detail, setDetail] = useState();
+  const [preferTags, setPreferTags] = useState();
 
   const navigate = useNavigate();
   const onPrevious = () => {
@@ -85,12 +86,12 @@ function ProfileUpdate() {
 
   useEffect(() => {
     getDetailZipsaInfo(0).then(response => {
+      const tagString = response.data.preferTag;
       console.log(response);
       setZipsaData(response.data);
+      setPreferTags(tagString.split('#'));
     });
   }, []);
-
-  const [preferTags, setPreferTags] = useState(zipsaData.preferTag.split('#'));
 
   return (
     <Wrapper>
