@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   align-items: flex-start;
   gap: 15px;
   font-weight: 300;
-  font-size: 15px;
+  font-size: 16px;
   background-color: #ffffff;
   border-radius: 25px;
 `;
