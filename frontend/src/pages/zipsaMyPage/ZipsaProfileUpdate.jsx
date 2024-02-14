@@ -58,7 +58,7 @@ const ImageWrapper = styled.div`
 `;
 
 const InfoWrapper = styled.div`
-  width: 270px;
+  width: 100%;
   font-size: 17px;
   display: flex;
   flex-wrap: wrap;
@@ -86,10 +86,11 @@ function ProfileUpdate() {
 
   useEffect(() => {
     getDetailZipsaInfo(0).then(response => {
-      const tagString = response.data.preferTag;
       console.log(response);
       setZipsaData(response.data);
-      setPreferTags(tagString.split('#'));
+      setPreferTags(response.data.preferTag.split('#'));
+      setDetail(response.data.description);
+      setShowImages(response.data.profileImage);
     });
   }, []);
 
@@ -118,6 +119,7 @@ function ProfileUpdate() {
         gap="5px"
         fontSize="35px"
         sentences={['내 정보 수정하기']}
+        margin={'0 0 20px 0'}
       ></Paragraph>
 
       <ImageUploader
@@ -174,7 +176,7 @@ function ProfileUpdate() {
 
       <LongInputBox
         title={'자기소개'}
-        value={zipsaData?.description}
+        value={detail}
         onChange={event => setDetail(event.target.value)}
       ></LongInputBox>
 
