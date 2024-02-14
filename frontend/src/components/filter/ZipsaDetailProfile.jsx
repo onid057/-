@@ -13,6 +13,12 @@ const Wrapper = styled.div`
   align-items: start;
   font-weight: 300;
 `;
+const ImageWrapper = styled.div`
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+`;
 const RightBox = styled.div`
   max-width: 200px;
   padding: 5px 10px;
@@ -52,12 +58,16 @@ function ZipsaDetailProfile({
 }) {
   return (
     <Wrapper>
-      <Image
-        src={profileImage || `${process.env.PUBLIC_URL}/images/profile_img.svg`}
-        width={'70px'}
-        height={'70px'}
-        margin={'5px 5px 0 0'}
-      ></Image>
+      <ImageWrapper>
+        <Image
+          src={
+            profileImage || `${process.env.PUBLIC_URL}/images/profile_img.svg`
+          }
+          width={'70px'}
+          height={'70px'}
+          margin={'5px 5px 0 0'}
+        ></Image>
+      </ImageWrapper>
 
       <RightBox>
         <Name>{name}</Name>
