@@ -3,6 +3,8 @@ import SimpleNotice from '../../components/common/SimpleNotice';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import HorizontalLine from '../../components/common/HorizontalLine';
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
 
 import { useState, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +16,7 @@ const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 25px 16px;
+  padding: 0 16px 25px;
   display: flex;
   flex-direction: column;
   gap: 11px;
@@ -43,6 +45,18 @@ function Notify() {
 
   return (
     <Wrapper>
+      <NavigationBar
+        leftContent={
+          <Image
+            width="40px"
+            height="40px"
+            margin="0 0 0 -12px"
+            src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
+          ></Image>
+        }
+        onPrevious={() => navigate('/')}
+      ></NavigationBar>
+
       <Paragraph
         gap="5px"
         fontSize="35px"

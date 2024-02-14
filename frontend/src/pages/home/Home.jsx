@@ -107,38 +107,35 @@ export default function Home() {
     }
   }, []);
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     eventSourceRef.current = new EventSource(
-  //       'http://localhost:8080' + `/sse`,
-  //       // 'https://i10a407.p.ssafy.io/api' + `/sse`,
-  //       {
-  //         withCredentials: true,
-  //       },
-  //     );
+  useEffect(() => {
+    if (isLoggedIn) {
+      eventSourceRef.current = new EventSource(
+        // 'http://localhost:8080' + `/sse`,
+        'https://i10a407.p.ssafy.io/api' + `/sse`,
+        {
+          withCredentials: true,
+        },
+      );
 
-  //     eventSourceRef.current.onopen = () => {
-  //       console.log('Server와 연결');
-  //     };
+      eventSourceRef.current.onopen = () => {
+        console.log('Server와 연결');
+      };
+      eventSourceRef.current.onerror = error => {
+        console.log(error);
+      };
+      eventSourceRef.current.addEventListener('notification', event => {
+        console.log(event.data);
+        setIsVisibleRound(true);
+      });
+    }
 
-  //     eventSourceRef.current.onerror = error => {
-  //       console.log(error);
-  //     };
-
-  //     eventSourceRef.current.onmessage = event => {
-  //       console.log(event);
-  //       setIsVisibleRound(true);
-  //     };
-
-  //     // eventSourceRef.current.addEventListener('sse', () => {
-  //     //   setIsVisibleRound(true);
-  //     // });
-  //   }
-
-  //   return () => {
-  //     eventSourceRef.current.close();
-  //   };
-  // }, []);
+    return () => {
+      if (isLoggedIn) {
+        eventSourceRef.current.close();
+        console.log('Server와 연결 해제');
+      }
+    };
+  }, []);
 
   useEffect(() => {
     // 로그인이 무조건 되어야 하는 상태이고, 집사의 자격이 있는지 알아야 함(토글 버튼을 띄우기 위해)
