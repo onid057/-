@@ -102,9 +102,6 @@ const CommentLength = styled.span`
 function BoardsDetail() {
   const { boardId } = useParams();
   const navigate = useNavigate();
-  const onPrevious = () => {
-    navigate(`/boards`);
-  };
 
   const [data, setData] = useState({});
   const [commentLength, setCommentLength] = useState(0);
@@ -144,7 +141,13 @@ function BoardsDetail() {
             margin={'0 0 0 -12px'}
           ></Image>
         }
-        onPrevious={onPrevious}
+        rightContent={'목록'}
+        onPrevious={() => {
+          navigate(-1);
+        }}
+        onNext={() => {
+          navigate('/boards');
+        }}
       ></NavigationBar>
 
       {isArticleDelete === true && (
