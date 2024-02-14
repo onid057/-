@@ -21,9 +21,9 @@ const ContentBox = styled.div`
   background-color: #ffffff;
   border-radius: 25px;
 `;
-
 const LinkText = styled.div`
   width: 100%;
+  margin: 5px 5px 0 0;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -33,7 +33,6 @@ const LinkText = styled.div`
     cursor: pointer;
   }
 `;
-
 const NameBox = styled.div`
   box-sizing: border-box;
   width: 80%;
@@ -66,7 +65,6 @@ function TwoIndexRoute({
       },
     });
   };
-  // console.log('TwoIndexRoute에서의 helperId: ', helperId);
 
   let nameBoxColor;
   if (gradeId === 1) {
@@ -82,7 +80,7 @@ function TwoIndexRoute({
   }
 
   let diaPicture;
-  if (0.0 <= avgScore && avgScore <= 0.5) {
+  if (0 <= avgScore && avgScore <= 0.5) {
     diaPicture = 'dia_0.5';
   } else if (0.5 < avgScore && avgScore <= 1.0) {
     diaPicture = 'dia_1.0';
@@ -98,8 +96,10 @@ function TwoIndexRoute({
     diaPicture = 'dia_3.5';
   } else if (3.5 < avgScore && avgScore <= 4.0) {
     diaPicture = 'dia_4.0';
-  } else if (4.5 < avgScore && avgScore <= 5.0) {
+  } else if (4.5 < avgScore && avgScore < 5) {
     diaPicture = 'dia_4.5';
+  } else {
+    diaPicture = 'dia_5.0';
   }
 
   if (index === 'GRADE') {
@@ -112,26 +112,24 @@ function TwoIndexRoute({
             src={`${process.env.PUBLIC_URL}/images/right_arrow_no_tail.svg`}
             width={'7px'}
             height={'10px'}
-            margin={'5px'}
+            margin={'1px 0 0 5px'}
           ></Image>
         </LinkText>
 
         <Image
           src={`${process.env.PUBLIC_URL}/images/room_${gradeId}.svg`}
           width={'169px'}
-          height={'168px'}
+          height={'169px'}
         ></Image>
         <NameBox $backgroundcolor={nameBoxColor}>
           <Paragraph
             gap={'8px'}
             fontSize={'20px'}
             sentences={[
-              `${name} 집사님은`,
+              `${name} 님은`,
               <BoldText
                 fontSize={'20px'}
-                // 가운데 정렬이 안돼서 앞에 한 칸씩 띄워줬어요
-                boldContent={` ${gradeName} 집사`}
-                normalContent={' 예요'}
+                boldContent={`${gradeName} 집사`}
               ></BoldText>,
             ]}
           ></Paragraph>
@@ -148,7 +146,7 @@ function TwoIndexRoute({
             src={`${process.env.PUBLIC_URL}/images/right_arrow_no_tail.svg`}
             width={'7px'}
             height={'10px'}
-            margin={'5px'}
+            margin={'1px 0 0 5px'}
           ></Image>
         </LinkText>
 
@@ -167,9 +165,7 @@ function TwoIndexRoute({
               '나의 다이아 점수는',
               <BoldText
                 fontSize={'20px'}
-                // 가운데 정렬이 안돼서 앞에 한 칸씩 띄워줬어요
-                boldContent={`    ${avgScore} 점`}
-                normalContent={' 이예요'}
+                boldContent={`${avgScore}점`}
               ></BoldText>,
             ]}
           ></Paragraph>

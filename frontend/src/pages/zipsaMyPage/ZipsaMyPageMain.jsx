@@ -1,20 +1,20 @@
-import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import NavigationBar from '../../components/common/NavigationBar';
+import { getSimpleZipsaInfo } from '../../apis/api/zipsaMyPage';
+import styled from 'styled-components';
 import MenuBar from '../../components/common/MenuBar';
 import TwoIndex from '../../components/zipsamypage/TwoIndex';
 import Notice from '../../components/common/Notice';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Image from '../../components/common/Image';
-import { getSimpleZipsaInfo } from '../../apis/api/zipsaMyPage';
+import NavigateButton from '../../components/common/NavigateButton';
 
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 0px 16px 10px;
+  padding: 10px 16px 0;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -34,30 +34,14 @@ const HeadWrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
-const MenuText = styled.div`
-  width: ${props => props.width || '200px'};
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
 
 function ZipsaMyPageMain() {
-  // NavigationBar 사용 위한 변수 선언
   const navigate = useNavigate();
-  const onPrevious = () => {
-    navigate(-1);
-  };
-
-  // helperId 조회 ★★★★★★★ helperId ★★★★★★★★
-  const helperId = 3;
-
-  // (간단) 집사 정보조회 API 호출
   const [data, setData] = useState({});
   const [gradeName, setGradeName] = useState();
 
   useEffect(() => {
-    getSimpleZipsaInfo(helperId).then(response => {
-      console.log('집사 간단 정보 조회 성공');
+    getSimpleZipsaInfo(0).then(response => {
       setData(response.data);
     });
   }, []);
@@ -65,7 +49,7 @@ function ZipsaMyPageMain() {
   // 다이아 점수 계산
   const number =
     (data.kindnessAverage + data.skillAverage + data.rewindAverage) / 3;
-  const avgScore = number.toFixed(2);
+  const avgScore = number.toFixed(1);
 
   // 집사 명칭 영 → 한 변환
   const nameChanger = () => {
@@ -89,28 +73,16 @@ function ZipsaMyPageMain() {
     nameChanger();
   }, [data]);
 
-  // 다른 페이지로 이동
-  const MenuList = ['활동 내역 보기', '정산하기', '작성한 게시물 확인하기'];
-
   return (
     <Wrapper>
       <HeadWrapper>
-        <NavigationBar
-          leftContent={
-            <Image
-              src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
-              width={'40px'}
-              height={'40px'}
-              margin={'0 0 0 -12px'}
-            ></Image>
-          }
-          onPrevious={onPrevious}
-        ></NavigationBar>
-
         <Notice
           upper={[
             <Image
-              src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
+              src={
+                data.profileImage ||
+                `${process.env.PUBLIC_URL}/images/profile_img.svg`
+              }
               width={'60px'}
               height={'60px'}
               margin={'0px'}
@@ -134,49 +106,16 @@ function ZipsaMyPageMain() {
         ></Notice>
 
         <TwoIndex
-          helperId={helperId}
+          helperId={0}
           name={data.name}
           gradeId={data.gradeId}
           gradeName={gradeName}
           avgScore={avgScore}
         ></TwoIndex>
 
-        {MenuList.map((content, idx) => (
-          // let nextPage;
-          // swtich (idx) {
-          //   case '0':
-          //     nextPage='/zipsa/history'
-          //   case '1':
-          //     nextPage='/zipsa/history'
-          //   case '2':
-          //     nextPage='/zipsa/history'
-          //   default:
-          //     nextPage='/zipsa/history'
-          // }
-
-          <Notice
-            key={idx}
-            upper={[
-              <MenuText width="270px">
-                <BoldText
-                  fontSize={'18px'}
-                  boldContent={null}
-                  normalContent={content}
-                ></BoldText>
-                <Image
-                  src={process.env.PUBLIC_URL + '/images/right_arrow.svg'}
-                  width={'24px'}
-                  height={'24px'}
-                  margin={'0'}
-                ></Image>
-              </MenuText>,
-            ]}
-            lower={null}
-            // 각자 페이지로 이동하기
-            nextPage={`/zipsa/history`}
-            padding={'20px 12px'}
-          ></Notice>
-        ))}
+        <NavigateButton onClick={() => navigate('/zipsa/history')}>
+          활동 내역 보기
+        </NavigateButton>
       </HeadWrapper>
       <MenuBar currentMenu="USER" isWorked={true}></MenuBar>
     </Wrapper>

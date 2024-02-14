@@ -4,50 +4,46 @@ import TwoIndexRoute from './TwoIndexRoute';
 
 const Wrapper = styled.div`
   box-sizing: border-box;
+  position: relative;
   width: 100%;
   height: 377px;
   margin: 5px 0px;
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
 `;
-
 const IndexBox = styled.div`
   box-sizing: border-box;
   width: 100%;
   height: 80px;
   display: flex;
-  /* background-color: blue; */
 `;
-
 const SelectedIndex = styled.div`
   width: 50%;
   height: 100%;
-  padding: 15px 0px 0px;
+  padding: 12px 0px 0px;
   display: flex;
   flex-direction: column;
   background-color: white;
   text-align: center;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
   border-radius: 25px;
   > span {
     cursor: pointer;
   }
 `;
-
 const UnSelectedIndex = styled.div`
   width: 50%;
   height: 100%;
-  padding: 15px 0px 0px;
+  padding: 12px 0px 0px;
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
   text-align: center;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 400;
   color: #a3a3a3;
   border-radius: 25px;
   > span {
@@ -56,7 +52,6 @@ const UnSelectedIndex = styled.div`
 `;
 
 function TwoIndex({ helperId, name, gradeId, gradeName, avgScore }) {
-  // 클릭 이벤트 핸들러 함수 정의
   const [index, setIndex] = useState('GRADE');
 
   return (
