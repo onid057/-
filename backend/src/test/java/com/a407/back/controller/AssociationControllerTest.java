@@ -27,9 +27,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
 @ContextConfiguration(classes = BackendApplication.class)
-
 class AssociationControllerTest {
-
 
     @Autowired
     AssociationService associationService;
@@ -43,7 +41,6 @@ class AssociationControllerTest {
     @Autowired
     @Qualifier("associationRedisTemplate")
     RedisTemplate<String, String> redisTemplate;
-
 
     Long userIdOne;
     Long userIdTwo;
@@ -237,4 +234,5 @@ class AssociationControllerTest {
             .getIsRepresentative()).isTrue();
 
     }
+
 }

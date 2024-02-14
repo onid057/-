@@ -14,12 +14,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/notifications")
 public class NotificationController {
 
     private final NotificationService notificationService;
+
+    @GetMapping("/{notificationId}")
+    public ResponseEntity<ApiResponse<Long>> changeRoomToMatch(
+        @PathVariable("notificationId") Long notificationId) {
+        notificationService.changeRoomToMatch(notificationId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, notificationId));
+    }
 
     @GetMapping("/{notificationId}/user")
     public ResponseEntity<ApiResponse<UserNotificationResponse>> findUserNotificationDetail(
@@ -43,14 +51,6 @@ public class NotificationController {
         int newNotificationCount = notificationService.changeNotificationToReject(notificationId);
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, newNotificationCount));
-    }
-
-    @GetMapping("/{notificationId}")
-    public ResponseEntity<ApiResponse<Long>> changeRoomToMatch(
-        @PathVariable("notificationId") Long notificationId) {
-        notificationService.changeRoomToMatch(notificationId);
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, notificationId));
     }
 
 }

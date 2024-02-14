@@ -46,8 +46,8 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/users")
 public class UserController {
 
@@ -88,6 +88,16 @@ public class UserController {
             .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "회원 정보 삭제 성공"));
     }
 
+    // 알림 목록
+    @GetMapping("/notifications")
+    public ResponseEntity<ApiResponse<List<NotificationListResponse>>> getNotificationList(
+        @AuthenticationPrincipal SecurityUser user) {
+        List<NotificationListResponse> notificationResponseList = userService.findNotificationByUserIdList(
+            user.getUserId());
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, notificationResponseList));
+    }
+
     @GetMapping("/boards")
     public ResponseEntity<ApiResponse<BoardListResponse>> getUserBoardList(
         @AuthenticationPrincipal SecurityUser user, @RequestParam("page") int page,
@@ -111,16 +121,6 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 userService.findUserLocation(user.getUserId())));
-    }
-
-    // 알림 목록
-    @GetMapping("/notifications")
-    public ResponseEntity<ApiResponse<List<NotificationListResponse>>> getNotificationList(
-        @AuthenticationPrincipal SecurityUser user) {
-        List<NotificationListResponse> notificationResponseList = userService.findNotificationByUserIdList(
-            user.getUserId());
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, notificationResponseList));
     }
 
     @GetMapping("/payments")

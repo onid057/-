@@ -27,7 +27,6 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = BackendApplication.class)
 class AuthControllerTest {
 
-
     @Autowired
     AuthService authService;
 
@@ -38,10 +37,7 @@ class AuthControllerTest {
     @Qualifier("refreshTokenRedisTemplate")
     RedisTemplate<String, String> redisTemplate;
 
-
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-
 
     @BeforeEach
     void test(){
@@ -50,7 +46,6 @@ class AuthControllerTest {
             Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
         userService.makeUser(user);
     }
-
 
     @Test
     @Transactional

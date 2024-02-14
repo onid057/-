@@ -40,6 +40,23 @@ public class ZipsaController {
 
     private final ZipsaServiceImpl zipsaService;
 
+    @PostMapping
+    public ResponseEntity<ApiResponse<Long>> makeZipsa(
+        @RequestBody ZipsaCreateRequest zipsaCreateRequest) {
+        long id = zipsaService.makeZipsa(zipsaCreateRequest);
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
+    }
+
+    @PatchMapping
+    public ResponseEntity<ApiResponse<String>> changeZipsaInfo(
+        @AuthenticationPrincipal SecurityUser user,
+        @RequestBody ZipsaChangeRequest request) {
+        zipsaService.changeZipsaInfo(user.getUserId(), request);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "집사 정보 수정 성공"));
+    }
+
     @GetMapping("/{helperId}")
     public ResponseEntity<ApiResponse<ZipsaInfoResponse>> findZipsaFindByZipsaId(
         @PathVariable Long helperId) {
@@ -62,6 +79,22 @@ public class ZipsaController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaWorkStatus(user.getUserId())));
+    }
+
+    @GetMapping("/distinction")
+    public ResponseEntity<ApiResponse<Boolean>> findZipsaDistinction(
+        @AuthenticationPrincipal SecurityUser user) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.findZipsaDistinction(user.getUserId())));
+    }
+
+    @GetMapping("/records")
+    public ResponseEntity<ApiResponse<List<ZipsaRecordResponse>>> getZipsaRecordList(
+        @AuthenticationPrincipal SecurityUser user) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                zipsaService.getZipsaRecordList(user.getUserId())));
     }
 
     @PostMapping("/reports")
@@ -91,14 +124,6 @@ public class ZipsaController {
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 성격 변경이 완료되었습니다."));
     }
 
-    @GetMapping("/distinction")
-    public ResponseEntity<ApiResponse<Boolean>> findZipsaDistinction(
-        @AuthenticationPrincipal SecurityUser user) {
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.findZipsaDistinction(user.getUserId())));
-    }
-
     @GetMapping("/reports/{roomId}")
     public ResponseEntity<ApiResponse<ReportResponse>> findReportByRoomIdList(
         @PathVariable Long roomId) {
@@ -123,14 +148,6 @@ public class ZipsaController {
                 zipsaService.findsZipsaReviewFindByZipsaId(helperId)));
     }
 
-    @GetMapping("/records")
-    public ResponseEntity<ApiResponse<List<ZipsaRecordResponse>>> getZipsaRecordList(
-        @AuthenticationPrincipal SecurityUser user) {
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                zipsaService.getZipsaRecordList(user.getUserId())));
-    }
-
     @GetMapping("/reservations/{roomId}")
     public ResponseEntity<ApiResponse<ZipsaReservationInfoResponse>> getZipsaReservationInfo(
         @PathVariable Long roomId) {
@@ -153,23 +170,6 @@ public class ZipsaController {
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
                 zipsaService.getZipsaWorkStatus(helperId)));
-    }
-
-    @PostMapping
-    public ResponseEntity<ApiResponse<Long>> makeZipsa(
-        @RequestBody ZipsaCreateRequest zipsaCreateRequest) {
-        long id = zipsaService.makeZipsa(zipsaCreateRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, id));
-    }
-
-    @PatchMapping
-    public ResponseEntity<ApiResponse<String>> changeZipsaInfo(
-        @AuthenticationPrincipal SecurityUser user,
-        @RequestBody ZipsaChangeRequest request) {
-        zipsaService.changeZipsaInfo(user.getUserId(), request);
-        return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "집사 정보 수정 성공"));
     }
 
 }
