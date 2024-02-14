@@ -1,9 +1,12 @@
+import React, { useState, useEffect } from 'react';
 import { styled } from 'styled-components';
 
-import Image from '../components/common/Image';
-import Paragraph from '../components/common/Paragraph';
-import MenuBar from '../components/common/MenuBar';
-import BoldText from '../components/common/BoldText';
+import Image from '../../components/common/Image';
+import Paragraph from '../../components/common/Paragraph';
+import MenuBar from '../../components/common/MenuBar';
+import BoldText from '../../components/common/BoldText';
+import NavigateText from '../../components/common/NavigateText';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -22,7 +25,7 @@ const HeadWrapper = styled.div`
   min-height: 429px;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 45px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
@@ -39,20 +42,21 @@ const Title = styled.div`
 
 const Content = styled.div`
   width: 294px;
-  margin: 60px 0;
   display: flex;
   flex-direction: column;
   gap: 32px;
 `;
 
-function SuccessMatch() {
+function SuccessApply() {
+  const userState = useUserInfo(state => state.userState); // 전역에서 관리하는 유저 상태
+
   return (
     <Wrapper>
       <HeadWrapper>
         <Title>
           <Paragraph
             fontSize="35px"
-            sentences={['매칭을', '성공했어요!']}
+            sentences={['요청 등록에', '성공했어요!']}
           ></Paragraph>
           <Image src="/images/handshaking.svg"></Image>
         </Title>
@@ -61,8 +65,7 @@ function SuccessMatch() {
           <Paragraph
             fontSize="18px"
             sentences={[
-              '매칭의 정보와',
-              '집사님의 상세 정보는',
+              '매칭성공 시 정보는',
               <BoldText
                 fontSize={'18px'}
                 boldContent={"'예약'"}
@@ -71,10 +74,23 @@ function SuccessMatch() {
             ]}
           ></Paragraph>
         </Content>
+
+        <Content>
+          <Paragraph
+            fontSize="18px"
+            sentences={[
+              '또 다른 공고를 찾으신다면',
+              '아래에서 확인해보세요!',
+              <NavigateText
+                nextPage={'/rooms/zipsa'}
+                children={'모집 공고 목록'}
+              ></NavigateText>,
+            ]}
+          ></Paragraph>
+        </Content>
       </HeadWrapper>
-      <MenuBar></MenuBar>
+      <MenuBar isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }
-
-export default SuccessMatch;
+export default SuccessApply;

@@ -87,7 +87,7 @@ function Reserve() {
           })}
         </SimpleReservesWrapper>
       </HeadWrapper>
-      <MenuBar currentMenu="RESERVE"></MenuBar>
+      <MenuBar currentMenu="RESERVE" isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }

@@ -95,7 +95,6 @@ function CreateRoomFunnel() {
             };
             setFilterData(roomData);
             makeRoom(
-              1,
               41,
               roomData.matchTitle,
               roomData.matchContent,

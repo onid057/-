@@ -2,7 +2,6 @@ import axios from '../utils/instance';
 
 // createRoomFunnel에서 얻은 정보를 토대로 공개방 생성
 const makeRoom = async (
-  userId,
   subCategoryId,
   title,
   content,
@@ -18,7 +17,6 @@ const makeRoom = async (
       method: 'post',
       url: '/rooms',
       data: {
-        userId,
         subCategoryId,
         title,
         content,
@@ -37,11 +35,11 @@ const makeRoom = async (
 };
 
 // 사용자 본인이 생성한 방 목록 구하기
-const getUserRoomList = async userId => {
+const getUserRoomList = async () => {
   try {
     const response = await axios({
       method: 'get',
-      url: `/users/${userId}/rooms`,
+      url: `/users/rooms`,
     });
     return response.data;
   } catch (error) {
@@ -89,11 +87,11 @@ const acceptZipsaRequest = async notificationId => {
 };
 
 // 집사기준, 사용자들이 생성한 모든 방 목록 보여주기
-const getZipsaRoomList = async () => {
+const getZipsaRoomList = async (page, size) => {
   try {
     const response = await axios({
       method: 'get',
-      url: `/helpers/rooms?page=1&size=100`,
+      url: `/helpers/rooms?page=${page}&size=${size}`,
     });
     return response.data;
   } catch (error) {
@@ -102,14 +100,13 @@ const getZipsaRoomList = async () => {
 };
 
 // 집사기준, 공개방 참가신청하기
-const applyForRoom = async (roomId, zipsaId) => {
+const applyForRoom = async roomId => {
   try {
     const response = await axios({
       method: 'post',
       url: `/helpers/participation`,
       data: {
         roomId,
-        zipsaId,
       },
     });
     return response.data;

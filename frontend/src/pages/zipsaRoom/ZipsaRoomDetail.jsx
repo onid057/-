@@ -82,10 +82,8 @@ function ZipsaRoomDetail() {
     return `${year}년 ${month}월 ${day}일`;
   };
 
-  const zipsaId = 3;
-
   const onButtonClick = () => {
-    applyForRoom(roomId, zipsaId).then(response => console.log(response));
+    applyForRoom(roomId).then(response => console.log(response));
   };
 
   return (

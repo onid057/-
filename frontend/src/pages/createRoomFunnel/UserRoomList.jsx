@@ -7,12 +7,23 @@ import BoldText from '../../components/common/BoldText';
 import { useNavigate } from 'react-router-dom';
 import calculateRemainingTime from '../../apis/utils/calculateRemainingTime';
 import { getUserRoomList } from '../../apis/api/room';
+import MenuBar from '../../components/common/MenuBar';
 
 const Wrapper = styled.div`
   width: 320px;
-  min-height: 568px;
   margin: 0 auto;
   padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.primary};
+  font-size: 18px;
+  font-weight: 300;
+  white-space: pre-wrap;
+`;
+
+const HeadWrapper = styled.div`
+  width: 100%;
+  min-height: 509px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -79,57 +90,58 @@ function UserRoomList() {
     navigate(`/rooms/detail/${roomId}`);
   };
 
-  const userId = 1;
-
   useEffect(() => {
-    getUserRoomList(userId).then(response => {
+    getUserRoomList().then(response => {
       setRoomList(response.data.userPublicRoomList);
     });
   }, []);
 
   return (
     <Wrapper>
-      <NavigationBar
-        leftContent={
+      <HeadWrapper>
+        <NavigationBar
+          leftContent={
+            <Image
+              src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
+              width={'40px'}
+              height={'40px'}
+              margin={'0 0 0 -12px'}
+            ></Image>
+          }
+          onPrevious={onPrevious}
+        ></NavigationBar>
+        <TitleWrapper>
+          <Paragraph
+            fontSize={'35px'}
+            sentences={['내가 만든 방']}
+            textAlign={'left'}
+          ></Paragraph>
+        </TitleWrapper>
+        {!roomList.length && (
+          <Paragraph
+            fontSize={'18px'}
+            sentences={['아직 생성된 방이 없어요']}
+          ></Paragraph>
+        )}
+        <CreateButton onClick={onClickButton}>
           <Image
-            src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
-            width={'40px'}
-            height={'40px'}
-            margin={'0 0 0 -12px'}
+            src={`${process.env.PUBLIC_URL}/images/plus.svg`}
+            width={'33.33px'}
+            height={'33.33px'}
           ></Image>
-        }
-        onPrevious={onPrevious}
-      ></NavigationBar>
-      <TitleWrapper>
-        <Paragraph
-          fontSize={'35px'}
-          sentences={['내가 만든 방']}
-          textAlign={'left'}
-        ></Paragraph>
-      </TitleWrapper>
-      {!roomList.length && (
-        <Paragraph
-          fontSize={'18px'}
-          sentences={['아직 생성된 방이 없어요']}
-        ></Paragraph>
-      )}
-      <CreateButton onClick={onClickButton}>
-        <Image
-          src={`${process.env.PUBLIC_URL}/images/plus.svg`}
-          width={'33.33px'}
-          height={'33.33px'}
-        ></Image>
-        <Paragraph fontSize={'18px'} sentences={['새 방 만들기']}></Paragraph>
-      </CreateButton>
-      {roomList.map((item, idx) => (
-        <RoomItemWrapper key={idx} onClick={() => onClickRoom(item.roomId)}>
-          <BoldText fontSize={'16px'} boldContent={item.title} />
-          <RoomInfoWrapper>
-            <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
-            <>{calculateRemainingTime(item.roomCreatedAt)}</>
-          </RoomInfoWrapper>
-        </RoomItemWrapper>
-      ))}
+          <Paragraph fontSize={'18px'} sentences={['새 방 만들기']}></Paragraph>
+        </CreateButton>
+        {roomList.map((item, idx) => (
+          <RoomItemWrapper key={idx} onClick={() => onClickRoom(item.roomId)}>
+            <BoldText fontSize={'16px'} boldContent={item.title} />
+            <RoomInfoWrapper>
+              <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
+              <>{calculateRemainingTime(item.roomCreatedAt)}</>
+            </RoomInfoWrapper>
+          </RoomItemWrapper>
+        ))}
+      </HeadWrapper>
+      <MenuBar></MenuBar>
     </Wrapper>
   );
 }
