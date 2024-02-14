@@ -113,8 +113,8 @@ public class ZipsaController {
 
     @PostMapping("/participation")
     public ResponseEntity<ApiResponse<String>> makePublicRoomNotification(
-        @RequestBody PublicRoomNotificationRequest publicRoomNotificationRequest) {
-        zipsaService.makePublicRoomNotification(publicRoomNotificationRequest);
+        @RequestBody PublicRoomNotificationRequest publicRoomNotificationRequest, @AuthenticationPrincipal SecurityUser user) {
+        zipsaService.makePublicRoomNotification(publicRoomNotificationRequest, user.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "공개 방 참가 요청이 발신되었습니다."));
     }

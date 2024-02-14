@@ -34,7 +34,7 @@ public interface ZipsaService {
 
     ZipsaReservationInfoResponse getZipsaReservationInfo(Long roomId);
 
-    void makePublicRoomNotification(PublicRoomNotificationRequest publicRoomNotificationRequest);
+    void makePublicRoomNotification(PublicRoomNotificationRequest publicRoomNotificationRequest, Long userId);
 
     PublicRoomListResponse getPublicRoomList(int page, int size);
 

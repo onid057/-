@@ -189,11 +189,11 @@ public class ZipsaServiceImpl implements ZipsaService {
     @Override
     @Transactional
     public void makePublicRoomNotification(
-        PublicRoomNotificationRequest publicRoomNotificationRequest) {
+        PublicRoomNotificationRequest publicRoomNotificationRequest, Long userId) {
         // notification 생성
         Room room = roomRepository.findByRoomId(publicRoomNotificationRequest.getRoomId());
         Notification notification = Notification.builder()
-            .sendId(publicRoomNotificationRequest.getZipsaId())
+            .sendId(userId)
             .receiveId(room.getUserId().getUserId()).roomId(room).type(
                 Type.USER).status(Status.STANDBY).isRead(false).build();
         notificationRepository.makeNotification(notification);

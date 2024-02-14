@@ -277,9 +277,9 @@ class ZipsaControllerTest {
         Room room = em.find(Room.class, roomId);
         assertThat(room.getNotificationCount()).isEqualTo(1);
         PublicRoomNotificationRequest publicRoomNotificationRequest = new PublicRoomNotificationRequest(
-            roomId, zipsaId);
+            roomId);
 
-        zipsaService.makePublicRoomNotification(publicRoomNotificationRequest);
+        zipsaService.makePublicRoomNotification(publicRoomNotificationRequest, zipsaId);
         em.flush();
         em.clear();
         room = em.find(Room.class, roomId);
