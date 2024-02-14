@@ -8,8 +8,6 @@ import {
 } from '../../apis/api/zipsaMyPage';
 
 function ZipsaDetailRoute({ helperId, component }) {
-  // (세부)집사 정보 조회 API 호출
-  // (리뷰)집사 정보 조회 API 호출
   const [data, setData] = useState({});
   const [reviews, setReviews] = useState({});
   const [preferTagList, setPreferTagList] = useState([]);
@@ -41,7 +39,7 @@ function ZipsaDetailRoute({ helperId, component }) {
   } else if (component === 'HISTORY') {
     return (
       <ZipsaDetailHistory
-        replyAverage={data.replyAverage}
+        replyAverage={Math.floor(data.replyAverage)}
         serviceCount={data.serviceCount}
         kindnessAverage={data.kindnessAverage}
         skillAverage={data.skillAverage}

@@ -17,13 +17,12 @@ const Wrapper = styled.div`
   padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 14px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
 const NavigationWrapper = styled.div`
   cursor: pointer;
   width: 100%;
@@ -32,11 +31,9 @@ const NavigationWrapper = styled.div`
   justify-content: space-between;
   gap: 12px;
 `;
-
 const BoldTextWrapper = styled.div`
   font-weight: bold;
 `;
-
 const NormalTextWrapper = styled.div`
   font-weight: normal;
 `;
@@ -57,12 +54,12 @@ function ZipsaDetail() {
 
   useEffect(() => {
     getDetailZipsaInfo(helperId).then(response => {
-      // console.log('(상세)집사 정보 조회 API 성공');
+      console.log(response.data);
       setData(response.data);
     });
 
     getReviewZipsaInfo(helperId).then(response => {
-      // console.log('(리뷰)집사 정보 조회 API 성공');
+      console.log(response.data);
       setReviews(response.data);
     });
   }, []);

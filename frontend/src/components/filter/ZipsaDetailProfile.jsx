@@ -17,7 +17,6 @@ const Wrapper = styled.div`
 
 const RightBox = styled.div`
   max-width: 200px;
-  height: 100px;
   padding: 5px 10px;
   display: flex;
   flex-direction: column;

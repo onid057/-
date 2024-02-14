@@ -16,12 +16,9 @@ const Wrapper = styled.div`
   background-color: #ffffff;
   border-radius: 25px;
 `;
-
 const Title = styled.div`
   width: 100%;
-  height: 25px;
   font-size: 15px;
-  font-weight: 400;
 `;
 
 function ZipsaDetailReview({ totalReview, reviews }) {
