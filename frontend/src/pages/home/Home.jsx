@@ -119,11 +119,12 @@ export default function Home() {
 
       eventSourceRef.current.onmessage = event => {
         console.log(event);
+        setIsVisibleRound(true);
       };
 
-      eventSourceRef.current.addEventListener('sse', () => {
-        setIsVisibleRound(true);
-      });
+      // eventSourceRef.current.addEventListener('sse', () => {
+      //   setIsVisibleRound(true);
+      // });
     }
   }, []);
 
