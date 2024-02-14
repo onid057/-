@@ -1,15 +1,12 @@
 package com.a407.back.controller;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import com.a407.back.BackendApplication;
-import com.a407.back.domain.Board;
 import com.a407.back.domain.Comment;
 import com.a407.back.domain.Tag;
-import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.dto.board.BoardCreateRequest;
 import com.a407.back.dto.comment.CommentChangeRequest;
@@ -25,8 +22,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

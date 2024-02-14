@@ -12,8 +12,6 @@ import com.a407.back.model.service.UserService;
 import jakarta.transaction.Transactional;
 import java.sql.Date;
 import java.time.LocalDate;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

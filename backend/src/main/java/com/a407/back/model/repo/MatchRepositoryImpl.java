@@ -75,9 +75,9 @@ public class MatchRepositoryImpl implements MatchRepository {
 
             // 예: 40대 미만인 경우 50년 전
             Date lowerBound = Date.valueOf(
-                String.valueOf(LocalDateTime.now().minusYears(ageInt + 10L)));
+                LocalDate.now().minusYears(ageInt + 10L));
             // 예: 40대 이상인 경우 40년 전
-            Date upperBound = Date.valueOf(String.valueOf(LocalDateTime.now().minusYears(ageInt)));
+            Date upperBound = Date.valueOf(LocalDate.now().minusYears(ageInt));
 
             if (ageInt >= 40) {
                 // 40대 이상인 경우
