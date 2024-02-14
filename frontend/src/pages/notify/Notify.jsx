@@ -32,7 +32,7 @@ const SimpleNoticesWrapper = styled.div`
 function Notify() {
   const navigate = useNavigate();
   const [list, setList] = useState([]);
-  const userInfo = useUserInfo(state => state.userInfo);
+  // const userInfo = useUserInfo(state => state.userInfo);
 
   useEffect(() => {
     getMatchNotificationList().then(response => {
@@ -58,17 +58,17 @@ function Notify() {
           return (
             <Fragment key={index}>
               <SimpleNotice
-                mode={userInfo}
+                mode={notice.type}
                 status={notice.status}
                 name={notice.name}
                 majorCategory={notice.majorCategory}
                 createdAt={calculateRemainDate(notice.createdAt)}
                 onClick={() =>
-                  navigate(
-                    userInfo === 'ZIPSA'
-                      ? `/suggest-by-user/${notice.notificationId}`
-                      : `/rooms/detail/${notice.roomId}`,
-                  )
+                  notice.status === 'CONFIRM'
+                    ? navigate(`/reportDetail/${notice.roomId}`)
+                    : notice.type === 'ZIPSA'
+                      ? navigate(`/suggest-by-user/${notice.notificationId}`)
+                      : navigate(`/rooms/detail/${notice.roomId}`)
                 }
               ></SimpleNotice>
 

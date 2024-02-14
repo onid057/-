@@ -6,7 +6,7 @@ import Button from '../../components/common/Button';
 import MatchInfo from '../../components/common/MatchInfo';
 
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   getMatchNotificationByUser,
   rejectSuggestionByUser,
@@ -50,6 +50,7 @@ const ButtonWrapper = styled.div`
 
 function SuggestByUser() {
   const { notificationId } = useParams();
+  const navigate = useNavigate();
   const [detail, setDetail] = useState({});
 
   useEffect(() => {
@@ -97,21 +98,23 @@ function SuggestByUser() {
         <ButtonWrapper>
           <Button
             mode={'THICK_BLUE'}
-            onClick={() =>
-              allowSuggestionByUser(notificationId).then(response =>
+            onClick={async () => {
+              await allowSuggestionByUser(notificationId).then(response =>
                 console.log(response),
-              )
-            }
+              );
+              navigate('/notify');
+            }}
           >
             수락
           </Button>
           <Button
             mode={'THICK_GRAY'}
-            onClick={() =>
-              rejectSuggestionByUser(notificationId).then(response =>
+            onClick={async () => {
+              await rejectSuggestionByUser(notificationId).then(response =>
                 console.log(response),
-              )
-            }
+              );
+              navigate('/notify');
+            }}
           >
             거절
           </Button>

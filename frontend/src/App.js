@@ -297,7 +297,8 @@ function App() {
           element={<CompletedCreationRoom />}
         ></Route>
 
-        <Route path="/report" element={<ReportWriting />}></Route>
+        <Route path="/report/:roomId" element={<ReportWriting />}></Route>
+        <Route path="/reportComplete" element={<ReportComplete />}></Route>
         <Route path="/reportDetail/:roomId" element={<ReportDetail />}></Route>
       </Routes>
     </ThemeProvider>

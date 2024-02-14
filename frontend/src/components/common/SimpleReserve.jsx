@@ -43,7 +43,7 @@ function SimpleReserve({
   const navigate = useNavigate();
   const diffTime = new Date(createdAt).getTime() - new Date();
   const isRemainTimeLowerThanHalfOfHour =
-    diffTime <= 1000 * 60 * 30 && diffTime >= 0;
+    diffTime <= 1000 * 60 * 60 && diffTime >= 0;
 
   return (
     <Wrapper>
@@ -56,7 +56,7 @@ function SimpleReserve({
             (status === 'ONGOING'
               ? '진행중'
               : isRemainTimeLowerThanHalfOfHour
-                ? `${Math.floor((diffTime / 1000) * 60)}분 후`
+                ? `${Math.floor(diffTime / (1000 * 60))}분 후`
                 : `${calculateRemainDate(createdAt)} 예정`)
           }
         ></BoldText>
@@ -88,8 +88,10 @@ function SimpleReserve({
             <ButtonWrapper>
               <Button
                 mode="THIN_BLUE"
-                onClick={() => {
-                  startTask(roomId).then(response => console.log(response));
+                onClick={async () => {
+                  await startTask(roomId).then(response =>
+                    console.log(response),
+                  );
                   navigate(`/report/${roomId}`);
                 }}
               >
@@ -97,8 +99,8 @@ function SimpleReserve({
               </Button>
               <Button
                 mode="THIN_WHITE"
-                onClick={() => {
-                  endTask(roomId).then(response => console.log(response));
+                onClick={async () => {
+                  await endTask(roomId).then(response => console.log(response));
                   navigate(`/report/${roomId}`);
                 }}
               >

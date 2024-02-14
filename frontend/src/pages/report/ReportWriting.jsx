@@ -55,8 +55,6 @@ function ReportWriting() {
   const [content, setContent] = useState('');
   const [imageUrl, setImageUrl] = useState(null);
 
-  // const roomId = useParams();
-
   const PlaceholderContent =
     '서비스의 현재 진행 상황을\n상세하게 알려주세요.\n특이사항이 있다면 알려주세요.';
 
@@ -68,9 +66,10 @@ function ReportWriting() {
 
   const onClickButton = () => {
     if (imageFile && content) {
-      sendReportData(imageFile, 1, content).then(response =>
-        navigate('/reportComplete'),
-      );
+      sendReportData(imageFile, roomId, content).then(response => {
+        console.log(response);
+        navigate('/reportComplete');
+      });
     }
   };
 

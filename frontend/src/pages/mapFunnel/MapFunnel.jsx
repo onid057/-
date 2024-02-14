@@ -111,7 +111,7 @@ function MapFunnel() {
             };
             setMapData(nextMapData);
             makeFilterSuggestion(
-              1,
+              null,
               41,
               '제목 없음',
               nextMapData.matchContent,

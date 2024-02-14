@@ -42,7 +42,7 @@ function ReportDetail() {
     navigate(-1);
   };
 
-  const [reportInfos, setReportInfos] = useState([]);
+  const [reportInfos, setReportInfos] = useState();
   const { roomId } = useParams();
 
   useEffect(() => {
@@ -78,12 +78,12 @@ function ReportDetail() {
         gap={'5px'}
         fontSize={'15px'}
         sentences={[
-          `보낸 사람 : ${reportInfos.zipsaName} 집사`,
-          `받는 사람 : ${reportInfos.userName} 고객`,
+          `보낸 사람 : ${reportInfos?.zipsaName} 집사`,
+          `받는 사람 : ${reportInfos?.userName} 고객`,
         ]}
       ></Paragraph>
 
-      {reportInfos.map((info, idx) => (
+      {reportInfos?.reportList.map((info, idx) => (
         <ReportWrapper key={idx}>
           <HorizontalLine height={'2px'}></HorizontalLine>
           <Image

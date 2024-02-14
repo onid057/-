@@ -7,7 +7,7 @@ const Title = styled.div`
   width: 100%;
   display: flex;
   justify-content: flex-start;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: light;
 `;
 
@@ -48,9 +48,8 @@ const PencilImg = styled.div`
   right: 12px;
 `;
 
-function ZipsaTagUpdate({ preferTag, setPreferTags }) {
+function ZipsaTagUpdate({ preferTags, setPreferTags }) {
   // preferTag를 리스트로 까기
-  const preferTags = (preferTag || '').split('#');
   const numberOfTags = preferTags.length;
 
   // preferTags 길이의 빈 배열 만들기 (useState의 초기값으로 사용)
@@ -108,7 +107,12 @@ function ZipsaTagUpdate({ preferTag, setPreferTags }) {
               type="text"
               // value={textValues}
               placeholder={tag}
-              onBlur={() => changeMode(idx)} // 입력 모드에서 포커스가 빠져나가면 텍스트 모드로 전환
+              onBlur={e => {
+                changeMode(idx);
+                const newArray = [...preferTags];
+                newArray[idx] = e.target.value;
+                setPreferTags(newArray);
+              }} // 입력 모드에서 포커스가 빠져나가면 텍스트 모드로 전환
               onChangeCapture={e => changeTextValue(e, tag, idx)} // 입력모드에서 변화가 있고 포커스 아웃되었을 때
               autoFocus // 입력 모드 진입 시 자동으로 포커스를 설정
             />

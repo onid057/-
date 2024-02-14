@@ -85,6 +85,29 @@ const getUserActivityHistory = async () => {
   }
 };
 
+const registerAsZipsa = async (
+  description,
+  account,
+  preferTag,
+  majorCategoryList,
+) => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `/helpers`,
+      data: {
+        description,
+        account,
+        preferTag,
+        majorCategoryList,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   getSimpleUserInfo,
   getDetailUserInfo,
@@ -92,4 +115,5 @@ export {
   applyZipsaRequest,
   getBoardListByUser,
   getUserActivityHistory,
+  registerAsZipsa,
 };
