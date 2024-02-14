@@ -21,4 +21,6 @@ public interface NotificationService {
 
     void changeRoomToMatch(Long notificationId);
 
+    void deleteConfirmNotification(Long notificationId);
+
 }

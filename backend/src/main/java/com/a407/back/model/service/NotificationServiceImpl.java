@@ -2,6 +2,7 @@ package com.a407.back.model.service;
 
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Notification;
+import com.a407.back.domain.Notification.Status;
 import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Zipsa;
@@ -129,6 +130,16 @@ public class NotificationServiceImpl implements NotificationService {
         roomRepository.changeRoomZipsa(zipsa, notification.getRoomId().getRoomId());
         room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
         changeReplyStatus(room, zipsa);
+    }
+
+    @Override
+    @Transactional
+    public void deleteConfirmNotification(Long notificationId) {
+        Notification notification = notificationRepository.findByNotificationId(notificationId);
+        if(notification.getStatus() != Status.CONFIRM) {
+            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        }
+        notificationRepository.deleteNotification(notification);
     }
 
     private void changeReplyStatus(Room room, Zipsa zipsa) {

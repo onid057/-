@@ -29,6 +29,14 @@ public class NotificationController {
             new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, notificationId));
     }
 
+    @DeleteMapping("/{notificationId}")
+    public ResponseEntity<ApiResponse<String>> deleteConfirmNotification(
+        @PathVariable("notificationId") Long notificationId) {
+        notificationService.deleteConfirmNotification(notificationId);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "Confirm 메시지 삭제가 완료되었습니다."));
+    }
+
     @GetMapping("/{notificationId}/user")
     public ResponseEntity<ApiResponse<UserNotificationResponse>> findUserNotificationDetail(
         @PathVariable("notificationId") Long notificationId) {
