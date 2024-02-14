@@ -16,7 +16,7 @@ public interface RoomService {
 
     void changeRoomZipsa(Zipsa zipsa, Long roomId);
 
-    Long makePublicRoom(MakePublicRoomRequest makePublicRoomRequest);
+    Long makePublicRoom(MakePublicRoomRequest makePublicRoomRequest, Long userId);
 
     void deletePublicRoom(Long roomId);
 

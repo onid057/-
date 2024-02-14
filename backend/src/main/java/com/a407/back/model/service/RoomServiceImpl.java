@@ -60,8 +60,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public Long makePublicRoom(MakePublicRoomRequest makePublicRoomRequest) {
-        User user = userRepository.findByUserId(makePublicRoomRequest.getUserId());
+    public Long makePublicRoom(MakePublicRoomRequest makePublicRoomRequest, Long userId) {
+        User user = userRepository.findByUserId(userId);
         SubCategory subCategory = categoryRepository.findBySubCategoryId(
             makePublicRoomRequest.getSubCategoryId());
         Room room = Room.builder().userId(user).subCategoryId(subCategory).title(

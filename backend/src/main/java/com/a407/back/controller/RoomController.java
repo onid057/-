@@ -5,10 +5,12 @@ import com.a407.back.dto.room.MakePublicRoomRequest;
 import com.a407.back.dto.room.PublicRoomDetailResponse;
 import com.a407.back.dto.room.RoomNotificationListResponse;
 import com.a407.back.dto.util.ApiResponse;
+import com.a407.back.dto.util.SecurityUser;
 import com.a407.back.model.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,10 +28,11 @@ public class RoomController {
 
     @PostMapping
     public ResponseEntity<ApiResponse<Long>> makePublicRoom(
-        @RequestBody MakePublicRoomRequest makePublicRoomRequest) {
+        @RequestBody MakePublicRoomRequest makePublicRoomRequest, @AuthenticationPrincipal
+        SecurityUser user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(
             new ApiResponse<>(SuccessCode.INSERT_SUCCESS,
-                roomService.makePublicRoom(makePublicRoomRequest)));
+                roomService.makePublicRoom(makePublicRoomRequest, user.getUserId())));
     }
 
     @GetMapping("/{roomId}")

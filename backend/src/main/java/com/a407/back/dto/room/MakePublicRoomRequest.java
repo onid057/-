@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MakePublicRoomRequest {
 
-    private Long userId;
     private Long subCategoryId;
     private String title;
     private String content;

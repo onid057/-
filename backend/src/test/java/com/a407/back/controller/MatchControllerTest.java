@@ -198,10 +198,10 @@ class MatchControllerTest {
 
         // 방 만들기
         Long roomId = roomService.makePublicRoom(
-            new MakePublicRoomRequest(user.getUserId(), subCategory.getSubCategoryId(), "title",
+            new MakePublicRoomRequest(subCategory.getSubCategoryId(), "title",
                 "content", "place", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
                 Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
-                15000));
+                15000), user.getUserId());
         matchService.changeMatchStartedAt(roomId);
         em.flush();
         em.clear();
@@ -231,10 +231,10 @@ class MatchControllerTest {
 
         // 방 만들기
         Long roomId = roomService.makePublicRoom(
-            new MakePublicRoomRequest(user.getUserId(), subCategory.getSubCategoryId(), "title",
+            new MakePublicRoomRequest(subCategory.getSubCategoryId(), "title",
                 "content", "place", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
                 Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
-                15000));
+                15000), user.getUserId());
         roomService.changeRoomZipsa(zipsa1, roomId);
         em.flush();
         em.clear();

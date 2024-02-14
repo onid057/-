@@ -78,11 +78,11 @@ class RoomControllerTest {
     @Transactional
     @DisplayName("공개 방 생성하기")
     void makePublicRoom() {
-        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(userId,
+        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(
             subCategoryId, "방 제목", "방 내용", "약속 장소", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             15000);
-        Long roomId = roomService.makePublicRoom(makePublicRoomRequest);
+        Long roomId = roomService.makePublicRoom(makePublicRoomRequest, userId);
         Room room = roomService.findByRoomId(roomId);
         assertThat(room.getUserId().getUserId(), is(equalTo(userId)));
     }
@@ -91,11 +91,11 @@ class RoomControllerTest {
     @Transactional
     @DisplayName("공개 방 상세 조회")
     void getPublicRoomDetail() {
-        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(userId,
+        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(
             subCategoryId, "방 제목", "방 내용", "약속 장소", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             15000);
-        Long roomId = roomService.makePublicRoom(makePublicRoomRequest);
+        Long roomId = roomService.makePublicRoom(makePublicRoomRequest, userId);
         Room room = roomService.findByRoomId(roomId);
         assertThat(room.getUserId().getUserId(), is(equalTo(userId)));
 
@@ -107,11 +107,11 @@ class RoomControllerTest {
     @Transactional
     @DisplayName("공개 방 삭제하기")
     void deletePublicRoom() {
-        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(userId,
+        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(
             subCategoryId, "방 제목", "방 내용", "약속 장소", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             15000);
-        Long roomId = roomService.makePublicRoom(makePublicRoomRequest);
+        Long roomId = roomService.makePublicRoom(makePublicRoomRequest, userId);
         Room room = roomService.findByRoomId(roomId);
         try {
             roomService.deletePublicRoom(room.getRoomId());
@@ -125,11 +125,11 @@ class RoomControllerTest {
     @Transactional
     @DisplayName("공개 방 요청 목록 불러오기")
     void getRoomNotificationList() {
-        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(userId,
+        MakePublicRoomRequest makePublicRoomRequest = new MakePublicRoomRequest(
             subCategoryId, "방 제목", "방 내용", "약속 장소", 2, Timestamp.valueOf("2024-01-01 01:01:01"),
             Timestamp.valueOf("2024-01-01 01:01:01"), Timestamp.valueOf("2024-01-01 01:01:01"),
             15000);
-        Long roomId = roomService.makePublicRoom(makePublicRoomRequest);
+        Long roomId = roomService.makePublicRoom(makePublicRoomRequest, userId);
         Room room = roomService.findByRoomId(roomId);
         assertThat(room.getUserId().getUserId(), is(equalTo(userId)));
 
