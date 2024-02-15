@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { styled } from 'styled-components';
-
+import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
@@ -40,6 +39,7 @@ function Address({ onPrevious, onNext, matchAddress, matchDetailAddress }) {
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(address, detailAddress)}
+        disabledOnNext={!address || !detailAddress}
       ></NavigationBar>
 
       <Paragraph

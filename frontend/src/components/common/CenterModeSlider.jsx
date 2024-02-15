@@ -26,24 +26,32 @@ const StyledSlider = styled(Slider)`
     z-index: 999;
   }
 `;
+
+const SliderWrapper = styled.div`
+  margin: 0 auto;
+  width: 254px;
+`;
+
 function CenterModeSlider({ showImages }) {
   const settings = {
     className: 'center',
     centerMode: true,
     infinite: true,
-    centerPadding: '20px',
+    centerPadding: '0px',
     slidesToShow: 1,
     speed: 500,
     arrows: false, // 좌,우 버튼
   };
   return (
-    <StyledSlider {...settings}>
-      {showImages.map((image, id) => (
-        <div key={id}>
-          <Image src={image} width={'254px'} height={'164px'}></Image>
-        </div>
-      ))}
-    </StyledSlider>
+    <SliderWrapper>
+      <StyledSlider {...settings}>
+        {showImages.map((image, id) => (
+          <div key={id}>
+            <Image src={image} width={'254px'} height={'164px'}></Image>
+          </div>
+        ))}
+      </StyledSlider>
+    </SliderWrapper>
   );
 }
 

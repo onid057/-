@@ -1,24 +1,11 @@
 import axios from '../utils/instance';
 
-// filterFunnel을 통해 얻은 매치 데이터를 활용하여 집사 리스트 get
-const getFilteredHelperData = async (
-  majorCategoryId,
-  genderStr,
-  age,
-  grade,
-  scoreAverage,
-) => {
+// 업무 시작
+const startTask = async roomId => {
   try {
     const response = await axios({
       method: 'get',
-      url: '/matches/filter',
-      params: {
-        majorCategoryId,
-        genderStr,
-        age,
-        grade,
-        scoreAverage,
-      },
+      url: `/matches/${roomId}/start`,
     });
     return response.data;
   } catch (error) {
@@ -26,37 +13,12 @@ const getFilteredHelperData = async (
   }
 };
 
-// filterFunnel에서 얻은 정보를 토대로 매칭 시작
-const makeFilterSuggestion = async (
-  userId,
-  subCategoryId,
-  title,
-  content,
-  place,
-  estimateDuration,
-  roomCreatedAt,
-  expectationStartedAt,
-  expectationEndedAt,
-  expectationPay,
-  helperList,
-) => {
+// 업무 종료
+const endTask = async roomId => {
   try {
     const response = await axios({
-      method: 'post',
-      url: '/matches/choice-helper',
-      data: {
-        userId,
-        subCategoryId,
-        title,
-        content,
-        place,
-        estimateDuration,
-        roomCreatedAt,
-        expectationStartedAt,
-        expectationEndedAt,
-        expectationPay,
-        helperList,
-      },
+      method: 'get',
+      url: `/matches/${roomId}/end`,
     });
     return response.data;
   } catch (error) {
@@ -64,4 +26,4 @@ const makeFilterSuggestion = async (
   }
 };
 
-export { getFilteredHelperData, makeFilterSuggestion };
+export { startTask, endTask };

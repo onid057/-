@@ -1,48 +1,47 @@
 import styled from 'styled-components';
 import Image from './Image';
+import ScoreBadge from './ScoreBadge';
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 100px;
+  height: auto;
+  padding: 10px 0;
   display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+  justify-content: start;
+  align-items: start;
 `;
 
 const RightBox = styled.div`
   width: 160px;
+  /* height: 100%; */
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  font-size: 15px;
-  /* background-color: blue; */
-`;
-
-const Name = styled.div`
-  width: 100%;
-  font-size: 16px;
-  font-weight: bold;
+  justify-content: start;
+  gap: 10px;
 `;
 
 const Infos = styled.div`
-  margin-top: 1px;
   display: flex;
-  align-content: center;
-  font-size: 14px;
-  font-weight: bold;
+  justify-content: start;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 700;
+  gap: 13px;
 `;
 
-const AvgScore = styled.span`
-  margin-left: 5px;
+// const AvgScore = styled.span`
+//   margin-left: 5px;
+// `;
+
+const Content = styled.div`
+  font-size: 16px;
+  font-weight: 400;
+  word-break: break-all;
 `;
 
 const Date = styled.div`
-  margin-left: 10px;
-  font-weight: lighter;
-`;
-
-const Content = styled.div`
-  word-break: break-all;
+  font-size: 14px;
+  font-weight: 200;
 `;
 
 function ReviewBox({
@@ -59,40 +58,34 @@ function ReviewBox({
   const avgScore = number.toFixed(2);
 
   // Date 계산 부분
-  console.log(createdAt);
-  console.log(typeof createdAt);
   const year = createdAt.substr(0, 4);
-  console.log(year);
-
   const month = createdAt.substr(5, 2);
-  console.log(month);
-
   const day = createdAt.substr(8, 2);
-  console.log(day);
 
   return (
     <Wrapper>
       <Image
-        src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
+        src={
+          profileImage
+            ? `${process.env.PUBLIC_URL}/images/${profileImage}.svg`
+            : `${process.env.PUBLIC_URL}/images/profile_img.svg`
+        }
         width={'69px'}
         height={'69px'}
+        margin={'0 15px 0 0'}
       ></Image>
 
       <RightBox>
-        <Name>{userName}</Name>
         <Infos>
-          <Image
-            src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
-            width={'18px'}
-            height={'18px'}
-          ></Image>
-          <AvgScore>{avgScore}</AvgScore>
-          <Date>
-            {year}/{month}/{day}
-          </Date>
+          <span>{userName}</span>
+          <ScoreBadge score={avgScore}></ScoreBadge>
         </Infos>
 
         <Content>{content}</Content>
+
+        <Date>
+          {year}/{month}/{day}
+        </Date>
       </RightBox>
     </Wrapper>
   );

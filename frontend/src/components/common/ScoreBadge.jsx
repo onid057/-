@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Image from './Image';
 
 const Wrapper = styled.div`
-  width: ${props => (props.$width ? props.$width : '70px')};
+  width: ${props => (props.$width ? props.$width : '75px')};
   height: ${props => (props.$height ? props.$height : '18px')};
   display: flex;
   justify-content: center;
@@ -27,7 +27,8 @@ function ScoreBadge({ width, height, score, actCount }) {
         height={'15px'}
       ></Image>
       <TextWrapper>
-        {score}
+        {Number(score).toFixed(2)}
+        <span></span>
         {actCount > 0 && <>({actCount})</>}
       </TextWrapper>
     </Wrapper>

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import Review from '../common/Review';
 import ReviewBox from '../common/ReviewBox';
 
 const Wrapper = styled.div`
@@ -11,18 +10,15 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 15px;
+  gap: 10px;
   font-weight: 300;
   font-size: 15px;
   background-color: #ffffff;
   border-radius: 25px;
 `;
-
 const Title = styled.div`
   width: 100%;
-  height: 25px;
   font-size: 15px;
-  font-weight: 400;
 `;
 
 function ZipsaDetailReview({ totalReview, reviews }) {
@@ -32,7 +28,7 @@ function ZipsaDetailReview({ totalReview, reviews }) {
 
       {reviews.map((review, index) => {
         return (
-          <Review
+          <ReviewBox
             key={index}
             userName={review.userName}
             profileImage={review.profileImage}
@@ -41,7 +37,7 @@ function ZipsaDetailReview({ totalReview, reviews }) {
             skillScore={review.skillScore}
             rewindScore={review.rewindScore}
             createdAt={review.createdAt}
-          ></Review>
+          ></ReviewBox>
         );
       })}
     </Wrapper>

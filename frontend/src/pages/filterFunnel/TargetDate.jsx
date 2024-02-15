@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { styled } from 'styled-components';
-
 import Calendar from 'react-calendar';
 import '../../assets/styles/Calendar.css';
-
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
@@ -25,10 +23,7 @@ const Wrapper = styled.div`
 `;
 
 function TargetDate({ onPrevious, onNext, matchDate }) {
-  const [date, setDate] = useState(matchDate || new Date());
-
-  console.log(date);
-  console.log(typeof date);
+  const [date, setDate] = useState(matchDate);
 
   return (
     <Wrapper>
@@ -44,6 +39,7 @@ function TargetDate({ onPrevious, onNext, matchDate }) {
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(new Date(date))}
+        disabledOnNext={!date}
       ></NavigationBar>
 
       <Paragraph
@@ -55,7 +51,7 @@ function TargetDate({ onPrevious, onNext, matchDate }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={51}></ProgressBar>
+      <ProgressBar value={55}></ProgressBar>
 
       <Calendar
         value={date}

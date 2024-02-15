@@ -1,14 +1,12 @@
-import { useState } from 'react';
-import { styled } from 'styled-components';
-
+import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
-
 import CATEGORY_ID from '../../constants/categoryId';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -32,7 +30,6 @@ function SubCategory({
   matchSubCategory,
 }) {
   const [subCategory, setSubCategory] = useState(matchSubCategory);
-
   const subCategoryList = Object.keys(CATEGORY_ID[matchMainCategory][1]);
 
   return (
@@ -49,6 +46,7 @@ function SubCategory({
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(subCategory)}
+        disabledOnNext={!subCategory}
       ></NavigationBar>
 
       <Paragraph
@@ -67,9 +65,10 @@ function SubCategory({
           <Button
             key={index}
             mode={subCategory === category ? 'THIN_BLUE' : 'THIN_WHITE'}
-            msg={category}
             onClick={() => setSubCategory(category)}
-          ></Button>
+          >
+            {category}
+          </Button>
         );
       })}
     </Wrapper>

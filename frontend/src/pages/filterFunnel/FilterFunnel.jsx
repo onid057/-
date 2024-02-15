@@ -1,36 +1,35 @@
 import { useState } from 'react';
 import { useFunnel } from '../../hooks/useFunnel';
 import {
-  getFilteredHelperData,
+  getFilteredZipsaData,
   makeFilterSuggestion,
-} from '../../apis/api/match';
+} from '../../apis/api/filter';
 import { useNavigate } from 'react-router-dom';
 
 import MainCategory from './MainCategory';
 import SubCategory from './SubCategory';
 import Condition from './Condition';
-import HelperList from './HelperList';
+import ZipsaList from './ZipsaList';
 import TargetDate from './TargetDate';
 import TargetTime from './TargetTime';
 import Address from './Address';
+import Connection from './Connection';
 import Detail from './Detail';
 
 import CATEGORY_ID from '../../constants/categoryId';
 
 function FilterFunnel() {
   const [filterData, setFilterData] = useState({});
-  const [helperData, setHelperData] = useState([]);
+  const [zipsaData, setZipsaData] = useState([]);
   const [Funnel, setStep] = useFunnel('MAIN_CATEGORY');
   const navigate = useNavigate();
-
-  console.log(filterData);
 
   return (
     <Funnel>
       <Funnel.Step name="MAIN_CATEGORY">
         <MainCategory
           onPrevious={() => {
-            setStep('CONDITION');
+            navigate('/');
           }}
           onNext={data => {
             setStep('SUB_CATEGORY');
@@ -60,7 +59,7 @@ function FilterFunnel() {
             setStep('SUB_CATEGORY');
           }}
           onNext={(gender, age, grade, score) => {
-            setStep('HELPER_LIST');
+            setStep('ZIPSA_LIST');
             const nextFilterData = {
               ...filterData,
               genderCondition: gender,
@@ -69,15 +68,14 @@ function FilterFunnel() {
               scoreCondition: score,
             };
             setFilterData(nextFilterData);
-            getFilteredHelperData(
+            getFilteredZipsaData(
               CATEGORY_ID[nextFilterData.matchMainCategory][0],
               nextFilterData.genderCondition,
               nextFilterData.ageCondition,
               nextFilterData.gradeCondition,
               nextFilterData.scoreCondition,
             ).then(response => {
-              console.log(response);
-              setHelperData(response.data);
+              setZipsaData(response.data);
             });
           }}
           genderCondition={filterData.genderCondition}
@@ -87,26 +85,24 @@ function FilterFunnel() {
         ></Condition>
       </Funnel.Step>
 
-      <Funnel.Step name="HELPER_LIST">
-        <HelperList
+      <Funnel.Step name="ZIPSA_LIST">
+        <ZipsaList
           onPrevious={() => {
             setStep('CONDITION');
           }}
           onNext={data => {
             setStep('DATE');
-            setFilterData({ ...filterData, helperId: data });
+            setFilterData({ ...filterData, zipsaId: data });
           }}
-          helperData={helperData}
-          savedHelperId={filterData.helperId}
-        ></HelperList>
+          zipsaData={zipsaData}
+          savedZipsaId={filterData.zipsaId}
+        ></ZipsaList>
       </Funnel.Step>
-
-      {/* 여기까지 플로우 완성 */}
 
       <Funnel.Step name="DATE">
         <TargetDate
           onPrevious={() => {
-            setStep('HELPER_LIST');
+            setStep('ZIPSA_LIST');
           }}
           onNext={data => {
             setStep('TIME');
@@ -140,7 +136,7 @@ function FilterFunnel() {
             setStep('TIME');
           }}
           onNext={(address, detailAddress) => {
-            setStep('DETAIL');
+            setStep('CONNECTION');
             setFilterData({
               ...filterData,
               matchAddress: address,
@@ -152,21 +148,36 @@ function FilterFunnel() {
         ></Address>
       </Funnel.Step>
 
-      <Funnel.Step name="DETAIL">
-        <Detail
+      <Funnel.Step name="CONNECTION">
+        <Connection
           onPrevious={() => {
             setStep('ADDRESS');
           }}
           onNext={data => {
-            // setStep('CONDITION');
+            setStep('DETAIL');
+            setFilterData({
+              ...filterData,
+              matchUserId: data,
+            });
+          }}
+          matchUserId={filterData.matchUserId}
+        ></Connection>
+      </Funnel.Step>
+
+      <Funnel.Step name="DETAIL">
+        <Detail
+          onPrevious={() => {
+            setStep('CONNECTION');
+          }}
+          onNext={data => {
             const nextMatchDetailData = { ...filterData, matchDetail: data };
             setFilterData(nextMatchDetailData);
             makeFilterSuggestion(
-              1,
+              filterData.matchUserId,
               CATEGORY_ID[filterData.matchMainCategory][1][
                 filterData.matchSubCategory
               ],
-              'dummy',
+              '제목 없음',
               nextMatchDetailData.matchDetail,
               filterData.matchAddress + ' ' + filterData.matchDetailAddress,
               filterData.matchEndTime - filterData.matchStartTime,
@@ -187,11 +198,9 @@ function FilterFunnel() {
                   0,
                 ),
               ).toJSON(),
-              helperData[0].gradeSalary,
-              filterData.helperId,
-            ).then(response => {
-              console.log(response);
-            });
+              zipsaData[0].gradeSalary,
+              filterData.zipsaId,
+            );
             navigate('/startMatch');
           }}
           matchDetail={filterData.matchDetail}
