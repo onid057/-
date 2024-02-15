@@ -1,6 +1,7 @@
 package com.a407.back.model.repo;
 
 import com.a407.back.domain.Notification;
+import com.a407.back.domain.Notification.Status;
 import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.QNotification;
 import com.a407.back.domain.QRoom;
@@ -10,6 +11,7 @@ import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.user.UserChangeDto;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,9 +20,11 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -34,11 +38,11 @@ public class UserRepositoryImpl implements UserRepository {
 
     private final RedisTemplate<String, String> redisTemplate;
 
+    @Value("${map.range}")
+    private Double RANGE;
 
     @Override
     public User findByUserEmail(String email) {
-        //하나만 반환->fetchOne
-        //Entity Manager는 다른걸로 find해야함.
         QUser qUser = QUser.user;
         return query.select(qUser).from(qUser).where(qUser.email.eq(email)).fetchOne();
     }
@@ -56,7 +60,9 @@ public class UserRepositoryImpl implements UserRepository {
             .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
             .execute();
         return query.selectFrom(qNotification).where(
-                qNotification.receiveId.eq(userId).and(qNotification.type.eq(Type.valueOf(type))))
+                qNotification.receiveId.eq(userId).and(qNotification.type.in(Arrays.asList(Type.valueOf(type), Type.ASSOCIATION))).and(qNotification.status.in(
+                    Arrays.asList(
+                    Status.STANDBY, Status.CONFIRM))))
             .orderBy(qNotification.createdAt.desc()).fetch();
     }
 
@@ -67,33 +73,81 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public List<Zipsa> findNearZipsaList(Long userId) {
+    public List<Zipsa> findNearZipsaLocationList(Long userId) {
         QZipsa qZipsa = QZipsa.zipsa;
         User user = em.find(User.class, userId);
         return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
             createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude,
-                user.getLatitude(), user.getLongitude(), 0.009)))).orderBy(
+                user.getLatitude(), user.getLongitude(), RANGE * 4)))).orderBy(
             qZipsa.serviceCount.desc()).fetch();
     }
 
     @Override
-    public List<Room> getUserRecordList(Long userId) {
+    public List<Zipsa> findNearZipsaInfoList(Double lat, Double lng) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        return (query.selectFrom(qZipsa).where(qZipsa.isWorked.and(
+            createLatitudeLongitudeBetween(qZipsa.zipsaId.latitude, qZipsa.zipsaId.longitude, lat,
+                lng, RANGE)))).orderBy(qZipsa.serviceCount.desc()).fetch();
+    }
+
+    @Override
+    public List<Room> getUserRecordList(Long userId, Boolean isZipsa) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
-            .where(qRoom.userId.userId.eq(userId).and(qRoom.status.eq(Process.END)))
+            .where(isZipsa(userId, isZipsa).and(qRoom.status.eq(Process.END)))
+            .orderBy(qRoom.endedAt.desc()).fetch();
+    }
+
+    @Override
+    public Room getUserRecordInfo(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom)
+            .where(qRoom.roomId.eq(roomId).and(qRoom.status.eq(Process.END)))
+            .orderBy(qRoom.endedAt.desc()).limit(1).fetchOne();
+    }
+
+    @Override
+    public Room getUserReservationInfo(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom).where(
+                qRoom.roomId.eq(roomId).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
+            .orderBy(qRoom.expectationStartedAt.asc()).fetchOne();
+    }
+
+    @Override
+    public List<Room> getUserReservationList(Long userId, Boolean isZipsa) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom).where(
+                isZipsa(userId, isZipsa).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
             .orderBy(qRoom.expectationStartedAt.asc()).fetch();
     }
 
     @Override
-    public List<Room> getUserReservationList(Long userId) {
+    public Room getUserReservationOngoing(Long userId, Boolean isZipsa) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom).where(
-                qRoom.userId.userId.eq(userId).and(qRoom.status.in(Process.BEFORE, Process.ONGOING)))
-            .orderBy(qRoom.expectationStartedAt.asc()).fetch();
+                isZipsa(userId, isZipsa).and(qRoom.status.in(Process.ONGOING)))
+            .orderBy(qRoom.expectationStartedAt.asc()).limit(1).fetchOne();
     }
 
+    @Override
+    public Room getUserReservationBefore(Long userId, Boolean isZipsa) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom).where(
+                isZipsa(userId, isZipsa).and(qRoom.status.in(Process.BEFORE)))
+            .orderBy(qRoom.expectationStartedAt.asc()).limit(1).fetchOne();
+    }
 
-    public static BooleanExpression createLatitudeLongitudeBetween(NumberPath<Double> latitudePath,
+    private BooleanExpression isZipsa(Long userId, Boolean isZipsa) {
+        QRoom qRoom = QRoom.room;
+        if (Boolean.TRUE.equals(isZipsa)) {
+            return qRoom.zipsaId.zipsaId.userId.eq(userId);
+        } else {
+            return qRoom.userId.userId.eq(userId);
+        }
+    }
+
+    private BooleanExpression createLatitudeLongitudeBetween(NumberPath<Double> latitudePath,
         NumberPath<Double> longitudePath, double latitude, double longitude, double range) {
         return latitudePath.between(latitude - range, latitude + range)
             .and(longitudePath.between(longitude - range, longitude + range));
@@ -119,7 +173,6 @@ public class UserRepositoryImpl implements UserRepository {
             .set(qUser.isAffiliated, true).where(qUser.userId.eq(userId)).execute();
     }
 
-
     @Override
     public List<User> searchAssociationUserList(Long associationId) {
         QUser qUser = QUser.user;
@@ -127,11 +180,10 @@ public class UserRepositoryImpl implements UserRepository {
             .fetch();
     }
 
-
     @Override
     public void deleteAssociation(Long userId) {
         QUser qUser = QUser.user;
-        query.update(qUser).set(qUser.associationId.associationId, 0L)
+        query.update(qUser).set(qUser.associationId.associationId, (Long) null)
             .set(qUser.isAffiliated, false).where(qUser.userId.eq(userId)).execute();
     }
 
@@ -153,10 +205,9 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void makePhoneNumber(String phoneNumber, String email) {
         QUser qUser = QUser.user;
-        query.update(qUser).set(qUser.phoneNumber, phoneNumber).set(qUser.isCertificated, true)
-            .where(qUser.email.eq(email)).execute();
+        query.update(qUser).set(qUser.phoneNumber, phoneNumber).where(qUser.email.eq(email))
+            .execute();
     }
-
 
     @Override
     public void makeSendMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)
@@ -176,6 +227,31 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public String findCode(String code) {
         return redisTemplate.opsForValue().get(code);
+    }
+
+    @Override
+    public void changeUserInfo(Long userId, UserChangeDto userUpdateDto) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.address, userUpdateDto.getAddress())
+            .set(qUser.latitude, userUpdateDto.getLatitude())
+            .set(qUser.longitude, userUpdateDto.getLongitude())
+            .set(qUser.password, userUpdateDto.getPassword())
+            .set(qUser.profileImage, userUpdateDto.getProfileImage())
+            .where(qUser.userId.eq(userId))
+            .execute();
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        QUser qUser = QUser.user;
+        query.delete(qUser).where(qUser.userId.eq(userId)).execute();
+    }
+
+    @Override
+    public void changeUserCertificated(Long userId) {
+        QUser qUser = QUser.user;
+        query.update(qUser).set(qUser.isCertificated, true).where(qUser.userId.eq(userId))
+            .execute();
     }
 
 }

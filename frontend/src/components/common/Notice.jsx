@@ -4,9 +4,8 @@ import styled from 'styled-components';
 
 const NoticeWrapper = styled.div`
   cursor: ${props => (props.$disabled ? 'default' : 'pointer')};
-  width: 288px;
-  padding: ${props =>
-    props.$padding ? props.$padding : '20px 12px 30px 12px'};
+  width: 100%;
+  padding: ${props => (props.$padding ? props.$padding : '20px 18px')};
   display: flex;
   flex-direction: column;
   gap: 28px;
@@ -19,8 +18,7 @@ const NoticeWrapper = styled.div`
 `;
 
 const FlexWrapper = styled.div`
-  width: 250px;
-  margin: 0 auto;
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -28,8 +26,7 @@ const FlexWrapper = styled.div`
 `;
 
 const TextWrapper = styled.div`
-  width: 250px;
-  margin: 0 auto;
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;

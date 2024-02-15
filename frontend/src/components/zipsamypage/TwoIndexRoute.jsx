@@ -21,9 +21,9 @@ const ContentBox = styled.div`
   background-color: #ffffff;
   border-radius: 25px;
 `;
-
 const LinkText = styled.div`
   width: 100%;
+  margin: 5px 5px 0 0;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -33,7 +33,6 @@ const LinkText = styled.div`
     cursor: pointer;
   }
 `;
-
 const NameBox = styled.div`
   box-sizing: border-box;
   width: 80%;
@@ -45,16 +44,27 @@ const NameBox = styled.div`
   align-items: center;
   font-weight: 300;
   background-color: ${props =>
-    props.backgroundColor ? props.backgroundColor : '#e3fee8'};
+    props.$backgroundcolor ? props.$backgroundcolor : '#e3fee8'};
   border-radius: 25px;
 `;
 
-function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
-  //   const navigate = useNavigate();
-
-  //   const handleClick = () => {
-  //     navigate(nextPage);
-  //   };
+function TwoIndexRoute({
+  helperId,
+  index,
+  name,
+  gradeId,
+  gradeName,
+  avgScore,
+}) {
+  // 집사 상세정보 확인하기 페이지 이동
+  const navigate = useNavigate();
+  const toZipsaDetail = helperId => {
+    navigate(`/zipsa/detail`, {
+      state: {
+        helperId: helperId,
+      },
+    });
+  };
 
   let nameBoxColor;
   if (gradeId === 1) {
@@ -69,36 +79,57 @@ function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
     nameBoxColor = '#EBA8FF';
   }
 
+  let diaPicture;
+  if (0 <= avgScore && avgScore <= 0.5) {
+    diaPicture = 'dia_0.5';
+  } else if (0.5 < avgScore && avgScore <= 1.0) {
+    diaPicture = 'dia_1.0';
+  } else if (1.0 < avgScore && avgScore <= 1.5) {
+    diaPicture = 'dia_1.5';
+  } else if (1.5 < avgScore && avgScore <= 2.0) {
+    diaPicture = 'dia_2.0';
+  } else if (2.0 < avgScore && avgScore <= 2.5) {
+    diaPicture = 'dia_2.5';
+  } else if (2.5 < avgScore && avgScore <= 3.0) {
+    diaPicture = 'dia_3.0';
+  } else if (3.0 < avgScore && avgScore <= 3.5) {
+    diaPicture = 'dia_3.5';
+  } else if (3.5 < avgScore && avgScore <= 4.0) {
+    diaPicture = 'dia_4.0';
+  } else if (4.5 < avgScore && avgScore < 5) {
+    diaPicture = 'dia_4.5';
+  } else {
+    diaPicture = 'dia_5.0';
+  }
+
   if (index === 'GRADE') {
     return (
       <ContentBox>
         <LinkText>
           {/* 누르면 ZipsaDetail 페이지로 이동 */}
-          <span>상세정보 확인하기</span>
+          <span onClick={() => toZipsaDetail(helperId)}>상세정보 확인하기</span>
           <Image
             src={`${process.env.PUBLIC_URL}/images/right_arrow_no_tail.svg`}
             width={'7px'}
             height={'10px'}
-            margin={'5px'}
+            margin={'1px 0 0 5px'}
           ></Image>
         </LinkText>
 
         <Image
           src={`${process.env.PUBLIC_URL}/images/room_${gradeId}.svg`}
           width={'169px'}
-          height={'168px'}
+          height={'169px'}
         ></Image>
-        <NameBox backgroundColor={nameBoxColor}>
+        <NameBox $backgroundcolor={nameBoxColor}>
           <Paragraph
-            gap={'5px'}
+            gap={'8px'}
             fontSize={'20px'}
             sentences={[
-              `${name} 집사님은`,
+              `${name} 님은`,
               <BoldText
                 fontSize={'20px'}
-                // 가운데 정렬이 안돼서 앞에 한 칸씩 띄워줬어요
-                boldContent={` ${gradeName} 집사`}
-                normalContent={' 예요'}
+                boldContent={`${gradeName} 집사`}
               ></BoldText>,
             ]}
           ></Paragraph>
@@ -110,20 +141,23 @@ function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
       <ContentBox>
         <LinkText>
           {/* 누르면 상세정보 페이지로 이동 */}
-          <span>상세정보 확인하기</span>
+          <span onClick={() => toZipsaDetail(helperId)}>상세정보 확인하기</span>
           <Image
             src={`${process.env.PUBLIC_URL}/images/right_arrow_no_tail.svg`}
             width={'7px'}
             height={'10px'}
-            margin={'5px'}
+            margin={'1px 0 0 5px'}
           ></Image>
         </LinkText>
+
+        {/* avgScore에 따라 분기 */}
+
         <Image
-          src={`${process.env.PUBLIC_URL}/images/dia_5.svg`}
+          src={`${process.env.PUBLIC_URL}/images/${diaPicture}.svg`}
           width={'245px'}
           height={'47px'}
         ></Image>
-        <NameBox backgroundColor={'#DCF0F5'}>
+        <NameBox $backgroundcolor={'#DCF0F5'}>
           <Paragraph
             gap={'5px'}
             fontSize={'20px'}
@@ -131,9 +165,7 @@ function TwoIndexRoute({ index, name, gradeId, gradeName, avgScore }) {
               '나의 다이아 점수는',
               <BoldText
                 fontSize={'20px'}
-                // 가운데 정렬이 안돼서 앞에 한 칸씩 띄워줬어요
-                boldContent={`    ${avgScore} 점`}
-                normalContent={' 이예요'}
+                boldContent={`${avgScore}점`}
               ></BoldText>,
             ]}
           ></Paragraph>

@@ -12,7 +12,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.sql.Timestamp;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import java.sql.Date;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -43,8 +45,8 @@ public class User {
     @Column(name = "name", nullable = false, length = 20)
     private String name;
 
-    @Column(name = "birth", nullable = false, columnDefinition = "TIMESTAMP")
-    private Timestamp birth;
+    @Column(name = "birth", nullable = false)
+    private Date birth;
 
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
@@ -57,8 +59,8 @@ public class User {
     private String address;
 
     @Lob
-    @Column(name = "profile_image", columnDefinition = "MEDIUMBLOB")
-    private Byte[] profileImage;
+    @Column(name = "profile_image")
+    private String profileImage;
 
     @ColumnDefault("false")
     @Column(name = "is_certificated", nullable = false)
@@ -89,18 +91,17 @@ public class User {
     @Column(name = "service_count")
     private int serviceCount;
 
-
     @Builder(toBuilder = true)
     public User(Association associationId, String email, String password, String name,
-        Timestamp birth, Gender gender, String phoneNumber, String address, Byte[] profileImage,
+        Date birth, Gender gender, String phoneNumber, String address, String profileImage,
         Boolean isCertificated,
         Double latitude, Double longitude, String account, Boolean isBlocked, Boolean isAdmin,
         Boolean isAffiliated, int serviceCount) {
+        this.birth = birth;
         this.associationId = associationId;
         this.email = email;
         this.password = password;
         this.name = name;
-        this.birth = birth;
         this.gender = gender;
         this.phoneNumber = phoneNumber;
         this.address = address;

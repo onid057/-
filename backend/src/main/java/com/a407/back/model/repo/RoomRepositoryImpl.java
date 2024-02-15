@@ -3,11 +3,14 @@ package com.a407.back.model.repo;
 import com.a407.back.domain.QRoom;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
+import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -73,5 +76,33 @@ public class RoomRepositoryImpl implements RoomRepository {
         em.remove(room);
     }
 
+    @Override
+    public void changeIsComplained(Long roomId) {
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.isComplained, true).where(qRoom.roomId.eq(roomId)).execute();
+    }
+
+    @Override
+    public QueryResults<Room> getPublicRoomList(int page, int size) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom)
+            .where(qRoom.isPublic.eq(true).and(qRoom.status.eq(Process.CREATE)))
+            .orderBy(qRoom.roomCreatedAt.desc())
+            .offset(page).limit(size).fetchResults();
+    }
+
+    @Override
+    public List<Room> getUserPublicRoomList(User user) {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom).where(
+                qRoom.userId.eq(user).and(qRoom.isPublic.eq(true)).and(qRoom.status.eq(Process.CREATE)))
+            .orderBy(qRoom.roomCreatedAt.asc()).fetch();
+    }
+
+    @Override
+    public List<Room> getAllRoomList() {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom).where(qRoom.status.eq(Process.CREATE)).orderBy(qRoom.roomCreatedAt.asc()).fetch();
+    }
 
 }

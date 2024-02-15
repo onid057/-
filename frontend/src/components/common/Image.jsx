@@ -1,6 +1,7 @@
 import { styled } from 'styled-components';
 
 const ImageWrapper = styled.div`
+  cursor: pointer;
   position: relative;
   width: ${props => props.$width};
   height: ${props => props.$height};
@@ -30,7 +31,7 @@ const DeleteButton = styled.button`
   border: none;
 `;
 
-function Image({ src, width, height, margin, onDelete }) {
+function Image({ src, width, height, margin, onDelete, onClick }) {
   const isOnDelete = !!onDelete;
 
   return (
@@ -40,6 +41,7 @@ function Image({ src, width, height, margin, onDelete }) {
       $height={height}
       $margin={margin}
       $needBorder={isOnDelete}
+      onClick={onClick}
     >
       {isOnDelete && (
         <DeleteButton

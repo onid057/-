@@ -16,6 +16,7 @@ import com.a407.back.domain.SubCategory;
 import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserNotificationResponse;
 import com.a407.back.dto.user.ZipsaNotificationResponse;
 import com.a407.back.model.service.NotificationService;
@@ -25,7 +26,9 @@ import com.a407.back.model.service.ZipsaService;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +38,6 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
 @ContextConfiguration(classes = BackendApplication.class)
-@Transactional
 class NotificationControllerTest {
 
     @Autowired
@@ -65,15 +67,11 @@ class NotificationControllerTest {
     @BeforeEach
     void setup() {
         // 사용자 생성
-        User user = User.builder().email("user@abc.com").name("user").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
         userId = userService.makeUser(user);
-        User user1 = User.builder().email("user1@abc.com").name("user1").password("user")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
+        UserCreateRequest user1 = new UserCreateRequest("user1@abc.com", "user1", "user1",
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
         Long userId1 = userService.makeUser(user1);
         User zipsaUser = userService.findByUserId(userId1);
         // grade 생성
@@ -96,35 +94,32 @@ class NotificationControllerTest {
 
         // 집사 생성
         Zipsa newZipsa = Zipsa.builder().zipsaId(zipsaUser).account("111").description("Asd")
-            .gradeId(grade)
-            .isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
-            .skillAverage(1.0)
-            .serviceCount(0).preferTag("abc").replyCount(0).build();
+            .gradeId(grade).isWorked(true).kindnessAverage(1.0).replyAverage(1.0).rewindAverage(1.0)
+            .skillAverage(1.0).serviceCount(0).preferTag("abc").replyCount(0).build();
         em.persist(newZipsa);
         zipsaId = newZipsa.getZipsaId().getUserId();
         // 집사 가져오기
         Zipsa zipsa = zipsaService.findByZipsaId(zipsaId);
 
         // 방 만들기
-        Room newRoom = Room.builder().userId(user).subCategoryId(subCategory).title("title")
-            .content("content").place("place").estimateDuration(2)
-            .expectationStartedAt(Timestamp.valueOf("2024-01-01 01:01:01"))
+        Room newRoom = Room.builder().userId(userService.findByUserId(userId))
+            .subCategoryId(subCategory).title("title").content("content").place("place")
+            .estimateDuration(2).expectationStartedAt(Timestamp.valueOf("2024-01-01 01:01:01"))
             .expectationEndedAt(Timestamp.valueOf("2024-01-01 01:01:01"))
             .roomCreatedAt(Timestamp.valueOf("2024-01-01 01:01:01")).expectationPay(15000)
             .notificationCount(1).isComplained(false).isPublic(false).isReported(false)
-            .isReviewed(false).status(
-                Process.CREATE).build();
+            .isReviewed(false).status(Process.CREATE).build();
         em.persist(newRoom);
         Long roomId = newRoom.getRoomId();
         room = roomService.findByRoomId(roomId);
     }
 
     @Test
+    @Transactional
     @DisplayName("고객이 자신의 알림 조회 테스트")
     void findUserNotificationDetail() {
         Notification userNotification = Notification.builder().sendId(zipsaId).receiveId(userId)
-            .roomId(room).type(
-                Type.USER).status(Status.STANDBY).isRead(false).build();
+            .roomId(room).type(Type.USER).status(Status.STANDBY).isRead(false).build();
         em.persist(userNotification);
         Long userNotificationId = userNotification.getNotificationId();
         UserNotificationResponse userNotificationResponse = notificationService.findUserNotificationDetail(
@@ -133,11 +128,11 @@ class NotificationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("집사가 자신의 알림 조회 테스트")
     void findZipsaNotificationDetail() {
         Notification zipsaNotification = Notification.builder().sendId(userId).receiveId(zipsaId)
-            .roomId(room).type(
-                Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
+            .roomId(room).type(Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
         em.persist(zipsaNotification);
         Long zipsaNotificationId = zipsaNotification.getNotificationId();
         ZipsaNotificationResponse zipsaNotificationResponse = notificationService.findZipsaNotificationDetail(
@@ -146,11 +141,11 @@ class NotificationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("알림 거절 테스트")
     void changeNotificationToReject() {
         Notification zipsaNotification = Notification.builder().sendId(userId).receiveId(zipsaId)
-            .roomId(room).type(
-                Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
+            .roomId(room).type(Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
         em.persist(zipsaNotification);
         Long zipsaNotificationId = zipsaNotification.getNotificationId();
         int notificationCount = notificationService.changeNotificationToReject(zipsaNotificationId);
@@ -158,11 +153,11 @@ class NotificationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("알림 수락 테스트")
     void changeRoomToMatch() {
         Notification zipsaNotification = Notification.builder().sendId(userId).receiveId(zipsaId)
-            .roomId(room).type(
-                Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
+            .roomId(room).type(Type.ZIPSA).status(Status.STANDBY).isRead(false).build();
         em.persist(zipsaNotification);
         Long zipsaNotificationId = zipsaNotification.getNotificationId();
         notificationService.changeRoomToMatch(zipsaNotificationId);

@@ -4,19 +4,18 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AllArgsConstructor;
+import java.io.Serializable;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @EqualsAndHashCode
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 @Getter
-@Setter
-public class ZipsaCategoryId {
+public class ZipsaCategoryId implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "zipsa_id")
@@ -25,5 +24,11 @@ public class ZipsaCategoryId {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "major_category_id")
     private MajorCategory majorCategoryId;
+
+    @Builder
+    public ZipsaCategoryId(Zipsa zipsa, MajorCategory majorCategory) {
+        this.zipsaId = zipsa;
+        this.majorCategoryId = majorCategory;
+    }
 
 }

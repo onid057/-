@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Image from './Image';
 
@@ -8,16 +9,17 @@ const Wrapper = styled.div`
   width: 320px;
   height: 59px;
   display: flex;
+  margin-top: 20px;
   margin-left: -16px;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 18px;
   background-color: ${({ theme }) => theme.colors.secondary};
   border-radius: 25px 25px 0 0;
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
   font-size: 11px;
   font-weight: 400;
   z-index: 9999;
+  padding: 0 20px;
 `;
 
 const MenuWrapper = styled.div`
@@ -30,7 +32,9 @@ const MenuWrapper = styled.div`
   color: ${props => (props.selected ? '#000000' : '#a7acb4')};
 `;
 
-function MenuBar({ currentMenu }) {
+function MenuBar({ currentMenu, isWorked, disabled }) {
+  const navigate = useNavigate();
+
   const homeImageURL =
     process.env.PUBLIC_URL +
     (currentMenu === 'HOME' ? '/images/selected_home.svg' : '/images/home.svg');
@@ -56,7 +60,13 @@ function MenuBar({ currentMenu }) {
   return (
     <Wrapper>
       <MenuWrapper selected={currentMenu === 'HOME'}>
-        <Image src={homeImageURL} width="28px" height="29px"></Image>홈
+        <Image
+          src={homeImageURL}
+          width="28px"
+          height="29px"
+          onClick={() => navigate('/')}
+        ></Image>
+        홈
       </MenuWrapper>
 
       <MenuWrapper selected={currentMenu === 'POST'}>
@@ -65,22 +75,40 @@ function MenuBar({ currentMenu }) {
           width="32px"
           height="24px"
           margin="2px 0 0 0"
+          onClick={disabled ? undefined : () => navigate('/boards')}
         ></Image>
         게시판
       </MenuWrapper>
 
-      <MenuWrapper selected={currentMenu === 'SEARCH'}>
-        <Image src={searchImageURL} width="28px" height="28px"></Image>
-        집사찾기
-      </MenuWrapper>
+      {!isWorked && (
+        <MenuWrapper selected={currentMenu === 'SEARCH'}>
+          <Image
+            src={searchImageURL}
+            width="28px"
+            height="28px"
+            onClick={disabled ? undefined : () => navigate('/matchOption')}
+          ></Image>
+          집사찾기
+        </MenuWrapper>
+      )}
 
       <MenuWrapper selected={currentMenu === 'RESERVE'}>
-        <Image src={reservationImageURL} width="27px" height="27px"></Image>
+        <Image
+          src={reservationImageURL}
+          width="27px"
+          height="27px"
+          onClick={disabled ? undefined : () => navigate('/reserve')}
+        ></Image>
         예약
       </MenuWrapper>
 
       <MenuWrapper selected={currentMenu === 'USER'}>
-        <Image src={userImageURL} width="24px" height="27px"></Image>
+        <Image
+          src={userImageURL}
+          width="24px"
+          height="27px"
+          onClick={disabled ? undefined : () => navigate('/myPage')}
+        ></Image>
         사용자
       </MenuWrapper>
     </Wrapper>

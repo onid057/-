@@ -42,4 +42,5 @@ public class Complain {
         this.content = content;
         this.isProcessed = isProcessed;
     }
+
 }

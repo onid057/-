@@ -1,18 +1,22 @@
 package com.a407.back.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.a407.back.BackendApplication;
 import com.a407.back.domain.User;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.dto.association.AssociationAdditionCodeResponse;
+import com.a407.back.dto.user.UserCreateRequest;
+import com.a407.back.exception.CustomException;
 import com.a407.back.model.service.AssociationService;
 import com.a407.back.model.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
-import java.sql.Timestamp;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,9 +30,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest
 @ContextConfiguration(classes = BackendApplication.class)
-@Transactional
 class AssociationControllerTest {
-
 
     @Autowired
     AssociationService associationService;
@@ -43,27 +45,19 @@ class AssociationControllerTest {
     @Qualifier("associationRedisTemplate")
     RedisTemplate<String, String> redisTemplate;
 
-
     Long userIdOne;
     Long userIdTwo;
     Long userIdThree;
 
     @BeforeEach
     void beforeEach() {
-        User userOne = User.builder().email("userOne@abc.com").name("userOne").password("userOne")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
-
-        User userTwo = User.builder().email("userTwo@abc.com").name("userTwo").password("userTwo")
-            .birth(Timestamp.valueOf("2024-01-01 01:01:01")).gender(Gender.MAN).address("서울시")
-            .latitude(36.5).longitude(127.5).isAdmin(false).isAffiliated(false).isBlocked(false)
-            .isCertificated(false).build();
-
-        User userThree = User.builder().email("userThree@abc.com").name("userThree")
-            .password("userThree").birth(Timestamp.valueOf("2024-01-01 01:01:01"))
-            .gender(Gender.MAN).address("서울시").latitude(36.5).longitude(127.5).isAdmin(false)
-            .isAffiliated(false).isBlocked(false).isCertificated(false).build();
+        // 사용자 생성
+        UserCreateRequest userOne = new UserCreateRequest("userOne@abc.com", "userOne", "userOne",
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
+        UserCreateRequest userTwo = new UserCreateRequest("userTwo@abc.com", "userTwo", "userTwo",
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
+        UserCreateRequest userThree = new UserCreateRequest("userThree@abc.com", "userThree",
+            "userThree", Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 36.5, 127.5);
 
         userIdOne = userService.makeUser(userOne);
         userIdTwo = userService.makeUser(userTwo);
@@ -76,6 +70,7 @@ class AssociationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 생성")
     void makeAssociation() {
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
@@ -84,14 +79,15 @@ class AssociationControllerTest {
         em.clear();
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isTrue();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getId()).isEqualTo(userIdOne);
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getIsRepresentative()).isTrue();
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 참가 목록 확인")
     void getAssociationUserList() throws NoSuchAlgorithmException, JsonProcessingException {
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
@@ -114,15 +110,14 @@ class AssociationControllerTest {
         em.flush();
         em.clear();
 
-        assertThat(associationService.getAssociationUserList(associationId)).hasSize(2);
+        assertThat(associationService.getAssociationUserList(userIdOne)).hasSize(2);
         assertThat(
             userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).isEqualTo(
             userService.findByUserId(userIdTwo).getAssociationId().getAssociationId());
-
-
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 삭제")
     void deleteAssociation() {
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
@@ -133,7 +128,7 @@ class AssociationControllerTest {
         Long associationId = userService.findByUserId(userIdOne).getAssociationId()
             .getAssociationId();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getId()).isEqualTo(userIdOne);
 
         associationService.deleteAssociation(userIdOne);
@@ -142,14 +137,11 @@ class AssociationControllerTest {
 
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
 
-        assertThat(associationService.getAssociationUserList(associationId)).isEmpty();
-
-//        Assertions.assertThrows(NullPointerException.class,
-//            () -> associationService.getAssociationUserList(associationId));
-
+        assertThat(associationService.getAssociationUserList(userIdOne)).isEmpty();
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 참가 코드 생성")
     void makeAdditionCode() throws NoSuchAlgorithmException, JsonProcessingException {
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
@@ -168,6 +160,7 @@ class AssociationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("연동 계정 참가")
     void changeAddition() throws NoSuchAlgorithmException, JsonProcessingException {
 
@@ -191,7 +184,7 @@ class AssociationControllerTest {
         em.flush();
         em.clear();
 
-        assertThat(associationService.getAssociationUserList(associationId)).hasSize(2);
+        assertThat(associationService.getAssociationUserList(userIdOne)).hasSize(2);
         assertThat(
             userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).isEqualTo(
             userService.findByUserId(userIdTwo).getAssociationId().getAssociationId());
@@ -199,6 +192,7 @@ class AssociationControllerTest {
     }
 
     @Test
+    @Transactional
     @DisplayName("대표 변경")
     void changeAssociationRepresentative()
         throws NoSuchAlgorithmException, JsonProcessingException {
@@ -210,8 +204,10 @@ class AssociationControllerTest {
         Long associationId = userService.findByUserId(userIdOne).getAssociationId()
             .getAssociationId();
 
+        User user=userService.findByUserId(userIdOne);
+
         AssociationAdditionCodeResponse associationAdditionCodeResponse = associationService.makeAdditionCode(
-            userIdOne, "test@test.com", associationId);
+            userIdOne, user.getName(), associationId);
 
         assertThat(associationAdditionCodeResponse.getLeftTime()).isGreaterThan(1700);
 
@@ -222,25 +218,77 @@ class AssociationControllerTest {
         em.flush();
         em.clear();
 
-        assertThat(associationService.getAssociationUserList(associationId)).hasSize(2);
+        assertThat(associationService.getAssociationUserList(userIdOne)).hasSize(2);
         assertThat(
             userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).isEqualTo(
             userService.findByUserId(userIdTwo).getAssociationId().getAssociationId());
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getIsRepresentative()).isTrue();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdTwo).getAssociationId().getAssociationId()).get(1)
+                userService.findByUserId(userIdTwo).getUserId()).get(1)
             .getIsRepresentative()).isFalse();
         associationService.changeAssociationRepresentative(userIdOne, userIdTwo);
         em.flush();
         em.clear();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getIsRepresentative()).isFalse();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdTwo).getAssociationId().getAssociationId()).get(1)
+                userService.findByUserId(userIdTwo).getUserId()).get(1)
             .getIsRepresentative()).isTrue();
 
     }
+
+
+    @Test
+    @Transactional
+    @DisplayName("현재 대표인지 확인")
+    void getAssociationRepresentative() throws NoSuchAlgorithmException, JsonProcessingException {
+
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdOne)).isInstanceOf(
+            CustomException.class);
+
+        associationService.makeAssociation(userIdOne);
+        em.flush();
+        em.clear();
+
+        assertThat(associationService.getAssociationRepresentative(userIdOne)).isTrue();
+
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdTwo)).isInstanceOf(
+            CustomException.class);
+
+        User user = userService.findByUserId(userIdOne);
+        AssociationAdditionCodeResponse associationAdditionCodeResponse = associationService.makeAdditionCode(
+            user.getUserId(), user.getEmail(), user.getAssociationId().getAssociationId());
+
+        associationService.changeAssociation(userIdTwo,
+            associationAdditionCodeResponse.getAdditionCode());
+        associationService.changeAssociation(userIdThree,
+            associationAdditionCodeResponse.getAdditionCode());
+
+        em.flush();
+        em.clear();
+
+        assertThat(associationService.getAssociationRepresentative(userIdTwo)).isFalse();
+        assertThat(associationService.getAssociationRepresentative(userIdThree)).isFalse();
+
+        associationService.deleteAssociation(userIdOne);
+        em.flush();
+        em.clear();
+
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdOne)).isInstanceOf(
+            CustomException.class);
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdTwo)).isInstanceOf(
+            CustomException.class);
+        assertThatThrownBy(
+            () -> associationService.getAssociationRepresentative(userIdThree)).isInstanceOf(
+            CustomException.class);
+
+    }
+
 }

@@ -6,12 +6,18 @@ import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.SubCategory;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
-import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.dto.room.MakePublicRoomRequest;
+import com.a407.back.dto.room.PublicRoomDetailResponse;
+import com.a407.back.dto.room.RoomNotificationListResponse;
+import com.a407.back.dto.util.RoomNotification;
 import com.a407.back.model.repo.CategoryRepository;
 import com.a407.back.model.repo.NotificationRepository;
+import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
+import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +33,8 @@ public class RoomServiceImpl implements RoomService {
     private final UserRepository userRepository;
 
     private final CategoryRepository categoryRepository;
+
+    private final ZipsaRepository zipsaRepository;
 
     @Override
     public Room findByRoomId(Long roomId) {
@@ -54,13 +62,14 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     @Transactional
-    public Long makePublicRoom(MakePublicRoomRequest makePublicRoomRequest) {
-        User user = userRepository.findByUserId(makePublicRoomRequest.getUserId());
+    public Long makePublicRoom(MakePublicRoomRequest makePublicRoomRequest, Long userId) {
+        User user = userRepository.findByUserId(userId);
         SubCategory subCategory = categoryRepository.findBySubCategoryId(
             makePublicRoomRequest.getSubCategoryId());
         Room room = Room.builder().userId(user).subCategoryId(subCategory).title(
                 makePublicRoomRequest.getTitle()).content(
-                makePublicRoomRequest.getContent()).place(makePublicRoomRequest.getPlace()).isPublic(true)
+                makePublicRoomRequest.getContent()).place(makePublicRoomRequest.getPlace())
+            .isPublic(true)
             .roomCreatedAt(makePublicRoomRequest.getRoomCreatedAt())
             .estimateDuration(makePublicRoomRequest.getEstimateDuration())
             .expectationPay(makePublicRoomRequest.getExpectationPay())
@@ -76,10 +85,50 @@ public class RoomServiceImpl implements RoomService {
         Room room = roomRepository.findByRoomId(roomId);
         // 공개 방 삭제 전 연관된 알림들 삭제
         List<Notification> notificationList = notificationRepository.findByRoomIdList(room);
-        for(Notification notification : notificationList) {
+        for (Notification notification : notificationList) {
             notificationRepository.deleteNotification(notification);
         }
         // 공개 방 삭제
         roomRepository.deletePublicRoom(room);
     }
+
+    @Override
+    public PublicRoomDetailResponse getPublicRoomDetail(Long roomId) {
+        Room room = roomRepository.findByRoomId(roomId);
+        return new PublicRoomDetailResponse(roomId, room.getTitle(), room.getContent(),
+            room.getPlace(), room.getEstimateDuration(), room.getRoomCreatedAt(),
+            room.getExpectationStartedAt(), room.getExpectationEndedAt(), room.getExpectationPay());
+    }
+
+    @Override
+    public RoomNotificationListResponse getRoomNotificationList(Long roomId) {
+        Room room = roomRepository.findByRoomId(roomId);
+        List<RoomNotification> roomNotificationList =  notificationRepository.findByRoomIdList(room).stream().map(notification -> {
+            Zipsa zipsa = zipsaRepository.findByZipsaId(notification.getSendId());
+            User user = userRepository.findByUserId(zipsa.getZipsaId().getUserId());
+            return new RoomNotification(notification.getNotificationId(),
+                zipsa.getZipsaId().getName(), String.valueOf(user.getGender()),
+                zipsa.getGradeId().getName(), zipsa.getPreferTag());
+        }).toList();
+        return new RoomNotificationListResponse(roomNotificationList);
+    }
+
+    @Override
+    @Transactional
+    public void deleteRegularPeriodRoom() {
+        List<Room> allRoomList = roomRepository.getAllRoomList();
+        for(Room room: allRoomList) {
+            double diffTime = (Timestamp.valueOf(LocalDateTime.now()).getTime() - room.getRoomCreatedAt().getTime()) / 3600000.0;
+            if(diffTime >= 24) {
+                List<Notification> notificationList = notificationRepository.findByRoomIdList(room);
+                for(Notification notification : notificationList) {
+                    notificationRepository.deleteNotification(notification);
+                }
+                roomRepository.deletePublicRoom(room);
+            } else {
+                break;
+            }
+        }
+    }
+
 }

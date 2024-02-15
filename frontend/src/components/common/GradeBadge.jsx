@@ -3,7 +3,6 @@ import styled from 'styled-components';
 const Wrapper = styled.div`
   width: ${props => (props.$width ? props.$width : '70px')};
   height: ${props => (props.$height ? props.$height : '18px')};
-  padding-bottom: 1px;
   display: flex;
   justify-content: center;
   align-items: center;

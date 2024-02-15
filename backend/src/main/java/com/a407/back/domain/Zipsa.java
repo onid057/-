@@ -82,4 +82,5 @@ public class Zipsa {
         this.skillAverage = skillAverage;
         this.rewindAverage = rewindAverage;
     }
+
 }

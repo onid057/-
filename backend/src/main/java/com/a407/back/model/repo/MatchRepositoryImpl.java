@@ -3,6 +3,7 @@ package com.a407.back.model.repo;
 import com.a407.back.domain.QRoom;
 import com.a407.back.domain.QZipsa;
 import com.a407.back.domain.QZipsaCategory;
+import com.a407.back.domain.QZipsaCategoryId;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.User.Gender;
 import com.a407.back.domain.Zipsa;
@@ -10,6 +11,7 @@ import com.a407.back.dto.match.MatchSearchRequest;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,15 +38,16 @@ public class MatchRepositoryImpl implements MatchRepository {
 
     private BooleanExpression majorCategoryIdEq(Long categoryId) {
         QZipsaCategory qZipsaCategory = QZipsaCategory.zipsaCategory;
+        QZipsaCategoryId qZipsaCategoryId = QZipsaCategoryId.zipsaCategoryId;
         QZipsa qZipsa = QZipsa.zipsa;
         if (categoryId != null) {
             return qZipsa.zipsaId.userId.in(
-                query.select(qZipsaCategory.zipsaId.zipsaId.userId).from(qZipsaCategory)
-                    .where(qZipsaCategory.majorCategoryId.majorCategoryId.eq(categoryId)).fetch());
+                query.select(qZipsaCategoryId.zipsaId.zipsaId.userId).from(qZipsaCategory)
+                    .where(qZipsaCategoryId.majorCategoryId.majorCategoryId.eq(categoryId))
+                    .fetch());
         }
         return null;
     }
-
 
     private BooleanExpression userGenderEq(String genderStr) {
         QZipsa qZipsa = QZipsa.zipsa;
@@ -59,7 +62,6 @@ public class MatchRepositoryImpl implements MatchRepository {
         }
     }
 
-
     private BooleanExpression userBirthGoe(String age) {
         QZipsa qZipsa = QZipsa.zipsa;
         if (age == null || age.equalsIgnoreCase("All")) {
@@ -68,25 +70,20 @@ public class MatchRepositoryImpl implements MatchRepository {
 
         try {
             int ageInt = Integer.parseInt(age);
-            Timestamp lowerBound = Timestamp.valueOf(
-                // 예: 40대 미만인 경우 50년 전
-                LocalDate.now().minusYears(ageInt + 10L).atStartOfDay());
-            Timestamp upperBound = Timestamp.valueOf(
-                // 예: 40대 이상인 경우 40년 전
-                LocalDate.now().minusYears(ageInt).atStartOfDay());
+
+            Date bound = Date.valueOf(LocalDate.now().minusYears(40));
 
             if (ageInt >= 40) {
                 // 40대 이상인 경우
-                return qZipsa.zipsaId.birth.loe(upperBound);
+                return qZipsa.zipsaId.birth.loe(bound);
             } else {
                 // 40대 미만인 경우
-                return qZipsa.zipsaId.birth.gt(lowerBound);
+                return qZipsa.zipsaId.birth.gt(bound);
             }
         } catch (NumberFormatException e) {
             return null;
         }
     }
-
 
     private BooleanExpression zipsaGradeIdEq(String grade) {
         if (grade == null || grade.equalsIgnoreCase("ALL")) {
@@ -117,8 +114,9 @@ public class MatchRepositoryImpl implements MatchRepository {
         // 집사의 아이디를 기준으로 대분류 이름을 가져오는 함수
         QZipsaCategory qZipsaCategory = QZipsaCategory.zipsaCategory;
 
-        return query.select(qZipsaCategory.majorCategoryId.name).from(qZipsaCategory)
-            .where(qZipsaCategory.zipsaId.zipsaId.userId.eq(zipsaId)).fetch();
+        return query.select(qZipsaCategory.zipsaCategoryId.majorCategoryId.name)
+            .from(qZipsaCategory)
+            .where(qZipsaCategory.zipsaCategoryId.zipsaId.zipsaId.userId.eq(zipsaId)).fetch();
     }
 
     @Override
@@ -131,7 +129,7 @@ public class MatchRepositoryImpl implements MatchRepository {
     @Override
     public void changeMatchEndedAt(Long roomId) {
         QRoom qRoom = QRoom.room;
-        query.update(qRoom).set(qRoom.endedAt, Timestamp.valueOf(LocalDateTime.now()))
+        query.update(qRoom).set(qRoom.endedAt, Timestamp.valueOf(LocalDateTime.now())).set(qRoom.totalPay, qRoom.expectationPay)
             .where(qRoom.roomId.eq(roomId)).execute();
     }
 
@@ -141,4 +139,5 @@ public class MatchRepositoryImpl implements MatchRepository {
         query.update(qRoom).set(qRoom.status, Process.valueOf(status))
             .where(qRoom.roomId.eq(roomId)).execute();
     }
+
 }

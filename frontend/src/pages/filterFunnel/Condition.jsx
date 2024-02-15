@@ -1,17 +1,15 @@
-import { useState } from 'react';
-import { styled } from 'styled-components';
-
+import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
-
 import GENDER from '../../constants/gender';
 import AGE from '../../constants/age';
 import GRADE from '../../constants/grade';
 import SCORE from '../../constants/score';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -26,7 +24,6 @@ const Wrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
 const ContentBox = styled.div`
   width: 100%;
   display: flex;
@@ -35,19 +32,16 @@ const ContentBox = styled.div`
   align-items: center;
   gap: 10px;
 `;
-
 const ContentTitle = styled.div`
   width: 100%;
   font-size: 16px;
 `;
-
 const FlexBox = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
   gap: 8px;
 `;
-
 const GridBox = styled.div`
   width: 100%;
   display: grid;
@@ -84,6 +78,12 @@ function Condition({
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(gender, age, grade, score)}
+        disabledOnNext={
+          !gender ||
+          (age !== 0 && !age) ||
+          !grade ||
+          !(score >= 0 && score <= 5)
+        }
       ></NavigationBar>
 
       <Paragraph
@@ -104,14 +104,11 @@ function Condition({
             return (
               <Button
                 key={index}
-                mode={
-                  gender === GENDER[option]
-                    ? 'FULL_PERCENT_BLUE'
-                    : 'FULL_PERCENT_WHITE'
-                }
-                msg={option}
+                mode={gender === GENDER[option] ? 'THIN_BLUE' : 'THIN_WHITE'}
                 onClick={() => setGender(GENDER[option])}
-              ></Button>
+              >
+                {option}
+              </Button>
             );
           })}
         </FlexBox>
@@ -124,14 +121,11 @@ function Condition({
             return (
               <Button
                 key={index}
-                mode={
-                  age === AGE[option]
-                    ? 'FULL_PERCENT_BLUE'
-                    : 'FULL_PERCENT_WHITE'
-                }
-                msg={option}
+                mode={age === AGE[option] ? 'THIN_BLUE' : 'THIN_WHITE'}
                 onClick={() => setAge(AGE[option])}
-              ></Button>
+              >
+                {option}
+              </Button>
             );
           })}
         </FlexBox>
@@ -140,22 +134,24 @@ function Condition({
       <ContentBox>
         <ContentTitle>집사 등급</ContentTitle>
         <GridBox>
-          {['견습 집사', '프로 집사', '전설 집사', '상관 없음'].map(
-            (option, index) => {
-              return (
-                <Button
-                  key={index}
-                  mode={
-                    grade === GRADE[option]
-                      ? 'FULL_PERCENT_BLUE'
-                      : 'FULL_PERCENT_WHITE'
-                  }
-                  msg={option}
-                  onClick={() => setGrade(GRADE[option])}
-                ></Button>
-              );
-            },
-          )}
+          {[
+            '견습 집사',
+            '초보 집사',
+            '숙련 집사',
+            '프로 집사',
+            '전설 집사',
+            '상관 없음',
+          ].map((option, index) => {
+            return (
+              <Button
+                key={index}
+                mode={grade === GRADE[option] ? 'THIN_BLUE' : 'THIN_WHITE'}
+                onClick={() => setGrade(GRADE[option])}
+              >
+                {option}
+              </Button>
+            );
+          })}
         </GridBox>
       </ContentBox>
 
@@ -168,13 +164,12 @@ function Condition({
                 <Button
                   key={index}
                   mode={
-                    score === SCORE[option]
-                      ? 'SELECTED_INSIDE_IMAGE'
-                      : 'INSIDE_IMAGE'
+                    score === SCORE[option] ? 'DIAMOND_BLUE' : 'DIAMOND_WHITE'
                   }
-                  msg={option}
                   onClick={() => setScore(SCORE[option])}
-                ></Button>
+                >
+                  {option}
+                </Button>
               );
             },
           )}

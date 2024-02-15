@@ -17,4 +17,5 @@ public interface ReviewRepository {
     Zipsa findZipsaByReviewId(Long reviewId);
 
     Review findReviewByReviewId(Long reviewId);
+
 }

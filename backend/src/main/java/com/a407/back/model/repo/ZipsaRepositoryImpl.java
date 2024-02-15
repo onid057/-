@@ -1,5 +1,6 @@
 package com.a407.back.model.repo;
 
+import com.a407.back.domain.MajorCategory;
 import com.a407.back.domain.QReport;
 import com.a407.back.domain.QReview;
 import com.a407.back.domain.QRoom;
@@ -9,6 +10,8 @@ import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.Room.Process;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.domain.ZipsaCategory;
+import com.a407.back.dto.zipsa.ZipsaChangeDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import java.util.List;
@@ -24,16 +27,19 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     private final EntityManager em;
     private static final QReport qReport = QReport.report;
 
-
     @Override
     public void makeReport(Report report) {
         em.persist(report);
+        QRoom qRoom = QRoom.room;
+        query.update(qRoom).set(qRoom.isReported, true)
+            .where(qRoom.roomId.eq(report.getRoomId().getRoomId())).execute();
     }
 
     @Override
     public List<Report> findReportByRoomIdList(Long roomId) {
         return
-            query.selectFrom(qReport).where(qReport.roomId.roomId.eq(roomId)).fetch();
+            query.selectFrom(qReport).where(qReport.roomId.roomId.eq(roomId))
+                .orderBy(qReport.createdAt.desc()).fetch();
     }
 
     @Override
@@ -59,20 +65,20 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
     }
 
     @Override
-    public List<Room> getZipsaRecordList(Long helperId) {
+    public Room getZipsaRecordInfo(Long roomId) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
-            .where(qRoom.zipsaId.zipsaId.userId.eq(helperId).and(qRoom.status.eq(
-                Process.END))).orderBy(qRoom.expectationStartedAt.asc()).fetch();
+            .where(qRoom.roomId.eq(roomId).and(qRoom.status.eq(
+                Process.END))).orderBy(qRoom.endedAt.desc()).limit(1).fetchOne();
     }
 
     @Override
-    public List<Room> getZipsaReservationList(Long zipsaId) {
+    public Room getZipsaReservationInfo(Long roomId) {
         QRoom qRoom = QRoom.room;
         return query.selectFrom(qRoom)
-            .where(qRoom.zipsaId.zipsaId.userId.eq(zipsaId).and(qRoom.status.in(
+            .where(qRoom.roomId.eq(roomId).and(qRoom.status.in(
                 Process.BEFORE, Process.ONGOING))).orderBy(qRoom.expectationStartedAt.asc())
-            .fetch();
+            .fetchOne();
     }
 
     @Override
@@ -93,4 +99,50 @@ public class ZipsaRepositoryImpl implements ZipsaRepository {
             .set(qZipsa.serviceCount, newServiceCount)
             .where(qZipsa.eq(zipsa)).execute();
     }
+
+    @Override
+    public void deleteZipsa(Long zipsaId) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        query.delete(qZipsa).where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
+    }
+
+    @Override
+    public void changeZipsaInfo(Long zipsaId, ZipsaChangeDto zipsaChangeDto) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        query.update(qZipsa).set(qZipsa.description, zipsaChangeDto.getDescription())
+            .set(qZipsa.preferTag, zipsaChangeDto.getPreferTag())
+            .where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
+    }
+
+    @Override
+    public void changeZipsaStatus(Long zipsaId, boolean status) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        query.update(qZipsa).set(qZipsa.isWorked, status)
+            .where(qZipsa.zipsaId.userId.eq(zipsaId)).execute();
+    }
+
+    @Override
+    public Zipsa makeZipsa(Zipsa zipsa) {
+        em.persist(zipsa);
+        return zipsa;
+    }
+
+    @Override
+    public void changeZipsaReplyCount(Zipsa zipsa, double replyAverage) {
+        QZipsa qZipsa = QZipsa.zipsa;
+        int replyCount = zipsa.getReplyCount() + 1;
+        query.update(qZipsa).set(qZipsa.replyCount, replyCount)
+            .set(qZipsa.replyAverage, replyAverage).where(qZipsa.eq(zipsa)).execute();
+    }
+
+    @Override
+    public void makeZipsaCategory(ZipsaCategory zipsaCategory) {
+        em.persist(zipsaCategory);
+    }
+
+    @Override
+    public MajorCategory getMajorCategory(Long majorCategoryId) {
+        return em.find(MajorCategory.class, majorCategoryId);
+    }
+
 }

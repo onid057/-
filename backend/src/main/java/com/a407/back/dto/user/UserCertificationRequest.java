@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class UserCertificationRequest {
 
     private String code;
-    private String email;
 
 
 }

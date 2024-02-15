@@ -8,17 +8,34 @@ import com.a407.back.model.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequiredArgsConstructor
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/notifications")
 public class NotificationController {
 
     private final NotificationService notificationService;
+
+    @GetMapping("/{notificationId}")
+    public ResponseEntity<ApiResponse<Long>> changeRoomToMatch(
+        @PathVariable("notificationId") Long notificationId) {
+        notificationService.changeRoomToMatch(notificationId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, notificationId));
+    }
+
+    @DeleteMapping("/{notificationId}")
+    public ResponseEntity<ApiResponse<String>> deleteConfirmNotification(
+        @PathVariable("notificationId") Long notificationId) {
+        notificationService.deleteConfirmNotification(notificationId);
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "confirm 알림 삭제가 완료되었습니다."));
+    }
 
     @GetMapping("/{notificationId}/user")
     public ResponseEntity<ApiResponse<UserNotificationResponse>> findUserNotificationDetail(
@@ -36,7 +53,7 @@ public class NotificationController {
                 notificationService.findZipsaNotificationDetail(notificationId)));
     }
 
-    @GetMapping("/{notificationId}/rejection")
+    @DeleteMapping("/{notificationId}/rejection")
     public ResponseEntity<ApiResponse<Integer>> changeNotificationToReject(
         @PathVariable("notificationId") Long notificationId) {
         int newNotificationCount = notificationService.changeNotificationToReject(notificationId);
@@ -44,11 +61,4 @@ public class NotificationController {
             .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, newNotificationCount));
     }
 
-    @GetMapping("/{notificationId}")
-    public ResponseEntity<ApiResponse<Long>> changeRoomToMatch(
-        @PathVariable("notificationId") Long notificationId) {
-        notificationService.changeRoomToMatch(notificationId);
-        return ResponseEntity.status(HttpStatus.OK).body(
-            new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, notificationId));
-    }
 }

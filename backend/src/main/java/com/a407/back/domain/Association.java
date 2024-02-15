@@ -27,7 +27,6 @@ public class Association {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-
     @CreationTimestamp
     @Column(name = "created_at", columnDefinition = "TIMESTAMP")
     private Timestamp createdAt;
@@ -37,4 +36,5 @@ public class Association {
         this.userId = userId;
         this.createdAt = createdAt;
     }
+
 }
