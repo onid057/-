@@ -87,6 +87,7 @@ export default function Home() {
   const [diffTime, setDiffTime] = useState();
 
   const isLoggedIn = useUserInfo(state => state.isLoggedIn);
+  const userState = useUserInfo(state => state.userState); // 전역에서 관리하는 유저 상태
   const isRemainTimeLowerThanHalfOfHour = time =>
     time <= 1000 * 60 * 60 && time >= 0;
 
@@ -221,10 +222,27 @@ export default function Home() {
               ]}
               nextPage="/matchOption"
             ></Notice>
+
+            <Notice
+              upper={[
+                <Image
+                  src={process.env.PUBLIC_URL + '/images/condition.svg'}
+                  width="30px"
+                  height="30px"
+                  margin="0"
+                ></Image>,
+                <Paragraph
+                  fontSize="16px"
+                  gap="5px"
+                  sentences={['내가 생성한', '공개방 목록 보기']}
+                ></Paragraph>,
+              ]}
+              nextPage="/rooms"
+            ></Notice>
           </>
         ) : (
           <>
-            {reserveInfo && (
+            {reserveInfo ? (
               <Notice
                 upper={[
                   <Image
@@ -270,7 +288,38 @@ export default function Home() {
                 ]}
                 nextPage="/"
               ></Notice>
+            ) : (
+              <Notice
+                upper={[
+                  <Image
+                    src={process.env.PUBLIC_URL + '/images/lightning.svg'}
+                    width="30px"
+                    height="30px"
+                    margin="4px 0 0 0"
+                  ></Image>,
+                  <BoldText
+                    fontSize="18px"
+                    normalContent={'현재 예정된 일정이 없습니다'}
+                  ></BoldText>,
+                ]}
+                nextPage="/"
+              ></Notice>
             )}
+            <Notice
+              upper={[
+                <Image
+                  src={process.env.PUBLIC_URL + '/images/lightning.svg'}
+                  width="30px"
+                  height="30px"
+                  margin="4px 0 0 0"
+                ></Image>,
+                <BoldText
+                  fontSize="18px"
+                  normalContent={'모집 공고 확인하기'}
+                ></BoldText>,
+              ]}
+              nextPage="/rooms/zipsa"
+            ></Notice>
           </>
         )}
         <NoticeWrapper>
@@ -332,7 +381,7 @@ export default function Home() {
           </LoginRegisterWrapper>
         )}
       </HeadWrapper>
-      <MenuBar currentMenu="HOME" isWorked={isWorked}></MenuBar>
+      <MenuBar currentMenu="HOME" isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }

@@ -4,15 +4,27 @@ import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
+import MenuBar from '../../components/common/MenuBar';
+import { useUserInfo } from '../../hooks/useUserInfo';
 import { useNavigate } from 'react-router-dom';
 import calculateRemainingTime from '../../apis/utils/calculateRemainingTime';
 import { getZipsaRoomList } from '../../apis/api/room';
 
 const Wrapper = styled.div`
   width: 320px;
-  min-height: 568px;
   margin: 0 auto;
   padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  background-color: ${({ theme }) => theme.colors.primary};
+  font-size: 18px;
+  font-weight: 300;
+  white-space: pre-wrap;
+`;
+
+const HeadWrapper = styled.div`
+  width: 100%;
+  min-height: 509px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -50,8 +62,14 @@ const HeadingWrapper = styled.div`
   font-weight: 600;
   font-size: 14px;
 `;
+
 function ZipsaRoomList() {
+  const page = 1;
+  const size = 50;
+
   const [roomList, setRoomList] = useState([]);
+  const userState = useUserInfo(state => state.userState); // 전역에서 관리하는 유저 상태
+
   const navigate = useNavigate();
   const onPrevious = () => {
     navigate(-1);
@@ -61,55 +79,58 @@ function ZipsaRoomList() {
   };
 
   useEffect(() => {
-    getZipsaRoomList().then(response => {
+    getZipsaRoomList(page, size).then(response => {
       setRoomList(response.data.publicRoomList);
     });
   }, []);
 
   return (
     <Wrapper>
-      <NavigationBar
-        leftContent={
-          <Image
-            src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
-            width={'40px'}
-            height={'40px'}
-            margin={'0 0 0 -12px'}
-          ></Image>
-        }
-        onPrevious={onPrevious}
-      ></NavigationBar>
-      <TitleWrapper>
-        <Paragraph
-          fontSize={'35px'}
-          sentences={['내 주변 요청']}
-          textAlign={'left'}
-        ></Paragraph>
-      </TitleWrapper>
-      {!roomList.length && (
-        <Paragraph
-          fontSize={'18px'}
-          sentences={['아직 생성된 방이 없어요']}
-        ></Paragraph>
-      )}
-      {roomList.map((item, idx) => (
-        <RoomItemWrapper
-          key={idx}
-          onClick={() => {
-            onClickRoom(item.roomId);
-          }}
-        >
-          <BoldText fontSize={'16px'} boldContent={item.title} />
-          <RoomInfoWrapper>
-            <HeadingWrapper>금액</HeadingWrapper>
-            <>{item.expectationPay}원</>
-          </RoomInfoWrapper>
-          <RoomInfoWrapper>
-            <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
-            <>{calculateRemainingTime(item.roomCreatedAt)}</>
-          </RoomInfoWrapper>
-        </RoomItemWrapper>
-      ))}
+      <HeadWrapper>
+        <NavigationBar
+          leftContent={
+            <Image
+              src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
+              width={'40px'}
+              height={'40px'}
+              margin={'0 0 0 -12px'}
+            ></Image>
+          }
+          onPrevious={onPrevious}
+        ></NavigationBar>
+        <TitleWrapper>
+          <Paragraph
+            fontSize={'35px'}
+            sentences={['모집 공고']}
+            textAlign={'left'}
+          ></Paragraph>
+        </TitleWrapper>
+        {!roomList.length && (
+          <Paragraph
+            fontSize={'18px'}
+            sentences={['아직 생성된 방이 없어요']}
+          ></Paragraph>
+        )}
+        {roomList.map((item, idx) => (
+          <RoomItemWrapper
+            key={idx}
+            onClick={() => {
+              onClickRoom(item.roomId);
+            }}
+          >
+            <BoldText fontSize={'16px'} boldContent={item.title} />
+            <RoomInfoWrapper>
+              <HeadingWrapper>금액</HeadingWrapper>
+              <>{item.expectationPay}원</>
+            </RoomInfoWrapper>
+            <RoomInfoWrapper>
+              <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
+              <>{calculateRemainingTime(item.roomCreatedAt)}</>
+            </RoomInfoWrapper>
+          </RoomItemWrapper>
+        ))}
+      </HeadWrapper>
+      <MenuBar isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }

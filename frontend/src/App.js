@@ -35,6 +35,7 @@ import NotFound from './pages/error/NotFound';
 import NeedLogin from './pages/error/NeedLogin';
 
 import StartMatch from './pages/StartMatch';
+import SuccessMatch from './pages/SuccessMatch';
 import Notify from './pages/notify/Notify';
 import SuggestByUser from './pages/notify/SuggestByUser';
 import Reserve from './pages/reserve/Reserve';
@@ -45,6 +46,7 @@ import CreateRoomFunnel from './pages/createRoomFunnel/CreateRoomFunnel';
 import CompletedCreationRoom from './pages/createRoomFunnel/CompletedCreationRoom';
 import ZipsaRoomList from './pages/zipsaRoom/ZipsaRoomList';
 import ZipsaRoomDetail from './pages/zipsaRoom/ZipsaRoomDetail';
+import SuccessApply from './pages/zipsaRoom/SuccessApply';
 
 import BoardsMain from './pages/boards/BoardsMain'; // 게시판 메인 페이지
 import BoardsDetail from './pages/boards/BoardsDetail'; // 게시글 상세 조회 페이지
@@ -257,6 +259,7 @@ function App() {
         <Route path="/matchOption" element={<MatchOption />}></Route>
 
         <Route path="/startMatch" element={<StartMatch />}></Route>
+        <Route path="/successMatch" element={<SuccessMatch />}></Route>
         <Route path="/notify" element={<Notify />}></Route>
         <Route
           path="/suggest-by-user/:notificationId"
@@ -298,6 +301,7 @@ function App() {
           path="/rooms/complete"
           element={<CompletedCreationRoom />}
         ></Route>
+        <Route path="/successApply" element={<SuccessApply />}></Route>
 
         <Route path="/report/:roomId" element={<ReportWriting />}></Route>
         <Route path="/reportComplete" element={<ReportComplete />}></Route>

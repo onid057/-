@@ -5,6 +5,7 @@ import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import CenterModeSlider from '../../components/common/CenterModeSlider';
 import HorizontalLine from '../../components/common/HorizontalLine';
+import SimpleSlider from '../../components/common/SimpleSlider';
 import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
@@ -21,6 +22,13 @@ const Wrapper = styled.div`
   white-space: pre-wrap;
 `;
 
+const ContentWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const RegistWrapper = styled.div`
   width: 260px;
   height: 226px;
@@ -32,6 +40,7 @@ const RegistWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const PaymentListWrapper = styled.div`
@@ -65,13 +74,15 @@ function PaymentRegistration() {
         fontSize={'35px'}
         sentences={['간편 결제 수단', '등록하기']}
       ></Paragraph>
-      <RegistWrapper>
-        <Image
-          src={`${process.env.PUBLIC_URL}/images/plus.svg`}
-          width={'40px'}
-          height={'40px'}
-        ></Image>
-      </RegistWrapper>
+      <ContentWrapper>
+        <RegistWrapper>
+          <Image
+            src={`${process.env.PUBLIC_URL}/images/plus.svg`}
+            width={'40px'}
+            height={'40px'}
+          ></Image>
+        </RegistWrapper>
+      </ContentWrapper>
       <HorizontalLine height={'2px'}></HorizontalLine>
       <PaymentListWrapper>
         <>간편 결제 수단 목록</>

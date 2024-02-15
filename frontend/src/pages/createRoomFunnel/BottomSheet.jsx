@@ -7,6 +7,7 @@ import PreferTag from '../../components/common/PreferTag';
 import { getZipsaListFromMap } from '../../apis/api/map';
 import { getZipsaListFromDetailInfo } from '../../apis/api/room';
 import { forwardRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   position: absolute;
@@ -83,6 +84,7 @@ const BottomSheet = forwardRef(
   ) => {
     const [zipsaList, setZipsaList] = useState([]);
     const [targetZipsa, setTargetZipsa] = useState({}); // 현재 선택된 집사 한 명
+    const navigate = useNavigate();
 
     useEffect(() => {
       if (targetCluster) {
@@ -101,7 +103,7 @@ const BottomSheet = forwardRef(
     return (
       <Wrapper $isOpen={isOpen} $isDetailOpen={isDetailOpen} ref={ref}>
         <Header>
-          <>{isDetailOpen ? `${targetZipsa.name} 집사` : '집사 목록'}</>
+          <>{isDetailOpen ? `${targetZipsa.zipsaName} 집사` : '집사 목록'}</>
           <Image
             src={`${process.env.PUBLIC_URL}/images/x.svg`}
             width="18px"
@@ -112,17 +114,21 @@ const BottomSheet = forwardRef(
 
         {!isDetailOpen ? (
           <NameWrapper>
-            {zipsaList.map((zipsa, index) => (
-              <Name
-                key={`${zipsa.name}-${index}`}
-                onClick={() => {
-                  setIsDetailOpen(true);
-                  setTargetZipsa(zipsa);
-                }}
-              >
-                {zipsa.name + ' 집사'}
-              </Name>
-            ))}
+            {zipsaList.length === 0 ? (
+              <>현재 요청한 집사가 없습니다.</>
+            ) : (
+              zipsaList.map((zipsa, index) => (
+                <Name
+                  key={`${zipsa.zipsaName}-${index}`}
+                  onClick={() => {
+                    setIsDetailOpen(true);
+                    setTargetZipsa(zipsa);
+                  }}
+                >
+                  {zipsa.zipsaName + ' 집사'}
+                </Name>
+              ))
+            )}
           </NameWrapper>
         ) : (
           <Detail>
@@ -141,9 +147,9 @@ const BottomSheet = forwardRef(
             <Button
               mode="THIN_GRAY"
               onClick={() =>
-                onButtonClick(targetZipsa.notificationId).then(resp =>
-                  console.log(resp),
-                )
+                onButtonClick(targetZipsa.notificationId).then(resp => {
+                  navigate('/successMatch');
+                })
               }
             >
               {buttonName}
