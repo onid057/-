@@ -139,7 +139,7 @@ const BottomSheet = forwardRef(
 
             <PreferTag
               tagString={targetZipsa.preferTag}
-              splitter={','}
+              splitter={'#'}
               fontSize="14px"
             ></PreferTag>
 

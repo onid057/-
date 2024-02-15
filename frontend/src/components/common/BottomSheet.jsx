@@ -134,7 +134,7 @@ const BottomSheet = forwardRef(
               mode="THIN_GRAY"
               onClick={() => {
                 setZipsaId([targetZipsa.zipsaId]);
-                onNext();
+                onNext(targetZipsa.zipsaId);
               }}
             >
               집사 선택하기
