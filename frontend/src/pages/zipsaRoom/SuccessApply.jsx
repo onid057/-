@@ -65,7 +65,7 @@ function SuccessApply() {
           <Paragraph
             fontSize="18px"
             sentences={[
-              '매칭성공 시 정보는',
+              '매칭 성공 시 정보는',
               <BoldText
                 fontSize={'18px'}
                 boldContent={"'예약'"}
@@ -79,11 +79,11 @@ function SuccessApply() {
           <Paragraph
             fontSize="18px"
             sentences={[
-              '또 다른 공고를 찾으신다면',
+              '또 다른 공개방을 찾으신다면',
               '아래에서 확인해보세요!',
               <NavigateText
                 nextPage={'/rooms/zipsa'}
-                children={'모집 공고 목록'}
+                children={'공개방 목록'}
               ></NavigateText>,
             ]}
           ></Paragraph>

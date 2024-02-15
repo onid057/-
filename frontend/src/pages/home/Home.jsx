@@ -344,7 +344,7 @@ export default function Home() {
                   ></Image>,
                   <BoldText
                     fontSize="18px"
-                    normalContent={'모집 공고 확인하기'}
+                    normalContent={'공개방 확인하기'}
                   ></BoldText>,
                 ]}
                 nextPage="/rooms/zipsa"

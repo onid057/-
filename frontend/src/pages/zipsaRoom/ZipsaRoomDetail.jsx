@@ -102,7 +102,7 @@ function ZipsaRoomDetail() {
       ></NavigationBar>
       <TitleWrapper>
         <BoldText
-          boldContent={'모집'}
+          boldContent={'공개방'}
           normalContent={' 상세정보'}
           fontSize={'30px'}
         ></BoldText>

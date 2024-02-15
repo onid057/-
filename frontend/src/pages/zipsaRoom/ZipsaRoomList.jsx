@@ -88,8 +88,8 @@ function ZipsaRoomList() {
       ></NavigationBar>
 
       <Paragraph
-        fontSize={'35px'}
-        sentences={['모집 공고']}
+        fontSize={'30px'}
+        sentences={['공개방으로 모집하기']}
         textAlign={'left'}
         margin={'0 0 20px 0'}
       ></Paragraph>
