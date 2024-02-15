@@ -73,7 +73,7 @@ const SubmitButton = styled.button`
 `;
 
 function BoardComment({
-  image,
+  profileImage,
   userName,
   address,
   content,
@@ -84,14 +84,13 @@ function BoardComment({
   updateOnClick,
   deleteOnClick,
 }) {
-  // 댓글 수정 버튼의 상태를 관리할 변수
-  // const [isCommentUpdate, setIsCommentUpdate] = useState(false);
-
   return (
     <Wrapper>
       <LeftBox>
         <Image
-          src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
+          src={
+            profileImage || `${process.env.PUBLIC_URL}/images/profile_img.svg`
+          }
           width={'50px'}
           height={'50px'}
           margin={'0 0 0 -12px'}

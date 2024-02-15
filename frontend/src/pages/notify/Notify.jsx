@@ -31,6 +31,10 @@ const SimpleNoticesWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `;
+const TextWrapper = styled.div`
+  margin: 0 auto;
+  color: #d9d9d9;
+`;
 
 function Notify() {
   const navigate = useNavigate();
@@ -67,33 +71,37 @@ function Notify() {
         margin="0 0 20px 0"
       ></Paragraph>
 
-      <SimpleNoticesWrapper>
-        {list.map((notice, index) => {
-          return (
-            <Fragment key={index}>
-              <SimpleNotice
-                mode={notice.type}
-                status={notice.status}
-                name={notice.name}
-                majorCategory={notice.majorCategory}
-                createdAt={calculateRemainDate(notice.createdAt)}
-                onClick={async () => {
-                  await deleteNotification(notice.notificationId).then(
-                    response => console.log(response),
-                  );
-                  notice.status === 'CONFIRM'
-                    ? navigate(`/reportDetail/${notice.roomId}`)
-                    : notice.type === 'ZIPSA'
-                      ? navigate(`/suggest-by-user/${notice.notificationId}`)
-                      : navigate(`/rooms/detail/${notice.roomId}`);
-                }}
-              ></SimpleNotice>
+      {list?.length === 0 ? (
+        <TextWrapper>알림이 없습니다.</TextWrapper>
+      ) : (
+        <SimpleNoticesWrapper>
+          {list.map((notice, index) => {
+            return (
+              <Fragment key={index}>
+                <SimpleNotice
+                  mode={notice.type}
+                  status={notice.status}
+                  name={notice.name}
+                  majorCategory={notice.majorCategory}
+                  createdAt={calculateRemainDate(notice.createdAt)}
+                  onClick={async () => {
+                    await deleteNotification(notice.notificationId).then(
+                      response => console.log(response),
+                    );
+                    notice.status === 'CONFIRM'
+                      ? navigate(`/reportDetail/${notice.roomId}`)
+                      : notice.type === 'ZIPSA'
+                        ? navigate(`/suggest-by-user/${notice.notificationId}`)
+                        : navigate(`/rooms/detail/${notice.roomId}`);
+                  }}
+                ></SimpleNotice>
 
-              <HorizontalLine height={'2px'}></HorizontalLine>
-            </Fragment>
-          );
-        })}
-      </SimpleNoticesWrapper>
+                <HorizontalLine height={'2px'}></HorizontalLine>
+              </Fragment>
+            );
+          })}
+        </SimpleNoticesWrapper>
+      )}
     </Wrapper>
   );
 }

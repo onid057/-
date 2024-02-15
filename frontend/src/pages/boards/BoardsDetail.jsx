@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deleteOneComment, getOneArticle } from '../../apis/api/board';
 import { calculateReportWritingTime } from '../../utils/time';
+import { maskKoreanAddress } from '../../utils/regularExpression';
 
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
@@ -170,7 +171,7 @@ function BoardsDetail() {
           </ProfileLeft>
           <ProfileRight>
             <ProfileName>{data.userName}</ProfileName>
-            <ProfileAddress>{data.address}</ProfileAddress>
+            <ProfileAddress>{maskKoreanAddress(data.address)}</ProfileAddress>
           </ProfileRight>
         </ProfileWrapper>
 
@@ -208,6 +209,7 @@ function BoardsDetail() {
             <BoardComment
               key={`comment-${idx}`}
               userName={comment.userName}
+              profileImage={comment.profileImage}
               content={comment.content}
               updatedAt={comment.updatedAt}
               defaultValue={comment.content}

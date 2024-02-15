@@ -73,7 +73,7 @@ export default function ReportComplete() {
           ></Paragraph>
         </HeartWrapper>
       </HeadWrapper>
-      <MenuBar currentMenu="HOME" isWorked={userState === 'ZIPSA'}></MenuBar>
+      <MenuBar isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }
