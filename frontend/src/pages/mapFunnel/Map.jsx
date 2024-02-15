@@ -96,10 +96,7 @@ function Map({ onPrevious, onNext }) {
               src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
             ></Image>
           }
-          rightContent="다음"
           onPrevious={onPrevious}
-          onNext={() => onNext(zipsaId)}
-          disabledOnNext={!zipsaId}
         ></NavigationBar>
       </AbsoluteWrapper>
 
@@ -155,6 +152,7 @@ function Map({ onPrevious, onNext }) {
         }}
         targetCluster={targetCluster}
         setZipsaId={setZipsaId}
+        onNext={onNext}
       ></BottomSheet>
     </Wrapper>
   );
