@@ -49,10 +49,8 @@ public class WebSecurityConfig {
             UsernamePasswordAuthenticationFilter.class);
         http.authorizeHttpRequests(
             requests -> requests.requestMatchers("/admin/").hasAuthority("ADMIN"));
-//        http.authorizeHttpRequests(
-//            requests -> requests.requestMatchers("/").permitAll().anyRequest().permitAll());
         http.authorizeHttpRequests(
-            requests -> requests.requestMatchers("/auth/sign-in", "/users",
+            requests -> requests.requestMatchers("/auth/sign-in", "/users", "/users/certification/email",
                     "/actuator/health").permitAll().anyRequest()
                 .authenticated());
         http.logout(
