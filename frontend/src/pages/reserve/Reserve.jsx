@@ -5,7 +5,6 @@ import { getReservationListByUser } from '../../apis/api/reserve';
 import { useUserInfo } from '../../hooks/useUserInfo';
 
 import styled from 'styled-components';
-import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import MenuBar from '../../components/common/MenuBar';

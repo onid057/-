@@ -3,6 +3,7 @@ import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import MenuBar from '../../components/common/MenuBar';
 import NavigateText from '../../components/common/NavigateText';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -35,6 +36,8 @@ const Content = styled.div`
 `;
 
 function RegisterSuccess() {
+  const userState = useUserInfo(state => state.userState);
+
   return (
     <Wrapper>
       <Title>
@@ -59,7 +62,7 @@ function RegisterSuccess() {
         <NavigateText nextPage="/login">로그인하러 가기</NavigateText>
       </Content>
 
-      <MenuBar></MenuBar>
+      <MenuBar isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }

@@ -258,7 +258,7 @@ function App() {
         ></Route>
 
         {/* 게시판 */}
-        <Route path="/boards/" element={<BoardsMain />}></Route>
+        <Route path="/boards" element={<BoardsMain />}></Route>
         <Route path="/boards/:boardId" element={<BoardsDetail />}></Route>
         <Route path="/boards/:boardId/update" element={<UpdateBoard />}></Route>
         <Route path="/boards/create" element={<CreateBoard />}></Route>

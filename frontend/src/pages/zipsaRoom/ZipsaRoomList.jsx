@@ -4,44 +4,33 @@ import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
-import MenuBar from '../../components/common/MenuBar';
 import { useUserInfo } from '../../hooks/useUserInfo';
 import { useNavigate } from 'react-router-dom';
 import { calculateRemainTime } from '../../utils/time';
+import { convertToWon } from '../../utils/money';
 import { getZipsaRoomList } from '../../apis/api/room';
 
 const Wrapper = styled.div`
   width: 320px;
+  min-height: 586px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 16px 20px;
   display: flex;
   flex-direction: column;
+  gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
 
-const HeadWrapper = styled.div`
-  width: 100%;
-  min-height: 509px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  background-color: ${({ theme }) => theme.colors.primary};
-  font-size: 18px;
-  font-weight: 300;
-  white-space: pre-wrap;
-`;
-
-const TitleWrapper = styled.div`
-  width: 100%;
+const RoomInfosWrapper = styled.div`
+  line-height: 1.3;
 `;
 
 const RoomItemWrapper = styled.div`
   width: 288px;
-  padding: 20px 30px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -86,51 +75,51 @@ function ZipsaRoomList() {
 
   return (
     <Wrapper>
-      <HeadWrapper>
-        <NavigationBar
-          leftContent={
-            <Image
-              src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
-              width={'40px'}
-              height={'40px'}
-              margin={'0 0 0 -12px'}
-            ></Image>
-          }
-          onPrevious={onPrevious}
-        ></NavigationBar>
-        <TitleWrapper>
-          <Paragraph
-            fontSize={'35px'}
-            sentences={['모집 공고']}
-            textAlign={'left'}
-          ></Paragraph>
-        </TitleWrapper>
-        {!roomList.length && (
-          <Paragraph
-            fontSize={'18px'}
-            sentences={['아직 생성된 방이 없어요']}
-          ></Paragraph>
-        )}
-        {roomList.map((item, idx) => (
-          <RoomItemWrapper
-            key={idx}
-            onClick={() => {
-              onClickRoom(item.roomId);
-            }}
-          >
-            <BoldText fontSize={'16px'} boldContent={item.title} />
+      <NavigationBar
+        leftContent={
+          <Image
+            src={`${process.env.PUBLIC_URL}/images/keyboard_arrow_left.svg`}
+            width={'40px'}
+            height={'40px'}
+            margin={'0 0 0 -12px'}
+          ></Image>
+        }
+        onPrevious={onPrevious}
+      ></NavigationBar>
+
+      <Paragraph
+        fontSize={'35px'}
+        sentences={['모집 공고']}
+        textAlign={'left'}
+        margin={'0 0 20px 0'}
+      ></Paragraph>
+
+      {!roomList.length && (
+        <Paragraph
+          fontSize={'18px'}
+          sentences={['아직 생성된 방이 없어요']}
+        ></Paragraph>
+      )}
+      {roomList.map((item, idx) => (
+        <RoomItemWrapper
+          key={idx}
+          onClick={() => {
+            onClickRoom(item.roomId);
+          }}
+        >
+          <BoldText fontSize={'16px'} boldContent={item.title} />
+          <RoomInfosWrapper>
             <RoomInfoWrapper>
               <HeadingWrapper>금액</HeadingWrapper>
-              <>{item.expectationPay}원</>
+              <>{convertToWon(item.expectationPay)}</>
             </RoomInfoWrapper>
             <RoomInfoWrapper>
               <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
               <>{calculateRemainTime(item.roomCreatedAt)}</>
             </RoomInfoWrapper>
-          </RoomItemWrapper>
-        ))}
-      </HeadWrapper>
-      <MenuBar isWorked={userState === 'ZIPSA'}></MenuBar>
+          </RoomInfosWrapper>
+        </RoomItemWrapper>
+      ))}
     </Wrapper>
   );
 }

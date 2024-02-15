@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { getAllArticles } from '../../apis/api/board';
 import { useNavigate } from 'react-router-dom';
 import { calculateReportWritingTime } from '../../utils/time';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -102,13 +103,14 @@ const allTags = [
 ];
 
 const page = 1;
-const size = 50;
+const size = 20;
 
 function BoardsMain() {
   const navigate = useNavigate();
   const tagCheckList = [true, true, true, true, true, true];
   const [isSelected, setIsSelected] = useState(tagCheckList);
   const [list, setList] = useState([]);
+  const userState = useUserInfo(state => state.userState);
 
   const tagListArray = [];
   isSelected.forEach((element, index) => {
@@ -193,7 +195,7 @@ function BoardsMain() {
           </Article>
         ))}
       </HeadWrapper>
-      <MenuBar currentMenu="POST"></MenuBar>
+      <MenuBar currentMenu="POST" isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }

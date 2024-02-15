@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Paragraph from '../../components/common/Paragraph';
 import NavigateText from '../../components/common/NavigateText';
 import MenuBar from '../../components/common/MenuBar';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -42,6 +43,8 @@ const TextWrapper = styled.div`
 `;
 
 function CompletedCreationRoom() {
+  const userState = useUserInfo(state => state.userState);
+
   return (
     <Wrapper>
       <HeadWrapper>
@@ -70,7 +73,7 @@ function CompletedCreationRoom() {
           ></NavigateText>
         </ContentWrapper>
       </HeadWrapper>
-      <MenuBar></MenuBar>
+      <MenuBar isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }

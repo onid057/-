@@ -48,7 +48,7 @@ const Content = styled.div`
 `;
 
 function SuccessApply() {
-  const userState = useUserInfo(state => state.userState); // 전역에서 관리하는 유저 상태
+  const userState = useUserInfo(state => state.userState);
 
   return (
     <Wrapper>

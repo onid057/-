@@ -7,6 +7,7 @@ import BoldText from '../../components/common/BoldText';
 import { useNavigate } from 'react-router-dom';
 import { calculateRemainDate } from '../../utils/time';
 import { getUserRoomList } from '../../apis/api/room';
+import { useUserInfo } from '../../hooks/useUserInfo';
 import MenuBar from '../../components/common/MenuBar';
 
 const Wrapper = styled.div`
@@ -89,6 +90,7 @@ function UserRoomList() {
   const onClickRoom = roomId => {
     navigate(`/rooms/detail/${roomId}`);
   };
+  const userState = useUserInfo(state => state.userState);
 
   useEffect(() => {
     getUserRoomList().then(response => {
@@ -141,7 +143,7 @@ function UserRoomList() {
           </RoomItemWrapper>
         ))}
       </HeadWrapper>
-      <MenuBar></MenuBar>
+      <MenuBar isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }

@@ -36,6 +36,16 @@ const HeadWrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
+const IntroduceWrapper = styled.div`
+  width: 100%;
+  height: 220px;
+  padding: 20px 18px;
+  display: flex;
+  align-items: center;
+  background-color: #0093e9;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
+  border-radius: 25px;
+`;
 const ImageWrapper = styled.div`
   position: relative;
 `;
@@ -86,7 +96,7 @@ export default function Home() {
   const [diffTime, setDiffTime] = useState();
 
   const isLoggedIn = useUserInfo(state => state.isLoggedIn);
-  const userState = useUserInfo(state => state.userState); // 전역에서 관리하는 유저 상태
+  const userState = useUserInfo(state => state.userState);
   const isRemainTimeLowerThanHalfOfHour = time =>
     time <= 1000 * 60 * 60 && time >= 0;
 
@@ -151,144 +161,179 @@ export default function Home() {
     <Wrapper>
       <HeadWrapper>
         <UpperWrapper>
-          <BoldText fontSize="30px" boldContent="한집사"></BoldText>
-
+          <Image
+            src={process.env.PUBLIC_URL + '/images/logo.svg'}
+            width="140px"
+            height="40px"
+            margin="0 0 0 -23px"
+            onClick={() => navigate('/')}
+          ></Image>
           <ImageWrapper>
             <NoticeRound $display={isVisibleRound}></NoticeRound>
             <Image
               src={process.env.PUBLIC_URL + '/images/alarm.svg'}
               width="30px"
               height="34px"
-              onClick={() => navigate('/notify')}
-              // onClick={() =>
-              //   getComplaintList().then(response => console.log(response))
-              // }
+              onClick={isLoggedIn ? () => navigate('/notify') : undefined}
             ></Image>
           </ImageWrapper>
         </UpperWrapper>
 
-        {isZipsa && (
+        {!isLoggedIn && (
+          <IntroduceWrapper>
+            <Paragraph
+              gap={'15px'}
+              fontSize={'30px'}
+              sentences={[
+                <BoldText
+                  boldContent={'{ 한집사 }'}
+                  normalContent={' 에'}
+                ></BoldText>,
+                '오신 것을',
+                '환영합니다!',
+              ]}
+            ></Paragraph>
+          </IntroduceWrapper>
+        )}
+
+        {isZipsa && isLoggedIn && (
           <Toggle isWorked={isWorked} setIsWorked={setIsWorked}></Toggle>
         )}
 
-        {!isWorked ? (
-          <>
-            <Notice
-              upper={[
-                <Image
-                  src={process.env.PUBLIC_URL + '/images/location.svg'}
-                  width="30px"
-                  height="30px"
-                ></Image>,
-                <Paragraph
-                  fontSize="16px"
-                  gap="5px"
-                  sentences={['여러 명의 집사가', '주변에 기다리고 있어요.']}
-                ></Paragraph>,
-              ]}
-              nextPage="/map"
-            ></Notice>
-
-            <Notice
-              upper={[
-                <Image
-                  src={process.env.PUBLIC_URL + '/images/condition.svg'}
-                  width="30px"
-                  height="30px"
-                  margin="0"
-                ></Image>,
-                <Paragraph
-                  fontSize="16px"
-                  gap="5px"
-                  sentences={['좀 더 꼼꼼하게', '집사님을 찾고 있어요.']}
-                ></Paragraph>,
-              ]}
-              nextPage="/filter"
-            ></Notice>
-
-            <Notice
-              upper={[
-                <Image
-                  src={process.env.PUBLIC_URL + '/images/wifi.svg'}
-                  width="30px"
-                  height="30px"
-                  margin="0"
-                ></Image>,
-                <Paragraph
-                  fontSize="16px"
-                  gap="5px"
-                  sentences={['직접 집사님을', '모집해보고 싶어요.']}
-                ></Paragraph>,
-              ]}
-              nextPage="/matchOption"
-            ></Notice>
-
-            <Notice
-              upper={[
-                <Image
-                  src={process.env.PUBLIC_URL + '/images/coffee.svg'}
-                  width="30px"
-                  height="30px"
-                  margin="0"
-                ></Image>,
-                <Paragraph
-                  fontSize="16px"
-                  gap="5px"
-                  sentences={['내가 생성한', '공개방 목록 보기']}
-                ></Paragraph>,
-              ]}
-              nextPage="/rooms"
-            ></Notice>
-          </>
-        ) : (
-          <>
-            {reserveInfo ? (
+        {isLoggedIn &&
+          (!isWorked ? (
+            <>
               <Notice
                 upper={[
                   <Image
-                    src={process.env.PUBLIC_URL + '/images/lightning.svg'}
+                    src={process.env.PUBLIC_URL + '/images/location.svg'}
                     width="30px"
                     height="30px"
-                    margin="4px 0 0 0"
                   ></Image>,
-                  <BoldText
-                    fontSize="20px"
-                    boldContent={`{ ${reserveInfo.name} }`}
-                    normalContent={' 고객님과'}
-                  ></BoldText>,
-                ]}
-                lower={[
                   <Paragraph
                     fontSize="16px"
-                    gap="10px"
-                    sentences={[
-                      <BoldText
-                        boldContent={
-                          reserveInfo.status === 'ONGOING'
-                            ? '현재'
-                            : isRemainTimeLowerThanHalfOfHour(diffTime)
-                              ? `${Math.floor(diffTime / (1000 * 60))}분 후에`
-                              : `${calculateRemainDate(reserveInfo?.expectationStartedAt)}`
-                        }
-                      ></BoldText>,
-                      <BoldText
-                        boldContent={
-                          reserveInfo.majorCategoryName === '상관없음'
-                            ? '약속'
-                            : reserveInfo.majorCategoryName
-                        }
-                        normalContent={
-                          reserveInfo.status === 'BEFORE'
-                            ? '을 앞두고 있어요!'
-                            : '을 진행 중이에요!'
-                        }
-                      ></BoldText>,
-                    ]}
+                    gap="5px"
+                    sentences={['여러 명의 집사가', '주변에 기다리고 있어요.']}
                   ></Paragraph>,
                 ]}
-                nextPage="/"
+                nextPage="/map"
               ></Notice>
-            ) : (
+
+              <Notice
+                upper={[
+                  <Image
+                    src={process.env.PUBLIC_URL + '/images/condition.svg'}
+                    width="30px"
+                    height="30px"
+                    margin="0"
+                  ></Image>,
+                  <Paragraph
+                    fontSize="16px"
+                    gap="5px"
+                    sentences={['좀 더 꼼꼼하게', '집사님을 찾고 있어요.']}
+                  ></Paragraph>,
+                ]}
+                nextPage="/filter"
+              ></Notice>
+
+              <Notice
+                upper={[
+                  <Image
+                    src={process.env.PUBLIC_URL + '/images/wifi.svg'}
+                    width="30px"
+                    height="30px"
+                    margin="0"
+                  ></Image>,
+                  <Paragraph
+                    fontSize="16px"
+                    gap="5px"
+                    sentences={['직접 집사님을', '모집해보고 싶어요.']}
+                  ></Paragraph>,
+                ]}
+                nextPage="/matchOption"
+              ></Notice>
+
+              <Notice
+                upper={[
+                  <Image
+                    src={process.env.PUBLIC_URL + '/images/coffee.svg'}
+                    width="30px"
+                    height="30px"
+                    margin="0"
+                  ></Image>,
+                  <Paragraph
+                    fontSize="16px"
+                    gap="5px"
+                    sentences={['내가 생성한', '공개방 목록 보기']}
+                  ></Paragraph>,
+                ]}
+                nextPage="/rooms"
+              ></Notice>
+            </>
+          ) : (
+            <>
+              {reserveInfo ? (
+                <Notice
+                  upper={[
+                    <Image
+                      src={process.env.PUBLIC_URL + '/images/lightning.svg'}
+                      width="30px"
+                      height="30px"
+                      margin="4px 0 0 0"
+                    ></Image>,
+                    <BoldText
+                      fontSize="20px"
+                      boldContent={`{ ${reserveInfo.name} }`}
+                      normalContent={' 고객님과'}
+                    ></BoldText>,
+                  ]}
+                  lower={[
+                    <Paragraph
+                      fontSize="16px"
+                      gap="10px"
+                      sentences={[
+                        <BoldText
+                          boldContent={
+                            reserveInfo.status === 'ONGOING'
+                              ? '현재'
+                              : isRemainTimeLowerThanHalfOfHour(diffTime)
+                                ? `${Math.floor(diffTime / (1000 * 60))}분 후에`
+                                : `${calculateRemainDate(reserveInfo?.expectationStartedAt)}`
+                          }
+                        ></BoldText>,
+                        <BoldText
+                          boldContent={
+                            reserveInfo.majorCategoryName === '상관없음'
+                              ? '약속'
+                              : reserveInfo.majorCategoryName
+                          }
+                          normalContent={
+                            reserveInfo.status === 'BEFORE'
+                              ? '을 앞두고 있어요!'
+                              : '을 진행 중이에요!'
+                          }
+                        ></BoldText>,
+                      ]}
+                    ></Paragraph>,
+                  ]}
+                  nextPage="/reserve"
+                ></Notice>
+              ) : (
+                <Notice
+                  upper={[
+                    <Image
+                      src={process.env.PUBLIC_URL + '/images/lightning.svg'}
+                      width="30px"
+                      height="30px"
+                      margin="4px 0 0 0"
+                    ></Image>,
+                    <BoldText
+                      fontSize="18px"
+                      normalContent={'예정된 일정이 없습니다'}
+                    ></BoldText>,
+                  ]}
+                ></Notice>
+              )}
               <Notice
                 upper={[
                   <Image
@@ -299,66 +344,74 @@ export default function Home() {
                   ></Image>,
                   <BoldText
                     fontSize="18px"
-                    normalContent={'현재 예정된 일정이 없습니다'}
+                    normalContent={'모집 공고 확인하기'}
                   ></BoldText>,
                 ]}
-                nextPage="/"
+                nextPage="/rooms/zipsa"
               ></Notice>
-            )}
+            </>
+          ))}
+        {isLoggedIn && (
+          <NoticeWrapper>
             <Notice
               upper={[
                 <Image
-                  src={process.env.PUBLIC_URL + '/images/lightning.svg'}
+                  src={process.env.PUBLIC_URL + '/images/post.svg'}
                   width="30px"
                   height="30px"
-                  margin="4px 0 0 0"
+                  margin="0"
                 ></Image>,
-                <BoldText
-                  fontSize="18px"
-                  normalContent={'모집 공고 확인하기'}
-                ></BoldText>,
               ]}
-              nextPage="/rooms/zipsa"
+              lower={[
+                <Paragraph
+                  fontSize="14px"
+                  gap="5px"
+                  sentences={['다른 사용자들과', '소통하고 싶어요.']}
+                ></Paragraph>,
+              ]}
+              nextPage={'/boards'}
             ></Notice>
-          </>
-        )}
-        <NoticeWrapper>
-          <Notice
-            upper={[
-              <Image
-                src={process.env.PUBLIC_URL + '/images/post.svg'}
-                width="30px"
-                height="30px"
-                margin="0"
-              ></Image>,
-            ]}
-            lower={[
-              <Paragraph
-                fontSize="14px"
-                gap="5px"
-                sentences={['다른 사용자들과', '소통하고 싶어요.']}
-              ></Paragraph>,
-            ]}
-          ></Notice>
 
+            <Notice
+              upper={[
+                <Image
+                  src={process.env.PUBLIC_URL + '/images/date.svg'}
+                  width="30px"
+                  height="30px"
+                  margin="0"
+                ></Image>,
+              ]}
+              lower={[
+                <Paragraph
+                  fontSize="14px"
+                  gap="5px"
+                  sentences={['예약 내역을', '보고 싶어요.']}
+                ></Paragraph>,
+              ]}
+              nextPage={'/reserve'}
+            ></Notice>
+          </NoticeWrapper>
+        )}
+
+        {!isLoggedIn && (
           <Notice
             upper={[
               <Image
-                src={process.env.PUBLIC_URL + '/images/date.svg'}
+                src={process.env.PUBLIC_URL + '/images/lightning.svg'}
                 width="30px"
                 height="30px"
-                margin="0"
+                margin="4px 0 0 0"
               ></Image>,
-            ]}
-            lower={[
               <Paragraph
-                fontSize="14px"
+                fontSize="16px"
                 gap="5px"
-                sentences={['예약 내역을', '보고 싶어요.']}
+                sentences={['서비스를 이용하기 위해', '로그인이 필요합니다.']}
               ></Paragraph>,
+              ,
             ]}
           ></Notice>
-        </NoticeWrapper>
+        )}
+
         {isLoggedIn ? (
           <Button
             mode="THIN_WHITE"
@@ -381,7 +434,11 @@ export default function Home() {
           </LoginRegisterWrapper>
         )}
       </HeadWrapper>
-      <MenuBar currentMenu="HOME" isWorked={userState === 'ZIPSA'}></MenuBar>
+      <MenuBar
+        currentMenu="HOME"
+        isWorked={userState === 'ZIPSA'}
+        disabled={!isLoggedIn}
+      ></MenuBar>
     </Wrapper>
   );
 }

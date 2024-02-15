@@ -137,7 +137,7 @@ function UserMyPage() {
           비밀번호 변경하기
         </NavigateButton>
       </HeadWrapper>
-      <MenuBar currentMenu="USER" isWorked={false}></MenuBar>
+      <MenuBar currentMenu="HOME" isWorked={false}></MenuBar>
     </Wrapper>
   );
 }

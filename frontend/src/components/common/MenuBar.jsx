@@ -32,7 +32,7 @@ const MenuWrapper = styled.div`
   color: ${props => (props.selected ? '#000000' : '#a7acb4')};
 `;
 
-function MenuBar({ currentMenu, isWorked }) {
+function MenuBar({ currentMenu, isWorked, disabled }) {
   const navigate = useNavigate();
 
   const homeImageURL =
@@ -75,7 +75,7 @@ function MenuBar({ currentMenu, isWorked }) {
           width="32px"
           height="24px"
           margin="2px 0 0 0"
-          onClick={() => navigate('/boards')}
+          onClick={disabled ? undefined : () => navigate('/boards')}
         ></Image>
         게시판
       </MenuWrapper>
@@ -86,7 +86,7 @@ function MenuBar({ currentMenu, isWorked }) {
             src={searchImageURL}
             width="28px"
             height="28px"
-            onClick={() => navigate('/matchOption')}
+            onClick={disabled ? undefined : () => navigate('/matchOption')}
           ></Image>
           집사찾기
         </MenuWrapper>
@@ -97,7 +97,7 @@ function MenuBar({ currentMenu, isWorked }) {
           src={reservationImageURL}
           width="27px"
           height="27px"
-          onClick={() => navigate('/reserve')}
+          onClick={disabled ? undefined : () => navigate('/reserve')}
         ></Image>
         예약
       </MenuWrapper>
@@ -107,7 +107,7 @@ function MenuBar({ currentMenu, isWorked }) {
           src={userImageURL}
           width="24px"
           height="27px"
-          onClick={() => navigate('/myPage')}
+          onClick={disabled ? undefined : () => navigate('/myPage')}
         ></Image>
         사용자
       </MenuWrapper>

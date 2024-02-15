@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
@@ -6,16 +6,17 @@ import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Buttton from '../../components/common/Button';
 import { getRoomDetailInfo, applyForRoom } from '../../apis/api/room';
+import { convertToWon } from '../../utils/money';
 
 const Wrapper = styled.div`
   width: 320px;
-  min-height: 568px;
+  min-height: 586px;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0 16px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 30px;
+  gap: 20px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
@@ -36,9 +37,9 @@ const ContentWrapper = styled.div`
 const TitleWrapper = styled.div`
   display: flex;
   width: 100%;
+  margin-bottom: 20px;
   flex-direction: column;
   align-items: start;
-  gap: 15px;
 `;
 
 const TextWrapper = styled.div`
@@ -103,12 +104,14 @@ function ZipsaRoomDetail() {
         <BoldText
           boldContent={'모집'}
           normalContent={' 상세정보'}
-          fontSize={'20px'}
+          fontSize={'30px'}
         ></BoldText>
       </TitleWrapper>
 
       <ContentWrapper>
-        <BoldText boldContent={roomInfo.title}></BoldText>
+        <TitleWrapper>
+          <BoldText boldContent={roomInfo.title}></BoldText>
+        </TitleWrapper>
         <TextWrapper>
           <>날짜</>
           <BoldText
@@ -117,11 +120,13 @@ function ZipsaRoomDetail() {
         </TextWrapper>
         <TextWrapper>
           <>시간</>
-          <BoldText boldContent={roomInfo.estimateDuration}></BoldText>
+          <BoldText boldContent={`${roomInfo.estimateDuration}시간`}></BoldText>
         </TextWrapper>
         <TextWrapper>
           <>금액</>
-          <BoldText boldContent={roomInfo.expectationPay}></BoldText>
+          <BoldText
+            boldContent={convertToWon(roomInfo.expectationPay)}
+          ></BoldText>
         </TextWrapper>
         <DetailWrapper>
           <>장소</>

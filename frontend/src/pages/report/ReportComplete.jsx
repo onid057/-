@@ -3,6 +3,7 @@ import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Image from '../../components/common/Image';
 import MenuBar from '../../components/common/MenuBar';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -41,6 +42,8 @@ const HeartWrapper = styled.div`
 `;
 
 export default function ReportComplete() {
+  const userState = useUserInfo(state => state.userState);
+
   return (
     <Wrapper>
       <HeadWrapper>
@@ -70,7 +73,7 @@ export default function ReportComplete() {
           ></Paragraph>
         </HeartWrapper>
       </HeadWrapper>
-      <MenuBar></MenuBar>
+      <MenuBar currentMenu="HOME" isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }

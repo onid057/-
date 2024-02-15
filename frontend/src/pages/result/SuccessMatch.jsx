@@ -4,6 +4,7 @@ import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import MenuBar from '../../components/common/MenuBar';
 import BoldText from '../../components/common/BoldText';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -46,6 +47,7 @@ const Content = styled.div`
 `;
 
 function SuccessMatch() {
+  const userState = useUserInfo(state => state.userState);
   return (
     <Wrapper>
       <HeadWrapper>
@@ -72,7 +74,7 @@ function SuccessMatch() {
           ></Paragraph>
         </Content>
       </HeadWrapper>
-      <MenuBar></MenuBar>
+      <MenuBar isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
   );
 }
