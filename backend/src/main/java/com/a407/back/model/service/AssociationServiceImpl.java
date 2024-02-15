@@ -52,13 +52,18 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Override
-    public List<UserAssociationResponse> getAssociationUserList(Long associationId) {
+    public List<UserAssociationResponse> getAssociationUserList(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        Long associationId = user.getAssociationId().getAssociationId() != null ? user.getAssociationId().getAssociationId() : 0;
+        if(associationId == 0) {
+            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+        }
         List<User> users = userRepository.searchAssociationUserList(associationId);
         Long representativeId = associationRepository.findAssociationRepresentative(associationId);
         return users.stream()
-            .map(user -> new UserAssociationResponse(user.getUserId(), user.getName(),
-                user.getProfileImage(),
-                user.getUserId().equals(representativeId))).toList();
+            .map(associationUser -> new UserAssociationResponse(associationUser.getUserId(), associationUser.getName(),
+                associationUser.getProfileImage(),
+                associationUser.getUserId().equals(representativeId))).toList();
     }
 
     @Override

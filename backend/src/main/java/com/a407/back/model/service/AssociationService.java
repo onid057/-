@@ -10,7 +10,7 @@ public interface AssociationService {
 
     void makeAssociation(Long userId);
 
-    List<UserAssociationResponse> getAssociationUserList(Long associationId);
+    List<UserAssociationResponse> getAssociationUserList(Long userId);
 
     void deleteAssociation(Long userID);
 

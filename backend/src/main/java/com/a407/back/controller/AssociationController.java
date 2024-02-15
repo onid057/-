@@ -35,8 +35,7 @@ public class AssociationController {
         @AuthenticationPrincipal SecurityUser user) {
         return ResponseEntity.status(HttpStatus.OK).body(
             new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
-                associationService.getAssociationUserList(
-                    user.getAssociationId().getAssociationId())));
+                associationService.getAssociationUserList(user.getUserId())));
     }
 
     @PostMapping
