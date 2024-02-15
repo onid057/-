@@ -13,6 +13,7 @@ import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -54,9 +55,9 @@ public class AssociationServiceImpl implements AssociationService {
     @Override
     public List<UserAssociationResponse> getAssociationUserList(Long userId) {
         User user = userRepository.findByUserId(userId);
-        Long associationId = user.getAssociationId().getAssociationId() != null ? user.getAssociationId().getAssociationId() : 0;
+        Long associationId = user.getAssociationId() != null ? user.getAssociationId().getAssociationId() : 0;
         if(associationId == 0) {
-            throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
+            return new ArrayList<>();
         }
         List<User> users = userRepository.searchAssociationUserList(associationId);
         Long representativeId = associationRepository.findAssociationRepresentative(associationId);
