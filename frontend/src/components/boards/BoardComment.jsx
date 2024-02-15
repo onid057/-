@@ -9,12 +9,6 @@ const Wrapper = styled.div`
   padding: 0px 20px 0px 0px;
   display: flex;
 `;
-const ImageWrapper = styled.div`
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  overflow: hidden;
-`;
 
 const LeftBox = styled.div`
   width: 100%;
@@ -40,12 +34,11 @@ const Name = styled.div`
   font-weight: 500;
 `;
 
-const Address = styled.div``;
-
 const Content = styled.div`
   font-size: 14px;
   font-weight: 300;
 `;
+
 const Date = styled.div`
   font-size: 14px;
   font-weight: 200;
@@ -64,16 +57,14 @@ function BoardComment({
   return (
     <Wrapper>
       <LeftBox>
-        <ImageWrapper>
-          <Image
-            src={
-              profileImage || `${process.env.PUBLIC_URL}/images/profile_img.svg`
-            }
-            width={'50px'}
-            height={'50px'}
-            margin={'0 0 0 -12px'}
-          ></Image>
-        </ImageWrapper>
+        <Image
+          src={
+            profileImage || `${process.env.PUBLIC_URL}/images/profile_img.svg`
+          }
+          width={'50px'}
+          height={'50px'}
+          margin={'0 0 0 -12px'}
+        ></Image>
       </LeftBox>
 
       <RightBox>
