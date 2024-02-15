@@ -85,7 +85,7 @@ function ConnectCode() {
           <Button
             mode="THIN_BLUE"
             onClick={async () => {
-              associateWithCode(5, inputValue)
+              await associateWithCode(inputValue)
                 .then(response => {
                   if (response.status === 201) alert('연동 성공!');
                 })
