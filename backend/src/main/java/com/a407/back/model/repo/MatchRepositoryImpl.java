@@ -129,7 +129,7 @@ public class MatchRepositoryImpl implements MatchRepository {
     @Override
     public void changeMatchEndedAt(Long roomId) {
         QRoom qRoom = QRoom.room;
-        query.update(qRoom).set(qRoom.endedAt, Timestamp.valueOf(LocalDateTime.now()))
+        query.update(qRoom).set(qRoom.endedAt, Timestamp.valueOf(LocalDateTime.now())).set(qRoom.totalPay, qRoom.expectationPay)
             .where(qRoom.roomId.eq(roomId)).execute();
     }
 
