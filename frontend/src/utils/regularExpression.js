@@ -22,4 +22,4 @@ function maskString(str) {
   return maskedStr;
 }
 
-export { regName, regEmail, regPassword, regAddress, maskKoreanAddress };
+export { regName, regEmail, regPassword, maskKoreanAddress };
