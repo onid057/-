@@ -224,7 +224,6 @@ function BoardsDetail() {
               profileImage={comment.profileImage}
               content={comment.content}
               updatedAt={comment.updatedAt}
-              defaultValue={comment.content}
               needUpdateButton={false}
               needDeleteButton={comment.commentDistinction}
               deleteOnClick={() => {

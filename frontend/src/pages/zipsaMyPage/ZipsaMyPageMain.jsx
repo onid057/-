@@ -23,6 +23,14 @@ const Wrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
+
+const ImageWrapper = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+`;
+
 const HeadWrapper = styled.div`
   width: 100%;
   min-height: 509px;
@@ -78,15 +86,17 @@ function ZipsaMyPageMain() {
       <HeadWrapper>
         <Notice
           upper={[
-            <Image
-              src={
-                data.profileImage ||
-                `${process.env.PUBLIC_URL}/images/profile_img.svg`
-              }
-              width={'60px'}
-              height={'60px'}
-              margin={'0px'}
-            ></Image>,
+            <ImageWrapper>
+              <Image
+                src={
+                  data.profileImage ||
+                  `${process.env.PUBLIC_URL}/images/profile_img.svg`
+                }
+                width={'60px'}
+                height={'60px'}
+                margin={'0px'}
+              ></Image>
+            </ImageWrapper>,
             <Paragraph
               gap={'10px'}
               fontSize={'13px'}

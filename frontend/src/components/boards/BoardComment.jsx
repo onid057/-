@@ -46,45 +46,16 @@ const Content = styled.div`
   font-size: 14px;
   font-weight: 300;
 `;
-
-const UpdateInput = styled.textarea`
-  width: 100%;
-  min-height: 80px;
-  margin-bottom: 5px;
-  padding: 8px;
-  font-size: 14px;
-  font-weight: 300;
-  color: black;
-  line-height: 20px;
-  /* background-color: #ecf4fa; */
-  &::placeholder {
-    color: darkgray;
-    font-weight: 300;
-    line-height: 20px;
-  }
-`;
-
 const Date = styled.div`
   font-size: 14px;
   font-weight: 200;
 `;
 
-const SubmitButton = styled.button`
-  cursor: pointer;
-  width: 51px;
-  height: 23px;
-  border-radius: 5px;
-  background-color: #629af9;
-  color: white;
-`;
-
 function BoardComment({
   profileImage,
   userName,
-  address,
   content,
   updatedAt,
-  defaultValue,
   needUpdateButton,
   needDeleteButton,
   updateOnClick,
@@ -107,7 +78,6 @@ function BoardComment({
 
       <RightBox>
         <Name>{userName}</Name>
-        <Address>{String(address).substring(0, 7)}</Address>
 
         {/* isCommentUpdate 상태에 따라서 수정 textarea를 보여주는 부분 */}
         {
