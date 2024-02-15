@@ -181,7 +181,9 @@ function BoardsDetail() {
           </ProfileLeft>
           <ProfileRight>
             <ProfileName>{data.userName}</ProfileName>
-            <ProfileAddress>{data.address.substring(0, 7)}</ProfileAddress>
+            <ProfileAddress>
+              {String(data.address).substring(0, 7)}
+            </ProfileAddress>
           </ProfileRight>
         </ProfileWrapper>
 
