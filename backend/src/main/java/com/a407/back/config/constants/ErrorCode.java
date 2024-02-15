@@ -3,9 +3,10 @@ package com.a407.back.config.constants;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
+@AllArgsConstructor
 public enum ErrorCode {
+
     // 400
     INVALID_PARAMETER(400, "파라미터 값을 확인해주세요."),
     REQUEST_BODY_MISSING_ERROR(400, "Body에 객체 데이터가 없습니다."),
@@ -20,8 +21,12 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "존재하지 않는 고객 ID입니다."),
 
     // 500
-    INTERNAL_SERVER_ERROR(500, "서버 측 에러입니다.");
+    INTERNAL_SERVER_ERROR(500, "서버 측 에러입니다."),
+
+    // 503
+    CONNECT_ERROR(503, "SSE 구독에 실패했습니다.");
 
     private final int status;
     private final String message;
+
 }

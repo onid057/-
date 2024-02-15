@@ -4,6 +4,7 @@ import com.a407.back.domain.Notification;
 import com.a407.back.domain.Room;
 import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
+import com.a407.back.dto.user.UserChangeDto;
 import com.a407.back.dto.user.UserPhoneNumberAndEmail;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.util.List;
@@ -18,11 +19,21 @@ public interface UserRepository {
 
     User findByUserId(Long userId);
 
-    List<Zipsa> findNearZipsaList(Long userId);
+    List<Zipsa> findNearZipsaLocationList(Long userId);
 
-    List<Room> getUserRecordList(Long userId);
+    List<Zipsa> findNearZipsaInfoList(Double lat, Double lng);
 
-    List<Room> getUserReservationList(Long userId);
+    List<Room> getUserRecordList(Long userId, Boolean isZipsa);
+
+    Room getUserRecordInfo(Long roomId);
+
+    Room getUserReservationInfo(Long roomId);
+
+    List<Room> getUserReservationList(Long userId, Boolean isZipsa);
+
+    Room getUserReservationOngoing(Long userId, Boolean isZipsa);
+
+    Room getUserReservationBefore(Long userId, Boolean isZipsa);
 
     void makeAccount(Long userId, String account);
 
@@ -41,9 +52,16 @@ public interface UserRepository {
     boolean findIsAffiliated(Long userId);
 
     void makeSendMessage(UserPhoneNumberAndEmail userPhoneNumberAndEmail, String code)
-            throws JsonProcessingException;
+        throws JsonProcessingException;
 
     UserPhoneNumberAndEmail findMessage(String code) throws JsonProcessingException;
 
     String findCode(String code);
+
+    void changeUserInfo(Long userId, UserChangeDto userUpdateDto);
+
+    void deleteUser(Long userId);
+
+    void changeUserCertificated(Long userId);
+
 }

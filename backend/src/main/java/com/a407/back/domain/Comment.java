@@ -48,4 +48,5 @@ public class Comment {
         this.content = content;
         this.updatedAt = updatedAt;
     }
+
 }

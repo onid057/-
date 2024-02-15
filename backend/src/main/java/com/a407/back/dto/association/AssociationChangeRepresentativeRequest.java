@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AssociationChangeRepresentativeRequest {
 
-    Long representativeId;
     Long userId;
 
 }

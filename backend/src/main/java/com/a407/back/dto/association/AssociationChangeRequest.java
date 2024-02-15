@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AssociationChangeRequest {
 
-    Long userId;
     String code;
 
 }

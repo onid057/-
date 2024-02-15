@@ -24,4 +24,8 @@ public interface AssociationRepository {
     void changeAssociationRepresentative(Long userId, Long associationId);
 
     Long findAssociationRepresentative(Long associationId);
+
+    Association getAssociationRepresentative(Long associationId);
+
+    Association findAssociationByAssociationId(Long associationId);
 }

@@ -11,12 +11,13 @@ public class ReviewCreateRequest {
 
     private Long roomId;
     private String content;
-    private int kindnessScore;
-    private int skillScore;
-    private int rewindScore;
+    private Integer kindnessScore;
+    private Integer skillScore;
+    private Integer rewindScore;
 
     public Review toEntity(Room room) {
         return Review.builder().userId(room.getUserId()).zipsaId(room.getZipsaId()).content(content)
             .kindnessScore(kindnessScore).skillScore(skillScore).rewindScore(rewindScore).build();
     }
+
 }

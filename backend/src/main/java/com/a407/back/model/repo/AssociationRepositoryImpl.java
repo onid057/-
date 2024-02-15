@@ -12,10 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class AssociationRepositoryImpl implements AssociationRepository {
 
-
     private final EntityManager em;
     private final JPAQueryFactory query;
-
 
     private final RedisTemplate<String, String> associationRedisTemplate;
 
@@ -88,6 +86,16 @@ public class AssociationRepositoryImpl implements AssociationRepository {
         return query.select(qAssociation.userId).from(qAssociation)
             .where(qAssociation.associationId.eq(associationId))
             .fetchOne();
+    }
+
+    @Override
+    public Association getAssociationRepresentative(Long associationId) {
+        return em.find(Association.class, associationId);
+    }
+
+    @Override
+    public Association findAssociationByAssociationId(Long associationId) {
+        return em.find(Association.class, associationId);
     }
 
 

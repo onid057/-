@@ -3,8 +3,8 @@ package com.a407.back.model.service;
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.domain.Association;
 import com.a407.back.domain.User;
-import com.a407.back.dto.user.UserAssociationResponse;
 import com.a407.back.dto.association.AssociationAdditionCodeResponse;
+import com.a407.back.dto.user.UserAssociationResponse;
 import com.a407.back.exception.CustomException;
 import com.a407.back.model.repo.AssociationRepository;
 import com.a407.back.model.repo.UserRepository;
@@ -13,21 +13,30 @@ import jakarta.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
-import java.time.Duration;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AssociationServiceImpl implements AssociationService {
 
-
     private final AssociationRepository associationRepository;
+
     private final UserRepository userRepository;
+
+    @Value("${code.association.start}")
+    private Integer CODE_START;
+
+    @Value("${code.association.end}")
+    private Integer CODE_END;
+
+    @Value("${code.association.time}")
+    private Integer CODE_TIME;
 
     @Override
     @Transactional
@@ -44,13 +53,18 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Override
-    public List<UserAssociationResponse> getAssociationUserList(Long associationId) {
+    public List<UserAssociationResponse> getAssociationUserList(Long userId) {
+        User user = userRepository.findByUserId(userId);
+        Long associationId = user.getAssociationId() != null ? user.getAssociationId().getAssociationId() : 0;
+        if(associationId == 0) {
+            return new ArrayList<>();
+        }
         List<User> users = userRepository.searchAssociationUserList(associationId);
         Long representativeId = associationRepository.findAssociationRepresentative(associationId);
         return users.stream()
-            .map(user -> new UserAssociationResponse(user.getUserId(), user.getName(),
-                user.getProfileImage() == null ? null : Arrays.toString(user.getProfileImage()),
-                user.getUserId().equals(representativeId))).toList();
+            .map(associationUser -> new UserAssociationResponse(associationUser.getUserId(), associationUser.getName(),
+                associationUser.getProfileImage(),
+                associationUser.getUserId().equals(representativeId))).toList();
     }
 
     @Override
@@ -78,31 +92,33 @@ public class AssociationServiceImpl implements AssociationService {
     public AssociationAdditionCodeResponse makeAdditionCode(Long userId, String email,
         Long associationId) throws JsonProcessingException, NoSuchAlgorithmException {
 
-        // 현재 사용자가 대표인지 여부를 확인 해야한다
+        // 현재 사용자가 대표인지 여부 확인
         if (!Objects.equals(associationId, associationRepository.findAssociation(userId))) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         }
 
         String code = associationRepository.findAdditionCode(email);
-        // 이미 코드가 존재를 한다면 반환을 하고 종료
+        // 이미 코드가 존재한다면 종료
         if (code != null) {
-            // 코드가 존재 한다면 남은 시간을 조회하도록 하자
+            // 코드가 존재한다면 남은 시간 조회
             return new AssociationAdditionCodeResponse(code,
                 associationRepository.findTtl(code).intValue());
         }
 
-        int newCode = SecureRandom.getInstanceStrong().nextInt(10000000, 99999999);
-        // 이제 생성한 코드가 중복이 되는지를 체크하고 아닐때 까지 반복을 시켜야 한다
+        int newCode = SecureRandom.getInstanceStrong()
+            .nextInt(CODE_START, CODE_END);
+        // 이제 생성한 코드가 중복 체크 및 중복이 아닐 때까지 반복
         while (associationRepository.findAssociationId(String.valueOf(newCode)) != null) {
-            newCode = SecureRandom.getInstanceStrong().nextInt(10000000, 99999999);
+            newCode = SecureRandom.getInstanceStrong()
+                .nextInt(CODE_START, CODE_END);
         }
-        // 이제 코드와 연동 계정의 번호를 저장
+        // 이제 코드와 연동 계정의 번호 저장
         associationRepository.saveAssociationId(String.valueOf(newCode),
             String.valueOf(associationId));
-        // 그리고 대표의 이메일과 코드를 저장
+        // 그리고 대표의 이메일과 코드 저장
         associationRepository.saveCode(email, String.valueOf(newCode));
         return new AssociationAdditionCodeResponse(String.valueOf(newCode),
-            (int) (Duration.ofMinutes(30).toMillis() / 1000));
+            CODE_TIME);
     }
 
     @Override
@@ -119,7 +135,6 @@ public class AssociationServiceImpl implements AssociationService {
         userRepository.makeAssociation(userId, associationId);
     }
 
-
     @Override
     @Transactional
     public void changeAssociationRepresentative(Long representativeId, Long userId) {
@@ -129,7 +144,7 @@ public class AssociationServiceImpl implements AssociationService {
         User representative = userRepository.findByUserId(representativeId);
         User user = userRepository.findByUserId(userId);
 
-        // 대표인지를 확인 하고 사용자 번호가 같은 연동 계정인지
+        // 대표 확인 및 사용자 번호가 같은 연동 계정인지 확인
         Long associationId = associationRepository.findAssociation(representativeId);
         if (associationId == null || !Objects.equals(
             representative.getAssociationId().getAssociationId(),
@@ -140,5 +155,18 @@ public class AssociationServiceImpl implements AssociationService {
         associationRepository.changeAssociationRepresentative(userId, associationId);
     }
 
+    @Override
+    public Boolean getAssociationRepresentative(Long userId) {
+
+        User user = userRepository.findByUserId(userId);
+        if (user.getAssociationId() == null) {
+            throw new CustomException(ErrorCode.INVALID_PARAMETER);
+        }
+
+        Association association = associationRepository.getAssociationRepresentative(
+            user.getAssociationId().getAssociationId());
+
+        return Objects.equals(association.getUserId(), userId);
+    }
 
 }

@@ -79,8 +79,6 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public void deleteReview(Long reviewId) {
 
-        // 지금 필요한 정보는 카운트된 값과 집사의 정보
-
         Zipsa zipsa = reviewRepository.findZipsaByReviewId(reviewId);
         Review review = reviewRepository.findReviewByReviewId(reviewId);
 
@@ -112,4 +110,5 @@ public class ReviewServiceImpl implements ReviewService {
     private static double getAverageRemove(int score, Double average, Long countReview) {
         return ((average * (countReview)) - score) / (countReview - 1);
     }
+
 }

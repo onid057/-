@@ -58,4 +58,5 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     public Review findReviewByReviewId(Long reviewId) {
         return em.find(Review.class, reviewId);
     }
+
 }

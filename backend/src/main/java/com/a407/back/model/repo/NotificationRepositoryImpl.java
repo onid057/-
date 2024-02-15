@@ -52,4 +52,5 @@ public class NotificationRepositoryImpl implements NotificationRepository {
     public void deleteNotification(Notification notification) {
         em.remove(notification);
     }
+
 }

@@ -10,6 +10,5 @@ import lombok.NoArgsConstructor;
 public class PublicRoomNotificationRequest {
 
     private Long roomId;
-    private Long zipsaId;
 
 }
