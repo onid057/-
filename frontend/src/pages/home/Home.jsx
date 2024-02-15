@@ -225,7 +225,7 @@ export default function Home() {
             <Notice
               upper={[
                 <Image
-                  src={process.env.PUBLIC_URL + '/images/condition.svg'}
+                  src={process.env.PUBLIC_URL + '/images/coffee.svg'}
                   width="30px"
                   height="30px"
                   margin="0"
