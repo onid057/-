@@ -2,7 +2,7 @@ import Paragraph from './Paragraph';
 
 function PreferTag({ tagArray, tagString, splitter, fontSize }) {
   const tags = tagString ? tagString.split(splitter) : tagArray;
-  const tagsWithSharp = tags.map(tag => `# ${tag} `);
+  const tagsWithSharp = tags.map(tag => `# ${tag}  `);
 
   let upperTags = '',
     lowerTags = '';

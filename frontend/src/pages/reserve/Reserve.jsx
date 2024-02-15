@@ -34,10 +34,13 @@ const HeadWrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
 const SimpleReservesWrapper = styled.div`
   display: flex;
   flex-direction: column;
+`;
+const TextWrapper = styled.div`
+  margin: 0 auto;
+  color: #d9d9d9;
 `;
 
 function Reserve() {
@@ -64,27 +67,31 @@ function Reserve() {
           margin="0 0 20px 0"
         ></Paragraph>
 
-        <SimpleReservesWrapper>
-          {data?.map((reservation, index) => {
-            return (
-              <Fragment key={index}>
-                <SimpleReserve
-                  mode={userState}
-                  status={reservation.status}
-                  roomId={reservation.roomId}
-                  name={reservation.name}
-                  majorCategory={reservation.majorCategoryName}
-                  createdAt={reservation.expectationStartedAt}
-                  onClick={() =>
-                    navigate(`/reserveDetail/${reservation.roomId}`)
-                  }
-                ></SimpleReserve>
+        {data?.length === 0 ? (
+          <TextWrapper>예약된 내역이 없습니다.</TextWrapper>
+        ) : (
+          <SimpleReservesWrapper>
+            {data?.map((reservation, index) => {
+              return (
+                <Fragment key={index}>
+                  <SimpleReserve
+                    mode={userState}
+                    status={reservation.status}
+                    roomId={reservation.roomId}
+                    name={reservation.name}
+                    majorCategory={reservation.majorCategoryName}
+                    createdAt={reservation.expectationStartedAt}
+                    onClick={() =>
+                      navigate(`/reserveDetail/${reservation.roomId}`)
+                    }
+                  ></SimpleReserve>
 
-                <HorizontalLine height={'2px'}></HorizontalLine>
-              </Fragment>
-            );
-          })}
-        </SimpleReservesWrapper>
+                  <HorizontalLine height={'2px'}></HorizontalLine>
+                </Fragment>
+              );
+            })}
+          </SimpleReservesWrapper>
+        )}
       </HeadWrapper>
       <MenuBar currentMenu="RESERVE" isWorked={userState === 'ZIPSA'}></MenuBar>
     </Wrapper>
