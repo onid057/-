@@ -5,7 +5,7 @@ const regPassword =
 
 function maskKoreanAddress(address) {
   const addressRegex = /^(.*?[시도군구])(.*?[시군구])(.*?[읍면동])(.*)$/;
-  const match = address.match(addressRegex);
+  const match = addressRegex.match(address);
 
   if (match) {
     const maskedAddress =
