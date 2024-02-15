@@ -54,7 +54,7 @@ class AuthControllerTest {
         AuthRequest authRequest = new AuthRequest("user@abc.com", "user");
         Tokens tokens = authService.login(authRequest.getEmail(), authRequest.getPassword());
         assertThat(tokens).isNotNull();
-        assertThat(redisTemplate.opsForValue().getAndDelete(tokens.getRefreshToken())).isNotNull();
+        assertThat(redisTemplate.delete(tokens.getRefreshToken())).isNotNull();
     }
 
     @Test

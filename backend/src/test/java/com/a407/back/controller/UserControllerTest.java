@@ -150,11 +150,11 @@ class UserControllerTest {
     void getNearUserLocationList() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 50, 127.5);
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 50.5, 127.5);
 
         // 집사를 할 사용자 생성
         UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
-            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 50, 127.5);
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 50.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
@@ -190,11 +190,11 @@ class UserControllerTest {
     void getNearUserInfoList() {
         // 사용자 생성
         UserCreateRequest user = new UserCreateRequest("user@abc.com", "user", "user",
-            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 55, 127.5);
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 55.5, 127.5);
 
         // 집사를 할 사용자 생성
         UserCreateRequest zipsaUser = new UserCreateRequest("zipsa@abc.com", "zipsa", "zipsa",
-            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 55, 127.5);
+            Date.valueOf(LocalDate.of(2024, 1, 1)), Gender.MAN, "서울시", 55.5, 127.5);
 
         Grade grade = new Grade("임시 등급", 10);
         em.persist(grade);
