@@ -37,7 +37,7 @@ function PasswordUpdate() {
   const navigate = useNavigate();
 
   const onClickUpdateButton = () => {
-    updateUserInfo(null, { password }).then(navigate('/userMyPage'));
+    updateUserInfo(null, { password }).then(navigate('/myPage'));
   };
 
   return (

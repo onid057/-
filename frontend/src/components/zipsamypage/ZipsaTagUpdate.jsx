@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useEffect, useReducer } from 'react';
+import { useState, useReducer } from 'react';
 import Image from '../common/Image';
 
 const Title = styled.div`

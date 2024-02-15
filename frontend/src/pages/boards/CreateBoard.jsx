@@ -109,6 +109,7 @@ function CreateBoard() {
         onPrevious={onPrevious}
         rightContent="등록"
         onNext={onNext}
+        disabledOnNext={!title || !content || tagList.length === 0}
       ></NavigationBar>
 
       <Paragraph

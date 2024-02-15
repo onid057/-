@@ -41,13 +41,12 @@ const createAssociationCode = async () => {
 };
 
 // 대표에게 받은 연동 코드로 연동하기
-const associateWithCode = async (userId, code) => {
+const associateWithCode = async code => {
   try {
     const response = await axios({
       method: 'post',
       url: '/associations/participate',
       data: {
-        userId,
         code,
       },
     });

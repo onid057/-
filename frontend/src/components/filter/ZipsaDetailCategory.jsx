@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import HorizontalLine from '../common/HorizontalLine';
-import { useEffect, useState } from 'react';
 
 const Wrapper = styled.div`
   cursor: pointer;
