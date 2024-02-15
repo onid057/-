@@ -34,6 +34,10 @@ const UserWrapper = styled.div`
   box-shadow: ${props =>
     props.$isSelected ? '0 0 0 1px #629af9 inset' : 'none'};
 `;
+const TextWrapper = styled.div`
+  margin: 0 auto;
+  color: #d9d9d9;
+`;
 
 function Connection({ onPrevious, onNext, matchUserId }) {
   const [associatedUserList, setAssociatedUserList] = useState();
@@ -42,7 +46,10 @@ function Connection({ onPrevious, onNext, matchUserId }) {
   console.log(userId);
 
   useEffect(() => {
-    getAssociatedUserList().then(response => setAssociatedUserList(response));
+    getAssociatedUserList().then(response => {
+      if (response.length === 0) setUserId(-1);
+      else setAssociatedUserList(response);
+    });
   }, []);
 
   return (
@@ -73,37 +80,43 @@ function Connection({ onPrevious, onNext, matchUserId }) {
 
       <ProgressBar value={89}></ProgressBar>
 
-      {associatedUserList?.map((user, index) => {
-        return (
-          <UserWrapper
-            key={index}
-            onClick={() => {
-              if (user.isRepresentative) {
-                if (userId === -1) setUserId(null);
-                else setUserId(-1);
-              } else {
-                if (userId === user.id) setUserId(null);
-                else setUserId(user.id);
+      {associatedUserList.length === 0 ? (
+        <TextWrapper>연동된 멤버가 없습니다.</TextWrapper>
+      ) : (
+        associatedUserList?.map((user, index) => {
+          return (
+            <UserWrapper
+              key={index}
+              onClick={() => {
+                if (user.isRepresentative) {
+                  if (userId === -1) setUserId(null);
+                  else setUserId(-1);
+                } else {
+                  if (userId === user.id) setUserId(null);
+                  else setUserId(user.id);
+                }
+              }}
+              $isSelected={
+                user.isRepresentative
+                  ? userId === -1 && true
+                  : userId === user.id
               }
-            }}
-            $isSelected={
-              user.isRepresentative ? userId === -1 && true : userId === user.id
-            }
-          >
-            <Image
-              src={
-                user.profileImage ||
-                `${process.env.PUBLIC_URL}/images/profile_img.svg`
-              }
-              width={'69px'}
-              height={'69px'}
-            ></Image>
-            {user.isRepresentative
-              ? `${user.name} (${'나, 대표'})`
-              : `${user.name} (멤버)`}
-          </UserWrapper>
-        );
-      })}
+            >
+              <Image
+                src={
+                  user.profileImage ||
+                  `${process.env.PUBLIC_URL}/images/profile_img.svg`
+                }
+                width={'69px'}
+                height={'69px'}
+              ></Image>
+              {user.isRepresentative
+                ? `${user.name} (${'나, 대표'})`
+                : `${user.name} (멤버)`}
+            </UserWrapper>
+          );
+        })
+      )}
     </Wrapper>
   );
 }
