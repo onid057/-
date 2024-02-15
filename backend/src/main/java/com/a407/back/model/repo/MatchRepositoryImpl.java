@@ -71,10 +71,6 @@ public class MatchRepositoryImpl implements MatchRepository {
         try {
             int ageInt = Integer.parseInt(age);
 
-            // 예: 40대 미만인 경우 50년 전
-//            Date lowerBound = Date.valueOf(
-//                LocalDate.now().minusYears(ageInt + 10L));
-            // 예: 40대 이상인 경우 40년 전
             Date bound = Date.valueOf(LocalDate.now().minusYears(40));
 
             if (ageInt >= 40) {
