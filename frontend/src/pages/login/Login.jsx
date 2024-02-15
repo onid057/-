@@ -68,7 +68,7 @@ function Login() {
         width="288px"
         margin="30px 0 0 0"
         labelText="이메일"
-        placeholder="hanzipsa@naver.com"
+        placeholder="hanzipsa@ssafy.com"
         onChange={event => {
           setEmail(event.target.value);
         }}

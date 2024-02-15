@@ -69,7 +69,7 @@ function Email({ onPrevious, onNext, userEmail }) {
           width="200px"
           margin="10px 0 0 0"
           commentText="이메일 형식에 맞춰 입력해주세요."
-          placeholder="hanzipsa@naver.com"
+          placeholder="hanzipsa@ssafy.com"
           onChange={event => {
             if (isValid) setIsValid(false);
             setEmail(event.target.value);

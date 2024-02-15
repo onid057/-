@@ -41,7 +41,7 @@ function ConnectCodeShow() {
   useEffect(() => {
     confirmIsLeader().then(response => {
       console.log(response);
-      if (response.data) isLeader(true);
+      if (response.data) setIsLeader(true);
     });
   }, []);
 
