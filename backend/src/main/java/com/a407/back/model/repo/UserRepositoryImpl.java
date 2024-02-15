@@ -60,7 +60,7 @@ public class UserRepositoryImpl implements UserRepository {
             .where(qNotification.receiveId.eq(userId).and(qNotification.isRead.eq(false)))
             .execute();
         return query.selectFrom(qNotification).where(
-                qNotification.receiveId.eq(userId).and(qNotification.type.eq(Type.valueOf(type))).and(qNotification.status.in(
+                qNotification.receiveId.eq(userId).and(qNotification.type.in(Arrays.asList(Type.valueOf(type), Type.ASSOCIATION))).and(qNotification.status.in(
                     Arrays.asList(
                     Status.STANDBY, Status.CONFIRM))))
             .orderBy(qNotification.createdAt.desc()).fetch();
