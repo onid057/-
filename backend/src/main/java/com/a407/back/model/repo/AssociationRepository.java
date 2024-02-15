@@ -26,4 +26,6 @@ public interface AssociationRepository {
     Long findAssociationRepresentative(Long associationId);
 
     Association getAssociationRepresentative(Long associationId);
+
+    Association findAssociationByAssociationId(Long associationId);
 }

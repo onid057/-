@@ -72,7 +72,7 @@ public class Notification {
     }
 
     public enum Type {
-        USER, ZIPSA
+        USER, ZIPSA, ASSOCIATION
     }
 
     public enum Status {

@@ -93,5 +93,10 @@ public class AssociationRepositoryImpl implements AssociationRepository {
         return em.find(Association.class, associationId);
     }
 
+    @Override
+    public Association findAssociationByAssociationId(Long associationId) {
+        return em.find(Association.class, associationId);
+    }
+
 
 }

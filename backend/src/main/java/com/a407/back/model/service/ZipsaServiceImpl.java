@@ -3,6 +3,7 @@ package com.a407.back.model.service;
 import com.a407.back.config.ImageConfig;
 import com.a407.back.config.constants.ErrorCode;
 import com.a407.back.config.redis.RedisPublisher;
+import com.a407.back.domain.Association;
 import com.a407.back.domain.Grade;
 import com.a407.back.domain.Notification;
 import com.a407.back.domain.Notification.Status;
@@ -10,6 +11,7 @@ import com.a407.back.domain.Notification.Type;
 import com.a407.back.domain.Report;
 import com.a407.back.domain.Review;
 import com.a407.back.domain.Room;
+import com.a407.back.domain.User;
 import com.a407.back.domain.Zipsa;
 import com.a407.back.domain.ZipsaCategory;
 import com.a407.back.domain.ZipsaCategoryId;
@@ -28,6 +30,7 @@ import com.a407.back.dto.zipsa.ZipsaReservationInfoResponse;
 import com.a407.back.dto.zipsa.ZipsaReviewResponse;
 import com.a407.back.dto.zipsa.ZipsaStatusResponse;
 import com.a407.back.exception.CustomException;
+import com.a407.back.model.repo.AssociationRepository;
 import com.a407.back.model.repo.GradeRepository;
 import com.a407.back.model.repo.NotificationRepository;
 import com.a407.back.model.repo.RoomRepository;
@@ -39,8 +42,10 @@ import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,6 +66,8 @@ public class ZipsaServiceImpl implements ZipsaService {
     private final UserRepository userRepository;
 
     private final GradeRepository gradeRepository;
+
+    private final AssociationRepository associationRepository;
 
     @Value("${image.size.report}")
     private Integer repostSize;
@@ -247,6 +254,22 @@ public class ZipsaServiceImpl implements ZipsaService {
         Zipsa zipsa = zipsaRepository.findByZipsaId(room.getUserId().getUserId());
         if (zipsa == null || !zipsa.getIsWorked()) {
             redisPublisher.send(room.getUserId().getUserId());
+        }
+
+        User user = userRepository.findByUserId(room.getUserId().getUserId());
+        if(Boolean.TRUE.equals(user.getIsAffiliated())) {
+            Association association = associationRepository.findAssociationByAssociationId(user.getAssociationId().getAssociationId());
+            if(!Objects.equals(association.getUserId(), user.getUserId())) {
+                Notification associationNotification = Notification.builder().roomId(room)
+                    .sendId(room.getZipsaId().getZipsaId().getUserId())
+                    .receiveId(association.getUserId()).status(Status.CONFIRM)
+                    .type(Type.ASSOCIATION)
+                    .isRead(false).createdAt(
+                        Timestamp.valueOf(LocalDateTime.now())).build();
+                notificationRepository.makeNotification(associationNotification);
+                redisPublisher.send(association.getUserId());
+            }
+
         }
     }
 
