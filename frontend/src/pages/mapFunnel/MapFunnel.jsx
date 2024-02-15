@@ -133,7 +133,7 @@ function MapFunnel() {
                 ),
               ).toJSON(),
               nextMapData.matchPayment,
-              nextMapData.zipsaId,
+              [nextMapData.zipsaId],
             ).then(response => {
               navigate('/startMatch');
             });
