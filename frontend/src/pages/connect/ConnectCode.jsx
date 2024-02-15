@@ -88,7 +88,6 @@ function ConnectCode() {
               associateWithCode(5, inputValue)
                 .then(response => {
                   if (response.status === 201) alert('연동 성공!');
-                  console.log(response);
                 })
                 .catch(() => alert('연동 코드 틀림!'));
               navigate('/myPage');

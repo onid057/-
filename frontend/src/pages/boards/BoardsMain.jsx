@@ -119,7 +119,6 @@ function BoardsMain() {
 
   useEffect(() => {
     getAllArticles(page, size, tagListArray.join(',')).then(response => {
-      console.log(response);
       setList(response.data.boardList);
     });
   }, [isSelected]);

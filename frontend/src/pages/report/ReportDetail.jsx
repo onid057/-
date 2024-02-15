@@ -47,7 +47,6 @@ function ReportDetail() {
 
   useEffect(() => {
     getReportData(roomId).then(response => {
-      console.log(response);
       setReportInfos(response.data);
     });
   }, []);

@@ -48,7 +48,6 @@ function ZipsaActivityHistory() {
   const [activity, setActivity] = useState();
   useEffect(() => {
     getZipsaRecords().then(response => {
-      console.log(response);
       setActivity(response.data);
     });
   }, []);

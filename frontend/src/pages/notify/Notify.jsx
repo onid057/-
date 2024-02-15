@@ -42,7 +42,6 @@ function Notify() {
 
   useEffect(() => {
     getMatchNotificationList().then(response => {
-      console.log(response);
       setList(response.data);
     });
   }, []);
@@ -85,9 +84,7 @@ function Notify() {
                   majorCategory={notice.majorCategory}
                   createdAt={calculateRemainDate(notice.createdAt)}
                   onClick={async () => {
-                    await deleteNotification(notice.notificationId).then(
-                      response => console.log(response),
-                    );
+                    await deleteNotification(notice.notificationId);
                     notice.status === 'CONFIRM'
                       ? navigate(`/reportDetail/${notice.roomId}`)
                       : notice.type === 'ZIPSA'

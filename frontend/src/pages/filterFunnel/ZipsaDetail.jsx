@@ -54,12 +54,10 @@ function ZipsaDetail() {
 
   useEffect(() => {
     getDetailZipsaInfo(helperId).then(response => {
-      console.log(response.data);
       setData(response.data);
     });
 
     getReviewZipsaInfo(helperId).then(response => {
-      console.log(response.data);
       setReviews(response.data);
     });
   }, []);

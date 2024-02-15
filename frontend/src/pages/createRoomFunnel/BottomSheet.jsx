@@ -95,7 +95,6 @@ const BottomSheet = forwardRef(
       if (roomId) {
         getZipsaListFromDetailInfo(roomId).then(response => {
           setZipsaList(response);
-          console.log(response);
         });
       }
     }, [targetCluster, roomId]);

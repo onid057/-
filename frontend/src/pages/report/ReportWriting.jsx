@@ -67,7 +67,6 @@ function ReportWriting() {
   const onClickButton = () => {
     if (imageFile && content) {
       sendReportData(imageFile, roomId, content).then(response => {
-        console.log(response);
         navigate('/reportComplete');
       });
     }

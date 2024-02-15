@@ -84,7 +84,6 @@ function ReserveDetail() {
 
   useEffect(() => {
     getReservationDetailInfoByUser(roomId).then(response => {
-      console.log(response);
       setReservationInfo(response);
     });
   }, [roomId]);

@@ -89,9 +89,7 @@ function SimpleReserve({
               <Button
                 mode="THIN_BLUE"
                 onClick={async () => {
-                  await startTask(roomId).then(response =>
-                    console.log(response),
-                  );
+                  await startTask(roomId);
                   navigate(`/report/${roomId}`);
                 }}
               >
@@ -100,7 +98,7 @@ function SimpleReserve({
               <Button
                 mode="THIN_WHITE"
                 onClick={async () => {
-                  await endTask(roomId).then(response => console.log(response));
+                  await endTask(roomId);
                   navigate(`/report/${roomId}`);
                 }}
               >

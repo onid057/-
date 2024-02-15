@@ -4,7 +4,6 @@ import axios from 'axios';
 // axios 인스턴스 생성
 // baseURL은 서버의 기본 URL
 const instance = axios.create({
-  // baseURL: 'http://localhost:8080',
   baseURL: 'https://i10a407.p.ssafy.io/api',
   withCredentials: true,
 });

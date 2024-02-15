@@ -107,7 +107,6 @@ export default function Home() {
         setUserState('USER');
       });
       getFirstReservation().then(response => {
-        console.log(response);
         setReserveInfo(response.data);
         setDiffTime(
           new Date(reserveInfo?.expectationStartedAt).getTime() -
@@ -120,21 +119,13 @@ export default function Home() {
   useEffect(() => {
     if (isLoggedIn) {
       eventSourceRef.current = new EventSource(
-        // 'http://localhost:8080' + `/sse`,
         'https://i10a407.p.ssafy.io/api' + `/sse`,
         {
           withCredentials: true,
         },
       );
 
-      eventSourceRef.current.onopen = () => {
-        console.log('Server와 연결');
-      };
-      eventSourceRef.current.onerror = error => {
-        console.log(error);
-      };
       eventSourceRef.current.addEventListener('notification', event => {
-        console.log(event.data);
         setIsVisibleRound(true);
       });
     }
@@ -142,7 +133,6 @@ export default function Home() {
     return () => {
       if (isLoggedIn) {
         eventSourceRef.current.close();
-        console.log('Server와 연결 해제');
       }
     };
   }, []);
@@ -417,7 +407,6 @@ export default function Home() {
             mode="THIN_WHITE"
             onClick={() => {
               doLogOut().then(response => {
-                console.log(response);
                 window.localStorage.removeItem('user-storage');
               });
               setUserState('');

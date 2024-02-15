@@ -18,12 +18,9 @@ function RegisterFunnel() {
 
   const navigate = useNavigate();
 
-  console.log(registerData);
-
   useEffect(() => {
     const asyncFunction = async data => {
       const latlng = await getLngLatFromAddress(data);
-      console.log(latlng);
       setLocation(latlng);
     };
     if (registerData.userAddress) asyncFunction(registerData.userAddress);

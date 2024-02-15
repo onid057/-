@@ -15,8 +15,6 @@ function MapFunnel() {
   const [Funnel, setStep] = useFunnel('MAP');
   const navigate = useNavigate();
 
-  console.log(mapData);
-
   return (
     <Funnel>
       <Funnel.Step name="MAP">
@@ -136,14 +134,9 @@ function MapFunnel() {
               ).toJSON(),
               nextMapData.matchPayment,
               nextMapData.zipsaId,
-            )
-              .then(response => {
-                console.log(response);
-                navigate('/startMatch');
-              })
-              .catch(err => {
-                console.log(err);
-              });
+            ).then(response => {
+              navigate('/startMatch');
+            });
           }}
           matchPayment={mapData.matchPayment}
           matchServiceTime={mapData.matchEndTime - mapData.matchStartTime}

@@ -15,16 +15,12 @@ function ZipsaDetailRoute({ helperId, component }) {
 
   useEffect(() => {
     getDetailZipsaInfo(helperId).then(response => {
-      // console.log('(세부)집사 정보 조회 API 성공');
-      // console.log('세부 정보 :', response.data);
       setData(response.data);
       setPreferTagList(response.data.preferTag.split('#'));
       setSubCategory(response.data.subCategory);
     });
 
     getReviewZipsaInfo(helperId).then(response => {
-      // console.log('(리뷰)집사 정보 조회 API 성공');
-      // console.log('리뷰 :', response.data);
       setReviews(response.data);
     });
   }, []);

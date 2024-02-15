@@ -55,7 +55,6 @@ function SuggestByUser() {
 
   useEffect(() => {
     getMatchNotificationByUser(notificationId).then(response => {
-      console.log(response);
       setDetail(response.data);
     });
   }, []);
@@ -99,9 +98,7 @@ function SuggestByUser() {
           <Button
             mode={'THICK_BLUE'}
             onClick={async () => {
-              await allowSuggestionByUser(notificationId).then(response =>
-                console.log(response),
-              );
+              await allowSuggestionByUser(notificationId);
               navigate('/notify');
             }}
           >
@@ -110,9 +107,7 @@ function SuggestByUser() {
           <Button
             mode={'THICK_GRAY'}
             onClick={async () => {
-              await rejectSuggestionByUser(notificationId).then(response =>
-                console.log(response),
-              );
+              await rejectSuggestionByUser(notificationId);
               navigate('/notify');
             }}
           >

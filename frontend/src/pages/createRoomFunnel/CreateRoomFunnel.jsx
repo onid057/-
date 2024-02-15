@@ -118,14 +118,9 @@ function CreateRoomFunnel() {
                 ),
               ).toJSON(),
               roomData.matchPayment,
-            )
-              .then(response => {
-                console.log(response);
-                navigate('/rooms/complete');
-              })
-              .catch(err => {
-                console.log(err);
-              });
+            ).then(response => {
+              navigate('/rooms/complete');
+            });
           }}
           matchPayment={filterData.matchPayment}
           matchServiceTime={filterData.matchEndTime - filterData.matchStartTime}

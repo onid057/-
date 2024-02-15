@@ -57,16 +57,10 @@ function Review({
   const avgScore = number.toFixed(2);
 
   // Date 계산 부분
-  console.log(createdAt);
-  console.log(typeof createdAt);
+
   const year = createdAt.substr(0, 4);
-  console.log(year);
-
   const month = createdAt.substr(5, 2);
-  console.log(month);
-
   const day = createdAt.substr(8, 2);
-  console.log(day);
 
   return (
     <Wrapper>

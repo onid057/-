@@ -79,7 +79,6 @@ function ProfileUpdate() {
 
   useEffect(() => {
     getDetailZipsaInfo(0).then(response => {
-      console.log(response);
       setZipsaData(response.data);
       setPreferTags(response.data.preferTag.split('#'));
       setDetail(response.data.description);
@@ -101,9 +100,7 @@ function ProfileUpdate() {
         rightContent={'완료'}
         onPrevious={onPrevious}
         onNext={async () => {
-          await updateZipsaInfo(detail, preferTags.join('#')).then(response => {
-            console.log(response);
-          });
+          await updateZipsaInfo(detail, preferTags.join('#'));
           navigate('/myPage');
         }}
       ></NavigationBar>

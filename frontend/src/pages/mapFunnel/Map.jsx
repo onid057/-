@@ -50,12 +50,10 @@ function Map({ onPrevious, onNext }) {
   // 중심 좌표 기준으로 2km 이내의 집사들의 lat, lng 값을 받아옴
   useEffect(() => {
     getMyLocation().then(response => {
-      console.log(response);
       setMyPosition(response.data);
     });
 
     getZipsaPositionWithinTwoKilos().then(response => {
-      console.log(response);
       setPositions(response);
     });
   }, []);

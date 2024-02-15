@@ -114,7 +114,6 @@ function BoardsDetail() {
 
   useEffect(() => {
     getOneArticle(boardId).then(response => {
-      console.log(response);
       setData(response.data);
       setCommentLength(response.data.commentList.length);
     });

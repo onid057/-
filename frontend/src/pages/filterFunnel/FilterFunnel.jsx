@@ -24,8 +24,6 @@ function FilterFunnel() {
   const [Funnel, setStep] = useFunnel('MAIN_CATEGORY');
   const navigate = useNavigate();
 
-  console.log(filterData);
-
   return (
     <Funnel>
       <Funnel.Step name="MAIN_CATEGORY">
@@ -77,7 +75,6 @@ function FilterFunnel() {
               nextFilterData.gradeCondition,
               nextFilterData.scoreCondition,
             ).then(response => {
-              console.log(response);
               setZipsaData(response.data);
             });
           }}
@@ -203,9 +200,7 @@ function FilterFunnel() {
               ).toJSON(),
               zipsaData[0].gradeSalary,
               filterData.zipsaId,
-            ).then(response => {
-              console.log(response);
-            });
+            );
             navigate('/startMatch');
           }}
           matchDetail={filterData.matchDetail}

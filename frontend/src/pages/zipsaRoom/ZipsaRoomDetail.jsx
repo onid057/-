@@ -84,7 +84,7 @@ function ZipsaRoomDetail() {
   };
 
   const onButtonClick = () => {
-    applyForRoom(roomId).then(response => console.log(response));
+    applyForRoom(roomId);
   };
 
   return (

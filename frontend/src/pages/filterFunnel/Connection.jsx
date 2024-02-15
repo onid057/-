@@ -42,9 +42,6 @@ const TextWrapper = styled.div`
 function Connection({ onPrevious, onNext, matchUserId }) {
   const [associatedUserList, setAssociatedUserList] = useState();
   const [userId, setUserId] = useState(matchUserId);
-
-  console.log(userId);
-
   useEffect(() => {
     getAssociatedUserList().then(response => {
       if (response.length) setAssociatedUserList(response);

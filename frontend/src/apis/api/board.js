@@ -3,8 +3,6 @@ import axios from '../utils/instance';
 // 게시판 리스트 조회
 const getAllArticles = async (page, size, tagList) => {
   try {
-    const isTagListExist = !!tagList;
-
     const response = await axios({
       method: 'get',
       url: `/boards?page=${page}&size=${size}&tagList=${tagList}`,

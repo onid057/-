@@ -57,14 +57,12 @@ function ZipsaTagUpdate({ preferTags, setPreferTags }) {
 
   // input mode인지 아닌지를 판단할 변수
   const [checkInputMode, setIsInputMode] = useState(checkMode);
-  // console.log(checkInputMode);
 
   // isInputMode 변수의 값을 변경(토글)하는 함수
   const changeMode = idx => {
     setIsInputMode(array =>
       [...array].map((element, index) => index === idx && !element),
     );
-    // console.log(`${idx}번째 태그 모드 ${[checkMode[idx]]}로 바뀜`);
   };
 
   // 입력한 값 추적 위한 reducer 함수 정의
@@ -78,23 +76,7 @@ function ZipsaTagUpdate({ preferTags, setPreferTags }) {
   // 이벤트와 태그 값을 인자로 받아 해당 태그의 상태를 업데이트
   const changeTextValue = (e, tag) => {
     dispatch({ tag, text: e.target.value });
-
-    // let updatedPreferTags = [...preferTags];
-
-    // 변경된 태그 값을 updatedPreferTags에 할당하기 ★★★★ 여기 하고있음...
-    //   const updatedPreferTags = [...preferTags].map((element, index) =>
-    //     index === idx ? e.target.value : element,
-    //   );
-    //   console.log(updatedPreferTags);
-    // };
   };
-
-  // const updateTagList = idx => {
-  //   let updatedPreferTags = [...preferTags].map((element, index) =>
-  //     index === idx ? e.target.value : element,
-  //   );
-  //   setPreferTags(updatedPreferTags.join('#'));
-  // };
 
   return (
     <>

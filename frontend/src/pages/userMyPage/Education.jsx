@@ -85,7 +85,7 @@ function Education() {
   const onSignChange = e => setSign(e.target.value);
 
   const onButtonClick = async () => {
-    await applyZipsaRequest().then(response => console.log(response));
+    await applyZipsaRequest();
     navigate('/insertZipsaInfo');
   };
   const navigate = useNavigate();
