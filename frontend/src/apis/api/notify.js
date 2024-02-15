@@ -65,10 +65,24 @@ const allowSuggestionByUser = async notificationId => {
   }
 };
 
+// 알림을 확인하고 나서 알림창에서 삭제
+const deleteNotification = async notificationId => {
+  try {
+    const response = await axios({
+      method: 'delete',
+      url: `/notifications/${notificationId}`,
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   getMatchNotificationList,
   getMatchNotificationByZipsa,
   getMatchNotificationByUser,
   rejectSuggestionByUser,
   allowSuggestionByUser,
+  deleteNotification,
 };

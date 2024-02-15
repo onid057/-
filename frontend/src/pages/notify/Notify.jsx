@@ -8,8 +8,10 @@ import Image from '../../components/common/Image';
 
 import { useState, useEffect, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useUserInfo } from '../../hooks/useUserInfo';
-import { getMatchNotificationList } from '../../apis/api/notify';
+import {
+  getMatchNotificationList,
+  deleteNotification,
+} from '../../apis/api/notify';
 import { calculateRemainDate } from '../../utils/time';
 
 const Wrapper = styled.div`
@@ -25,7 +27,6 @@ const Wrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
-
 const SimpleNoticesWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -34,7 +35,6 @@ const SimpleNoticesWrapper = styled.div`
 function Notify() {
   const navigate = useNavigate();
   const [list, setList] = useState([]);
-  // const userInfo = useUserInfo(state => state.userInfo);
 
   useEffect(() => {
     getMatchNotificationList().then(response => {
@@ -77,13 +77,16 @@ function Notify() {
                 name={notice.name}
                 majorCategory={notice.majorCategory}
                 createdAt={calculateRemainDate(notice.createdAt)}
-                onClick={() =>
+                onClick={async () => {
+                  await deleteNotification(notice.notificationId).then(
+                    response => console.log(response),
+                  );
                   notice.status === 'CONFIRM'
                     ? navigate(`/reportDetail/${notice.roomId}`)
                     : notice.type === 'ZIPSA'
                       ? navigate(`/suggest-by-user/${notice.notificationId}`)
-                      : navigate(`/rooms/detail/${notice.roomId}`)
-                }
+                      : navigate(`/rooms/detail/${notice.roomId}`);
+                }}
               ></SimpleNotice>
 
               <HorizontalLine height={'2px'}></HorizontalLine>
