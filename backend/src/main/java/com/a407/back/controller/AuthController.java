@@ -44,7 +44,7 @@ public class AuthController {
         CookieUtil.saveCookie(tokens.getAccessToken(), tokens.getRefreshToken(), response,
             cookieMaxAge);
         return ResponseEntity.status(HttpStatus.OK).headers(headers)
-            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "로그인 성공"));
+            .body(new ApiResponse<>(SuccessCode.SELECT_SUCCESS, "로그인이 성공하였습니다."));
     }
 
     @PostMapping("/sign-out")
@@ -56,7 +56,7 @@ public class AuthController {
         }
         CookieUtil.saveCookie("accessToken", "refreshToken", response, 0);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "로그아웃 성공"));
+            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "로그아웃이 성공하였습니다."));
     }
 
 }

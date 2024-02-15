@@ -97,7 +97,7 @@ public class NotificationServiceImpl implements NotificationService {
         int newNotificationCount = roomRepository.changeNotificationCountDecrease(
             room.getNotificationCount(), notification.getRoomId().getRoomId());
 
-        // 만약 알림 숫자를 줄였을 때 0이 된다면 방 broken으로 바꿈
+        // 만약 알림 숫자를 줄였을 때 0이 된다면 BROKEN으로 방 상태 변경
         if (newNotificationCount == 0) {
             roomRepository.changeRoomStatus(notification.getRoomId().getRoomId(), "BROKEN");
         }
@@ -112,13 +112,13 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public void changeRoomToMatch(Long notificationId) {
         Notification notification = notificationRepository.findByNotificationId(notificationId);
-        // 수락한 알림은 accept
+        // 수락한 알림은 ACCEPT
         notificationRepository.changeNotificationStatusAcceptOrReject(
             notificationId, "ACCEPT");
-        // 다른 알림들이 있다면 close
+        // 다른 알림들이 있다면 CLOSE
         Room room = roomRepository.findByRoomId(notification.getRoomId().getRoomId());
         notificationRepository.changeNotificationStatusClose(room);
-        // 후에 방 상태 변경
+        // CLOSE 변경 후 방 상태 변경
         roomRepository.changeRoomStatus(notification.getRoomId().getRoomId(), "BEFORE");
         // 집사 아이디 입력
         Zipsa zipsa = zipsaRepository.findByZipsaId(notification.getReceiveId());

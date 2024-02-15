@@ -92,30 +92,30 @@ public class AssociationServiceImpl implements AssociationService {
     public AssociationAdditionCodeResponse makeAdditionCode(Long userId, String email,
         Long associationId) throws JsonProcessingException, NoSuchAlgorithmException {
 
-        // 현재 사용자가 대표인지 여부를 확인 해야한다
+        // 현재 사용자가 대표인지 여부 확인
         if (!Objects.equals(associationId, associationRepository.findAssociation(userId))) {
             throw new CustomException(ErrorCode.BAD_REQUEST_ERROR);
         }
 
         String code = associationRepository.findAdditionCode(email);
-        // 이미 코드가 존재를 한다면 반환을 하고 종료
+        // 이미 코드가 존재한다면 종료
         if (code != null) {
-            // 코드가 존재 한다면 남은 시간을 조회하도록 하자
+            // 코드가 존재한다면 남은 시간 조회
             return new AssociationAdditionCodeResponse(code,
                 associationRepository.findTtl(code).intValue());
         }
 
         int newCode = SecureRandom.getInstanceStrong()
             .nextInt(CODE_START, CODE_END);
-        // 이제 생성한 코드가 중복이 되는지를 체크하고 아닐때 까지 반복을 시켜야 한다
+        // 이제 생성한 코드가 중복 체크 및 중복이 아닐 때까지 반복
         while (associationRepository.findAssociationId(String.valueOf(newCode)) != null) {
             newCode = SecureRandom.getInstanceStrong()
                 .nextInt(CODE_START, CODE_END);
         }
-        // 이제 코드와 연동 계정의 번호를 저장
+        // 이제 코드와 연동 계정의 번호 저장
         associationRepository.saveAssociationId(String.valueOf(newCode),
             String.valueOf(associationId));
-        // 그리고 대표의 이메일과 코드를 저장
+        // 그리고 대표의 이메일과 코드 저장
         associationRepository.saveCode(email, String.valueOf(newCode));
         return new AssociationAdditionCodeResponse(String.valueOf(newCode),
             CODE_TIME);
@@ -144,7 +144,7 @@ public class AssociationServiceImpl implements AssociationService {
         User representative = userRepository.findByUserId(representativeId);
         User user = userRepository.findByUserId(userId);
 
-        // 대표인지를 확인 하고 사용자 번호가 같은 연동 계정인지
+        // 대표 확인 및 사용자 번호가 같은 연동 계정인지 확인
         Long associationId = associationRepository.findAssociation(representativeId);
         if (associationId == null || !Objects.equals(
             representative.getAssociationId().getAssociationId(),

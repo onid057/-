@@ -22,4 +22,5 @@ public class ZipsaCategory {
     public ZipsaCategory(ZipsaCategoryId zipsaCategoryId) {
         this.zipsaCategoryId = zipsaCategoryId;
     }
+
 }

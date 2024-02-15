@@ -43,7 +43,7 @@ public class AssociationController {
         @AuthenticationPrincipal SecurityUser user) {
         associationService.makeAssociation(user.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "연동 계정 생성 성공"));
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "연동 계정 생성을 성공하였습니다."));
     }
 
     @DeleteMapping
@@ -51,7 +51,7 @@ public class AssociationController {
         @AuthenticationPrincipal SecurityUser user) {
         associationService.deleteAssociation(user.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "연동 계정 삭제 성공"));
+            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "연동 계정 삭제가 성공하였습니다."));
     }
 
     @PostMapping("/addition")
@@ -70,7 +70,7 @@ public class AssociationController {
         @RequestBody AssociationChangeRequest request) {
         associationService.changeAssociation(user.getUserId(), request.getCode());
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "연동 계정 참가 성공"));
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "연동 계정 참가가 성공하였습니다."));
     }
 
     @GetMapping("/representative")
@@ -88,7 +88,7 @@ public class AssociationController {
         associationService.changeAssociationRepresentative(user.getUserId(),
             request.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "연동 계정 대표 변경 성공"));
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "연동 계정 대표 변경이 성공하였습니다."));
     }
 
 }

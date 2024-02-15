@@ -14,10 +14,10 @@ public class MakePublicRoomRequest {
     private String title;
     private String content;
     private String place;
-    private int estimateDuration;
+    private Integer estimateDuration;
     private Timestamp roomCreatedAt;
     private Timestamp expectationStartedAt;
     private Timestamp expectationEndedAt;
-    private int expectationPay;
+    private Integer expectationPay;
 
 }

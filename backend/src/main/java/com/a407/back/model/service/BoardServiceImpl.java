@@ -78,9 +78,9 @@ public class BoardServiceImpl implements BoardService {
             Timestamp.valueOf(LocalDateTime.now()));
         boardRepository.changeBoard(boardChangeDto);
 
-        // 해당 게시판의 태그 목록을 가져오기
+        // 해당 게시판의 태그 목록
         List<BoardTag> boardTagList = boardRepository.findBoardTagList(board);
-        // 태그 아이디만을 뽑아서 리스트로 만들기
+        // 태그 아이디만을 뽑아서 리스트화
         Map<Long, Integer> tagIdMap = new HashMap<>();
         for (BoardTag boardTag : boardTagList) {
             tagIdMap.put(boardTag.getBoardTagId().tagId.getTagId(), 1);

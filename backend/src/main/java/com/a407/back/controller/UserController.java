@@ -78,7 +78,7 @@ public class UserController {
         @RequestPart(name = "request") UserChangeRequest userChangeRequest) throws IOException {
         userService.changeUserInfo(user.getUserId(), userChangeRequest, image);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 정보 수정 성공"));
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "사용자 정보 수정이 성공되었습니다."));
     }
 
     @DeleteMapping
@@ -86,7 +86,7 @@ public class UserController {
         @AuthenticationPrincipal SecurityUser user) {
         userService.deleteUser(user.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "회원 정보 삭제 성공"));
+            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "회원 정보 삭제가 완료되었습니다."));
     }
 
     // 알림 목록
@@ -186,7 +186,7 @@ public class UserController {
         @RequestBody UserComplainRequest userComplainRequest) {
         userService.makeComplain(userComplainRequest);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "신고 성공"));
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "신고가 완료되었습니다."));
     }
 
 
@@ -195,7 +195,7 @@ public class UserController {
         @AuthenticationPrincipal SecurityUser user) {
         userService.changeUserCertificated(user.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "서약 결과 저장 성공"));
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "서약 결과가 저장되었습니다."));
     }
 
     @DeleteMapping("/payments")
@@ -203,7 +203,7 @@ public class UserController {
         @AuthenticationPrincipal SecurityUser user) {
         userService.deleteAccount(user.getUserId());
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "결제 정보 삭제"));
+            .body(new ApiResponse<>(SuccessCode.DELETE_SUCCESS, "결제 정보가 삭제되었습니다."));
     }
 
     @GetMapping("/records/{roomId}")
@@ -235,7 +235,7 @@ public class UserController {
         @RequestBody UserCertificationRequest request) throws JsonProcessingException {
         userService.makePhoneNumber(request.getCode(), user.getEmail());
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "전화 번호 저장 성공"));
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "전화 번호 저장이 성공하였습니다."));
     }
 
     @PostMapping("/certification/phone-number")
@@ -249,7 +249,7 @@ public class UserController {
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "문자 발송 성공"));
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "문자 발송이 성공하였습니다."));
     }
 
     @PostMapping("/certification/email")

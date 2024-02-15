@@ -126,7 +126,6 @@ public class UserServiceImpl implements UserService {
     public Long makeUser(UserCreateRequest request) {
         // 에러 처리
         if (userRepository.findByUserEmail(request.getEmail()) != null) {
-            logger.info("어떤 값이 등장하나{}", userRepository.findByUserEmail(request.getEmail()));
             throw new CustomException(ErrorCode.INVALID_PARAMETER);
         }
 
@@ -286,7 +285,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.makeAccount(user.getUserId(), userAccountRequest.getAccount());
 
-        return new UserAccountResponse("카드 등록 성공");
+        return new UserAccountResponse("카드 등록에 성공하였습니다.");
     }
 
     @Override

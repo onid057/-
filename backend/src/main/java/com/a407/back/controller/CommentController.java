@@ -40,7 +40,7 @@ public class CommentController {
         @RequestBody CommentChangeRequest commentChangeRequest) {
         commentService.changeComment(commentId, commentChangeRequest);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "댓글 수정 완료되었습니다."));
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "댓글 수정이 완료되었습니다."));
     }
 
     @DeleteMapping("/{commentId}")

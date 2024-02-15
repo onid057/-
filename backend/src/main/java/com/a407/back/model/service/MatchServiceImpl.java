@@ -88,10 +88,9 @@ public class MatchServiceImpl implements MatchService {
             user = userRepository.findByUserId(roomCreateRequest.getUserId());
         }
 
-        // SubCategory 가져오기
         SubCategory subCategory = categoryRepository.findBySubCategoryId(
             roomCreateRequest.getSubCategoryId());
-        // 알림 개수만큼 방 만들기
+        // 알림 개수만큼 방 생성
         int notificationCount = roomCreateRequest.getZipsaList().size();
         Room room = Room.builder().userId(user).subCategoryId(subCategory)
             .title(roomCreateRequest.getTitle())
@@ -105,7 +104,7 @@ public class MatchServiceImpl implements MatchService {
             .notificationCount(notificationCount).status(Process.CREATE).isComplained(false)
             .isPublic(false).isReviewed(false).isReported(false).build();
         Long newRoomId = roomRepository.makeRoom(room);
-        // 방 아이디 가지고 알림 보내기
+        // 방 아이디를 지닌 알림 전송
         for (Long id : roomCreateRequest.getZipsaList()) {
             Notification notification = Notification.builder().roomId(room)
                 .sendId(user.getUserId()).receiveId(id).type(

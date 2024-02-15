@@ -56,7 +56,7 @@ public class ZipsaController {
         @RequestBody ZipsaChangeRequest request) {
         zipsaService.changeZipsaInfo(user.getUserId(), request);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "집사 정보 수정 성공"));
+            .body(new ApiResponse<>(SuccessCode.UPDATE_SUCCESS, "집사 정보 수정이 완료되었습니다."));
     }
 
     @GetMapping("/{helperId}")
@@ -108,7 +108,7 @@ public class ZipsaController {
         zipsaService.makeReport(reportCreateRequest.getRoomId(), image,
             reportCreateRequest.getContent());
         return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "정기 보고 생성 성공"));
+            .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "정기 보고 생성이 완료되었습니다."));
     }
 
     @PostMapping("/participation")

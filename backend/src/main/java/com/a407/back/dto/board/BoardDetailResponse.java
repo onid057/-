@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class BoardDetailResponse {
+
     private String userName;
     private String address;
     private String profileImage;
@@ -20,4 +21,5 @@ public class BoardDetailResponse {
     private List<CommentListDto> commentList;
     private List<String> tagList;
     private Boolean boardDistinction;
+
 }

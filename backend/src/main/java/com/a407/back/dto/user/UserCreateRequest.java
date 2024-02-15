@@ -17,7 +17,7 @@ public class UserCreateRequest {
     private Date birth;
     private Gender gender;
     private String address;
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
 
 }
