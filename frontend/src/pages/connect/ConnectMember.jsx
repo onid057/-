@@ -34,6 +34,11 @@ const MemberWrapper = styled.div`
   font-size: 20px;
   font-weight: 400;
 `;
+const ImageWrapper = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+`;
 
 function ConnectCodeShow() {
   const [isLeader, setIsLeader] = useState(false);
@@ -76,15 +81,17 @@ function ConnectCodeShow() {
       {data?.map((user, index) => {
         return (
           <MemberWrapper key={index}>
-            <Image
-              width="60px"
-              height="60px"
-              margin="4px 0 0 0"
-              src={
-                user.profileImage ||
-                process.env.PUBLIC_URL + '/images/profile_img.svg'
-              }
-            ></Image>
+            <ImageWrapper>
+              <Image
+                width="60px"
+                height="60px"
+                margin="4px 0 0 0"
+                src={
+                  user.profileImage ||
+                  process.env.PUBLIC_URL + '/images/profile_img.svg'
+                }
+              ></Image>
+            </ImageWrapper>
             {user.isRepresentative
               ? `${user.name} (대표)`
               : `${user.name} (멤버)`}

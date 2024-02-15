@@ -39,6 +39,11 @@ const ContentWrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+const ImageWrapper = styled.div`
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+`;
 
 function UserMyPage() {
   const { data } = useQuery({
@@ -52,14 +57,16 @@ function UserMyPage() {
       <HeadWrapper>
         <Notice
           upper={[
-            <Image
-              src={
-                data?.profileImage ||
-                process.env.PUBLIC_URL + '/images/profile_img.svg'
-              }
-              width={'60px'}
-              height={'60px'}
-            ></Image>,
+            <ImageWrapper>
+              <Image
+                src={
+                  data?.profileImage ||
+                  process.env.PUBLIC_URL + '/images/profile_img.svg'
+                }
+                width={'60px'}
+                height={'60px'}
+              ></Image>
+            </ImageWrapper>,
             <Paragraph
               gap={'20px'}
               fontSize={'13px'}
