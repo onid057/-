@@ -5,7 +5,7 @@ import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import { useNavigate } from 'react-router-dom';
-import calculateRemainingTime from '../../apis/utils/calculateRemainingTime';
+import { calculateRemainDate } from '../../utils/time';
 import { getUserRoomList } from '../../apis/api/room';
 import MenuBar from '../../components/common/MenuBar';
 
@@ -136,7 +136,7 @@ function UserRoomList() {
             <BoldText fontSize={'16px'} boldContent={item.title} />
             <RoomInfoWrapper>
               <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
-              <>{calculateRemainingTime(item.roomCreatedAt)}</>
+              <>{calculateRemainDate(item.roomCreatedAt)}</>
             </RoomInfoWrapper>
           </RoomItemWrapper>
         ))}

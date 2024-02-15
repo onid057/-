@@ -1,9 +1,9 @@
 import { styled } from 'styled-components';
 
-import Image from '../components/common/Image';
-import Paragraph from '../components/common/Paragraph';
-import MenuBar from '../components/common/MenuBar';
-import BoldText from '../components/common/BoldText';
+import Image from '../../components/common/Image';
+import Paragraph from '../../components/common/Paragraph';
+import MenuBar from '../../components/common/MenuBar';
+import BoldText from '../../components/common/BoldText';
 
 const Wrapper = styled.div`
   width: 320px;

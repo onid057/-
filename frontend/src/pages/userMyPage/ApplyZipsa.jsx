@@ -93,7 +93,7 @@ function ApplyZipsa() {
 
   const infoContent = [
     {
-      url: `${process.env.PUBLIC_URL}/images/schedule.svg`,
+      url: `${process.env.PUBLIC_URL}/images/rocket.svg`,
       normalContent: ['내가 원할 때만', '일하는'],
       boldContent: ['자유로운 스케줄'],
     },

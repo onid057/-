@@ -7,7 +7,7 @@ import BoldText from '../../components/common/BoldText';
 import MenuBar from '../../components/common/MenuBar';
 import { useUserInfo } from '../../hooks/useUserInfo';
 import { useNavigate } from 'react-router-dom';
-import calculateRemainingTime from '../../apis/utils/calculateRemainingTime';
+import { calculateRemainDate } from '../../utils/time';
 import { getZipsaRoomList } from '../../apis/api/room';
 
 const Wrapper = styled.div`
@@ -125,7 +125,7 @@ function ZipsaRoomList() {
             </RoomInfoWrapper>
             <RoomInfoWrapper>
               <HeadingWrapper $color={'red'}>남은시간</HeadingWrapper>
-              <>{calculateRemainingTime(item.roomCreatedAt)}</>
+              <>{calculateRemainDate(item.roomCreatedAt)}</>
             </RoomInfoWrapper>
           </RoomItemWrapper>
         ))}

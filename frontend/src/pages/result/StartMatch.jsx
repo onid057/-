@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import Image from '../components/common/Image';
-import Paragraph from '../components/common/Paragraph';
-import MenuBar from '../components/common/MenuBar';
+import Image from '../../components/common/Image';
+import Paragraph from '../../components/common/Paragraph';
+import MenuBar from '../../components/common/MenuBar';
 
 const Wrapper = styled.div`
   width: 320px;

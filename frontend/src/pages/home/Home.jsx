@@ -1,19 +1,18 @@
-import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useState, useEffect, useRef } from 'react';
-import { getUserState } from '../../apis/api/toggle.js';
-import { getFirstReservation } from '../../apis/api/reserve.js'; // 추후 연결 요망
-import { useUserInfo } from '../../hooks/useUserInfo.js';
 import { doLogOut, isQualifiedZipsa } from '../../apis/api/login.js';
-import { calculateRemainDate, convertToHour } from '../../utils/time.js';
-
-import Image from '../../components/common/Image.jsx';
-import Paragraph from '../../components/common/Paragraph.jsx';
-import Notice from '../../components/common/Notice.jsx';
+import { getFirstReservation } from '../../apis/api/reserve.js'; // 추후 연결 요망
+import { getUserState } from '../../apis/api/toggle.js';
+import { useUserInfo } from '../../hooks/useUserInfo.js';
+import { calculateRemainDate } from '../../utils/time.js';
+import styled from 'styled-components';
 import BoldText from '../../components/common/BoldText.jsx';
-import MenuBar from '../../components/common/MenuBar.jsx';
-import Toggle from '../../components/common/Toggle.jsx';
 import Button from '../../components/common/Button.jsx';
+import Image from '../../components/common/Image.jsx';
+import MenuBar from '../../components/common/MenuBar.jsx';
+import Notice from '../../components/common/Notice.jsx';
+import Paragraph from '../../components/common/Paragraph.jsx';
+import Toggle from '../../components/common/Toggle.jsx';
 
 const Wrapper = styled.div`
   width: 320px;

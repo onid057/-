@@ -6,13 +6,10 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import MyPage from './pages/myPage/MyPage';
-import UserMyPage from './pages/userMyPage/UserMyPage'; // 사용자 마이 페이지
 import ConnectOption from './pages/connect/ConnectOption'; // 연동 옵션 고르기 페이지
 import ConnectAsLeader from './pages/connect/ConnectAsLeader'; // 대표로 연동하기 페이지
 import ConnectMember from './pages/connect/ConnectMember'; // 연동되어 있는 멤버 조회 페이지
 import ConnectCode from './pages/connect/ConnectCode'; // 연동 코드 보여주는 페이지
-
-import ZipsaMyPageMain from './pages/zipsaMyPage/ZipsaMyPageMain'; // 집사 마이 페이지
 import ZipsaDetail from './pages/filterFunnel/ZipsaDetail'; // 집사 상세 정보 페이지
 import ZipsaActivityHistory from './pages/zipsaMyPage/ZipsaActivityHistory'; // 집사 활동 내역 페이지
 import ZipsaProfileUpdate from './pages/zipsaMyPage/ZipsaProfileUpdate'; // 집사 정보 수정 페이지
@@ -23,19 +20,18 @@ import PasswordUpdate from './pages/userMyPage/PasswordUpdate';
 import ApplyZipsa from './pages/userMyPage/ApplyZipsa';
 import Education from './pages/userMyPage/Education';
 import InsertZipsaInfo from './pages/userMyPage/InsertZipsaInfo';
-import MyBoardList from './pages/MyBoardList';
 import UserActivityHistory from './pages/userMyPage/UserActivityHistory';
 import PaymentRegistration from './pages/userMyPage/PaymentRegistration';
 
 import RegisterFunnel from './pages/registerFunnel/RegisterFunnel';
 import FilterFunnel from './pages/filterFunnel/FilterFunnel';
-import MatchOption from './pages/MatchOption';
+import MatchOption from './pages/result/MatchOption';
 
 import NotFound from './pages/error/NotFound';
 import NeedLogin from './pages/error/NeedLogin';
 
-import StartMatch from './pages/StartMatch';
-import SuccessMatch from './pages/SuccessMatch';
+import StartMatch from './pages/result/StartMatch';
+import SuccessMatch from './pages/result/SuccessMatch';
 import Notify from './pages/notify/Notify';
 import SuggestByUser from './pages/notify/SuggestByUser';
 import Reserve from './pages/reserve/Reserve';
@@ -221,12 +217,6 @@ function App() {
 
         <Route path="/myPage" element={<MyPage />}></Route>
 
-        {/* 유저 마이 페이지 */}
-        {/* <Route path="/userMyPage" element={<UserMyPage />}></Route> */}
-
-        {/* 집사 마이 페이지 */}
-        {/* <Route path="/zipsa/mypage" element={<ZipsaMyPageMain />}></Route> */}
-
         <Route path="/zipsa/detail" element={<ZipsaDetail />}></Route>
         <Route path="/zipsa/history" element={<ZipsaActivityHistory />}></Route>
         <Route path="/zipsa/update" element={<ZipsaProfileUpdate />}></Route>
@@ -243,7 +233,6 @@ function App() {
         <Route path="/applyZipsa" element={<ApplyZipsa />}></Route>
         <Route path="/education" element={<Education />}></Route>
         <Route path="/insertZipsaInfo" element={<InsertZipsaInfo />}></Route>
-        <Route path="/myBoards" element={<MyBoardList />}></Route>
         <Route
           path="/userActivityHistory"
           element={<UserActivityHistory />}

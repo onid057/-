@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import BoldText from '../components/common/BoldText';
-import Paragraph from '../components/common/Paragraph';
-import Button from '../components/common/Button';
-import NavigationBar from '../components/common/NavigationBar';
-import Image from '../components/common/Image';
+import BoldText from '../../components/common/BoldText';
+import Paragraph from '../../components/common/Paragraph';
+import Button from '../../components/common/Button';
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
 
 const Wrapper = styled.div`
   width: 320px;
