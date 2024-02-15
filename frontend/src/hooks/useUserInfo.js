@@ -1,9 +1,9 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 const useUserInfo = create(
   persist(
-    (set, get) => ({
+    (set, _) => ({
       userState: 'USER',
       isLoggedIn: false,
       setUserState: state => set({ userState: state }),
@@ -11,6 +11,7 @@ const useUserInfo = create(
     }),
     {
       name: 'user-storage',
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );
