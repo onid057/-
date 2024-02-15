@@ -107,7 +107,7 @@ function BoardComment({
 
       <RightBox>
         <Name>{userName}</Name>
-        <Address>{address}</Address>
+        <Address>{address.substring(0, 7)}</Address>
 
         {/* isCommentUpdate 상태에 따라서 수정 textarea를 보여주는 부분 */}
         {

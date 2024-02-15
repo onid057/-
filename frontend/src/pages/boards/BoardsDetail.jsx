@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { deleteOneComment, getOneArticle } from '../../apis/api/board';
 import { calculateReportWritingTime } from '../../utils/time';
-import { maskKoreanAddress } from '../../utils/regularExpression';
 
 import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
@@ -182,7 +181,7 @@ function BoardsDetail() {
           </ProfileLeft>
           <ProfileRight>
             <ProfileName>{data.userName}</ProfileName>
-            <ProfileAddress>{maskKoreanAddress(data.address)}</ProfileAddress>
+            <ProfileAddress>{data.address.substring(0, 7)}</ProfileAddress>
           </ProfileRight>
         </ProfileWrapper>
 
