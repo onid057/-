@@ -39,7 +39,7 @@ import org.springframework.test.context.ContextConfiguration;
 @ContextConfiguration(classes = BackendApplication.class)
 class RoomControllerTest {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     RoomService roomService;
@@ -116,7 +116,7 @@ class RoomControllerTest {
         try {
             roomService.deletePublicRoom(room.getRoomId());
         } catch (RuntimeException ex) {
-            log.error("공개 방 삭제하기가 실패했습니다.");
+            logger.error("공개 방 삭제하기가 실패했습니다.");
             assertFalse(false);
         }
     }

@@ -18,12 +18,12 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     // 임의로 보내는 예외 처리
     @ExceptionHandler(CustomException.class)
     protected ResponseEntity<ErrorResponse> handleCustomException(CustomException ex) {
-        log.error("CustomException", ex);
+        logger.error("CustomException", ex);
         return new ResponseEntity<>(new ErrorResponse(ex.getErrorCode()),
             HttpStatus.valueOf(ex.getErrorCode().getStatus()));
     }
@@ -32,7 +32,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValidException(
         MethodArgumentNotValidException ex) {
-        log.error("handleMethodArgumentNotValidException", ex);
+        logger.error("handleMethodArgumentNotValidException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INVALID_PARAMETER);
         return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(
         HttpMessageNotReadableException ex) {
-        log.error("handleHttpMessageNotReadableException", ex);
+        logger.error("handleHttpMessageNotReadableException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.REQUEST_BODY_MISSING_ERROR);
         return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     protected ResponseEntity<ErrorResponse> handleMissingServletRequestParameterException(
         MissingServletRequestParameterException ex) {
-        log.error("handleMissingServletRequestParameterException", ex);
+        logger.error("handleMissingServletRequestParameterException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.MISSING_REQUEST_PARAMETER_ERROR);
         return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
@@ -62,7 +62,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpClientErrorException.BadRequest.class)
     protected ResponseEntity<ErrorResponse> handleHttpClientErrorExceptionBadRequestException(
         HttpClientErrorException ex) {
-        log.error("handleHttpClientErrorExceptionBadRequestException", ex);
+        logger.error("handleHttpClientErrorExceptionBadRequestException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.BAD_REQUEST_ERROR);
         return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     protected ResponseEntity<ErrorResponse> handleNoHandlerFoundException(
         NoHandlerFoundException ex) {
-        log.error("handleNoHandlerFoundException", ex);
+        logger.error("handleNoHandlerFoundException", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.NOT_FOUND_ERROR);
         return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));
@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
     // 서버가 처리할 방법을 모르는 경우
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ErrorResponse> handleException(Exception ex) {
-        log.error("Exception", ex);
+        logger.error("Exception", ex);
         ErrorResponse errorResponse = new ErrorResponse(ErrorCode.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(errorResponse,
             HttpStatus.valueOf(errorResponse.getStatus()));

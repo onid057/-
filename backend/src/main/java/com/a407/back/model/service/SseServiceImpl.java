@@ -15,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @RequiredArgsConstructor
 public class SseServiceImpl implements SseService {
 
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Value("${default.timeout}")
     private Long DEFAULT_TIMEOUT;
@@ -29,7 +29,7 @@ public class SseServiceImpl implements SseService {
         SseEmitter sseEmitter = sseRepository.get(userId);
         if (sseEmitter != null) {
             sendToClient(sseEmitter, userId, "알림이 도착했습니다.", "notification");
-            log.info("이벤트가 성공적으로 진행되었습니다. {}", userId);
+            logger.info("이벤트가 성공적으로 진행되었습니다. {}", userId);
         }
     }
 
@@ -56,7 +56,7 @@ public class SseServiceImpl implements SseService {
                 .data(data));
         } catch (IOException e) {
             sseRepository.delete(userId);
-            log.error("SSE 연결 오류 발생", e);
+            logger.error("SSE 연결 오류 발생", e);
         }
     }
 

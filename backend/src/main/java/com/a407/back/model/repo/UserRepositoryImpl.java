@@ -43,8 +43,6 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findByUserEmail(String email) {
-        //하나만 반환->fetchOne
-        //Entity Manager는 다른걸로 find해야함.
         QUser qUser = QUser.user;
         return query.select(qUser).from(qUser).where(qUser.email.eq(email)).fetchOne();
     }

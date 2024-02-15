@@ -8,7 +8,6 @@ import com.a407.back.dto.util.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collections;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -58,11 +57,11 @@ public class WebSecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
             CorsConfiguration config = new CorsConfiguration();
-            config.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://i10a407.p.ssafy.io"));
+            config.setAllowedOrigins(Collections.singletonList("https://i10a407.p.ssafy.io"));
             config.setAllowedMethods(Collections.singletonList("*"));
             config.setAllowCredentials(true);
             config.setAllowedHeaders(Collections.singletonList("*"));
-            config.setMaxAge(3600L); //1시간
+            config.setMaxAge(3600L);
             return config;
         }));
         http.headers(headers -> headers.cacheControl(CacheControlConfig::disable));

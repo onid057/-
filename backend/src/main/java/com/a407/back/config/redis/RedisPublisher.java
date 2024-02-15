@@ -1,10 +1,7 @@
 package com.a407.back.config.redis;
 
-import com.a407.back.domain.Room.Process;
 import com.a407.back.model.service.SseService;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +24,9 @@ public class RedisPublisher {
     private final RedisSubscriber redisSubscriber;
 
     private final SseService sseService;
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private final Map<String, ChannelTopic> channelTopicMap = new ConcurrentHashMap<>();
 
     public SseEmitter createTopic(Long userId, HttpServletResponse response) {

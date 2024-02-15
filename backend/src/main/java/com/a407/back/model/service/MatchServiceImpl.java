@@ -75,11 +75,11 @@ public class MatchServiceImpl implements MatchService {
         return matchRepository.findCategoryNamesByZipsaId(zipsa.getZipsaId().getUserId());
     }
 
-    // 필터링 기반 방 만들기
+    // 필터링 기반 방 생성
     @Override
     @Transactional
     public Long makeFilterRoom(Long userId, RoomCreateRequest roomCreateRequest) {
-        // User 가져오기
+        // 연동 계정 여부에 따른 매칭 주체 설정
         User user;
 
         if (roomCreateRequest.getUserId() == null) {

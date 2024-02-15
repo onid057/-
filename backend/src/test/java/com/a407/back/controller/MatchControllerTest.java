@@ -117,7 +117,6 @@ class MatchControllerTest {
         List<MatchSearchResponse> matchSearchResponses = matchService.getFilteredZipsaList(
             matchSearchRequest);
         if (!matchSearchResponses.isEmpty()) {
-            logger.info(matchSearchResponses.toString());
             assertThat(matchSearchResponses.get(0).getName(), is(equalTo("user")));
         } else {
             logger.error("필터링 기반 검색 테스트를 실패했습니다.");
@@ -170,7 +169,6 @@ class MatchControllerTest {
         Long roomId = matchService.makeFilterRoom(user.getUserId(), roomCreateRequest);
         Room room = roomService.findByRoomId(roomId);
         if (room != null) {
-            logger.info(String.valueOf(room.getRoomId()));
             assertThat(room.getUserId().getName(), is(equalTo("user")));
         } else {
             logger.error("필터링 기반 검색 후 방 만들기 테스트를 실패했습니다.");
@@ -206,7 +204,6 @@ class MatchControllerTest {
         em.flush();
         em.clear();
         Room room = roomService.findByRoomId(roomId);
-        logger.info(room.toString());
         assertNotNull(room.getStartedAt());
     }
 
@@ -242,7 +239,6 @@ class MatchControllerTest {
         em.flush();
         em.clear();
         Room room = roomService.findByRoomId(roomId);
-        logger.info(room.toString());
         assertNotNull(room.getEndedAt());
     }
 }
