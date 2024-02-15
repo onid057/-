@@ -72,17 +72,17 @@ public class MatchRepositoryImpl implements MatchRepository {
             int ageInt = Integer.parseInt(age);
 
             // 예: 40대 미만인 경우 50년 전
-            Date lowerBound = Date.valueOf(
-                LocalDate.now().minusYears(ageInt + 10L));
+//            Date lowerBound = Date.valueOf(
+//                LocalDate.now().minusYears(ageInt + 10L));
             // 예: 40대 이상인 경우 40년 전
-            Date upperBound = Date.valueOf(LocalDate.now().minusYears(ageInt));
+            Date bound = Date.valueOf(LocalDate.now().minusYears(40));
 
             if (ageInt >= 40) {
                 // 40대 이상인 경우
-                return qZipsa.zipsaId.birth.loe(upperBound);
+                return qZipsa.zipsaId.birth.loe(bound);
             } else {
                 // 40대 미만인 경우
-                return qZipsa.zipsaId.birth.gt(lowerBound);
+                return qZipsa.zipsaId.birth.gt(bound);
             }
         } catch (NumberFormatException e) {
             return null;
