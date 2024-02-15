@@ -1,27 +1,17 @@
 import axios from '../utils/instance';
 
 // filterFunnel을 통해 얻은 매치 데이터를 활용하여 집사 리스트 get
-// userId가 없으면 내가 연동, 있으면 상대 연동
 const getFilteredZipsaData = async (
-  userId,
   majorCategoryId,
-  genderStr,
+  gender,
   age,
   grade,
   scoreAverage,
 ) => {
   try {
     const response = await axios({
-      method: 'post',
-      url: '/matches/filter',
-      data: {
-        userId,
-        majorCategoryId,
-        genderStr,
-        age,
-        grade,
-        scoreAverage,
-      },
+      method: 'get',
+      url: `/matches/filter?majorCategoryId=${majorCategoryId}&gender=${gender}&age=${age}&grade=${grade}&scoreAverage=${scoreAverage}`,
     });
     return response.data;
   } catch (error) {
