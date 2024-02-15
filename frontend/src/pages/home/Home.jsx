@@ -109,8 +109,8 @@ export default function Home() {
   useEffect(() => {
     if (isLoggedIn) {
       eventSourceRef.current = new EventSource(
-        'http://localhost:8080' + `/sse`,
-        // 'https://i10a407.p.ssafy.io/api' + `/sse`,
+        // 'http://localhost:8080' + `/sse`,
+        'https://i10a407.p.ssafy.io/api' + `/sse`,
         {
           withCredentials: true,
         },
