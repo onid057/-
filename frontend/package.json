@@ -5,9 +5,6 @@
   "dependencies": {
     "@tanstack/react-query": "^5.18.1",
     "@tanstack/react-query-devtools": "^5.18.1",
-    "@testing-library/jest-dom": "^5.17.0",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.7",
     "prettier": "^3.2.5",
     "react": "^18.2.0",
@@ -20,7 +17,6 @@
     "react-slick": "^0.29.0",
     "slick-carousel": "^1.8.1",
     "styled-components": "^6.1.8",
-    "web-vitals": "^2.1.4",
     "zustand": "^4.5.0"
   },
   "scripts": {
