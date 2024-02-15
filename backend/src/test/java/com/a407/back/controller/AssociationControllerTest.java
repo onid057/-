@@ -79,10 +79,10 @@ class AssociationControllerTest {
         em.clear();
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isTrue();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getId()).isEqualTo(userIdOne);
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getIsRepresentative()).isTrue();
     }
 
@@ -110,7 +110,7 @@ class AssociationControllerTest {
         em.flush();
         em.clear();
 
-        assertThat(associationService.getAssociationUserList(associationId)).hasSize(2);
+        assertThat(associationService.getAssociationUserList(userIdOne)).hasSize(2);
         assertThat(
             userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).isEqualTo(
             userService.findByUserId(userIdTwo).getAssociationId().getAssociationId());
@@ -128,7 +128,7 @@ class AssociationControllerTest {
         Long associationId = userService.findByUserId(userIdOne).getAssociationId()
             .getAssociationId();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getId()).isEqualTo(userIdOne);
 
         associationService.deleteAssociation(userIdOne);
@@ -137,7 +137,7 @@ class AssociationControllerTest {
 
         assertThat(userService.findByUserId(userIdOne).getIsAffiliated()).isFalse();
 
-        assertThat(associationService.getAssociationUserList(associationId)).isEmpty();
+        assertThat(associationService.getAssociationUserList(userIdOne)).isEmpty();
     }
 
     @Test
@@ -184,7 +184,7 @@ class AssociationControllerTest {
         em.flush();
         em.clear();
 
-        assertThat(associationService.getAssociationUserList(associationId)).hasSize(2);
+        assertThat(associationService.getAssociationUserList(userIdOne)).hasSize(2);
         assertThat(
             userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).isEqualTo(
             userService.findByUserId(userIdTwo).getAssociationId().getAssociationId());
@@ -204,8 +204,10 @@ class AssociationControllerTest {
         Long associationId = userService.findByUserId(userIdOne).getAssociationId()
             .getAssociationId();
 
+        User user=userService.findByUserId(userIdOne);
+
         AssociationAdditionCodeResponse associationAdditionCodeResponse = associationService.makeAdditionCode(
-            userIdOne, "test@test.com", associationId);
+            userIdOne, user.getName(), associationId);
 
         assertThat(associationAdditionCodeResponse.getLeftTime()).isGreaterThan(1700);
 
@@ -216,24 +218,24 @@ class AssociationControllerTest {
         em.flush();
         em.clear();
 
-        assertThat(associationService.getAssociationUserList(associationId)).hasSize(2);
+        assertThat(associationService.getAssociationUserList(userIdOne)).hasSize(2);
         assertThat(
             userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).isEqualTo(
             userService.findByUserId(userIdTwo).getAssociationId().getAssociationId());
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getIsRepresentative()).isTrue();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdTwo).getAssociationId().getAssociationId()).get(1)
+                userService.findByUserId(userIdTwo).getUserId()).get(1)
             .getIsRepresentative()).isFalse();
         associationService.changeAssociationRepresentative(userIdOne, userIdTwo);
         em.flush();
         em.clear();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdOne).getAssociationId().getAssociationId()).get(0)
+                userService.findByUserId(userIdOne).getUserId()).get(0)
             .getIsRepresentative()).isFalse();
         assertThat(associationService.getAssociationUserList(
-                userService.findByUserId(userIdTwo).getAssociationId().getAssociationId()).get(1)
+                userService.findByUserId(userIdTwo).getUserId()).get(1)
             .getIsRepresentative()).isTrue();
 
     }
