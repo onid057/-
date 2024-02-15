@@ -10,6 +10,7 @@ import com.a407.back.dto.user.UserChangeRequest;
 import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
+import com.a407.back.dto.user.UserEmailDuplicationRequest;
 import com.a407.back.dto.user.UserInfoResponse;
 import com.a407.back.dto.user.UserLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
@@ -78,5 +79,7 @@ public interface UserService {
     UserInfoResponse findUserInfo(Long userId);
 
     UserLocationResponse findUserLocation(Long userId);
+
+    Boolean findEmailDuplication(UserEmailDuplicationRequest userEmailDuplicationRequest);
 
 }

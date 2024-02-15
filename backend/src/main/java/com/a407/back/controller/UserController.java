@@ -12,6 +12,7 @@ import com.a407.back.dto.user.UserChangeRequest;
 import com.a407.back.dto.user.UserComplainRequest;
 import com.a407.back.dto.user.UserCreateRequest;
 import com.a407.back.dto.user.UserDetailInfoResponse;
+import com.a407.back.dto.user.UserEmailDuplicationRequest;
 import com.a407.back.dto.user.UserInfoResponse;
 import com.a407.back.dto.user.UserLocationResponse;
 import com.a407.back.dto.user.UserNearZipsaInfoResponse;
@@ -249,6 +250,14 @@ public class UserController {
         }
         return ResponseEntity.status(HttpStatus.CREATED)
             .body(new ApiResponse<>(SuccessCode.INSERT_SUCCESS, "문자 발송 성공"));
+    }
+
+    @PostMapping("/certification/email")
+    public ResponseEntity<ApiResponse<Boolean>> findEmailDuplication(@RequestBody
+    UserEmailDuplicationRequest userEmailDuplicationRequest) {
+        return ResponseEntity.status(HttpStatus.OK).body(
+            new ApiResponse<>(SuccessCode.SELECT_SUCCESS,
+                userService.findEmailDuplication(userEmailDuplicationRequest)));
     }
 
 }
