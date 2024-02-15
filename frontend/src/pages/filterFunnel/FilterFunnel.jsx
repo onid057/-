@@ -13,6 +13,7 @@ import ZipsaList from './ZipsaList';
 import TargetDate from './TargetDate';
 import TargetTime from './TargetTime';
 import Address from './Address';
+import Connection from './Connection';
 import Detail from './Detail';
 
 import CATEGORY_ID from '../../constants/categoryId';
@@ -138,7 +139,7 @@ function FilterFunnel() {
             setStep('TIME');
           }}
           onNext={(address, detailAddress) => {
-            setStep('DETAIL');
+            setStep('CONNECTION');
             setFilterData({
               ...filterData,
               matchAddress: address,
@@ -150,16 +151,32 @@ function FilterFunnel() {
         ></Address>
       </Funnel.Step>
 
+      <Funnel.Step name="CONNECTION">
+        <Connection
+          onPrevious={() => {
+            setStep('TIME');
+          }}
+          onNext={data => {
+            setStep('DETAIL');
+            setFilterData({
+              ...filterData,
+              matchUserId: data,
+            });
+          }}
+          matchUserId={filterData.matchUserId}
+        ></Connection>
+      </Funnel.Step>
+
       <Funnel.Step name="DETAIL">
         <Detail
           onPrevious={() => {
-            setStep('ADDRESS');
+            setStep('CONNECTION');
           }}
           onNext={data => {
             const nextMatchDetailData = { ...filterData, matchDetail: data };
             setFilterData(nextMatchDetailData);
             makeFilterSuggestion(
-              1,
+              filterData.matchUserId,
               CATEGORY_ID[filterData.matchMainCategory][1][
                 filterData.matchSubCategory
               ],

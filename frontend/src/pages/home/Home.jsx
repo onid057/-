@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { getUserState } from '../../apis/api/toggle.js';
 import { getFirstReservation } from '../../apis/api/reserve.js'; // 추후 연결 요망
-import { subscribeSSE } from '../../apis/api/subscribe.js';
 import { useUserInfo } from '../../hooks/useUserInfo.js';
 import { doLogOut, isQualifiedZipsa } from '../../apis/api/login.js';
 import { calculateRemainDate, convertToHour } from '../../utils/time.js';
@@ -110,8 +109,8 @@ export default function Home() {
   useEffect(() => {
     if (isLoggedIn) {
       eventSourceRef.current = new EventSource(
-        // 'http://localhost:8080' + `/sse`,
-        'https://i10a407.p.ssafy.io/api' + `/sse`,
+        'http://localhost:8080' + `/sse`,
+        // 'https://i10a407.p.ssafy.io/api' + `/sse`,
         {
           withCredentials: true,
         },
