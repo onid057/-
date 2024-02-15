@@ -32,4 +32,20 @@ const createAccount = async (
   }
 };
 
-export { createAccount };
+// 이메일 중복확인
+const checkIsNotDuplicatedEmail = async email => {
+  try {
+    const response = await axios({
+      method: 'post',
+      url: `/users/certification/email`,
+      data: {
+        email,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export { createAccount, checkIsNotDuplicatedEmail };

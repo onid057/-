@@ -58,7 +58,7 @@ function SubCategory({
         ]}
       ></Paragraph>
 
-      <ProgressBar value={24}></ProgressBar>
+      <ProgressBar value={22}></ProgressBar>
 
       {subCategoryList.map((category, index) => {
         return (

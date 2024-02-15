@@ -95,9 +95,13 @@ function RegisterFunnel() {
           }}
           onNext={data => {
             setStep('PASSWORD');
-            setRegisterData({ ...registerData, userEmail: data });
+            setRegisterData({
+              ...registerData,
+              userEmail: data,
+            });
           }}
           userEmail={registerData.userEmail}
+          isValidEmail={registerData.isValidEmail}
         ></Email>
       </Funnel.Step>
 

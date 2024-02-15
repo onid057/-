@@ -71,7 +71,7 @@ function Connection({ onPrevious, onNext, matchUserId }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={100}></ProgressBar>
+      <ProgressBar value={89}></ProgressBar>
 
       {associatedUserList?.map((user, index) => {
         return (

@@ -1,14 +1,14 @@
-import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import NavigationBar from '../../components/common/NavigationBar';
-import Image from '../../components/common/Image';
-import ZipsaDetailProfile from '../../components/filter/ZipsaDetailProfile';
-import ZipsaDetailRoute from '../../components/filter/ZipsaDetailRoute';
 import {
   getDetailZipsaInfo,
   getReviewZipsaInfo,
 } from '../../apis/api/zipsaMyPage';
+import styled from 'styled-components';
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
+import ZipsaDetailProfile from '../../components/filter/ZipsaDetailProfile';
+import ZipsaDetailRoute from '../../components/filter/ZipsaDetailRoute';
 
 const Wrapper = styled.div`
   width: 320px;

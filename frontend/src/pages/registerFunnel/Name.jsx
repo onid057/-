@@ -23,7 +23,7 @@ const Wrapper = styled.div`
 `;
 
 function Name({ onPrevious, onNext, userName }) {
-  const [name, setName] = useState(userName);
+  const [name, setName] = useState(userName || '');
 
   return (
     <Wrapper>

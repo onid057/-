@@ -51,7 +51,7 @@ function ZipsaList({ onPrevious, onNext, zipsaData, savedZipsaId }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={48}></ProgressBar>
+      <ProgressBar value={44}></ProgressBar>
 
       {zipsaData.length > 0 &&
         zipsaData.map((zipsa, index) => {

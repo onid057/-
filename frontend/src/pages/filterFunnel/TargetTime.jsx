@@ -58,7 +58,7 @@ function TargetTime({ onPrevious, onNext, matchStartTime, matchEndTime }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={72}></ProgressBar>
+      <ProgressBar value={66}></ProgressBar>
 
       <TimeWrapper>
         <Input

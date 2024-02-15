@@ -78,7 +78,12 @@ function Condition({
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(gender, age, grade, score)}
-        disabledOnNext={!gender || (age !== 0 && !age) || !grade || !score}
+        disabledOnNext={
+          !gender ||
+          (age !== 0 && !age) ||
+          !grade ||
+          !(score >= 0 && score <= 5)
+        }
       ></NavigationBar>
 
       <Paragraph
@@ -90,7 +95,7 @@ function Condition({
         ]}
       ></Paragraph>
 
-      <ProgressBar value={36}></ProgressBar>
+      <ProgressBar value={33}></ProgressBar>
 
       <ContentBox>
         <ContentTitle>성별</ContentTitle>
@@ -129,19 +134,24 @@ function Condition({
       <ContentBox>
         <ContentTitle>집사 등급</ContentTitle>
         <GridBox>
-          {['견습 집사', '프로 집사', '전설 집사', '상관 없음'].map(
-            (option, index) => {
-              return (
-                <Button
-                  key={index}
-                  mode={grade === GRADE[option] ? 'THIN_BLUE' : 'THIN_WHITE'}
-                  onClick={() => setGrade(GRADE[option])}
-                >
-                  {option}
-                </Button>
-              );
-            },
-          )}
+          {[
+            '견습 집사',
+            '초보 집사',
+            '숙련 집사',
+            '프로 집사',
+            '전설 집사',
+            '상관 없음',
+          ].map((option, index) => {
+            return (
+              <Button
+                key={index}
+                mode={grade === GRADE[option] ? 'THIN_BLUE' : 'THIN_WHITE'}
+                onClick={() => setGrade(GRADE[option])}
+              >
+                {option}
+              </Button>
+            );
+          })}
         </GridBox>
       </ContentBox>
 

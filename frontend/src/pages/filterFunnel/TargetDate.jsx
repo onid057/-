@@ -51,7 +51,7 @@ function TargetDate({ onPrevious, onNext, matchDate }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={60}></ProgressBar>
+      <ProgressBar value={55}></ProgressBar>
 
       <Calendar
         value={date}
