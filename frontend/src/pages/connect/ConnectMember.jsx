@@ -1,6 +1,10 @@
+import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
-import { getAssociatedUserList } from '../../apis/api/associate';
+import {
+  getAssociatedUserList,
+  confirmIsLeader,
+} from '../../apis/api/associate';
 import styled from 'styled-components';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
@@ -32,6 +36,15 @@ const MemberWrapper = styled.div`
 `;
 
 function ConnectCodeShow() {
+  const [isLeader, setIsLeader] = useState(false);
+
+  useEffect(() => {
+    confirmIsLeader().then(response => {
+      console.log(response);
+      if (response.data) isLeader(true);
+    });
+  }, []);
+
   const { data } = useQuery({
     queryKey: ['associatedUserList'],
     queryFn: () => getAssociatedUserList(),
@@ -73,15 +86,17 @@ function ConnectCodeShow() {
               }
             ></Image>
             {user.isRepresentative
-              ? `${user.name} (${'나, 대표'})`
+              ? `${user.name} (대표)`
               : `${user.name} (멤버)`}
           </MemberWrapper>
         );
       })}
 
-      <NavigateButton onClick={() => navigate('/connectCode/show')}>
-        멤버 추가하기
-      </NavigateButton>
+      {isLeader && (
+        <NavigateButton onClick={() => navigate('/connectCode/show')}>
+          멤버 추가하기
+        </NavigateButton>
+      )}
     </Wrapper>
   );
 }

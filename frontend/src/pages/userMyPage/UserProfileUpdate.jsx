@@ -78,7 +78,7 @@ function ProfileUpdate() {
 
   const onClickButton = () => {
     updateUserInfo(imageFile).then(() => {
-      navigate('/userMyPage');
+      navigate('/myPage');
     });
   };
 

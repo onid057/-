@@ -90,7 +90,7 @@ function InsertZipsaInfo() {
             preferTags.join('#'),
             calculateIndex(mainCategory),
           ).then(response => console.log(response));
-          navigate('/userMyPage');
+          navigate('/myPage');
         }}
         disabledOnNext={!detail || calculateIndex(mainCategory).length < 1}
       ></NavigationBar>

@@ -57,9 +57,23 @@ const associateWithCode = async (userId, code) => {
   }
 };
 
+// 본인이 대표 계정인지 확인
+const confirmIsLeader = async () => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: '/associations/representative',
+    });
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export {
   createAssociationAsLeader,
   getAssociatedUserList,
   createAssociationCode,
   associateWithCode,
+  confirmIsLeader,
 };

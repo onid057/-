@@ -110,12 +110,8 @@ function ApplyZipsa() {
       boldContent: 'step1. ',
     },
     {
-      normalContent: '필수교육 이수 및 퀴즈',
-      boldContent: 'step2. ',
-    },
-    {
       normalContent: '서약서 작성 후 지원 완료',
-      boldContent: 'step3. ',
+      boldContent: 'step2. ',
     },
   ];
 
@@ -140,11 +136,6 @@ function ApplyZipsa() {
       ></NavigationBar>
       <TitleWrapper>
         <TitleUpperWrapper>
-          <Image
-            src={`${process.env.PUBLIC_URL}/images/small_heart.svg`}
-            width={'18px'}
-            height={'18px'}
-          ></Image>
           {titleContent.map((value, idx) => (
             <BoldText
               fontSize={'18px'}

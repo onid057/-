@@ -6,6 +6,7 @@ import Paragraph from '../../components/common/Paragraph';
 import Input from '../../components/common/Input';
 import { useNavigate } from 'react-router-dom';
 import { updateUserInfo } from '../../apis/api/userMyPage';
+import { regPassword } from '../../utils/regularExpression';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -54,7 +55,10 @@ function PasswordUpdate() {
         onPrevious={() => navigate(-1)}
         onNext={onClickUpdateButton}
         disabledOnNext={
-          (!password && !confirmPassword) || password !== confirmPassword
+          !password ||
+          !confirmPassword ||
+          password !== confirmPassword ||
+          !regPassword.test(password)
         }
       ></NavigationBar>
       <Paragraph
@@ -66,6 +70,7 @@ function PasswordUpdate() {
         type={'password'}
         width={'288px'}
         labelText={'새로운 비밀번호 입력'}
+        commentText="영문자, 숫자, 특수기호로 8자리어야 해요."
         value={password}
         onChange={handleChangePassword}
       ></Input>
