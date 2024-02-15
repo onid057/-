@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { styled } from 'styled-components';
-
+import styled from 'styled-components';
+import ProgressBar from '../../components/common/ProgressBar';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
@@ -22,14 +22,13 @@ const Wrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  margin: 60px 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
-function Gender({ onPrevious, onNext }) {
-  const [gender, setGender] = useState('');
+function Gender({ onPrevious, onNext, userGender }) {
+  const [gender, setGender] = useState(userGender);
 
   return (
     <Wrapper>
@@ -56,6 +55,8 @@ function Gender({ onPrevious, onNext }) {
           '선택해주세요',
         ]}
       ></Paragraph>
+
+      <ProgressBar value={32}></ProgressBar>
 
       <ButtonWrapper>
         <Button

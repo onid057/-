@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { regPassword } from '../../utils/regularExpression';
 import styled from 'styled-components';
+import ProgressBar from '../../components/common/ProgressBar';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
@@ -35,11 +37,14 @@ function PassWord({ onPrevious, onNext }) {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        rightContent="다음"
+        rightContent="완료"
         onPrevious={onPrevious}
         onNext={() => onNext(password)}
         disabledOnNext={
-          !password || !confirmPassword || password !== confirmPassword
+          !password ||
+          !confirmPassword ||
+          password !== confirmPassword ||
+          !regPassword.test(password)
         }
       ></NavigationBar>
 
@@ -52,12 +57,13 @@ function PassWord({ onPrevious, onNext }) {
         ]}
       ></Paragraph>
 
+      <ProgressBar value={100}></ProgressBar>
+
       <Input
         labelText="비밀번호 입력"
         type="password"
         width="288px"
-        margin="50px 0 0 0"
-        commentText="비밀번호는 8자리 이상이어야 합니다."
+        commentText="영문자, 숫자, 특수기호로 8자리어야 해요."
         placeholder="********"
         onInput={event => {
           setPassword(event.target.value);
@@ -69,7 +75,6 @@ function PassWord({ onPrevious, onNext }) {
         type="password"
         width="288px"
         margin="20px 0 0 0"
-        commentText="비밀번호가 일치하지 않습니다."
         placeholder="********"
         onInput={event => {
           setConfirmPassword(event.target.value);

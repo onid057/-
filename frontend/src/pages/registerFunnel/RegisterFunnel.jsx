@@ -34,7 +34,7 @@ function RegisterFunnel() {
       <Funnel.Step name="NAME">
         <Name
           onPrevious={() => {
-            setStep('GENDER');
+            navigate('/login');
           }}
           onNext={data => {
             setStep('GENDER');

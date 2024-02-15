@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 import Calendar from 'react-calendar';
 import '../../assets/styles/Calendar.css';
 import NavigationBar from '../../components/common/NavigationBar';
@@ -51,7 +51,7 @@ function Birth({ onPrevious, onNext, userBirth }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={60}></ProgressBar>
+      <ProgressBar value={48}></ProgressBar>
 
       <Calendar
         value={date}

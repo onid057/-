@@ -51,7 +51,7 @@ function Address({ onPrevious, onNext, userAddress, userDetailAddress }) {
         ]}
       ></Paragraph>
 
-      <ProgressBar value={84}></ProgressBar>
+      <ProgressBar value={64}></ProgressBar>
 
       <AddressInput
         defaultAddress={address}

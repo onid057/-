@@ -3,19 +3,20 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfo } from '../../hooks/useUserInfo';
 import { regEmail, regPassword } from '../../utils/regularExpression';
-
 import styled from 'styled-components';
 import Paragraph from '../../components/common/Paragraph';
 import BoldText from '../../components/common/BoldText';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import NavigateText from '../../components/common/NavigateText';
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
 
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 30px 16px;
+  padding: 0 16px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -41,6 +42,18 @@ function Login() {
 
   return (
     <Wrapper>
+      <NavigationBar
+        leftContent={
+          <Image
+            width="40px"
+            height="40px"
+            margin="0 0 0 -12px"
+            src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
+          ></Image>
+        }
+        onPrevious={() => navigate('/')}
+      ></NavigationBar>
+
       <Paragraph
         gap="5px"
         fontSize="35px"
@@ -53,13 +66,11 @@ function Login() {
       <Input
         type="email"
         width="288px"
-        margin="30px 0 20px 0"
+        margin="30px 0 0 0"
         labelText="이메일"
-        commentText="이메일 형식이 올바르지 않습니다."
         placeholder="hanzipsa@naver.com"
         onChange={event => {
           setEmail(event.target.value);
-          // if (regEmail.test(email))
         }}
       ></Input>
 
@@ -67,20 +78,24 @@ function Login() {
         type="password"
         width="288px"
         labelText="비밀번호"
-        commentText="8자 이상이어야 합니다."
-        placeholder="********"
         onChange={event => setPassword(event.target.value)}
       ></Input>
 
       <Button
-        mode="THICK_BLUE"
+        mode={
+          regEmail.test(email) && regPassword.test(password)
+            ? 'THICK_BLUE'
+            : 'THICK_WHITE'
+        }
         onClick={() => {
-          doLogIn(email, password).then(response => {
-            if (response) {
-              setIsLoggedIn(true);
-              navigate('/');
-            }
-          });
+          if (regEmail.test(email) && regPassword.test(password)) {
+            doLogIn(email, password).then(response => {
+              if (response) {
+                setIsLoggedIn(true);
+                navigate('/');
+              }
+            });
+          }
         }}
       >
         로그인

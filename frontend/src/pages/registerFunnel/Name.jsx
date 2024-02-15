@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
-import { styled } from 'styled-components';
-
+import { useState } from 'react';
+import { regName } from '../../utils/regularExpression';
+import styled from 'styled-components';
 import NavigationBar from '../../components/common/NavigationBar';
+import ProgressBar from '../../components/common/ProgressBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
@@ -22,11 +23,7 @@ const Wrapper = styled.div`
 `;
 
 function Name({ onPrevious, onNext, userName }) {
-  const [name, setName] = useState('');
-
-  useEffect(() => {
-    if (userName) setName(userName);
-  }, [userName]);
+  const [name, setName] = useState(userName);
 
   return (
     <Wrapper>
@@ -42,7 +39,7 @@ function Name({ onPrevious, onNext, userName }) {
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(name)}
-        disabledOnNext={!name}
+        disabledOnNext={!name || !regName.test(name)}
       ></NavigationBar>
 
       <Paragraph
@@ -54,15 +51,16 @@ function Name({ onPrevious, onNext, userName }) {
         ]}
       ></Paragraph>
 
+      <ProgressBar value={16}></ProgressBar>
+
       <Input
         width="288px"
-        margin="50px 0"
-        commentText="이름은 4자 이상 입력할 수 없어요."
+        commentText="이름은 2~5자의 한글이어야 해요."
         placeholder="홍길동"
         onInput={event => {
           setName(event.target.value);
         }}
-        data={userName}
+        value={name}
       ></Input>
     </Wrapper>
   );
