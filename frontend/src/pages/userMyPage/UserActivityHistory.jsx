@@ -83,21 +83,18 @@ function UserActivityHistory() {
         <ServiceWrapper>
           <Paragraph
             fontSize={'20px'}
-            sentences={['아직 서비스를 이용한 경험이', '없으시네요']}
+            sentences={['아직 서비스를 이용한', '경험이 없으시네요.']}
             gap={'7px'}
           ></Paragraph>
           <Paragraph
             fontSize={'20px'}
-            sentences={[
-              '아래에서',
-              '다양한 서비스를 만나보세요!',
-              <NavigateText
-                nextPage={'/matchOption'}
-                children={'서비스 이용하러 가기'}
-              ></NavigateText>,
-            ]}
+            sentences={['다양한 서비스를 만나보세요!']}
             gap={'7px'}
           ></Paragraph>
+          <NavigateText
+            nextPage={'/matchOption'}
+            children={'서비스 이용하러 가기'}
+          ></NavigateText>
         </ServiceWrapper>
       )}
       {activityList.map((activity, idx) => (

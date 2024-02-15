@@ -154,7 +154,7 @@ function FilterFunnel() {
       <Funnel.Step name="CONNECTION">
         <Connection
           onPrevious={() => {
-            setStep('TIME');
+            setStep('ADDRESS');
           }}
           onNext={data => {
             setStep('DETAIL');

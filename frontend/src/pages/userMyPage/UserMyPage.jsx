@@ -109,7 +109,7 @@ function UserMyPage() {
         </NavigateButton>
         <NavigateButton
           onClick={() => {
-            navigate('/myBoards');
+            navigate('/userBoardList');
           }}
         >
           작성한 게시물 확인하기

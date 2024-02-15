@@ -33,7 +33,7 @@ function ConnectOption() {
             src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
           ></Image>
         }
-        onPrevious={() => navigate('/userMyPage')}
+        onPrevious={() => navigate('/myPage')}
       ></NavigationBar>
 
       <Paragraph

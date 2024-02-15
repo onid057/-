@@ -100,7 +100,8 @@ export default function Home() {
         console.log(response);
         setReserveInfo(response.data);
         setDiffTime(
-          new Date(reserveInfo?.expectationStartedAt).getTime() - new Date(),
+          new Date(reserveInfo?.expectationStartedAt).getTime() -
+            new Date().getTime(),
         );
       });
     }

@@ -31,6 +31,7 @@ const HeadWrapper = styled.div`
 const HeartWrapper = styled.div`
   width: 100%;
   height: 288px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;

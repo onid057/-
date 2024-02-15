@@ -6,6 +6,7 @@ import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import Home from './pages/home/Home';
 import Login from './pages/login/Login';
 import MyPage from './pages/myPage/MyPage';
+import UserBoardList from './pages/userMyPage/UserBoardList';
 import ConnectOption from './pages/connect/ConnectOption'; // 연동 옵션 고르기 페이지
 import ConnectAsLeader from './pages/connect/ConnectAsLeader'; // 대표로 연동하기 페이지
 import ConnectMember from './pages/connect/ConnectMember'; // 연동되어 있는 멤버 조회 페이지
@@ -237,6 +238,7 @@ function App() {
           path="/userActivityHistory"
           element={<UserActivityHistory />}
         ></Route>
+        <Route path="/userBoardList" element={<UserBoardList />}></Route>
         <Route
           path="/paymentRegistration"
           element={<PaymentRegistration />}

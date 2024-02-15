@@ -41,9 +41,9 @@ function SimpleReserve({
   onClick,
 }) {
   const navigate = useNavigate();
-  const diffTime = new Date(createdAt).getTime() - new Date();
+  const diffTime = new Date(createdAt).getTime() - new Date().getTime();
   const isRemainTimeLowerThanHalfOfHour =
-    diffTime <= 1000 * 60 * 60 && diffTime >= 0;
+    diffTime <= 1000 * 60 * 60 * 10 && diffTime >= 0;
 
   return (
     <Wrapper>

@@ -47,8 +47,8 @@ function Connection({ onPrevious, onNext, matchUserId }) {
 
   useEffect(() => {
     getAssociatedUserList().then(response => {
-      if (response.length === 0) setUserId(-1);
-      else setAssociatedUserList(response);
+      if (response.length) setAssociatedUserList(response);
+      else setUserId(-1);
     });
   }, []);
 
@@ -80,7 +80,7 @@ function Connection({ onPrevious, onNext, matchUserId }) {
 
       <ProgressBar value={89}></ProgressBar>
 
-      {associatedUserList.length === 0 ? (
+      {!associatedUserList ? (
         <TextWrapper>연동된 멤버가 없습니다.</TextWrapper>
       ) : (
         associatedUserList?.map((user, index) => {
