@@ -43,6 +43,7 @@ const ImageWrapper = styled.div`
   width: 60px;
   height: 60px;
   border-radius: 50%;
+  overflow: hidden;
 `;
 
 function UserMyPage() {

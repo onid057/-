@@ -9,6 +9,12 @@ const Wrapper = styled.div`
   padding: 0px 20px 0px 0px;
   display: flex;
 `;
+const ImageWrapper = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+`;
 
 const LeftBox = styled.div`
   width: 100%;
@@ -87,14 +93,16 @@ function BoardComment({
   return (
     <Wrapper>
       <LeftBox>
-        <Image
-          src={
-            profileImage || `${process.env.PUBLIC_URL}/images/profile_img.svg`
-          }
-          width={'50px'}
-          height={'50px'}
-          margin={'0 0 0 -12px'}
-        ></Image>
+        <ImageWrapper>
+          <Image
+            src={
+              profileImage || `${process.env.PUBLIC_URL}/images/profile_img.svg`
+            }
+            width={'50px'}
+            height={'50px'}
+            margin={'0 0 0 -12px'}
+          ></Image>
+        </ImageWrapper>
       </LeftBox>
 
       <RightBox>

@@ -99,6 +99,12 @@ const CommentLength = styled.span`
   font-size: 16px;
   color: gray;
 `;
+const ImageWrapper = styled.div`
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+`;
 
 function BoardsDetail() {
   const { boardId } = useParams();
@@ -163,11 +169,16 @@ function BoardsDetail() {
       <ArticleWrapper>
         <ProfileWrapper>
           <ProfileLeft>
-            <Image
-              src={`${process.env.PUBLIC_URL}/images/profile_img.svg`}
-              width={'50px'}
-              height={'50px'}
-            ></Image>
+            <ImageWrapper>
+              <Image
+                src={
+                  data.profileImage ||
+                  `${process.env.PUBLIC_URL}/images/profile_img.svg`
+                }
+                width={'50px'}
+                height={'50px'}
+              ></Image>
+            </ImageWrapper>
           </ProfileLeft>
           <ProfileRight>
             <ProfileName>{data.userName}</ProfileName>

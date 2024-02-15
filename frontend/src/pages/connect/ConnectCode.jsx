@@ -99,17 +99,14 @@ function ConnectCode() {
         </SubmitWrapper>
       )}
       {option === 'show' && (
-        <SubmitWrapper>
-          <Input
-            type="text"
-            value={code}
-            width={'190px'}
-            margin={'10px 0 0 0'}
-            commentText={`남은 시간 : ${Math.floor(leftTime / 60)}분 ${leftTime % 60}초`}
-            disabled
-          ></Input>
-          <Button mode="THIN_BLUE">복사</Button>
-        </SubmitWrapper>
+        <Input
+          type="text"
+          value={code}
+          width={'190px'}
+          margin={'10px 0 0 0'}
+          commentText={`남은 시간 : ${Math.floor(leftTime / 60)}분 ${leftTime % 60}초`}
+          disabled
+        ></Input>
       )}
     </Wrapper>
   );

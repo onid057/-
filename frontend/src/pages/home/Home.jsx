@@ -250,7 +250,7 @@ export default function Home() {
                     sentences={['직접 집사님을', '모집해보고 싶어요.']}
                   ></Paragraph>,
                 ]}
-                nextPage="/matchOption"
+                nextPage="/rooms/create"
               ></Notice>
 
               <Notice
