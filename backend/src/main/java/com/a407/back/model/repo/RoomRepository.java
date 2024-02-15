@@ -31,4 +31,6 @@ public interface RoomRepository {
 
     List<Room> getUserPublicRoomList(User user);
 
+    List<Room> getAllRoomList();
+
 }

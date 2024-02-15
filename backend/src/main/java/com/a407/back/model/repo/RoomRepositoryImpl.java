@@ -99,4 +99,10 @@ public class RoomRepositoryImpl implements RoomRepository {
             .orderBy(qRoom.roomCreatedAt.asc()).fetch();
     }
 
+    @Override
+    public List<Room> getAllRoomList() {
+        QRoom qRoom = QRoom.room;
+        return query.selectFrom(qRoom).where(qRoom.status.eq(Process.CREATE)).orderBy(qRoom.roomCreatedAt.asc()).fetch();
+    }
+
 }

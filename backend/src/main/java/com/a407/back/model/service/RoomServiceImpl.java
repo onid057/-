@@ -16,6 +16,8 @@ import com.a407.back.model.repo.RoomRepository;
 import com.a407.back.model.repo.UserRepository;
 import com.a407.back.model.repo.ZipsaRepository;
 import jakarta.transaction.Transactional;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -109,6 +111,24 @@ public class RoomServiceImpl implements RoomService {
                 zipsa.getGradeId().getName(), zipsa.getPreferTag());
         }).toList();
         return new RoomNotificationListResponse(roomNotificationList);
+    }
+
+    @Override
+    @Transactional
+    public void deleteRegularPeriodRoom() {
+        List<Room> allRoomList = roomRepository.getAllRoomList();
+        for(Room room: allRoomList) {
+            double diffTime = (Timestamp.valueOf(LocalDateTime.now()).getTime() - room.getRoomCreatedAt().getTime()) / 3600000.0;
+            if(diffTime >= 24) {
+                List<Notification> notificationList = notificationRepository.findByRoomIdList(room);
+                for(Notification notification : notificationList) {
+                    notificationRepository.deleteNotification(notification);
+                }
+                roomRepository.deletePublicRoom(room);
+            } else {
+                break;
+            }
+        }
     }
 
 }

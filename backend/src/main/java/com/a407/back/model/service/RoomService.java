@@ -24,4 +24,6 @@ public interface RoomService {
 
     RoomNotificationListResponse getRoomNotificationList(Long roomId);
 
+    void deleteRegularPeriodRoom();
+
 }
