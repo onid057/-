@@ -154,7 +154,7 @@ public class BoardServiceImpl implements BoardService {
         List<CommentListDto> commentList = commentRepository.findCommentList(board).stream()
             .map(
                 comment -> {
-                    User commentUser = userRepository.findByUserId(comment.getUserId());
+                    User commentUser = userRepository.findByUserId(comment.getUserId().getUserId());
                     boolean commentDistinction = Objects.equals(comment.getUserId().getUserId(),
                         userId);
                     return new CommentListDto(comment.getCommentId(), commentUser.getProfileImage(), comment.getUserId().getName(),
