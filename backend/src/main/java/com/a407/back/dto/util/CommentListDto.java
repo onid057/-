@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class CommentListDto {
 
     private Long commentId;
+    private String profileImage;
     private String userName;
     private String content;
     private Timestamp updatedAt;
