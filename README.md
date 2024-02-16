@@ -89,21 +89,17 @@
 
 ERD
 
-![ERD.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7873b24a-397d-4fe7-92d4-a4fc667b2a7d/1b4a4cbc-bb49-4700-a777-d3eae933670c/ERD.png)
+![ERD](/uploads/0a21f5a0b94347efecbca148653d47a9/ERD.png)
 
 
 아키텍처 설계
 
-![A407.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7873b24a-397d-4fe7-92d4-a4fc667b2a7d/a0c53bc6-f665-4ebc-ad14-03f09acb36c5/A407.png)
+![A407](/uploads/39e18ae76ebb232b19db140461d346ec/A407.png)
 
-
-API 설계 이미지
-
-![A407API.PNG](https://prod-files-secure.s3.us-west-2.amazonaws.com/7873b24a-397d-4fe7-92d4-a4fc667b2a7d/a541b2dd-b28c-4eb3-807d-60906606c1c2/A407API.png)
 
 Figma
 
-![figma_fix.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7873b24a-397d-4fe7-92d4-a4fc667b2a7d/44d61a13-dea4-4885-b052-aea866ae6509/figma_fix.png)
+![figma_fix](/uploads/b7294680372fc3af2bcf1c4e5dc2d813/figma_fix.png)
 
 
 ## 팀원 소개
