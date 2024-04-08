@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { styled } from 'styled-components';
-
+import styled from 'styled-components';
+import ProgressBar from '../../components/common/ProgressBar';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import Paragraph from '../../components/common/Paragraph';
@@ -22,14 +22,13 @@ const Wrapper = styled.div`
 `;
 
 const ButtonWrapper = styled.div`
-  margin: 60px 0;
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
-function Gender({ onPrevious, onNext }) {
-  const [gender, setGender] = useState('');
+function Gender({ onPrevious, onNext, userGender }) {
+  const [gender, setGender] = useState(userGender);
 
   return (
     <Wrapper>
@@ -45,6 +44,7 @@ function Gender({ onPrevious, onNext }) {
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(gender)}
+        disabledOnNext={!gender}
       ></NavigationBar>
 
       <Paragraph
@@ -56,19 +56,23 @@ function Gender({ onPrevious, onNext }) {
         ]}
       ></Paragraph>
 
+      <ProgressBar value={32}></ProgressBar>
+
       <ButtonWrapper>
         <Button
           color="#ffffff"
-          mode="NORMAL_GRAY"
-          msg="남성"
-          onClick={() => setGender('남성')}
-        ></Button>
+          mode={gender === 'MAN' ? 'THICK_BLUE' : 'THICK_WHITE'}
+          onClick={() => setGender('MAN')}
+        >
+          남성
+        </Button>
         <Button
           color="#ffffff"
-          mode="NORMAL_GRAY"
-          msg="여성"
-          onClick={() => setGender('여성')}
-        ></Button>
+          mode={gender === 'WOMAN' ? 'THICK_BLUE' : 'THICK_WHITE'}
+          onClick={() => setGender('WOMAN')}
+        >
+          여성
+        </Button>
       </ButtonWrapper>
     </Wrapper>
   );

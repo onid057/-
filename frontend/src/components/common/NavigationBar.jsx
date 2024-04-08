@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -9,8 +8,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
-
-const LeftContent = styled.span`
+const LeftContent = styled.div`
   height: 24px;
   display: flex;
   align-items: center;
@@ -30,6 +28,9 @@ const RightContent = styled.span`
   font-size: 14px;
   cursor: pointer;
 `;
+const DisabledText = styled.span`
+  color: #b0b8c0;
+`;
 
 function NavigationBar({
   leftContent,
@@ -37,6 +38,7 @@ function NavigationBar({
   rightContent,
   onPrevious,
   onNext,
+  disabledOnNext,
 }) {
   return (
     <Wrapper>
@@ -45,7 +47,13 @@ function NavigationBar({
       )}
       {centerContent && <CenterContent>{centerContent}</CenterContent>}
       {rightContent && (
-        <RightContent onClick={onNext}>{rightContent}</RightContent>
+        <RightContent onClick={!disabledOnNext ? onNext : undefined}>
+          {disabledOnNext ? (
+            <DisabledText>{rightContent}</DisabledText>
+          ) : (
+            rightContent
+          )}
+        </RightContent>
       )}
     </Wrapper>
   );

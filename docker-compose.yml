@@ -1,0 +1,9 @@
+version: "3"
+services:
+  client:
+    container_name: frontend
+    image: onid057/a407-frontend
+    expose:
+      - 80
+    ports:
+      - 3000:80
