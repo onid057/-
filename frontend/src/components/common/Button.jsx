@@ -1,152 +1,116 @@
-import React from 'react';
-import { styled, css } from 'styled-components';
+import styled from 'styled-components';
+import Image from './Image';
 
 const ButtonWrapper = styled.button`
-  // 공통 스타일
   cursor: pointer;
-  outline: none;
+  width: 100%;
+  height: 52px;
   border: none;
   border-radius: 25px;
-  color: white;
-  padding: auto;
-  width: 294px;
-  height: 57px;
-  font-size: 20px /* 크기 설정*/
-    ${props =>
-      props.mode === 'SMALL' &&
-      css`
-        width: 138px;
-        font-size: 20px;
-        font-weight: bold;
-      `};
-  ${props =>
-    props.mode === 'NORMAL_GRAY' &&
-    css`
-      font-size: 17px;
-      color: black;
-    `};
-  ${props =>
-    props.mode === 'NORMAL_BLUE' &&
-    css`
-      font-size: 17px;
-    `};
-  ${props =>
-    props.mode === 'SMALL_WHITE' &&
-    css`
-      width: 138px;
-      font-size: 18px;
-      font-weight: lighter;
-      color: black;
-      background-color: white;
-    `};
-  ${props =>
-    props.mode === 'THIN_WHITE' &&
-    css`
-      width: 100%;
-      height: 38px;
-      font-weight: lighter;
-      color: black;
-      font-size: 17px;
-      background-color: white;
-    `};
-  ${props =>
-    props.mode === 'FULL_PERCENT_WHITE' &&
-    css`
-      width: 100%;
-      height: 38px;
-      flex: 1;
-      font-size: 18px;
-      font-weight: lighter;
-      color: black;
-      background-color: white;
-    `};
-  ${props =>
-    props.mode === 'INSIDE_IMAGE' &&
-    css`
-      width: 100%;
-      height: 38px;
-      flex: 1;
-      font-size: 18px;
-      font-weight: lighter;
-      color: black;
-      background-color: white;
-    `};
-  ${props =>
-    (props.mode === 'IMAGE_UPLOAD') | (props.mode === 'IMAGE_EDIT') &&
-    css`
-      border-radius: 10px;
-      font-size: 16px;
-      color: black;
-      border: 1px solid #629af9;
-      height: 45px;
-    `};
-
-  ${props => {
-    const color = props.color;
-    return css`
-      background-color: ${color};
-    `;
-  }}
-`;
-
-const ContentWrapper = styled.span`
+  outline: none;
+  color: #000000;
+  font-size: 18px;
+  font-weight: 400;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 10px;
 `;
-
-const ImgContentWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 3px;
-  > img {
-    width: 25px;
-    height: 25px;
-  }
+const ThinButtonWrapper = styled(ButtonWrapper)`
+  height: 38px;
+  font-size: 15px;
+`;
+const ThickGrayButton = styled(ButtonWrapper)``;
+const ThinGrayButton = styled(ThinButtonWrapper)``;
+const ThickBlueButton = styled(ButtonWrapper)`
+  color: #ffffff;
+  background-color: #629af9;
+`;
+const ThinBlueButton = styled(ThinButtonWrapper)`
+  color: #ffffff;
+  background-color: #629af9;
+`;
+const ThickWhiteButton = styled(ButtonWrapper)`
+  background-color: #ffffff;
+`;
+const ThinWhiteButton = styled(ThinButtonWrapper)`
+  background-color: #ffffff;
+`;
+const ImageButton = styled(ButtonWrapper)`
+  height: 45px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  font-size: 16px;
+  border: 1px dashed #666666;
+`;
+const DiamondWhiteButton = styled(ThinButtonWrapper)`
+  background-color: #ffffff;
+`;
+const DiamondBlueButton = styled(ThinButtonWrapper)`
+  color: #ffffff;
+  background-color: #629af9;
 `;
 
-function Button({ msg, color, mode, ...rest }) {
-  if (mode === 'IMAGE_UPLOAD') {
-    return (
-      <ButtonWrapper color={color} mode={mode} {...rest}>
-        <ContentWrapper>
-          <img
+function Button({ mode, onClick, children }) {
+  switch (mode) {
+    case 'THICK_GRAY':
+      return <ThickGrayButton onClick={onClick}>{children}</ThickGrayButton>;
+    case 'THIN_GRAY':
+      return <ThinGrayButton onClick={onClick}>{children}</ThinGrayButton>;
+    case 'THICK_BLUE':
+      return <ThickBlueButton onClick={onClick}>{children}</ThickBlueButton>;
+    case 'THIN_BLUE':
+      return <ThinBlueButton onClick={onClick}>{children}</ThinBlueButton>;
+    case 'THICK_WHITE':
+      return <ThickWhiteButton onClick={onClick}>{children}</ThickWhiteButton>;
+    case 'THIN_WHITE':
+      return <ThinWhiteButton onClick={onClick}>{children}</ThinWhiteButton>;
+    case 'IMAGE_UPLOAD':
+      return (
+        <ImageButton onClick={onClick}>
+          <Image
             src={`${process.env.PUBLIC_URL}/images/camera.svg`}
-            alt="camera"
+            width="24px"
+            height="24px"
           />
-          {msg}
-        </ContentWrapper>
-      </ButtonWrapper>
-    );
-  } else if (mode === 'IMAGE_EDIT') {
-    return (
-      <ButtonWrapper color={color} mode={mode} {...rest}>
-        <ContentWrapper>
-          <img src={`${process.env.PUBLIC_URL}/images/edit.svg`} alt="edit" />
-          {msg}
-        </ContentWrapper>
-      </ButtonWrapper>
-    );
-  } else if (mode === 'INSIDE_IMAGE') {
-    return (
-      <ButtonWrapper color={color} mode={mode} {...rest}>
-        <ImgContentWrapper>
-          <img
+          {children}
+        </ImageButton>
+      );
+    case 'IMAGE_EDIT':
+      return (
+        <ImageButton onClick={onClick}>
+          <Image
+            src={`${process.env.PUBLIC_URL}/images/edit.svg`}
+            width="24px"
+            height="24px"
+          />
+          {children}
+        </ImageButton>
+      );
+    case 'DIAMOND_WHITE':
+      return (
+        <DiamondWhiteButton onClick={onClick}>
+          <Image
             src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
-            alt="dia"
+            width="29px"
+            height="29px"
           />
-          {msg}
-        </ImgContentWrapper>
-      </ButtonWrapper>
-    );
-  } else {
-    return (
-      <ButtonWrapper color={color} mode={mode} {...rest}>
-        {msg}
-      </ButtonWrapper>
-    );
+          {children}
+        </DiamondWhiteButton>
+      );
+    case 'DIAMOND_BLUE':
+      return (
+        <DiamondBlueButton onClick={onClick}>
+          <Image
+            src={`${process.env.PUBLIC_URL}/images/small_dia.svg`}
+            width="29px"
+            height="29px"
+          />
+          {children}
+        </DiamondBlueButton>
+      );
+    default:
+      return;
   }
 }
 

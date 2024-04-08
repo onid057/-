@@ -1,23 +1,55 @@
 import { styled } from 'styled-components';
 
 const ImageWrapper = styled.div`
+  cursor: pointer;
+  position: relative;
   width: ${props => props.$width};
   height: ${props => props.$height};
-  margin: ${props => (props.$margin ? props.$margin : 'inherit')};
+  margin: ${props => (props.$margin ? props.$margin : '0')};
   background-repeat: no-repeat;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
   background-image: url(${props => props.$src});
+  border: ${props => (props.$needBorder ? '1px dashed #666666' : 'none')};
+  border-radius: ${props => props.$needBorder && '10px'};
+  background-color: ${props => props.$needBorder && '#ffffff'};
 `;
 
-function Image({ src, width, height, margin }) {
+const DeleteButton = styled.button`
+  cursor: pointer;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  z-index: 9999;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  background-image: url(${props => props.$url});
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  border: none;
+`;
+
+function Image({ src, width, height, margin, onDelete, onClick }) {
+  const isOnDelete = !!onDelete;
+
   return (
     <ImageWrapper
       $src={src}
       $width={width}
       $height={height}
       $margin={margin}
-    ></ImageWrapper>
+      $needBorder={isOnDelete}
+      onClick={onClick}
+    >
+      {isOnDelete && (
+        <DeleteButton
+          $url={`${process.env.PUBLIC_URL}/images/closebutton.svg`}
+          onClick={onDelete}
+        ></DeleteButton>
+      )}
+    </ImageWrapper>
   );
 }
 

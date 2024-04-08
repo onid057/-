@@ -1,6 +1,4 @@
-// 공통 Input 컴포넌트
-
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 
 const Wrapper = styled.div`
   width: ${props => props.$width};
@@ -13,7 +11,7 @@ const Wrapper = styled.div`
 `;
 
 const Label = styled.label`
-  font-size: 20px;
+  font-size: 18px;
 `;
 
 const InputWrapper = styled.input`
@@ -45,18 +43,20 @@ function Input({
   labelText,
   commentText,
   placeholder,
-  onInput,
-  data,
+  onChange,
+  value,
+  ...rest
 }) {
   return (
     <Wrapper $width={width} $margin={margin} $padding={padding}>
       <Label>{labelText}</Label>
       <InputWrapper
         type={type}
-        onInput={onInput}
+        onChange={onChange}
         placeholder={placeholder}
         required
-        defaultValue={data}
+        value={value}
+        {...rest}
       ></InputWrapper>
       <Span>{commentText}</Span>
     </Wrapper>

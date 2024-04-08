@@ -1,7 +1,7 @@
-import { styled } from 'styled-components';
-import React, { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import { useDaumPostcodePopup } from 'react-daum-postcode';
+import { useState } from 'react';
 import Input from './Input';
-import Button from './Button';
 
 const AddressInputWrapper = styled.div`
   box-sizing: border-box;
@@ -10,24 +10,6 @@ const AddressInputWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 5px;
-`;
-
-const InsideWrapper = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-bottom: 21px;
-`;
-
-const TitleBox = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  font-size: 20px;
-  font-weight: light;
 `;
 
 const InputBox = styled.div`
@@ -46,60 +28,80 @@ const InputBox = styled.div`
 const InputBoxFirst = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5px;
 `;
 
-const AddressInput = () => {
-  useEffect(() => {
-    // useEffect 내에서 다음 지도 API 스크립트를 동적으로 로드
-    const script = document.createElement('script');
-    script.src =
-      '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-    script.async = true;
-    document.body.appendChild(script);
+const Button = styled.button`
+  cursor: pointer;
+  padding: 0 10px;
+  background-color: #f5f5f5;
+  font-size: 18px;
+`;
 
-    // 컴포넌트가 언마운트될 때 스크립트 제거
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+function AddressInput({
+  defaultAddress,
+  defaultDetailAddress,
+  setAddress,
+  setDetailAddress,
+}) {
+  const [zoneCode, setZoneCode] = useState('');
 
-  const handleOpenPopup = () => {
-    // 다음 지도 API 코드 호출
-    new window.daum.Postcode({
-      oncomplete: function (data) {
-        // 우편번호와 주소 데이터 출력
-        const postCode = data.zonecode;
-        const address = data.address + ' (' + data.buildingName + ')';
-        // console.log('검색 결과:', data);
-        console.log('우편번호:', postCode);
-        console.log('주소:', address);
-      },
-    }).open();
+  const open = useDaumPostcodePopup();
+
+  const handleComplete = data => {
+    let zoneCode = data.zonecode;
+    let fullAddress = data.address;
+    let extraAddress = '';
+
+    if (data.addressType === 'R') {
+      if (data.bname !== '') {
+        extraAddress += data.bname;
+      }
+      if (data.buildingName !== '') {
+        extraAddress +=
+          extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddress += extraAddress !== '' ? ` (${extraAddress})` : '';
+    }
+
+    setZoneCode(zoneCode);
+    setAddress(fullAddress);
+  };
+
+  const handleClick = () => {
+    open({ onComplete: handleComplete });
   };
 
   return (
     <AddressInputWrapper>
-      <InsideWrapper>
-        <TitleBox>장소</TitleBox>
-        <InputBox>
-          <InputBoxFirst>
-            <Input width={'128px'} placeholder="우편번호"></Input>
-            {/* 우편번호 서비스를 트리거할 버튼 또는 다른 UI 요소를 추가 */}
-            <Button
-              onClick={handleOpenPopup}
-              mode={'SMALL_WHITE'}
-              msg={'우편번호 찾기'}
-            ></Button>
-          </InputBoxFirst>
-          <Input width={'100%'} placeholder="주소"></Input>
-          {/* 상세 주소는 input에서 받음 */}
-          <Input width={'100%'} placeholder="상세 주소"></Input>
-        </InputBox>
-      </InsideWrapper>
+      <InputBox>
+        <InputBoxFirst>
+          <Input
+            width={'128px'}
+            placeholder="우편번호"
+            value={zoneCode}
+            disabled
+          ></Input>
+          <Button onClick={handleClick}>검색</Button>
+        </InputBoxFirst>
+        <Input
+          width={'100%'}
+          placeholder="주소"
+          onChange={event => setAddress(event.target.value)}
+          defaultValue={defaultAddress}
+          disabled
+        ></Input>
+        <Input
+          width={'100%'}
+          placeholder="상세 주소"
+          onChange={event => setDetailAddress(event.target.value)}
+          defaultValue={defaultDetailAddress}
+        ></Input>
+      </InputBox>
     </AddressInputWrapper>
   );
-};
+}
 
 export default AddressInput;
