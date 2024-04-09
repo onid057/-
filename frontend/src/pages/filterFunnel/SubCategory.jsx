@@ -1,82 +1,76 @@
 import styled from 'styled-components';
+import NavigationBar from '../../components/common/NavigationBar';
+import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import ProgressBar from '../../components/common/ProgressBar';
 import Button from '../../components/common/Button';
+import CATEGORY_ID from '../../constants/categoryId';
+import { useState } from 'react';
 
 const Wrapper = styled.div`
   width: 320px;
   min-height: 568px;
   margin: 0 auto;
-  padding: 60px 16px;
+  padding: 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 11px;
+  gap: 15px;
   background-color: ${({ theme }) => theme.colors.primary};
   font-size: 18px;
   font-weight: 300;
   white-space: pre-wrap;
 `;
 
-const TitleBox = styled.div`
-  width: 100%;
-  font-size: 35px;
-`;
-
-const ContentBox = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  /* justify-content: space-between; */
-  justify-content: flex-start;
-  align-items: center;
-  gap: 15px;
-`;
-
-const InnerContentBox = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-`;
-
 // 앞에서 대분류 선택에 따라서 여기 subCategoryList가 달라져야 하는데 어떻게 하는지 잘 모르겠음...
-function SubCategory() {
-  const subCategoryList = [
-    '산책하기',
-    '함께 장보기',
-    '함게 미용실가기',
-    '함께 코딩하기',
-    '함께 집에 가기',
-    '함께 ...',
-    '함께 ...',
-    '함께 ...',
-  ];
+function SubCategory({
+  onPrevious,
+  onNext,
+  matchMainCategory,
+  matchSubCategory,
+}) {
+  const [subCategory, setSubCategory] = useState(matchSubCategory);
+  const subCategoryList = Object.keys(CATEGORY_ID[matchMainCategory][1]);
 
   return (
     <Wrapper>
-      <TitleBox>
-        <Paragraph
-          sentences={[
-            <BoldText
-              fontSize="35px"
-              boldContent="구체적으로 할 일"
-              normalContent="을"
-            ></BoldText>,
-            '골라주세요',
-          ]}
-        ></Paragraph>
-      </TitleBox>
+      <NavigationBar
+        leftContent={
+          <Image
+            width="40px"
+            height="40px"
+            margin="0 0 0 -12px"
+            src={process.env.PUBLIC_URL + '/images/left_arrow.svg'}
+          ></Image>
+        }
+        rightContent="다음"
+        onPrevious={onPrevious}
+        onNext={() => onNext(subCategory)}
+        disabledOnNext={!subCategory}
+      ></NavigationBar>
 
-      {/* ProgressBar 진척도 변경 부분 */}
-      <ProgressBar value={34}></ProgressBar>
+      <Paragraph
+        gap="5px"
+        fontSize="35px"
+        sentences={[
+          <BoldText boldContent="자세한 일" normalContent="을"></BoldText>,
+          '정해주세요',
+        ]}
+      ></Paragraph>
 
-      <ContentBox>
-        {/* '상관 없음'을 선택하면 모든 세부내용이 다 선택됨 */}
-        <Button mode={'THIN_WHITE'} msg={'상관 없음'}></Button>
-        {subCategoryList.map((sub, index) => {
-          return <Button mode={'THIN_WHITE'} msg={sub}></Button>;
-        })}
-      </ContentBox>
+      <ProgressBar value={22}></ProgressBar>
+
+      {subCategoryList.map((category, index) => {
+        return (
+          <Button
+            key={index}
+            mode={subCategory === category ? 'THIN_BLUE' : 'THIN_WHITE'}
+            onClick={() => setSubCategory(category)}
+          >
+            {category}
+          </Button>
+        );
+      })}
     </Wrapper>
   );
 }

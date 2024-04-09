@@ -1,11 +1,14 @@
-import { useState, useEffect } from 'react';
-import { styled } from 'styled-components';
-
+import { useState } from 'react';
+import { regEmail } from '../../utils/regularExpression';
+import { checkIsNotDuplicatedEmail } from '../../apis/api/register';
+import styled from 'styled-components';
+import ProgressBar from '../../components/common/ProgressBar';
 import NavigationBar from '../../components/common/NavigationBar';
 import Image from '../../components/common/Image';
 import BoldText from '../../components/common/BoldText';
 import Paragraph from '../../components/common/Paragraph';
 import Input from '../../components/common/Input';
+import Button from '../../components/common/Button';
 
 const Wrapper = styled.div`
   width: 320px;
@@ -20,13 +23,17 @@ const Wrapper = styled.div`
   font-weight: 300;
   white-space: pre-wrap;
 `;
+const InputWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+`;
 
 function Email({ onPrevious, onNext, userEmail }) {
-  const [email, setEmail] = useState('');
-
-  useEffect(() => {
-    if (userEmail) setEmail(userEmail);
-  }, [userEmail]);
+  const [email, setEmail] = useState(userEmail || '');
+  const [isValid, setIsValid] = useState(false);
 
   return (
     <Wrapper>
@@ -42,6 +49,7 @@ function Email({ onPrevious, onNext, userEmail }) {
         rightContent="다음"
         onPrevious={onPrevious}
         onNext={() => onNext(email)}
+        disabledOnNext={!email || !regEmail.test(email) || !isValid}
       ></NavigationBar>
 
       <Paragraph
@@ -53,17 +61,42 @@ function Email({ onPrevious, onNext, userEmail }) {
         ]}
       ></Paragraph>
 
-      <Input
-        type="email"
-        width="288px"
-        margin="50px 0"
-        commentText="이메일 형식에 맞지 않습니다."
-        placeholder="hanzipsa@naver.com"
-        onInput={event => {
-          setEmail(event.target.value);
-        }}
-        data={userEmail}
-      ></Input>
+      <ProgressBar value={80}></ProgressBar>
+
+      <InputWrapper>
+        <Input
+          type="email"
+          width="200px"
+          margin="10px 0 0 0"
+          commentText="이메일 형식에 맞춰 입력해주세요."
+          placeholder="hanzipsa@ssafy.com"
+          onChange={event => {
+            if (isValid) setIsValid(false);
+            setEmail(event.target.value);
+          }}
+          value={email}
+        ></Input>
+        <Button
+          mode="THIN_WHITE"
+          onClick={
+            regEmail.test(email)
+              ? function () {
+                  checkIsNotDuplicatedEmail(email).then(response => {
+                    if (response.data) {
+                      alert('유효한 이메일입니다!');
+                      setIsValid(true);
+                    } else {
+                      alert('중복하는 이메일입니다.');
+                      setIsValid(false);
+                    }
+                  });
+                }
+              : undefined
+          }
+        >
+          중복 확인
+        </Button>
+      </InputWrapper>
     </Wrapper>
   );
 }
